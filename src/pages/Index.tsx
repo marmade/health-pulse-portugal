@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import AxisColumn from "@/components/AxisColumn";
 import DebunkingTable from "@/components/DebunkingTable";
 import MediaTable from "@/components/MediaTable";
 import Filters from "@/components/Filters";
-import { axisData, debunkingData, newsData } from "@/data/mockData";
+import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
   const [filters, setFilters] = useState({ period: "12m", region: "pt" });
+
+  const filteredData = useMemo(
+    () => getFilteredAxisData(filters.period, filters.region),
+    [filters.period, filters.region]
+  );
 
   const visibleAxes =
     activeAxis === "all"
@@ -38,13 +43,16 @@ const Index = () => {
           }`}
         >
           {visibleAxes.map((axisId) => {
-            const axis = axisData[axisId];
+            const axis = filteredData[axisId];
             return (
               <AxisColumn
-                key={axisId}
+                key={`${axisId}-${filters.period}-${filters.region}`}
                 axisId={axisId}
                 label={axis.label}
                 keywords={axis.keywords}
+                trendData={axis.trend}
+                period={filters.period}
+                region={filters.region}
               />
             );
           })}
