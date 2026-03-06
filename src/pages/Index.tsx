@@ -50,6 +50,7 @@ const Index = () => {
                 axisId={axisId}
                 label={axis.label}
                 keywords={axis.keywords}
+                allKeywords={axis.allKeywords}
                 trendData={axis.trend}
                 period={filters.period}
                 region={filters.region}

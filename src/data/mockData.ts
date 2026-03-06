@@ -121,7 +121,7 @@ const kwPeriodMult: Record<string, Record<string, number>> = {
 };
 
 export function getFilteredAxisData(period: string, region: string) {
-  const filtered: Record<string, { label: string; keywords: Keyword[]; trend: TrendPoint[] }> = {};
+  const filtered: Record<string, { label: string; keywords: Keyword[]; allKeywords: Keyword[]; trend: TrendPoint[] }> = {};
 
   for (const [axisId, axis] of Object.entries(axisData)) {
     const keywords = axis.keywords.map((kw) => {
@@ -137,17 +137,22 @@ export function getFilteredAxisData(period: string, region: string) {
       };
     });
 
-    // Sort by volume and take top 5
-    const top5 = [...keywords].sort((a, b) => b.currentVolume - a.currentVolume).slice(0, 5);
+    const sorted = [...keywords].sort((a, b) => b.currentVolume - a.currentVolume);
+    const top5 = sorted.slice(0, 5);
 
     const baseVol = Math.round(top5.reduce((s, k) => s + k.currentVolume, 0) / top5.length);
     filtered[axisId] = {
       label: axis.label,
       keywords: top5,
+      allKeywords: sorted,
       trend: generateTrend(baseVol, baseVol * 0.4, period),
     };
   }
   return filtered;
+}
+
+export function generateKeywordTrend(keyword: Keyword, period: string): TrendPoint[] {
+  return generateTrend(keyword.currentVolume, keyword.currentVolume * 0.35, period);
 }
 
 export const axisData: Record<string, { label: string; keywords: Keyword[]; trend: TrendPoint[] }> = {
