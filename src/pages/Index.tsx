@@ -4,8 +4,10 @@ import DashboardFooter from "@/components/DashboardFooter";
 import AxisColumn from "@/components/AxisColumn";
 import DebunkingTable from "@/components/DebunkingTable";
 import MediaTable from "@/components/MediaTable";
+import SearchAlerts from "@/components/SearchAlerts";
 import Filters from "@/components/Filters";
 import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
+import { detectAlerts } from "@/lib/detectAlerts";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
