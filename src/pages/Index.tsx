@@ -4,8 +4,10 @@ import DashboardFooter from "@/components/DashboardFooter";
 import AxisColumn from "@/components/AxisColumn";
 import DebunkingTable from "@/components/DebunkingTable";
 import MediaTable from "@/components/MediaTable";
+import SearchAlerts from "@/components/SearchAlerts";
 import Filters from "@/components/Filters";
 import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
+import { detectAlerts } from "@/lib/detectAlerts";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -16,6 +18,11 @@ const Index = () => {
   const filteredData = useMemo(
     () => getFilteredAxisData(filters.period, filters.region),
     [filters.period, filters.region]
+  );
+
+  const alerts = useMemo(
+    () => detectAlerts(filteredData, filters.period, filters.region),
+    [filteredData, filters.period, filters.region]
   );
 
   const visibleAxes =
@@ -31,7 +38,19 @@ const Index = () => {
       <div className="px-6 py-3 overflow-x-auto">
         <Filters onFilterChange={setFilters} />
       </div>
-      <div className="section-divider" />
+      {/* Alerts */}
+      {alerts.length > 0 && (
+        <>
+          <SearchAlerts
+            alerts={alerts}
+            period={filters.period}
+            debunkingData={debunkingData}
+            newsData={newsData}
+          />
+          <div className="section-divider" />
+        </>
+      )}
+
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
