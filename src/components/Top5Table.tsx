@@ -14,6 +14,7 @@ const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [], selectedConte
       <div className="space-y-0">
         {keywords.map((kw, i) => {
           const isSelected = selectedTerms.includes(kw.term);
+          const isContextActive = selectedContextKeyword === kw.term;
           return (
             <div key={kw.term}>
               <div
