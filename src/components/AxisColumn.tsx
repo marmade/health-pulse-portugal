@@ -12,6 +12,8 @@ type Props = {
   trendData: TrendPoint[];
   period: string;
   region: string;
+  onKeywordSelect?: (term: string) => void;
+  selectedContextKeyword?: string | null;
 };
 
 const regionLabels: Record<string, string> = {
@@ -22,7 +24,7 @@ const regionLabels: Record<string, string> = {
   sul: "Sul",
 };
 
-const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }: Props) => {
+const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period, onKeywordSelect, selectedContextKeyword }: Props) => {
   const [mode, setMode] = useState<"ranking" | "compare">("ranking");
   const [compareTerms, setCompareTerms] = useState<string[]>([]);
 
@@ -44,6 +46,8 @@ const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }:
   const handleKeywordClick = (term: string) => {
     handleToggleTerm(term);
     if (mode === "ranking") setMode("compare");
+    // Also notify parent for Contexto Informativo
+    onKeywordSelect?.(term);
   };
 
   return (
@@ -108,6 +112,7 @@ const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }:
             keywords={keywords}
             onKeywordClick={handleKeywordClick}
             selectedTerms={compareTerms}
+            selectedContextKeyword={selectedContextKeyword}
           />
         </>
       ) : (
