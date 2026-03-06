@@ -18,7 +18,11 @@ const AxisColumn = ({ axisId, label, keywords }: Props) => {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h2 className="text-xs font-bold uppercase tracking-[0.15em]">{label}</h2>
+        <h2 className="text-xs font-bold uppercase tracking-[0.15em]">
+          {label}
+          {isLoading && <span className="ml-2 text-[9px] opacity-50 normal-case">a carregar…</span>}
+          {isLive && <span className="ml-2 text-[9px] text-green-600 normal-case">● live</span>}
+        </h2>
         <div className="flex items-center gap-4 mt-2">
           <div>
             <p className="editorial-label">Var. média</p>
