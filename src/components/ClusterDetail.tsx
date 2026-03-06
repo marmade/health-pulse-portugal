@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 import type { ClusterWithMetrics } from "@/data/clusters";
-import { generateClusterTrend, generateKeywordTrend } from "@/data/clusters";
+import { generateClusterTrend } from "@/data/clusters";
 import { generateKeywordTrend as genKwTrend } from "@/data/mockData";
 
 const COLORS = [
