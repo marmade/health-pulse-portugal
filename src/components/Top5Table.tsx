@@ -4,9 +4,10 @@ type Props = {
   keywords: Keyword[];
   onKeywordClick?: (term: string) => void;
   selectedTerms?: string[];
+  selectedContextKeyword?: string | null;
 };
 
-const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [] }: Props) => {
+const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [], selectedContextKeyword }: Props) => {
   return (
     <div>
       <p className="editorial-label mb-3">Top 5 — Palavras mais pesquisadas</p>
