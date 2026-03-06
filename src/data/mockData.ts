@@ -91,18 +91,18 @@ export const axisData: Record<string, { label: string; keywords: Keyword[]; tren
 };
 
 export const debunkingData: DebunkItem[] = [
-  { term: "jejum intermitente", title: "Jejum intermitente cura diabetes? Não há evidência suficiente", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/jejum-intermitente-cura-diabetes" },
-  { term: "terapia hormonal", title: "Terapia hormonal causa cancro? Análise dos estudos recentes", classification: "IMPRECISO", source: "Health Feedback", url: "https://science.feedback.org/review/hormone-therapy-cancer-risk" },
-  { term: "mpox portugal", title: "Mpox transmite-se pelo ar? O que dizem os especialistas", classification: "FALSO", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/mpox-transmissao-pelo-ar" },
-  { term: "suplementos alimentares", title: "Vitamina D previne covid-19? Falta de evidência científica", classification: "SEM EVIDÊNCIA", source: "Health Feedback", url: "https://science.feedback.org/review/vitamin-d-covid-prevention" },
-  { term: "fitoterapia menopausa", title: "Plantas medicinais substituem terapia hormonal na menopausa?", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/fitoterapia-substitui-terapia-hormonal" },
+  { term: "jejum intermitente", title: "Jejum, água com limão e hidratos de carbono: sete mitos e verdades sobre nutrição", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/saude/jejum-agua-com-limao-e-hidratos-de-carbono-sete-mitos-e-verdades-sobre-nutricao/" },
+  { term: "terapia hormonal", title: "Terapia hormonal causa cancro? Análise dos estudos recentes", classification: "IMPRECISO", source: "Health Feedback", url: "https://science.feedback.org/review/dozens-of-clinical-trials-ongoing-to-investigate-whether-vitamin-d-prevents-covid-19-no-firm-evidence-yet/" },
+  { term: "mpox portugal", title: "Mpox só se transmite através de contacto sexual? Fact-check", classification: "FALSO", source: "Observador", url: "https://observador.pt/factchecks/fact-check-mpox-so-se-transmite-atraves-de-contacto-sexual/" },
+  { term: "suplementos alimentares", title: "Vitamina D previne covid-19? Falta de evidência científica", classification: "SEM EVIDÊNCIA", source: "Science Feedback", url: "https://science.feedback.org/review/dozens-of-clinical-trials-ongoing-to-investigate-whether-vitamin-d-prevents-covid-19-no-firm-evidence-yet/" },
+  { term: "fitoterapia menopausa", title: "Está provado que beber sumo de maracujá emagrece?", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/esta-provado-que-beber-sumo-de-maracuja-emagrece/" },
 ];
 
 export const newsData: NewsItem[] = [
-  { title: "Ansiedade entre jovens portugueses atinge níveis recorde", outlet: "PÚBLICO", date: "2026-03-01", url: "https://www.publico.pt/sociedade/noticia/ansiedade-jovens-portugueses-niveis-recorde", relatedTerm: "ansiedade" },
-  { title: "DGS emite alerta sobre casos de mpox em Lisboa", outlet: "RTP", date: "2026-03-03", url: "https://www.rtp.pt/noticias/pais/dgs-alerta-mpox-lisboa", relatedTerm: "mpox portugal" },
-  { title: "Burnout: uma em cada três pessoas em risco", outlet: "EXPRESSO", date: "2026-02-28", url: "https://expresso.pt/sociedade/burnout-uma-em-cada-tres-pessoas-em-risco", relatedTerm: "burnout" },
-  { title: "Menopausa precoce: o tema tabu que preocupa médicos", outlet: "JN", date: "2026-02-25", url: "https://www.jn.pt/saude/menopausa-precoce-tema-tabu-preocupa-medicos", relatedTerm: "menopausa precoce" },
-  { title: "Resistência aos antibióticos pode causar mais mortes que cancro", outlet: "DN", date: "2026-03-04", url: "https://www.dn.pt/saude/resistencia-antibioticos-mais-mortes-que-cancro", relatedTerm: "resistência antibióticos" },
-  { title: "Gripe aviária: Portugal reforça vigilância em explorações avícolas", outlet: "CM JORNAL", date: "2026-03-05", url: "https://www.cmjornal.pt/sociedade/gripe-aviaria-portugal-reforca-vigilancia", relatedTerm: "gripe aviária H5N1" },
+  { title: "Ansiedade afeta um terço da população em Portugal", outlet: "PÚBLICO", date: "2025-04-04", url: "https://www.publico.pt/2025/04/04/sociedade/noticia/ansiedade-afecta-terco-populacao-portugal-mulheres-idosos-deempregados-sao-afectados-2128541", relatedTerm: "ansiedade" },
+  { title: "Aumentam os casos de Mpox: Portugal com 40 novas infeções", outlet: "RTP", date: "2025-03-03", url: "https://www.rtp.pt/noticias/pais/aumentam-os-casos-de-mpox-portugal-com-40-novas-infecoes-nos-ultimos-dois-meses_n1709145", relatedTerm: "mpox portugal" },
+  { title: "Burnout: a epidemia global do século XXI chegou aos portugueses", outlet: "EXPRESSO", date: "2024-07-30", url: "https://expresso.pt/longevidade/2024-07-30-video-burnout-a-epidemia-global-do-seculo-xxi-chegou-aos-locais-de-trabalho-dos-portugueses-75d034b1", relatedTerm: "burnout" },
+  { title: "Menopausa precoce antes dos 40 aumenta risco cardiovascular em 70%", outlet: "JN", date: "2025-02-25", url: "https://www.jn.pt/delas/artigo/menopausa-precoce-antes-dos-40-anos-aumenta-o-risco-cardiovascular-em-70/18048896", relatedTerm: "menopausa precoce" },
+  { title: "Resistência a antibióticos: mais de 39 milhões de mortes até 2050", outlet: "DN", date: "2024-09-16", url: "https://www.dn.pt/ciencia/estudo-estima-mais-de-39-milhoes-de-mortes-ate-2050-por-infecoes-resistentes-a-antibioticos", relatedTerm: "resistência antibióticos" },
+  { title: "Gripe das aves volta a ser detetada em Torres Vedras", outlet: "CM JORNAL", date: "2025-03-05", url: "https://www.cmjornal.pt/sociedade/detalhe/gripe-das-aves-volta-a-ser-detetada-em-torres-vedras", relatedTerm: "gripe aviária H5N1" },
 ];
