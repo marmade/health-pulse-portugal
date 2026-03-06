@@ -20,6 +20,11 @@ const Index = () => {
     [filters.period, filters.region]
   );
 
+  const alerts = useMemo(
+    () => detectAlerts(filteredData, filters.period, filters.region),
+    [filteredData, filters.period, filters.region]
+  );
+
   const visibleAxes =
     activeAxis === "all"
       ? axisOrder
