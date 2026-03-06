@@ -1,14 +1,16 @@
-import type { Keyword, TrendPoint } from "@/data/mockData";
+import type { Keyword } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import Top5Table from "./Top5Table";
+import { useGoogleTrends } from "@/hooks/useGoogleTrends";
 
 type Props = {
+  axisId: string;
   label: string;
   keywords: Keyword[];
-  trend: TrendPoint[];
 };
 
-const AxisColumn = ({ label, keywords, trend }: Props) => {
+const AxisColumn = ({ axisId, label, keywords }: Props) => {
+  const { trendData: trend, isLive, isLoading } = useGoogleTrends(axisId as any);
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
   const emergentCount = keywords.filter((k) => k.isEmergent).length;
@@ -16,7 +18,11 @@ const AxisColumn = ({ label, keywords, trend }: Props) => {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h2 className="text-xs font-bold uppercase tracking-[0.15em]">{label}</h2>
+        <h2 className="text-xs font-bold uppercase tracking-[0.15em]">
+          {label}
+          {isLoading && <span className="ml-2 text-[9px] opacity-50 normal-case">a carregar…</span>}
+          {isLive && <span className="ml-2 text-[9px] text-green-600 normal-case">● live</span>}
+        </h2>
         <div className="flex items-center gap-4 mt-2">
           <div>
             <p className="editorial-label">Var. média</p>

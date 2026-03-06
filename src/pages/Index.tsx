@@ -42,9 +42,9 @@ const Index = () => {
             return (
               <AxisColumn
                 key={axisId}
+                axisId={axisId}
                 label={axis.label}
                 keywords={axis.keywords}
-                trend={axis.trend}
               />
             );
           })}
