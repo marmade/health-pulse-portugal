@@ -38,7 +38,19 @@ const Index = () => {
       <div className="px-6 py-3 overflow-x-auto">
         <Filters onFilterChange={setFilters} />
       </div>
-      <div className="section-divider" />
+      {/* Alerts */}
+      {alerts.length > 0 && (
+        <>
+          <SearchAlerts
+            alerts={alerts}
+            period={filters.period}
+            debunkingData={debunkingData}
+            newsData={newsData}
+          />
+          <div className="section-divider" />
+        </>
+      )}
+
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
