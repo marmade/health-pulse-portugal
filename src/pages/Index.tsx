@@ -2,7 +2,8 @@ import { useState, useMemo } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import AxisColumn from "@/components/AxisColumn";
-import ContextoInformativo from "@/components/ContextoInformativo";
+import DebunkingTable from "@/components/DebunkingTable";
+import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
 import Filters from "@/components/Filters";
 import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
@@ -13,7 +14,6 @@ const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
   const [filters, setFilters] = useState({ period: "12m", region: "pt" });
-  const [selectedKeyword, setSelectedKeyword] = useState<string | null>(null);
 
   const filteredData = useMemo(
     () => getFilteredAxisData(filters.period, filters.region),
@@ -29,10 +29,6 @@ const Index = () => {
     activeAxis === "all"
       ? axisOrder
       : axisOrder.filter((a) => a === activeAxis);
-
-  const handleKeywordSelect = (term: string) => {
-    setSelectedKeyword((prev) => (prev === term ? null : term));
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -55,6 +51,7 @@ const Index = () => {
         </>
       )}
 
+
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
         <div
@@ -76,22 +73,17 @@ const Index = () => {
                 trendData={axis.trend}
                 period={filters.period}
                 region={filters.region}
-                onKeywordSelect={handleKeywordSelect}
-                selectedContextKeyword={selectedKeyword}
               />
             );
           })}
         </div>
 
-        {/* Contexto Informativo */}
+        {/* Side tables */}
         <div className="mt-10">
           <div className="section-divider mb-6" />
-          <div className="max-w-3xl">
-            <ContextoInformativo
-              debunkingData={debunkingData}
-              newsData={newsData}
-              selectedKeyword={selectedKeyword}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <DebunkingTable items={debunkingData} />
+            <MediaTable items={newsData} />
           </div>
         </div>
       </main>
