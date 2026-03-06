@@ -1,3 +1,5 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
@@ -6,44 +8,68 @@ const corsHeaders = {
 interface TrendRequest {
   keywords: string[];
   geo?: string;
-  timeRange?: string; // e.g. "today 12-m", "today 3-m"
+  timeRange?: string;
 }
 
-// Google Trends uses a ")]}'" prefix before JSON
 function parseGoogleTrendsResponse(text: string): unknown {
   const cleaned = text.replace(/^\)\]\}',?\n/, '');
   return JSON.parse(cleaned);
 }
 
+function getSupabaseAdmin() {
+  return createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+  );
+}
+
+function buildCacheKey(keywords: string[], geo: string, timeRange: string): string {
+  return `trends:${keywords.sort().join(',')}:${geo}:${timeRange}`;
+}
+
+async function getCached(cacheKey: string) {
+  const sb = getSupabaseAdmin();
+  const { data } = await sb
+    .from('trends_cache')
+    .select('response_data, expires_at')
+    .eq('cache_key', cacheKey)
+    .single();
+
+  if (data && new Date(data.expires_at) > new Date()) {
+    return data.response_data;
+  }
+  return null;
+}
+
+async function setCache(cacheKey: string, responseData: unknown) {
+  const sb = getSupabaseAdmin();
+  await sb.from('trends_cache').upsert({
+    cache_key: cacheKey,
+    response_data: responseData,
+    created_at: new Date().toISOString(),
+    expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  }, { onConflict: 'cache_key' });
+}
+
 async function getInterestOverTime(keywords: string[], geo: string, timeRange: string) {
-  // Build the Google Trends explore URL to get tokens first
   const comparisonItem = keywords.map((kw) => ({
     keyword: kw,
     geo: geo.toUpperCase(),
     time: timeRange,
   }));
 
-  const reqParam = JSON.stringify({
-    comparisonItem,
-    category: 0,
-    property: '',
-  });
-
+  const reqParam = JSON.stringify({ comparisonItem, category: 0, property: '' });
   const exploreUrl = `https://trends.google.com/trends/api/explore?hl=pt-PT&tz=-60&req=${encodeURIComponent(reqParam)}&token=`;
-
-  console.log('Fetching explore URL for tokens...');
 
   const exploreRes = await fetch(exploreUrl, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       'Accept': 'application/json',
       'Accept-Language': 'pt-PT,pt;q=0.9,en;q=0.8',
     },
   });
 
   if (!exploreRes.ok) {
-    const body = await exploreRes.text();
-    console.error('Explore request failed:', exploreRes.status, body);
     throw new Error(`Google Trends explore failed: ${exploreRes.status}`);
   }
 
@@ -52,130 +78,27 @@ async function getInterestOverTime(keywords: string[], geo: string, timeRange: s
     widgets: Array<{ id: string; token: string; request: Record<string, unknown> }>;
   };
 
-  // Find the TIMESERIES widget
-  const timeseriesWidget = exploreData.widgets?.find(
-    (w) => w.id === 'TIMESERIES'
-  );
+  const timeseriesWidget = exploreData.widgets?.find((w) => w.id === 'TIMESERIES');
+  if (!timeseriesWidget) throw new Error('No TIMESERIES widget found');
 
-  if (!timeseriesWidget) {
-    console.error('No TIMESERIES widget found. Widgets:', exploreData.widgets?.map(w => w.id));
-    throw new Error('Could not find timeseries data in Google Trends response');
-  }
-
-  // Now fetch the actual interest over time data
-  const token = timeseriesWidget.token;
   const req = JSON.stringify(timeseriesWidget.request);
-
-  const multilineUrl = `https://trends.google.com/trends/api/widgetdata/multiline?hl=pt-PT&tz=-60&req=${encodeURIComponent(req)}&token=${encodeURIComponent(token)}`;
-
-  console.log('Fetching multiline data...');
+  const multilineUrl = `https://trends.google.com/trends/api/widgetdata/multiline?hl=pt-PT&tz=-60&req=${encodeURIComponent(req)}&token=${encodeURIComponent(timeseriesWidget.token)}`;
 
   const multilineRes = await fetch(multilineUrl, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       'Accept': 'application/json',
-      'Accept-Language': 'pt-PT,pt;q=0.9,en;q=0.8',
     },
   });
 
-  if (!multilineRes.ok) {
-    const body = await multilineRes.text();
-    console.error('Multiline request failed:', multilineRes.status, body);
-    throw new Error(`Google Trends multiline failed: ${multilineRes.status}`);
-  }
+  if (!multilineRes.ok) throw new Error(`Google Trends multiline failed: ${multilineRes.status}`);
 
   const multilineText = await multilineRes.text();
   const multilineData = parseGoogleTrendsResponse(multilineText) as {
-    default: {
-      timelineData: Array<{
-        time: string;
-        formattedTime: string;
-        value: number[];
-        formattedValue: string[];
-      }>;
-    };
+    default: { timelineData: Array<{ time: string; formattedTime: string; value: number[]; formattedValue: string[] }> };
   };
 
   return multilineData.default.timelineData;
-}
-
-async function getRelatedQueries(keyword: string, geo: string, timeRange: string) {
-  const comparisonItem = [{
-    keyword,
-    geo: geo.toUpperCase(),
-    time: timeRange,
-  }];
-
-  const reqParam = JSON.stringify({
-    comparisonItem,
-    category: 0,
-    property: '',
-  });
-
-  const exploreUrl = `https://trends.google.com/trends/api/explore?hl=pt-PT&tz=-60&req=${encodeURIComponent(reqParam)}&token=`;
-
-  const exploreRes = await fetch(exploreUrl, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'application/json',
-    },
-  });
-
-  if (!exploreRes.ok) {
-    await exploreRes.text();
-    throw new Error(`Google Trends explore failed: ${exploreRes.status}`);
-  }
-
-  const exploreText = await exploreRes.text();
-  const exploreData = parseGoogleTrendsResponse(exploreText) as {
-    widgets: Array<{ id: string; token: string; request: Record<string, unknown> }>;
-  };
-
-  const relatedWidget = exploreData.widgets?.find(
-    (w) => w.id === 'RELATED_QUERIES'
-  );
-
-  if (!relatedWidget) {
-    return { top: [], rising: [] };
-  }
-
-  const token = relatedWidget.token;
-  const req = JSON.stringify(relatedWidget.request);
-
-  const relatedUrl = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=pt-PT&tz=-60&req=${encodeURIComponent(req)}&token=${encodeURIComponent(token)}`;
-
-  const relatedRes = await fetch(relatedUrl, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'application/json',
-    },
-  });
-
-  if (!relatedRes.ok) {
-    await relatedRes.text();
-    return { top: [], rising: [] };
-  }
-
-  const relatedText = await relatedRes.text();
-  const relatedData = parseGoogleTrendsResponse(relatedText) as {
-    default: {
-      rankedList: Array<{
-        rankedKeyword: Array<{
-          query: string;
-          value: number;
-          formattedValue: string;
-          link: string;
-        }>;
-      }>;
-    };
-  };
-
-  const rankedList = relatedData.default?.rankedList || [];
-
-  return {
-    top: rankedList[0]?.rankedKeyword?.slice(0, 10) || [],
-    rising: rankedList[1]?.rankedKeyword?.slice(0, 10) || [],
-  };
 }
 
 Deno.serve(async (req) => {
@@ -194,27 +117,21 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Limit to 5 keywords (Google Trends max)
     const limitedKeywords = keywords.slice(0, 5);
+    const cacheKey = buildCacheKey(limitedKeywords, geo, timeRange);
 
-    console.log(`Fetching Google Trends for: ${limitedKeywords.join(', ')} | geo: ${geo} | time: ${timeRange}`);
+    // Check cache first
+    const cached = await getCached(cacheKey);
+    if (cached) {
+      console.log(`Cache HIT for: ${cacheKey}`);
+      return new Response(JSON.stringify({ ...cached, cached: true }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
-    // Fetch interest over time
+    console.log(`Cache MISS — fetching Google Trends for: ${limitedKeywords.join(', ')}`);
+
     const timelineData = await getInterestOverTime(limitedKeywords, geo, timeRange);
-
-    // Fetch related queries for each keyword (in parallel)
-    const relatedPromises = limitedKeywords.map((kw) =>
-      getRelatedQueries(kw, geo, timeRange).catch((e) => {
-        console.warn(`Related queries failed for "${kw}":`, e.message);
-        return { top: [], rising: [] };
-      })
-    );
-    const relatedResults = await Promise.all(relatedPromises);
-
-    const relatedQueries: Record<string, { top: unknown[]; rising: unknown[] }> = {};
-    limitedKeywords.forEach((kw, i) => {
-      relatedQueries[kw] = relatedResults[i];
-    });
 
     const result = {
       success: true,
@@ -230,11 +147,13 @@ Deno.serve(async (req) => {
             return acc;
           }, {} as Record<string, number>),
         })),
-        relatedQueries,
       },
     };
 
-    console.log(`Success: ${timelineData.length} data points returned`);
+    // Save to cache (don't await — fire and forget)
+    setCache(cacheKey, result).catch((e) => console.warn('Cache write failed:', e));
+
+    console.log(`Success: ${timelineData.length} data points — cached for 24h`);
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
