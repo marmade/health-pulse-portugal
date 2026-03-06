@@ -34,14 +34,50 @@ export type NewsItem = {
   relatedTerm: string;
 };
 
-const generateTrend = (base: number, variance: number): TrendPoint[] => {
-  const weeks = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-  return weeks.map((w) => ({
+const generateTrend = (base: number, variance: number, period: string = "12m"): TrendPoint[] => {
+  const configs: Record<string, { labels: string[]; count: number }> = {
+    "7d": { labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"], count: 7 },
+    "30d": { labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4"], count: 4 },
+    "12m": { labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"], count: 12 },
+  };
+  const config = configs[period] || configs["12m"];
+  return config.labels.map((w) => ({
     week: w,
     current: Math.round(base + (Math.random() - 0.3) * variance),
     previous: Math.round(base * 0.8 + (Math.random() - 0.5) * variance * 0.7),
   }));
 };
+
+// Region multipliers simulate regional variation
+const regionMultipliers: Record<string, Record<string, number>> = {
+  pt: { "saude-mental": 1, alimentacao: 1, menopausa: 1, emergentes: 1 },
+  norte: { "saude-mental": 0.85, alimentacao: 1.1, menopausa: 0.9, emergentes: 0.7 },
+  centro: { "saude-mental": 0.75, alimentacao: 0.95, menopausa: 1.05, emergentes: 0.6 },
+  lisboa: { "saude-mental": 1.2, alimentacao: 0.9, menopausa: 1.1, emergentes: 1.3 },
+  sul: { "saude-mental": 0.7, alimentacao: 1.15, menopausa: 0.85, emergentes: 0.5 },
+};
+
+export function getFilteredAxisData(period: string, region: string) {
+  const filtered: Record<string, { label: string; keywords: Keyword[]; trend: TrendPoint[] }> = {};
+  const mult = regionMultipliers[region] || regionMultipliers.pt;
+
+  for (const [axisId, axis] of Object.entries(axisData)) {
+    const m = mult[axisId] ?? 1;
+    const keywords = axis.keywords.map((kw) => ({
+      ...kw,
+      currentVolume: Math.round(kw.currentVolume * m),
+      previousVolume: Math.round(kw.previousVolume * m),
+      changePercent: +(kw.changePercent * (0.8 + m * 0.2)).toFixed(1),
+    }));
+    const baseVol = Math.round(keywords.reduce((s, k) => s + k.currentVolume, 0) / keywords.length);
+    filtered[axisId] = {
+      label: axis.label,
+      keywords,
+      trend: generateTrend(baseVol, baseVol * 0.4, period),
+    };
+  }
+  return filtered;
+}
 
 export const axisData: Record<string, { label: string; keywords: Keyword[]; trend: TrendPoint[] }> = {
   "saude-mental": {
