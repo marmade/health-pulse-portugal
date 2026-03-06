@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
+import { resolveClusterMetrics } from "@/data/clusters";
 import TrendChart from "./TrendChart";
-import Top5Table from "./Top5Table";
+import ClusterRanking from "./ClusterRanking";
+import ClusterDetail from "./ClusterDetail";
 import KeywordCompare from "./KeywordCompare";
 
 type Props = {
@@ -22,13 +24,19 @@ const regionLabels: Record<string, string> = {
   sul: "Sul",
 };
 
-const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }: Props) => {
-  const [mode, setMode] = useState<"ranking" | "compare">("ranking");
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region, period }: Props) => {
+  const [mode, setMode] = useState<"clusters" | "compare">("clusters");
   const [compareTerms, setCompareTerms] = useState<string[]>([]);
+  const [expandedCluster, setExpandedCluster] = useState<string | null>(null);
+
+  const clusters = useMemo(
+    () => resolveClusterMetrics(allKeywords, axisId),
+    [allKeywords, axisId]
+  );
 
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
-  const emergentCount = keywords.filter((k) => k.isEmergent).length;
+  const emergentCount = clusters.filter((c) => c.isEmergent).length;
   const regionLabel = regionLabels[region] || region;
 
   const handleToggleTerm = (term: string) => {
@@ -41,10 +49,11 @@ const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }:
     );
   };
 
-  const handleKeywordClick = (term: string) => {
-    handleToggleTerm(term);
-    if (mode === "ranking") setMode("compare");
+  const handleClusterClick = (clusterName: string) => {
+    setExpandedCluster((prev) => (prev === clusterName ? null : clusterName));
   };
+
+  const expandedClusterData = clusters.find((c) => c.cluster_name === expandedCluster);
 
   return (
     <div className="flex flex-col gap-5">
@@ -77,14 +86,14 @@ const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }:
       {/* Mode toggle */}
       <div className="flex gap-0 border border-foreground/20">
         <button
-          onClick={() => setMode("ranking")}
+          onClick={() => setMode("clusters")}
           className={`flex-1 text-[10px] font-bold uppercase tracking-[0.15em] py-2 transition-colors ${
-            mode === "ranking"
+            mode === "clusters"
               ? "bg-foreground text-primary-foreground"
               : "text-foreground/40 hover:text-foreground"
           }`}
         >
-          Top 5
+          Clusters
         </button>
         <button
           onClick={() => setMode("compare")}
@@ -100,15 +109,18 @@ const AxisColumn = ({ label, keywords, allKeywords, trendData, region, period }:
 
       <div className="border-t border-foreground/10" />
 
-      {mode === "ranking" ? (
+      {mode === "clusters" ? (
         <>
           <TrendChart data={trendData} label={label} />
           <div className="border-t border-foreground/10" />
-          <Top5Table
-            keywords={keywords}
-            onKeywordClick={handleKeywordClick}
-            selectedTerms={compareTerms}
+          <ClusterRanking
+            clusters={clusters}
+            onClusterClick={handleClusterClick}
+            expandedCluster={expandedCluster}
           />
+          {expandedClusterData && (
+            <ClusterDetail cluster={expandedClusterData} period={period} />
+          )}
         </>
       ) : (
         <KeywordCompare
