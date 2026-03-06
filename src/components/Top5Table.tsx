@@ -20,7 +20,7 @@ const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [], selectedConte
               <div
                 className={`flex items-start gap-3 py-2.5 ${
                   onKeywordClick ? "cursor-pointer hover:bg-foreground/5 -mx-2 px-2 transition-colors" : ""
-                } ${isSelected ? "bg-foreground/5 -mx-2 px-2" : ""}`}
+                } ${isSelected ? "bg-foreground/5 -mx-2 px-2" : ""} ${isContextActive ? "border-l-2 border-foreground -mx-2 px-2 bg-foreground/[0.03]" : ""}`}
                 onClick={() => onKeywordClick?.(kw.term)}
               >
                 <span className="text-[10px] font-bold text-foreground/30 mt-0.5 w-3 shrink-0">
