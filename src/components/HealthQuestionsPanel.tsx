@@ -27,151 +27,146 @@ const HealthQuestionsPanel = ({ debunkingData, newsData }: Props) => {
   const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
 
   return (
-    <div className="py-5">
-      <div className="flex items-center gap-3 mb-1">
+    <div className="py-5 flex flex-col h-full">
+      <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
           Perguntas de Saúde em Crescimento
         </p>
       </div>
-      <p className="text-[9px] text-foreground/40 mb-4 ml-[18px]">
+      <p className="text-[9px] text-foreground/40 mb-4 ml-[18px] flex-shrink-0">
         Dúvidas reais da população detetadas nos motores de pesquisa
       </p>
 
-      <div className="space-y-0">
-        {top15.map((q, i) => {
-          const isExpanded = expanded === q.question;
-          const relatedNews = getRelatedNews(q, newsData);
-          const relatedDebunks = getRelatedDebunks(q, debunkingData);
+      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow">
+        <div className="space-y-0">
+          {top15.map((q, i) => {
+            const isExpanded = expanded === q.question;
+            const relatedNews = getRelatedNews(q, newsData);
+            const relatedDebunks = getRelatedDebunks(q, debunkingData);
 
-          return (
-            <div key={q.question}>
-              <button
-                onClick={() => toggle(q.question)}
-                className="w-full text-left py-2.5 group"
-              >
-                <div className="flex items-start gap-4">
-                  {/* Question text */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold leading-snug">
-                      {q.question}?
-                    </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span
-                        className={`inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${
-                          axisColors[q.axis] || "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {q.axisLabel}
-                      </span>
-                      <span className="text-[9px] text-foreground/40">
-                        {q.cluster}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Metrics */}
-                  <div className="text-right shrink-0">
-                    <p className="text-sm font-bold">
-                      +{q.growthPercent}%
-                    </p>
-                    <div className="flex items-center gap-1 justify-end mt-0.5">
-                      <div className="w-12 h-1 bg-foreground/10 overflow-hidden">
-                        <div
-                          className="h-full bg-foreground/60 transition-all"
-                          style={{ width: `${q.relativeVolume}%` }}
-                        />
-                      </div>
-                      <span className="text-[8px] text-foreground/40">
-                        {q.relativeVolume}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Expand */}
-                  <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
-                    {isExpanded ? "−" : "+"}
-                  </span>
-                </div>
-              </button>
-
-              {/* Expanded detail */}
-              {isExpanded && (
-                <div className="pb-4 pl-0">
-                  <div className="border border-foreground/10 p-4 space-y-3">
-                    {/* Cluster + related terms */}
-                    <div>
-                      <p className="editorial-label mb-1">Cluster associado</p>
-                      <p className="text-xs font-bold">{q.cluster}</p>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {q.relatedTerms.map((t) => (
-                          <span
-                            key={t}
-                            className="text-[9px] px-1.5 py-0.5 border border-foreground/15 text-foreground/60"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Related news */}
-                    {relatedNews.length > 0 && (
-                      <div>
-                        <p className="editorial-label mb-1">Notícias relacionadas</p>
-                        {relatedNews.map((n, j) => (
-                          <a
-                            key={j}
-                            href={n.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block text-xs font-medium hover:underline leading-tight mb-1"
-                          >
-                            {n.title}
-                            <span className="text-[9px] text-foreground/40 ml-2">
-                              {n.outlet}
-                            </span>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Related fact-checks */}
-                    {relatedDebunks.length > 0 && (
-                      <div>
-                        <p className="editorial-label mb-1">Fact-checks</p>
-                        {relatedDebunks.map((d, j) => (
-                          <a
-                            key={j}
-                            href={d.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block text-xs font-medium hover:underline leading-tight mb-1"
-                          >
-                            {d.title}
-                            <span className="text-[9px] text-foreground/40 ml-2">
-                              {d.classification}
-                            </span>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-
-                    {relatedNews.length === 0 && relatedDebunks.length === 0 && (
-                      <p className="text-[10px] text-foreground/30">
-                        Sem notícias ou fact-checks associados.
+            return (
+              <div key={q.question}>
+                <button
+                  onClick={() => toggle(q.question)}
+                  className="w-full text-left py-2.5 group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold leading-snug">
+                        {q.question}?
                       </p>
-                    )}
-                  </div>
-                </div>
-              )}
+                      <div className="flex items-center gap-2 mt-1">
+                        <span
+                          className={`inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${
+                            axisColors[q.axis] || "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {q.axisLabel}
+                        </span>
+                        <span className="text-[9px] text-foreground/40">
+                          {q.cluster}
+                        </span>
+                      </div>
+                    </div>
 
-              {i < top15.length - 1 && (
-                <div className="border-t border-foreground/10" />
-              )}
-            </div>
-          );
-        })}
+                    <div className="text-right shrink-0">
+                      <p className="text-sm font-bold">
+                        +{q.growthPercent}%
+                      </p>
+                      <div className="flex items-center gap-1 justify-end mt-0.5">
+                        <div className="w-12 h-1 bg-foreground/10 overflow-hidden">
+                          <div
+                            className="h-full bg-foreground/60 transition-all"
+                            style={{ width: `${q.relativeVolume}%` }}
+                          />
+                        </div>
+                        <span className="text-[8px] text-foreground/40">
+                          {q.relativeVolume}
+                        </span>
+                      </div>
+                    </div>
+
+                    <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
+                      {isExpanded ? "−" : "+"}
+                    </span>
+                  </div>
+                </button>
+
+                {isExpanded && (
+                  <div className="pb-4 pl-0">
+                    <div className="border border-foreground/10 p-4 space-y-3">
+                      <div>
+                        <p className="editorial-label mb-1">Cluster associado</p>
+                        <p className="text-xs font-bold">{q.cluster}</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {q.relatedTerms.map((t) => (
+                            <span
+                              key={t}
+                              className="text-[9px] px-1.5 py-0.5 border border-foreground/15 text-foreground/60"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {relatedNews.length > 0 && (
+                        <div>
+                          <p className="editorial-label mb-1">Notícias relacionadas</p>
+                          {relatedNews.map((n, j) => (
+                            <a
+                              key={j}
+                              href={n.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-xs font-medium hover:underline leading-tight mb-1"
+                            >
+                              {n.title}
+                              <span className="text-[9px] text-foreground/40 ml-2">
+                                {n.outlet}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+
+                      {relatedDebunks.length > 0 && (
+                        <div>
+                          <p className="editorial-label mb-1">Fact-checks</p>
+                          {relatedDebunks.map((d, j) => (
+                            <a
+                              key={j}
+                              href={d.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block text-xs font-medium hover:underline leading-tight mb-1"
+                            >
+                              {d.title}
+                              <span className="text-[9px] text-foreground/40 ml-2">
+                                {d.classification}
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+
+                      {relatedNews.length === 0 && relatedDebunks.length === 0 && (
+                        <p className="text-[10px] text-foreground/30">
+                          Sem notícias ou fact-checks associados.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {i < top15.length - 1 && (
+                  <div className="border-t border-foreground/10" />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

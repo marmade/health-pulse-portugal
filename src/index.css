@@ -98,3 +98,19 @@
     @apply text-[9px] font-bold uppercase tracking-[0.2em] border border-foreground px-2 py-0.5;
   }
 }
+
+/* Yellow scrollbar for health questions */
+.scrollbar-yellow::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-yellow::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-yellow::-webkit-scrollbar-thumb {
+  background: #ffff7c;
+  border-radius: 2px;
+}
+.scrollbar-yellow {
+  scrollbar-width: thin;
+  scrollbar-color: #ffff7c transparent;
+}
