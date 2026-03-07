@@ -50,13 +50,13 @@ const generateTrend = (base: number, variance: number, period: string = "12m"): 
 
     // For 12m: hide future months (current year data only up to current month)
     if (period === "12m" && i > currentMonth) {
-      return { week: w, current: 0, previous };
+      return { week: w, current: undefined as unknown as number, previous };
     }
     // For 7d: hide future days
     if (period === "7d") {
       const dayMap = [1, 2, 3, 4, 5, 6, 0]; // Seg=1(Mon)..Dom=0(Sun)
       if (dayMap[i] > currentDayOfWeek && dayMap[i] !== 0) {
-        return { week: w, current: 0, previous };
+        return { week: w, current: undefined as unknown as number, previous };
       }
     }
 
