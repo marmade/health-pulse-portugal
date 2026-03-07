@@ -69,7 +69,7 @@ const Index = () => {
         {/* Alerts + Health Questions side by side */}
         <div className="mt-10">
           <div className="section-divider mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-h-[500px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[500px]">
             <SearchAlerts
               alerts={alerts}
               period={filters.period}
@@ -83,7 +83,7 @@ const Index = () => {
         {/* Side tables */}
         <div className="mt-10">
           <div className="section-divider mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:h-[500px]">
             <DebunkingTable items={debunkingData} />
             <MediaTable items={newsData} />
           </div>

@@ -6,9 +6,9 @@ type Props = {
 
 const MediaTable = ({ items }: Props) => {
   return (
-    <div>
-      <p className="editorial-label mb-3">Cobertura Mediática</p>
-      <div className="space-y-0">
+    <div className="flex flex-col h-full min-h-0">
+      <p className="editorial-label mb-3 flex-shrink-0">Cobertura Mediática</p>
+      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
         {items.map((item, i) => (
           <div key={i}>
             <div className="py-2.5">
