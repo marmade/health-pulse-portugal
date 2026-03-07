@@ -5,8 +5,12 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
+  ReferenceLine,
 } from "recharts";
 import type { TrendPoint } from "@/data/mockData";
+
+const monthLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+const currentMonthLabel = monthLabels[new Date().getMonth()];
 
 type Props = {
   data: TrendPoint[];
@@ -27,6 +31,23 @@ const TrendChart = ({ data, label }: Props) => {
               tickLine={false}
             />
             <YAxis hide />
+            {data.some(d => d.week === currentMonthLabel) && (
+              <ReferenceLine
+                x={currentMonthLabel}
+                stroke="hsl(240, 100%, 50%)"
+                strokeWidth={0.75}
+                strokeDasharray="2 3"
+                opacity={0.4}
+                label={{
+                  value: "hoje",
+                  position: "top",
+                  fill: "hsl(240, 100%, 50%)",
+                  fontSize: 8,
+                  fontFamily: "'Space Grotesk'",
+                  opacity: 0.5,
+                }}
+              />
+            )}
             <Tooltip
               contentStyle={{
                 background: "#fff",
