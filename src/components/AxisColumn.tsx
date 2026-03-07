@@ -68,13 +68,22 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region, p
           )}
         </h2>
         <div className="flex items-center gap-4 mt-2">
-          <div>
-            <p className="editorial-label">Var. média</p>
-            <p className={`text-lg font-bold ${totalChange > 0 ? "" : "opacity-50"}`}>
-              {totalChange > 0 ? "+" : ""}
-              {totalChange.toFixed(1)}%
-            </p>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="cursor-help">
+                  <p className="editorial-label">Var. média</p>
+                  <p className={`text-lg font-bold ${totalChange > 0 ? "" : "opacity-50"}`}>
+                    {totalChange > 0 ? "+" : ""}
+                    {totalChange.toFixed(1)}%
+                  </p>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-[220px] text-xs leading-relaxed">
+                Média da variação percentual de todas as keywords deste eixo face ao período anterior.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {emergentCount > 0 && (
             <TooltipProvider>
               <Tooltip>
