@@ -44,6 +44,7 @@ const TrendChart = ({ data, label }: Props) => {
               strokeWidth={1.5}
               dot={false}
               name="2026"
+              connectNulls={false}
             />
             <Line
               type="monotone"

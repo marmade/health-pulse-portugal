@@ -35,17 +35,37 @@ export type NewsItem = {
 };
 
 const generateTrend = (base: number, variance: number, period: string = "12m"): TrendPoint[] => {
+  const now = new Date();
+  const currentMonth = now.getMonth(); // 0-indexed (0=Jan, 2=Mar)
+  const currentDayOfWeek = now.getDay(); // 0=Sun, 6=Sat
+
   const configs: Record<string, { labels: string[]; count: number }> = {
     "7d": { labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"], count: 7 },
     "30d": { labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4"], count: 4 },
     "12m": { labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"], count: 12 },
   };
   const config = configs[period] || configs["12m"];
-  return config.labels.map((w) => ({
-    week: w,
-    current: Math.round(base + (Math.random() - 0.3) * variance),
-    previous: Math.round(base * 0.8 + (Math.random() - 0.5) * variance * 0.7),
-  }));
+  return config.labels.map((w, i) => {
+    const previous = Math.round(base * 0.8 + (Math.random() - 0.5) * variance * 0.7);
+
+    // For 12m: hide future months (current year data only up to current month)
+    if (period === "12m" && i > currentMonth) {
+      return { week: w, current: undefined as unknown as number, previous };
+    }
+    // For 7d: hide future days
+    if (period === "7d") {
+      const dayMap = [1, 2, 3, 4, 5, 6, 0]; // Seg=1(Mon)..Dom=0(Sun)
+      if (dayMap[i] > currentDayOfWeek && dayMap[i] !== 0) {
+        return { week: w, current: undefined as unknown as number, previous };
+      }
+    }
+
+    return {
+      week: w,
+      current: Math.round(base + (Math.random() - 0.3) * variance),
+      previous,
+    };
+  });
 };
 
 // Per-keyword region multipliers — different keywords are more popular in different regions
