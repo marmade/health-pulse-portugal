@@ -42,29 +42,51 @@ const Index = () => {
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
-        <div
-          className={`grid gap-8 ${
-            visibleAxes.length === 1
-              ? "grid-cols-1 max-w-2xl"
-              : "grid-cols-1 md:grid-cols-2 xl:grid-cols-4"
-          }`}
-        >
-          {visibleAxes.map((axisId) => {
-            const axis = filteredData[axisId];
-            return (
-              <AxisColumn
-                key={`${axisId}-${filters.period}-${filters.region}`}
-                axisId={axisId}
-                label={axis.label}
-                keywords={axis.keywords}
-                allKeywords={axis.allKeywords}
-                trendData={axis.trend}
-                period={filters.period}
-                region={filters.region}
-              />
-            );
-          })}
-        </div>
+        {activeAxis !== "all" ? (
+          /* Single axis + contextual questions column */
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {visibleAxes.map((axisId) => {
+              const axis = filteredData[axisId];
+              return (
+                <AxisColumn
+                  key={`${axisId}-${filters.period}-${filters.region}`}
+                  axisId={axisId}
+                  label={axis.label}
+                  keywords={axis.keywords}
+                  allKeywords={axis.allKeywords}
+                  trendData={axis.trend}
+                  period={filters.period}
+                  region={filters.region}
+                />
+              );
+            })}
+            <HealthQuestionsPanel
+              debunkingData={debunkingData}
+              newsData={newsData}
+              axis={activeAxis}
+              axisLabel={filteredData[activeAxis]?.label}
+            />
+          </div>
+        ) : (
+          /* Overview: 4 axis columns */
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+            {visibleAxes.map((axisId) => {
+              const axis = filteredData[axisId];
+              return (
+                <AxisColumn
+                  key={`${axisId}-${filters.period}-${filters.region}`}
+                  axisId={axisId}
+                  label={axis.label}
+                  keywords={axis.keywords}
+                  allKeywords={axis.allKeywords}
+                  trendData={axis.trend}
+                  period={filters.period}
+                  region={filters.region}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {/* Alerts + Health Questions side by side */}
         <div className="mt-10">

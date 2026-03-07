@@ -10,6 +10,8 @@ import {
 type Props = {
   debunkingData: DebunkItem[];
   newsData: NewsItem[];
+  axis?: string;
+  axisLabel?: string;
 };
 
 const axisColors: Record<string, string> = {
@@ -19,10 +21,13 @@ const axisColors: Record<string, string> = {
   emergentes: "bg-chart-4/20 text-chart-4",
 };
 
-const HealthQuestionsPanel = ({ debunkingData, newsData }: Props) => {
+const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const questions = getHealthQuestions();
+  const questions = getHealthQuestions(axis);
   const top15 = questions.slice(0, 15);
+  const title = axis && axisLabel
+    ? `Perguntas sobre ${axisLabel}`
+    : "Perguntas de Saúde em Crescimento";
 
   const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
 
@@ -31,7 +36,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData }: Props) => {
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
-          Perguntas de Saúde em Crescimento
+          {title}
         </p>
       </div>
       <p className="text-[9px] text-foreground/40 mb-4 ml-[18px] flex-shrink-0">
