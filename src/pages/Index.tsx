@@ -52,6 +52,10 @@ const Index = () => {
         </>
       )}
 
+      {/* Health Questions */}
+      <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+      <div className="section-divider" />
+
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
