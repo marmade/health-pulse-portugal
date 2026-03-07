@@ -107,10 +107,10 @@
   background: transparent;
 }
 .scrollbar-yellow::-webkit-scrollbar-thumb {
-  background: #ffff7c;
+  background: #0000FF;
   border-radius: 2px;
 }
 .scrollbar-yellow {
   scrollbar-width: thin;
-  scrollbar-color: #ffff7c transparent;
+  scrollbar-color: #0000FF transparent;
 }
