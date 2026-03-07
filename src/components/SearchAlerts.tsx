@@ -38,7 +38,7 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
   };
 
   return (
-    <div className="px-6 py-5">
+    <div className="py-5">
       <div className="flex items-center gap-3 mb-4">
         <span className="inline-block w-2 h-2 bg-destructive rounded-full animate-pulse" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
