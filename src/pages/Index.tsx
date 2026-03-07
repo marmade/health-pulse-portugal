@@ -5,6 +5,7 @@ import AxisColumn from "@/components/AxisColumn";
 import DebunkingTable from "@/components/DebunkingTable";
 import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
+import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
 import Filters from "@/components/Filters";
 import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
@@ -50,6 +51,10 @@ const Index = () => {
           <div className="section-divider" />
         </>
       )}
+
+      {/* Health Questions */}
+      <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+      <div className="section-divider" />
 
 
       {/* Main grid */}
