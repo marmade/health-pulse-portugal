@@ -38,8 +38,8 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
   };
 
   return (
-    <div className="py-5">
-      <div className="flex items-center gap-3 mb-4">
+    <div className="py-5 flex flex-col h-full min-h-0">
+      <div className="flex items-center gap-3 mb-4 flex-shrink-0">
         <span className="inline-block w-2 h-2 bg-destructive rounded-full animate-pulse" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
           Alertas de Pesquisa
@@ -49,7 +49,7 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
         </span>
       </div>
 
-      <div className="space-y-0">
+      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
         {top10.map((alert, i) => {
           const isExpanded = expandedTerm === alert.keyword.term;
           const relatedNews = newsData.filter(
