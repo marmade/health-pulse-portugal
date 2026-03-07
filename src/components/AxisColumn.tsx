@@ -5,6 +5,7 @@ import TrendChart from "./TrendChart";
 import ClusterRanking from "./ClusterRanking";
 import ClusterDetail from "./ClusterDetail";
 import KeywordCompare from "./KeywordCompare";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 type Props = {
   axisId: string;
@@ -75,10 +76,19 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region, p
             </p>
           </div>
           {emergentCount > 0 && (
-            <div>
-              <p className="editorial-label">Sinais</p>
-              <p className="text-lg font-bold">{emergentCount}</p>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <p className="editorial-label">Sinais</p>
+                    <p className="text-lg font-bold">{emergentCount}</p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[220px] text-xs leading-relaxed">
+                  Clusters com keywords de crescimento explosivo (&gt;200% semanal) ou termos inéditos no histórico.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
       </div>
