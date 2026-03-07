@@ -10,6 +10,8 @@ import {
 type Props = {
   debunkingData: DebunkItem[];
   newsData: NewsItem[];
+  axis?: string;
+  axisLabel?: string;
 };
 
 const axisColors: Record<string, string> = {
