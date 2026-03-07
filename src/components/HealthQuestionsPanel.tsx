@@ -27,7 +27,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData }: Props) => {
   const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
 
   return (
-    <div className="py-5 flex flex-col h-full">
+    <div className="py-5 flex flex-col h-full min-h-0 max-h-[500px]">
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
