@@ -39,18 +39,6 @@ const Index = () => {
       <div className="px-6 py-3 overflow-x-auto">
         <Filters onFilterChange={setFilters} />
       </div>
-      {/* Alerts + Health Questions side by side */}
-      <div className="px-6 py-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:max-h-[500px]">
-        <SearchAlerts
-          alerts={alerts}
-          period={filters.period}
-          debunkingData={debunkingData}
-          newsData={newsData}
-        />
-        <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
-      </div>
-      <div className="section-divider" />
-
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
@@ -76,6 +64,20 @@ const Index = () => {
               />
             );
           })}
+        </div>
+
+        {/* Alerts + Health Questions side by side */}
+        <div className="mt-10">
+          <div className="section-divider mb-6" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:max-h-[500px]">
+            <SearchAlerts
+              alerts={alerts}
+              period={filters.period}
+              debunkingData={debunkingData}
+              newsData={newsData}
+            />
+            <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+          </div>
         </div>
 
         {/* Side tables */}
