@@ -21,10 +21,13 @@ const axisColors: Record<string, string> = {
   emergentes: "bg-chart-4/20 text-chart-4",
 };
 
-const HealthQuestionsPanel = ({ debunkingData, newsData }: Props) => {
+const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const questions = getHealthQuestions();
+  const questions = getHealthQuestions(axis);
   const top15 = questions.slice(0, 15);
+  const title = axis && axisLabel
+    ? `Perguntas sobre ${axisLabel}`
+    : "Perguntas de Saúde em Crescimento";
 
   const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
 
