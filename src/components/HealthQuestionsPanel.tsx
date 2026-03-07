@@ -36,7 +36,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
-          Perguntas de Saúde em Crescimento
+          {title}
         </p>
       </div>
       <p className="text-[9px] text-foreground/40 mb-4 ml-[18px] flex-shrink-0">
