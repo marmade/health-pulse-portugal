@@ -39,21 +39,16 @@ const Index = () => {
       <div className="px-6 py-3 overflow-x-auto">
         <Filters onFilterChange={setFilters} />
       </div>
-      {/* Alerts */}
-      {alerts.length > 0 && (
-        <>
-          <SearchAlerts
-            alerts={alerts}
-            period={filters.period}
-            debunkingData={debunkingData}
-            newsData={newsData}
-          />
-          <div className="section-divider" />
-        </>
-      )}
-
-      {/* Health Questions */}
-      <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+      {/* Alerts + Health Questions side by side */}
+      <div className="px-6 py-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <SearchAlerts
+          alerts={alerts}
+          period={filters.period}
+          debunkingData={debunkingData}
+          newsData={newsData}
+        />
+        <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+      </div>
       <div className="section-divider" />
 
 
