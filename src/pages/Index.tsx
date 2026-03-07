@@ -40,7 +40,7 @@ const Index = () => {
         <Filters onFilterChange={setFilters} />
       </div>
       {/* Alerts + Health Questions side by side */}
-      <div className="px-6 py-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="px-6 py-3 grid grid-cols-1 md:grid-cols-2 gap-6 md:max-h-[500px]">
         <SearchAlerts
           alerts={alerts}
           period={filters.period}
