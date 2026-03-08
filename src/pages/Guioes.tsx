@@ -638,16 +638,27 @@ const Guioes = () => {
                       </TableCell>
                       <TableCell className="text-xs">
                         {!isAI ? (
-                          // Banco base: try to link via URL_MAP
-                          bancoRefUrl ? (
-                            <a
-                              href={bancoRefUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[#0000FF] underline italic text-xs hover:opacity-70"
-                            >
-                              {p.referencia_nome}
-                            </a>
+                          // Banco base: render each fragment as link or text
+                          bancoRefs.length > 0 ? (
+                            <span className="italic">
+                              {bancoRefs.map((frag, fi) => (
+                                <span key={fi}>
+                                  {fi > 0 && <span className="text-muted-foreground mx-1">·</span>}
+                                  {frag.url ? (
+                                    <a
+                                      href={frag.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[#0000FF] underline hover:opacity-70"
+                                    >
+                                      {frag.text}
+                                    </a>
+                                  ) : (
+                                    <span className="text-muted-foreground">{frag.text}</span>
+                                  )}
+                                </span>
+                              ))}
+                            </span>
                           ) : (
                             <span className="text-muted-foreground italic">
                               {p.referencia_nome || <span className="opacity-30">—</span>}
