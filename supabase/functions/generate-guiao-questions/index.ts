@@ -22,32 +22,21 @@ serve(async (req) => {
 
     const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
-    const fontesPermitidas = `FONTES PERMITIDAS (usa APENAS estas, com o URL exacto indicado):
-- OMS → https://www.who.int
-- DGS → https://www.dgs.pt
-- SNS24 → https://www.sns24.gov.pt
-- INSA → https://www.insa.min-saude.pt
-- INFARMED → https://www.infarmed.pt
-- PubMed → https://pubmed.ncbi.nlm.nih.gov
-- ECDC → https://www.ecdc.europa.eu
+    const userPrompt = `Gera exactamente 10 perguntas de vox pop sobre o tema ${tema} para o programa Diz que Disse, que vai para as ruas de Portugal perguntar a cidadãos comuns. As perguntas testam literacia em saúde — revelam o que as pessoas sabem ou não sabem, sem julgar. São directas, concretas, em português europeu.
 
-Nunca inventes URLs. Usa SEMPRE um dos URLs acima, tal como está. O referencia_nome é o nome da fonte (ex: "OMS", "DGS"). O referencia_url é o URL principal da fonte, nunca um artigo específico.`;
+As keywords mais pesquisadas esta semana em Portugal para este tema são: ${keywordList}.
 
-    const userPrompt = `Com base nestas keywords de saúde em tendência esta semana em Portugal: ${keywordList}.
+Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
 
-Gera exactamente 10 perguntas de vox pop para o tema ${tema}. As perguntas testam literacia em saúde — não julgam comportamentos. São directas e concretas, para fazer a pessoas comuns na rua.
+Todas as perguntas devem ter resposta_simples preenchida — nunca vazio.
 
-REGRAS OBRIGATÓRIAS:
-1. Todas as perguntas devem ter obrigatoriamente resposta_simples preenchida. Nunca deixar vazio.
-2. ${fontesPermitidas}
-
-Responde APENAS com este JSON:
+Responde APENAS com este JSON, sem mais nada:
 [
   {
     "pergunta": "texto da pergunta",
-    "resposta_simples": "resposta em 1-2 frases (OBRIGATÓRIO)",
-    "referencia_nome": "ex: OMS, DGS, PubMed",
-    "referencia_url": "https://www.who.int (usar APENAS URLs da lista permitida)"
+    "resposta_simples": "resposta em 1-2 frases em português",
+    "referencia_nome": "nome da fonte (ex: OMS, DGS, SNS24, INSA)",
+    "referencia_url": "URL da página principal da fonte"
   }
 ]`;
 
@@ -127,6 +116,8 @@ Responde APENAS com este JSON:
       "INFARMED": "https://www.infarmed.pt",
       "PubMed": "https://pubmed.ncbi.nlm.nih.gov",
       "ECDC": "https://www.ecdc.europa.eu",
+      "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
+      "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
     };
 
     // Validate and normalize each item
