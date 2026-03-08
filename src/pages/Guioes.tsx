@@ -25,6 +25,7 @@ type Pergunta = {
   referencia_nome: string;
   referencia_url: string;
   source: "banco" | "ia";
+  approved?: boolean;
 };
 
 type GuiaoSemanal = {
@@ -52,32 +53,77 @@ const TEMAS = [
   { value: "emergentes", label: "EMERGENTES", db: "emergentes" },
 ];
 
-// Approved domain whitelist — only these are shown as clickable links
-const APPROVED_DOMAINS = [
-  "dgs.pt",
-  "sns24.gov.pt",
-  "insa.min-saude.pt",
-  "repositorio.insa.pt",
-  "who.int",
-  "ecdc.europa.eu",
-  "pubmed.ncbi.nlm.nih.gov",
-  "ordemdosmedicos.pt",
-  "ordemdospsicologos.pt",
-  "infarmed.pt",
-  "cuf.pt",
-  "luzsaude.pt",
-  "sppsm.org",
-  "apah.pt",
-];
+// Curated URL map per tema + fonte (approved sources get precise URLs)
+const URL_MAP: Record<string, Record<string, string>> = {
+  "saude-mental": {
+    "DGS": "https://www.dgs.pt/saude-mental.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
+    "CUF": "https://www.cuf.pt/saude-a-z/perturbacoes-do-comportamento",
+    "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
+    "INSA": "https://repositorio.insa.pt/home",
+  },
+  "alimentacao": {
+    "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/alimentacao/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+    "CUF": "https://www.cuf.pt/saude-a-z",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
+    "INFARMED": "https://www.infarmed.pt",
+  },
+  "menopausa": {
+    "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-da-mulher/menopausa/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
+    "CUF": "https://www.cuf.pt/saude-a-z/menopausa",
+    "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
+    "INSA": "https://repositorio.insa.pt/home",
+  },
+  "emergentes": {
+    "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
+    "ECDC": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/doencas-infecciosas/",
+    "SNS24": "https://www.sns24.gov.pt",
+  },
+};
 
-function isApprovedUrl(url: string): boolean {
-  if (!url) return false;
-  try {
-    const hostname = new URL(url).hostname.replace(/^www\./, "");
-    return APPROVED_DOMAINS.some((d) => hostname === d || hostname.endsWith("." + d));
-  } catch {
-    return false;
+// Aliases: map common variations to canonical keys
+const SOURCE_ALIASES: Record<string, string> = {
+  "WHO": "OMS",
+  "WORLD HEALTH": "OMS",
+  "ORGANIZAÇÃO MUNDIAL": "OMS",
+  "DIREÇÃO-GERAL": "DGS",
+  "DIRECÇÃO-GERAL": "DGS",
+  "DIREÇÃO GERAL": "DGS",
+  "PSICÓLOGOS": "ORDEM DOS PSICÓLOGOS",
+  "ORDEM DOS PSICOLOGOS": "ORDEM DOS PSICÓLOGOS",
+  "LUZ SAUDE": "LUZ SAÚDE",
+  "LUZ SAÚDE": "LUZ SAÚDE",
+  "HOSPITAL DA LUZ": "LUZ SAÚDE",
+};
+
+// Resolve a reference name to a curated URL for a given tema
+// Returns { url, approved } — approved=true means it matched the curated map
+function resolveReference(tema: string, refNome: string, originalUrl: string): { url: string; approved: boolean } {
+  const temaMap = URL_MAP[tema];
+  if (!temaMap || !refNome) return { url: originalUrl, approved: false };
+
+  const upper = refNome.toUpperCase();
+
+  // Direct match against map keys
+  const directMatch = Object.keys(temaMap).find((k) => upper.includes(k));
+  if (directMatch) return { url: temaMap[directMatch], approved: true };
+
+  // Alias match
+  const aliasMatch = Object.entries(SOURCE_ALIASES).find(([alias]) => upper.includes(alias));
+  if (aliasMatch) {
+    const canonical = aliasMatch[1];
+    if (temaMap[canonical]) return { url: temaMap[canonical], approved: true };
   }
+
+  // Not in curated map — keep original URL, mark as not approved
+  return { url: originalUrl, approved: false };
 }
 
 
@@ -233,14 +279,16 @@ const Guioes = () => {
       if (data?.error) throw new Error(data.error);
 
       const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
-        const url = p.referencia_url || "";
-        const approved = isApprovedUrl(url);
+        const refNome = p.referencia_nome || "";
+        const originalUrl = p.referencia_url || "";
+        const { url, approved } = resolveReference(temaValue, refNome, originalUrl);
         return {
           pergunta: p.pergunta || "",
-          resposta_simples: approved ? (p.resposta_simples || "") : "",
-          referencia_nome: approved ? (p.referencia_nome || "") : "",
-          referencia_url: approved ? url : "",
+          resposta_simples: p.resposta_simples || "",
+          referencia_nome: refNome,
+          referencia_url: url,
           source: "ia" as const,
+          approved,
         };
       });
 
@@ -492,55 +540,75 @@ const Guioes = () => {
               </TableHeader>
               <TableBody>
                 {currentPerguntas.map((p, i) => {
-                  const needsVerification = !p.referencia_url;
+                  const isAI = p.source === "ia";
+                  const isUnverified = isAI && p.approved === false;
+                  const rowNum = String(i + 1).padStart(2, "0");
+
                   return (
-                    <TableRow key={i} className="border-b border-border/50">
-                      <TableCell className="text-[10px] font-bold text-muted-foreground">
-                        {needsVerification && <span className="text-pink-400 mr-1">•</span>}
-                        {String(i + 1).padStart(2, "0")}
-                      </TableCell>
-                      <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        {needsVerification ? (
-                          editCell?.idx === i && editCell?.field === "resposta_simples" ? (
-                            renderCell(i, "resposta_simples", p.resposta_simples)
+                    <React.Fragment key={i}>
+                      {/* Separator between banco (line 5) and IA (line 6) */}
+                      {i === 5 && (
+                        <TableRow className="border-b-0">
+                          <TableCell colSpan={4} className="py-1 px-4">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 border-t border-border" />
+                              <span className="text-[9px] font-bold tracking-wider text-pink-400">● IA</span>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                      <TableRow className="border-b border-border/50">
+                        <TableCell className="text-[10px] font-bold text-muted-foreground">
+                          {isUnverified ? (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="cursor-help">
+                                    <span className="text-pink-400 mr-1">•</span>{rowNum}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs">
+                                  Fonte não verificada — confirmar antes de usar
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          ) : (
+                            rowNum
+                          )}
+                        </TableCell>
+                        <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
+                        <TableCell className="text-xs text-muted-foreground">
+                          {renderCell(i, "resposta_simples", p.resposta_simples)}
+                        </TableCell>
+                        <TableCell className="text-xs">
+                          {!isAI ? (
+                            // Banco base: plain text reference
+                            <span className="text-muted-foreground italic">
+                              {p.referencia_nome || <span className="opacity-30">—</span>}
+                            </span>
+                          ) : editCell?.idx === i && editCell?.field === "referencia_nome" ? (
+                            renderCell(i, "referencia_nome", p.referencia_nome, true)
+                          ) : p.referencia_url ? (
+                            <a
+                              href={p.referencia_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0000FF] underline italic text-xs hover:opacity-70"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {p.referencia_nome || "Ver fonte"}
+                            </a>
                           ) : (
                             <span
-                              className="cursor-pointer hover:bg-muted/50 block p-1 -m-1"
-                              onClick={() => startEdit(i, "resposta_simples", p.resposta_simples)}
+                              className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground"
+                              onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
                             >
-                              {p.resposta_simples || (
-                                <span className="text-muted-foreground/50 italic">Preencher após verificação</span>
-                              )}
+                              {p.referencia_nome || <span className="opacity-30">—</span>}
                             </span>
-                          )
-                        ) : (
-                          renderCell(i, "resposta_simples", p.resposta_simples)
-                        )}
-                      </TableCell>
-                      <TableCell className="text-xs">
-                        {editCell?.idx === i && editCell?.field === "referencia_nome" ? (
-                          renderCell(i, "referencia_nome", p.referencia_nome, true)
-                        ) : p.referencia_url ? (
-                          <a
-                            href={p.referencia_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#0000FF] underline italic text-xs hover:opacity-70"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {p.referencia_nome || "Ver fonte"}
-                          </a>
-                        ) : (
-                          <span
-                            className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground/50"
-                            onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
-                          >
-                            — verificar fonte —
-                          </span>
-                        )}
-                      </TableCell>
-                    </TableRow>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    </React.Fragment>
                   );
                 })}
               </TableBody>
