@@ -404,53 +404,6 @@ const Guioes = () => {
     setSaving(false);
   };
 
-  // Add banco question to current guião (no longer needed as standalone, kept for banco base section)
-  const addFromBanco = (row: BancoRow) => {
-    const newPergunta: Pergunta = {
-      pergunta: row.pergunta,
-      resposta_simples: row.resposta,
-      referencia_nome: row.referencia_cientifica,
-      referencia_url: "",
-      source: "banco",
-    };
-
-    setGuioesSemanais((prev) => {
-      const existing = prev.find((g) => g.tema === activeTema);
-      if (existing) {
-        return prev.map((g) =>
-          g.tema === activeTema
-            ? { ...g, perguntas: [...g.perguntas, newPergunta] }
-            : g
-        );
-      }
-      return [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          semana: semanaStr,
-          tema: activeTema,
-          perguntas: [newPergunta],
-          estado: "gravado",
-          gerado_por_ia: false,
-          created_at: new Date().toISOString(),
-        },
-      ];
-    });
-    toast.success("Pergunta adicionada ao guião");
-  };
-
-  // Banco filtering
-  const filteredBanco =
-    bancoFilter === "TODOS"
-      ? bancoRows
-      : bancoRows.filter((r) => r.tema === bancoTemaMap[bancoFilter]);
-
-  const bancoGroups = filteredBanco.reduce<Record<string, BancoRow[]>>((acc, row) => {
-    if (!acc[row.tema]) acc[row.tema] = [];
-    acc[row.tema].push(row);
-    return acc;
-  }, {});
-
   // PDF
   const handleExportPdf = () => {
     if (currentPerguntas.length === 0) return;
