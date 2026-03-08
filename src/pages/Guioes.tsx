@@ -87,49 +87,32 @@ const KNOWN_SOURCES: Record<string, string> = {
   "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
 };
 
-// Fixed URL map per tema + fonte (never trust AI-generated URLs)
-const URL_MAP: Record<string, Record<string, string>> = {
-  "saude-mental": {
-    "DGS": "https://www.dgs.pt/saude-mental.aspx",
-    "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
-    "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
-    "INSA": "https://repositorio.insa.pt/handle/10400.18/8949",
-    "Ordem dos Psicólogos": "https://www.ordemdospsicologos.pt",
-    "default": "https://www.dgs.pt/saude-mental.aspx",
-  },
-  "alimentacao": {
-    "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
-    "SNS24": "https://www.sns24.gov.pt/tema/alimentacao/",
-    "OMS": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
-    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
-    "INFARMED": "https://www.infarmed.pt",
-    "default": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
-  },
-  "menopausa": {
-    "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
-    "SNS24": "https://www.sns24.gov.pt/tema/saude-da-mulher/menopausa/",
-    "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
-    "INSA": "https://repositorio.insa.pt/home",
-    "default": "https://www.who.int/news-room/fact-sheets/detail/menopause",
-  },
-  "emergentes": {
-    "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
-    "OMS": "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
-    "ECDC": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
-    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/doencas-infecciosas/",
-    "SNS24": "https://www.sns24.gov.pt",
-    "default": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
-  },
-};
+// Approved domain whitelist — only these are shown as clickable links
+const APPROVED_DOMAINS = [
+  "dgs.pt",
+  "sns24.gov.pt",
+  "insa.min-saude.pt",
+  "repositorio.insa.pt",
+  "who.int",
+  "ecdc.europa.eu",
+  "pubmed.ncbi.nlm.nih.gov",
+  "ordemdosmedicos.pt",
+  "ordemdospsicologos.pt",
+  "infarmed.pt",
+  "cuf.pt",
+  "luzsaude.pt",
+  "sppsm.org",
+  "apah.pt",
+];
 
-function resolveReferenceUrl(tema: string, refNome: string): string {
-  const temaMap = URL_MAP[tema];
-  if (!temaMap) return "";
-  const upper = refNome.toUpperCase();
-  const matchedKey = Object.keys(temaMap).find(
-    (k) => k !== "default" && upper.includes(k.toUpperCase())
-  );
-  return matchedKey ? temaMap[matchedKey] : temaMap["default"] || "";
+function isApprovedUrl(url: string): boolean {
+  if (!url) return false;
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, "");
+    return APPROVED_DOMAINS.some((d) => hostname === d || hostname.endsWith("." + d));
+  } catch {
+    return false;
+  }
 }
 
 function ReferenceLinks({ text }: { text: string }) {
@@ -308,12 +291,13 @@ const Guioes = () => {
       if (data?.error) throw new Error(data.error);
 
       const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => {
-        const refNome = p.referencia_nome || "";
+        const url = p.referencia_url || "";
+        const approved = isApprovedUrl(url);
         return {
           pergunta: p.pergunta || "",
-          resposta_simples: p.resposta_simples || "",
-          referencia_nome: refNome,
-          referencia_url: resolveReferenceUrl(temaValue, refNome),
+          resposta_simples: approved ? (p.resposta_simples || "") : "",
+          referencia_nome: approved ? (p.referencia_nome || "") : "",
+          referencia_url: approved ? url : "",
         };
       });
 
@@ -608,39 +592,58 @@ const Guioes = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {currentPerguntas.map((p, i) => (
-                  <TableRow key={i} className="border-b border-border/50">
-                    <TableCell className="text-[10px] font-bold text-muted-foreground">
-                      {String(i + 1).padStart(2, "0")}
-                    </TableCell>
-                    <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
-                      {renderCell(i, "resposta_simples", p.resposta_simples)}
-                    </TableCell>
-                    <TableCell className="text-xs">
-                      {editCell?.idx === i && editCell?.field === "referencia_nome" ? (
-                        renderCell(i, "referencia_nome", p.referencia_nome, true)
-                      ) : p.referencia_url ? (
-                        <a
-                          href={p.referencia_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#0000FF] underline italic text-xs hover:opacity-70"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {p.referencia_nome || "Ver fonte"}
-                        </a>
-                      ) : (
-                        <span
-                          className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground"
-                          onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
-                        >
-                          {p.referencia_nome || <span className="opacity-30">—</span>}
-                        </span>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {currentPerguntas.map((p, i) => {
+                  const needsVerification = !p.referencia_url;
+                  return (
+                    <TableRow key={i} className="border-b border-border/50">
+                      <TableCell className="text-[10px] font-bold text-muted-foreground">
+                        {needsVerification && <span className="text-pink-400 mr-1">•</span>}
+                        {String(i + 1).padStart(2, "0")}
+                      </TableCell>
+                      <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground">
+                        {needsVerification ? (
+                          editCell?.idx === i && editCell?.field === "resposta_simples" ? (
+                            renderCell(i, "resposta_simples", p.resposta_simples)
+                          ) : (
+                            <span
+                              className="cursor-pointer hover:bg-muted/50 block p-1 -m-1"
+                              onClick={() => startEdit(i, "resposta_simples", p.resposta_simples)}
+                            >
+                              {p.resposta_simples || (
+                                <span className="text-muted-foreground/50 italic">Preencher após verificação</span>
+                              )}
+                            </span>
+                          )
+                        ) : (
+                          renderCell(i, "resposta_simples", p.resposta_simples)
+                        )}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        {editCell?.idx === i && editCell?.field === "referencia_nome" ? (
+                          renderCell(i, "referencia_nome", p.referencia_nome, true)
+                        ) : p.referencia_url ? (
+                          <a
+                            href={p.referencia_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#0000FF] underline italic text-xs hover:opacity-70"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {p.referencia_nome || "Ver fonte"}
+                          </a>
+                        ) : (
+                          <span
+                            className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground/50"
+                            onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
+                          >
+                            — verificar fonte —
+                          </span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
