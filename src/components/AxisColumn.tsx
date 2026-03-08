@@ -77,11 +77,8 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region }:
                   Keywords com crescimento explosivo (&gt;200% semanal) ou termos inéditos no histórico.
                 </TooltipContent>
               </Tooltip>
-            </Tooltip>
-          </TooltipProvider>
+            </TooltipProvider>
           )}
-        </div>
-      </div>
 
       <div className="border-t border-foreground/10" />
 
