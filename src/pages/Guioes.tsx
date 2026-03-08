@@ -53,32 +53,6 @@ const TEMAS = [
   { value: "emergentes", label: "EMERGENTES", db: "emergentes" },
 ];
 
-const BANCO_FILTROS = ["TODOS", "SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"] as const;
-const bancoTemaMap: Record<string, string> = {
-  "SAÚDE MENTAL": "saude_mental",
-  "ALIMENTAÇÃO": "alimentacao",
-  "MENOPAUSA": "menopausa",
-  "EMERGENTES": "emergentes",
-};
-const bancoLabelMap: Record<string, string> = {
-  saude_mental: "SAÚDE MENTAL",
-  alimentacao: "ALIMENTAÇÃO",
-  menopausa: "MENOPAUSA",
-  emergentes: "EMERGENTES",
-};
-// Known source URL map for banco base references
-const KNOWN_SOURCES: Record<string, string> = {
-  "OMS": "https://www.who.int",
-  "WHO": "https://www.who.int",
-  "DGS": "https://www.dgs.pt",
-  "SNS24": "https://www.sns24.gov.pt",
-  "INSA": "https://repositorio.insa.pt/home",
-  "INFARMED": "https://www.infarmed.pt",
-  "ECDC": "https://www.ecdc.europa.eu",
-  "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
-  "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
-};
-
 // Approved domain whitelist — only these are shown as clickable links
 const APPROVED_DOMAINS = [
   "dgs.pt",
