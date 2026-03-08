@@ -3,6 +3,7 @@ import type { DebunkItem, NewsItem } from "@/data/mockData";
 import {
   type HealthQuestion,
   getHealthQuestions,
+  getTopQuestionsPerAxis,
   getRelatedNews,
   getRelatedDebunks,
 } from "@/data/healthQuestions";
@@ -23,8 +24,9 @@ const axisColors: Record<string, string> = {
 
 const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const questions = getHealthQuestions(axis);
-  const top15 = questions.slice(0, 15);
+  const isOverview = !axis || axis === "all";
+  const questions = isOverview ? getTopQuestionsPerAxis(2) : getHealthQuestions(axis);
+  const top15 = isOverview ? questions : questions.slice(0, 15);
   const title = axis && axisLabel
     ? `Perguntas sobre ${axisLabel}`
     : "Perguntas de Saúde em Crescimento";
