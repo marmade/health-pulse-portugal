@@ -3,6 +3,7 @@ import type { DebunkItem, NewsItem } from "@/data/mockData";
 import {
   type HealthQuestion,
   getHealthQuestions,
+  getTopQuestionsPerAxis,
   getRelatedNews,
   getRelatedDebunks,
 } from "@/data/healthQuestions";

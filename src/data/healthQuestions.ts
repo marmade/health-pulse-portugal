@@ -77,6 +77,20 @@ export function getHealthQuestions(axis?: string): HealthQuestion[] {
   return [...filtered].sort((a, b) => b.growthPercent - a.growthPercent);
 }
 
+/** Get top N questions per axis, sorted by growth within each axis */
+export function getTopQuestionsPerAxis(perAxis = 2): HealthQuestion[] {
+  const axes = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
+  const result: HealthQuestion[] = [];
+  for (const axis of axes) {
+    const sorted = healthQuestions
+      .filter((q) => q.axis === axis)
+      .sort((a, b) => b.growthPercent - a.growthPercent)
+      .slice(0, perAxis);
+    result.push(...sorted);
+  }
+  return result.sort((a, b) => b.growthPercent - a.growthPercent);
+}
+
 /** Find related news for a question */
 export function getRelatedNews(question: HealthQuestion, newsData: NewsItem[]): NewsItem[] {
   return newsData.filter((n) =>
