@@ -107,33 +107,33 @@ export type Database = {
       guioes: {
         Row: {
           created_at: string
-          estado: string
           id: string
-          perguntas: Json
-          semana: string
+          ordem: number
+          pergunta: string
+          referencia_cientifica: string
+          resposta: string
           subtema: string
           tema: string
-          titulo: string
         }
         Insert: {
           created_at?: string
-          estado?: string
           id?: string
-          perguntas?: Json
-          semana: string
+          ordem?: number
+          pergunta?: string
+          referencia_cientifica?: string
+          resposta?: string
           subtema?: string
           tema: string
-          titulo?: string
         }
         Update: {
           created_at?: string
-          estado?: string
           id?: string
-          perguntas?: Json
-          semana?: string
+          ordem?: number
+          pergunta?: string
+          referencia_cientifica?: string
+          resposta?: string
           subtema?: string
           tema?: string
-          titulo?: string
         }
         Relationships: []
       }

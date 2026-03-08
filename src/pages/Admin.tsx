@@ -12,6 +12,7 @@ import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = ["Saúde Mental", "Alimentação", "Menopausa", "Emergentes"];
+const TEMAS_GUIOES = ["SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"];
 const SOURCE_TYPES = [
   { value: "institutional", label: "INST" },
   { value: "media", label: "MEDIA" },
@@ -57,6 +58,16 @@ type TextoItem = {
   ativo: boolean;
 };
 
+type GuiaoRow = {
+  id: string;
+  tema: string;
+  subtema: string;
+  pergunta: string;
+  resposta: string;
+  referencia_cientifica: string;
+  ordem: number;
+};
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
@@ -65,6 +76,15 @@ const emptyTexto = (): Omit<TextoItem, "id"> => ({
   corpo: "",
   referencias: [],
   ativo: true,
+});
+
+const emptyGuiao = (): Omit<GuiaoRow, "id"> => ({
+  tema: "",
+  subtema: "",
+  pergunta: "",
+  resposta: "",
+  referencia_cientifica: "",
+  ordem: 0,
 });
 
 export default function Admin() {
@@ -92,6 +112,13 @@ export default function Admin() {
   const [showTextoForm, setShowTextoForm] = useState(false);
   const [editingTextoId, setEditingTextoId] = useState<string | null>(null);
   const [textoForm, setTextoForm] = useState<Omit<TextoItem, "id">>(emptyTexto());
+
+  // Guioes state
+  const [guioes, setGuioes] = useState<GuiaoRow[]>([]);
+  const [showGuiaoForm, setShowGuiaoForm] = useState(false);
+  const [editingGuiaoId, setEditingGuiaoId] = useState<string | null>(null);
+  const [guiaoForm, setGuiaoForm] = useState<Omit<GuiaoRow, "id">>(emptyGuiao());
+  const [guiaoFilter, setGuiaoFilter] = useState("TODOS");
 
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
@@ -122,16 +149,18 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx] = await Promise.all([
+    const [kw, db, nw, tx, gu] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
       supabase.from("textos").select("*").order("ordem"),
+      supabase.from("guioes").select("*").order("tema").order("ordem"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
     if (nw.data) setNews(nw.data);
     if (tx.data) setTextos(tx.data.map((t: any) => ({ ...t, referencias: t.referencias || [] })));
+    if (gu.data) setGuioes(gu.data as GuiaoRow[]);
   };
 
   // Keywords CRUD
@@ -203,13 +232,8 @@ export default function Admin() {
   const saveTexto = async () => {
     if (!textoForm.titulo || !textoForm.categoria) return;
     const payload = {
-      ordem: textoForm.ordem,
-      categoria: textoForm.categoria,
-      titulo: textoForm.titulo,
-      lead: textoForm.lead,
-      corpo: textoForm.corpo,
-      referencias: textoForm.referencias as any,
-      ativo: textoForm.ativo,
+      ordem: textoForm.ordem, categoria: textoForm.categoria, titulo: textoForm.titulo,
+      lead: textoForm.lead, corpo: textoForm.corpo, referencias: textoForm.referencias as any, ativo: textoForm.ativo,
     };
     const { error } = editingTextoId
       ? await supabase.from("textos").update(payload).eq("id", editingTextoId)
@@ -238,6 +262,40 @@ export default function Admin() {
   const removeReferencia = (index: number) => {
     setTextoForm({ ...textoForm, referencias: textoForm.referencias.filter((_, i) => i !== index) });
   };
+
+  // Guioes CRUD
+  const openGuiaoForm = (g?: GuiaoRow) => {
+    if (g) {
+      setEditingGuiaoId(g.id);
+      setGuiaoForm({ tema: g.tema, subtema: g.subtema, pergunta: g.pergunta, resposta: g.resposta, referencia_cientifica: g.referencia_cientifica, ordem: g.ordem });
+    } else {
+      setEditingGuiaoId(null);
+      setGuiaoForm(emptyGuiao());
+    }
+    setShowGuiaoForm(true);
+  };
+
+  const saveGuiao = async () => {
+    if (!guiaoForm.tema || !guiaoForm.pergunta) return;
+    const payload = {
+      tema: guiaoForm.tema, subtema: guiaoForm.subtema, pergunta: guiaoForm.pergunta,
+      resposta: guiaoForm.resposta, referencia_cientifica: guiaoForm.referencia_cientifica, ordem: guiaoForm.ordem,
+    };
+    const { error } = editingGuiaoId
+      ? await supabase.from("guioes").update(payload).eq("id", editingGuiaoId)
+      : await supabase.from("guioes").insert(payload);
+    if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
+    else { toast({ title: "Guardado ✓" }); setShowGuiaoForm(false); setEditingGuiaoId(null); setGuiaoForm(emptyGuiao()); fetchAll(); }
+  };
+
+  const deleteGuiao = async (id: string) => {
+    const { error } = await supabase.from("guioes").delete().eq("id", id);
+    if (error) toast({ title: "Erro ao apagar", variant: "destructive" });
+    else { toast({ title: "Apagado ✓" }); fetchAll(); }
+    setDeleteConfirm(null);
+  };
+
+  const filteredGuioes = guiaoFilter === "TODOS" ? guioes : guioes.filter((g) => g.tema === guiaoFilter);
 
   // Login screen
   if (!isAuthenticated) {
@@ -284,6 +342,7 @@ export default function Admin() {
             <TabsTrigger value="debunking" className={tabTriggerClass}>DEBUNKING</TabsTrigger>
             <TabsTrigger value="news" className={tabTriggerClass}>NOTÍCIAS</TabsTrigger>
             <TabsTrigger value="textos" className={tabTriggerClass}>TEXTOS</TabsTrigger>
+            <TabsTrigger value="guioes" className={tabTriggerClass}>GUIÕES</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -466,63 +525,23 @@ export default function Admin() {
             {showTextoForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
                 <div className="grid grid-cols-2 gap-3">
-                  <Input
-                    type="number"
-                    placeholder="Ordem"
-                    value={textoForm.ordem || ""}
-                    onChange={(e) => setTextoForm({ ...textoForm, ordem: parseInt(e.target.value) || 0 })}
-                  />
-                  <Input
-                    placeholder="Categoria (ex: ENQUADRAMENTO)"
-                    value={textoForm.categoria}
-                    onChange={(e) => setTextoForm({ ...textoForm, categoria: e.target.value })}
-                  />
+                  <Input type="number" placeholder="Ordem" value={textoForm.ordem || ""} onChange={(e) => setTextoForm({ ...textoForm, ordem: parseInt(e.target.value) || 0 })} />
+                  <Input placeholder="Categoria (ex: ENQUADRAMENTO)" value={textoForm.categoria} onChange={(e) => setTextoForm({ ...textoForm, categoria: e.target.value })} />
                 </div>
-                <Input
-                  placeholder="Título"
-                  value={textoForm.titulo}
-                  onChange={(e) => setTextoForm({ ...textoForm, titulo: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Lead"
-                  rows={2}
-                  value={textoForm.lead}
-                  onChange={(e) => setTextoForm({ ...textoForm, lead: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Corpo do texto"
-                  rows={8}
-                  value={textoForm.corpo}
-                  onChange={(e) => setTextoForm({ ...textoForm, corpo: e.target.value })}
-                />
-
-                {/* Referências */}
+                <Input placeholder="Título" value={textoForm.titulo} onChange={(e) => setTextoForm({ ...textoForm, titulo: e.target.value })} />
+                <Textarea placeholder="Lead" rows={2} value={textoForm.lead} onChange={(e) => setTextoForm({ ...textoForm, lead: e.target.value })} />
+                <Textarea placeholder="Corpo do texto" rows={8} value={textoForm.corpo} onChange={(e) => setTextoForm({ ...textoForm, corpo: e.target.value })} />
                 <div className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-wider text-foreground/50">Referências</p>
                   {textoForm.referencias.map((ref, i) => (
                     <div key={i} className="flex gap-2 items-start">
-                      <Input
-                        placeholder="Label"
-                        value={ref.label}
-                        onChange={(e) => updateReferencia(i, "label", e.target.value)}
-                        className="flex-1"
-                      />
-                      <Input
-                        placeholder="URL (opcional)"
-                        value={ref.url}
-                        onChange={(e) => updateReferencia(i, "url", e.target.value)}
-                        className="flex-1"
-                      />
-                      <Button size="sm" variant="ghost" onClick={() => removeReferencia(i)}>
-                        <X className="w-4 h-4 text-red-500" />
-                      </Button>
+                      <Input placeholder="Label" value={ref.label} onChange={(e) => updateReferencia(i, "label", e.target.value)} className="flex-1" />
+                      <Input placeholder="URL (opcional)" value={ref.url} onChange={(e) => updateReferencia(i, "url", e.target.value)} className="flex-1" />
+                      <Button size="sm" variant="ghost" onClick={() => removeReferencia(i)}><X className="w-4 h-4 text-red-500" /></Button>
                     </div>
                   ))}
-                  <Button size="sm" variant="outline" onClick={addReferencia}>
-                    <Plus className="w-4 h-4 mr-1" /> Adicionar referência
-                  </Button>
+                  <Button size="sm" variant="outline" onClick={addReferencia}><Plus className="w-4 h-4 mr-1" /> Adicionar referência</Button>
                 </div>
-
                 <div className="flex items-center gap-2">
                   <Switch checked={textoForm.ativo} onCheckedChange={(c) => setTextoForm({ ...textoForm, ativo: c })} />
                   <span className="text-sm">Ativo</span>
@@ -560,12 +579,92 @@ export default function Admin() {
                           </div>
                         ) : (
                           <div className="flex gap-1">
-                            <Button size="sm" variant="ghost" onClick={() => openTextoForm(t)}>
-                              <Pencil className="w-4 h-4" />
-                            </Button>
-                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "texto", id: t.id })}>
-                              <Trash2 className="w-4 h-4 text-red-500" />
-                            </Button>
+                            <Button size="sm" variant="ghost" onClick={() => openTextoForm(t)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "texto", id: t.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          {/* Guiões Tab */}
+          <TabsContent value="guioes" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Guiões ({guioes.length})</h2>
+              <Button onClick={() => openGuiaoForm()} className="bg-primary hover:bg-primary/90" size="sm">
+                <Plus className="w-4 h-4 mr-1" /> Nova Pergunta
+              </Button>
+            </div>
+
+            {/* Filter */}
+            <div className="flex gap-2 mb-4">
+              {["TODOS", ...TEMAS_GUIOES].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setGuiaoFilter(f)}
+                  className={`text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-1 border transition-colors ${
+                    guiaoFilter === f ? "border-foreground text-foreground" : "border-foreground/20 text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {f}
+                </button>
+              ))}
+            </div>
+
+            {showGuiaoForm && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <Select value={guiaoForm.tema} onValueChange={(v) => setGuiaoForm({ ...guiaoForm, tema: v })}>
+                    <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
+                    <SelectContent>{TEMAS_GUIOES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                  </Select>
+                  <Input placeholder="Sub-tema" value={guiaoForm.subtema} onChange={(e) => setGuiaoForm({ ...guiaoForm, subtema: e.target.value })} />
+                </div>
+                <Textarea placeholder="Pergunta" rows={2} value={guiaoForm.pergunta} onChange={(e) => setGuiaoForm({ ...guiaoForm, pergunta: e.target.value })} />
+                <Textarea placeholder="Resposta simples" rows={2} value={guiaoForm.resposta} onChange={(e) => setGuiaoForm({ ...guiaoForm, resposta: e.target.value })} />
+                <Textarea placeholder="Referência científica" rows={2} value={guiaoForm.referencia_cientifica} onChange={(e) => setGuiaoForm({ ...guiaoForm, referencia_cientifica: e.target.value })} />
+                <Input type="number" placeholder="Ordem" value={guiaoForm.ordem || ""} onChange={(e) => setGuiaoForm({ ...guiaoForm, ordem: parseInt(e.target.value) || 0 })} />
+                <div className="flex gap-2">
+                  <Button onClick={saveGuiao} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowGuiaoForm(false); setEditingGuiaoId(null); setGuiaoForm(emptyGuiao()); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="border border-foreground/20 max-h-[500px] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead>Tema</TableHead>
+                    <TableHead>Sub-tema</TableHead>
+                    <TableHead>Pergunta</TableHead>
+                    <TableHead>Resposta</TableHead>
+                    <TableHead>Referência</TableHead>
+                    <TableHead className="w-28"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredGuioes.map((g) => (
+                    <TableRow key={g.id} className="border-b border-foreground/10">
+                      <TableCell className="text-xs">{g.tema}</TableCell>
+                      <TableCell className="text-xs">{g.subtema}</TableCell>
+                      <TableCell className="text-xs font-medium max-w-xs">{g.pergunta}</TableCell>
+                      <TableCell className="text-xs max-w-xs">{g.resposta}</TableCell>
+                      <TableCell className="text-xs max-w-xs italic">{g.referencia_cientifica}</TableCell>
+                      <TableCell>
+                        {deleteConfirm?.type === "guiao" && deleteConfirm.id === g.id ? (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="destructive" onClick={() => deleteGuiao(g.id)}>Sim</Button>
+                            <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openGuiaoForm(g)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "guiao", id: g.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
                           </div>
                         )}
                       </TableCell>
