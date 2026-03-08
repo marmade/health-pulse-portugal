@@ -119,9 +119,12 @@ const Briefing = () => {
 
   const emergent = keywords.filter((k) => k.is_emergent);
 
-  const topVolume = [...keywords]
-    .sort((a, b) => b.current_volume - a.current_volume)
-    .slice(0, 5);
+  const topQuestions = getTopQuestionsPerAxis(2).slice(0, 5);
+
+  const topVolume = topQuestions.map((q) => ({
+    term: q.question,
+    current_volume: q.relativeVolume,
+  }));
 
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
