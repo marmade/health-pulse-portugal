@@ -185,6 +185,42 @@ export type Database = {
         }
         Relationships: []
       }
+      textos: {
+        Row: {
+          ativo: boolean
+          categoria: string
+          corpo: string
+          created_at: string
+          id: string
+          lead: string
+          ordem: number
+          referencias: Json
+          titulo: string
+        }
+        Insert: {
+          ativo?: boolean
+          categoria?: string
+          corpo?: string
+          created_at?: string
+          id?: string
+          lead?: string
+          ordem?: number
+          referencias?: Json
+          titulo?: string
+        }
+        Update: {
+          ativo?: boolean
+          categoria?: string
+          corpo?: string
+          created_at?: string
+          id?: string
+          lead?: string
+          ordem?: number
+          referencias?: Json
+          titulo?: string
+        }
+        Relationships: []
+      }
       trend_data: {
         Row: {
           created_at: string
