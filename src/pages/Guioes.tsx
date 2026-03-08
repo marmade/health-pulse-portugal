@@ -605,10 +605,10 @@ const Guioes = () => {
                   const isUnverified = isAI && p.approved === false;
                   const rowNum = String(i + 1).padStart(2, "0");
 
-                  // For banco base refs, resolve URL from the map using activeTema
-                  const bancoRefUrl = !isAI && p.referencia_nome
-                    ? resolveReference(activeTema, p.referencia_nome, "").url
-                    : "";
+                  // For banco base refs, parse multiple sources
+                  const bancoRefs = !isAI && p.referencia_nome
+                    ? parseReference(activeTema, p.referencia_nome)
+                    : [];
 
                   return (
                     <TableRow key={i} className="border-b border-border/50">
