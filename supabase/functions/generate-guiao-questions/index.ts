@@ -24,18 +24,11 @@ serve(async (req) => {
 
     const userPrompt = `Gera exactamente 5 perguntas de vox pop sobre ${tema} para o programa Diz que Disse — vamos para as ruas perguntar a cidadãos comuns em Portugal. As perguntas testam literacia em saúde, são directas e concretas, em português europeu. TODAS devem ter resposta_simples preenchida (nunca vazio). As keywords mais pesquisadas esta semana em Portugal para este tema são: ${keywordList}. Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
 
-Usa APENAS estas fontes científicas e institucionais para referencia_nome e referencia_url:
-DGS → dgs.pt
-SNS24 → sns24.gov.pt
-OMS → who.int
-INSA → insa.min-saude.pt ou repositorio.insa.pt
-CUF → cuf.pt/saude-a-z
-Luz Saúde → luzsaude.pt
-ECDC → ecdc.europa.eu
-Ordem dos Médicos → ordemdosmedicos.pt
-Ordem dos Psicólogos → ordemdospsicologos.pt
-PubMed → pubmed.ncbi.nlm.nih.gov
-INFARMED → infarmed.pt
+Usa APENAS estas fontes científicas e institucionais para referencia_nome e referencia_url, por ordem de prioridade:
+Para SAÚDE MENTAL: 1. DGS (dgs.pt/saude-mental.aspx) 2. OMS (who.int) 3. SNS24 (sns24.gov.pt/tema/saude-mental/) 4. Saúde Mental PT (saudementalpt.com) 5. CUF (cuf.pt/saude-a-z) 6. Ordem dos Psicólogos (ordemdospsicologos.pt)
+Para ALIMENTAÇÃO: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · CUF (cuf.pt) · INSA (insa.min-saude.pt) · INFARMED (infarmed.pt) · Luz Saúde (luzsaude.pt)
+Para MENOPAUSA: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · CUF (cuf.pt) · Luz Saúde (luzsaude.pt)
+Para EMERGENTES: DGS (dgs.pt) · ECDC (ecdc.europa.eu) · OMS (who.int) · INSA (insa.min-saude.pt) · SNS24 (sns24.gov.pt)
 
 Se não encontrares uma fonte destas para uma pergunta, deixa referencia_url vazio — não inventes outras fontes.
 
