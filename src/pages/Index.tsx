@@ -10,6 +10,8 @@ import Filters from "@/components/Filters";
 import { debunkingData as mockDebunkingData, newsData as mockNewsData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
 import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
+import { useLastRefreshed } from "@/hooks/useLastRefreshed";
+import { useHistoricalData } from "@/hooks/useHistoricalData";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
