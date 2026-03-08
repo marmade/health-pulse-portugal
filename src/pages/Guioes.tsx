@@ -218,7 +218,7 @@ const Guioes = () => {
           Object.entries(temaGroups).map(([tema, temaRows]) => (
             <div key={tema} className="mb-8">
               <h2 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ color: "#0000FF" }}>
-                {tema}
+                {temaLabelMap[tema] || tema}
               </h2>
               <div className="border border-border">
                 <Table>
