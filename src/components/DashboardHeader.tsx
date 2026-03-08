@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const axes = [
   { id: "all", label: "OVERVIEW" },
   { id: "saude-mental", label: "SAÚDE MENTAL" },
