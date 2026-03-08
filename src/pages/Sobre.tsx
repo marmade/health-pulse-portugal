@@ -21,12 +21,12 @@ const paraQueServe = [
 ];
 
 const agradecimentos = [
-  "António Granado",
-  "Matilde Gonçalves",
-  "Luís Veríssimo",
-  "Ana Sanchez",
   "Joana Lobo Antunes",
   "António Gomes da Costa",
+  "Matilde Gonçalves",
+  "António Granado",
+  "Ana Sanchez",
+  "Luís Veríssimo",
 ];
 
 const Sobre = () => {
