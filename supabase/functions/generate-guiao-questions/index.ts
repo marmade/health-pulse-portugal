@@ -17,12 +17,24 @@ serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
     const keywordList = (keywords || [])
-      .map((k: any) => `- ${k.term} (vol: ${k.current_volume}, crescimento: ${k.change_percent}%)`)
-      .join("\n");
+      .map((k: any) => `${k.term} (volume: ${k.current_volume}, crescimento: ${k.change_percent}%)`)
+      .join(", ");
 
-    const systemPrompt = `És um especialista em comunicação de ciência e saúde pública em Portugal. Com base nas keywords de saúde em tendência nesta semana, gera exactamente 10 perguntas de vox pop por tema. As perguntas testam literacia em saúde de cidadãos comuns. Não julgam comportamentos. São directas e concretas. Cada pergunta tem: pergunta (texto), resposta_simples (1-2 frases claras), referencia_nome (nome da fonte real, ex: OMS, DGS, PubMed), referencia_url (URL real e verificável da fonte). Respondes sempre em português europeu.`;
+    const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
-    const userPrompt = `Tema: ${tema}\n\nKeywords em tendência esta semana:\n${keywordList}\n\nGera 10 perguntas de vox pop baseadas nestas tendências.`;
+    const userPrompt = `Com base nestas keywords de saúde em tendência esta semana em Portugal: ${keywordList}.
+
+Gera exactamente 10 perguntas de vox pop para o tema ${tema}. As perguntas testam literacia em saúde — não julgam comportamentos. São directas e concretas, para fazer a pessoas comuns na rua.
+
+Responde APENAS com este JSON:
+[
+  {
+    "pergunta": "texto da pergunta",
+    "resposta_simples": "resposta em 1-2 frases",
+    "referencia_nome": "ex: OMS, DGS, PubMed",
+    "referencia_url": "https://..."
+  }
+]`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -38,40 +50,6 @@ serve(async (req) => {
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
           ],
-          tools: [
-            {
-              type: "function",
-              function: {
-                name: "return_perguntas",
-                description: "Return an array of vox pop questions with answers and references.",
-                parameters: {
-                  type: "object",
-                  properties: {
-                    perguntas: {
-                      type: "array",
-                      items: {
-                        type: "object",
-                        properties: {
-                          pergunta: { type: "string" },
-                          resposta_simples: { type: "string" },
-                          referencia_nome: { type: "string" },
-                          referencia_url: { type: "string" },
-                        },
-                        required: ["pergunta", "resposta_simples", "referencia_nome", "referencia_url"],
-                        additionalProperties: false,
-                      },
-                    },
-                  },
-                  required: ["perguntas"],
-                  additionalProperties: false,
-                },
-              },
-            },
-          ],
-          tool_choice: {
-            type: "function",
-            function: { name: "return_perguntas" },
-          },
         }),
       }
     );
@@ -98,28 +76,44 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+    const content = data.choices?.[0]?.message?.content || "";
+    console.log("AI raw response:", content.substring(0, 500));
+
     let perguntas: any[] = [];
 
-    if (toolCall?.function?.arguments) {
-      try {
-        const parsed = JSON.parse(toolCall.function.arguments);
-        perguntas = parsed.perguntas || [];
-      } catch {
-        console.error("Failed to parse tool call arguments");
+    // Try parsing the content directly as JSON array
+    try {
+      // Remove any markdown backticks if present
+      const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      const parsed = JSON.parse(cleaned);
+      if (Array.isArray(parsed)) {
+        perguntas = parsed;
+      } else if (parsed.perguntas && Array.isArray(parsed.perguntas)) {
+        perguntas = parsed.perguntas;
       }
-    }
-
-    // Fallback: try content
-    if (perguntas.length === 0) {
-      const content = data.choices?.[0]?.message?.content || "";
+    } catch {
+      // Try to extract JSON array from content
       try {
         const match = content.match(/\[[\s\S]*\]/);
         if (match) {
           perguntas = JSON.parse(match[0]);
         }
-      } catch { /* ignore */ }
+      } catch {
+        console.error("Failed to parse AI response as JSON");
+      }
     }
+
+    // Validate and normalize each item
+    perguntas = perguntas
+      .filter((p: any) => p && typeof p === "object" && p.pergunta)
+      .map((p: any) => ({
+        pergunta: String(p.pergunta || ""),
+        resposta_simples: String(p.resposta_simples || ""),
+        referencia_nome: String(p.referencia_nome || ""),
+        referencia_url: String(p.referencia_url || ""),
+      }));
+
+    console.log(`Parsed ${perguntas.length} questions`);
 
     return new Response(JSON.stringify({ perguntas }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
