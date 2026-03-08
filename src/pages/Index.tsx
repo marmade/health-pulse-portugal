@@ -152,7 +152,12 @@ const Index = () => {
         </div>
       </main>
 
-      <DashboardFooter />
+      <DashboardFooter
+        filters={filters}
+        axes={filteredData}
+        debunkingData={debunkingData}
+        newsData={newsData}
+      />
     </div>
   );
 };
