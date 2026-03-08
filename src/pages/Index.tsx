@@ -161,6 +161,7 @@ const Index = () => {
         axes={filteredData}
         debunkingData={debunkingData}
         newsData={newsData}
+        historicalData={historicalData}
       />
     </div>
   );
