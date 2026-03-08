@@ -79,6 +79,8 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region }:
               </Tooltip>
             </TooltipProvider>
           )}
+        </div>
+      </div>
 
       <div className="border-t border-foreground/10" />
 
