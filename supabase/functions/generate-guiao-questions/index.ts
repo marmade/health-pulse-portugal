@@ -22,17 +22,32 @@ serve(async (req) => {
 
     const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
+    const fontesPermitidas = `FONTES PERMITIDAS (usa APENAS estas, com o URL exacto indicado):
+- OMS → https://www.who.int
+- DGS → https://www.dgs.pt
+- SNS24 → https://www.sns24.gov.pt
+- INSA → https://www.insa.min-saude.pt
+- INFARMED → https://www.infarmed.pt
+- PubMed → https://pubmed.ncbi.nlm.nih.gov
+- ECDC → https://www.ecdc.europa.eu
+
+Nunca inventes URLs. Usa SEMPRE um dos URLs acima, tal como está. O referencia_nome é o nome da fonte (ex: "OMS", "DGS"). O referencia_url é o URL principal da fonte, nunca um artigo específico.`;
+
     const userPrompt = `Com base nestas keywords de saúde em tendência esta semana em Portugal: ${keywordList}.
 
 Gera exactamente 10 perguntas de vox pop para o tema ${tema}. As perguntas testam literacia em saúde — não julgam comportamentos. São directas e concretas, para fazer a pessoas comuns na rua.
+
+REGRAS OBRIGATÓRIAS:
+1. Todas as perguntas devem ter obrigatoriamente resposta_simples preenchida. Nunca deixar vazio.
+2. ${fontesPermitidas}
 
 Responde APENAS com este JSON:
 [
   {
     "pergunta": "texto da pergunta",
-    "resposta_simples": "resposta em 1-2 frases",
+    "resposta_simples": "resposta em 1-2 frases (OBRIGATÓRIO)",
     "referencia_nome": "ex: OMS, DGS, PubMed",
-    "referencia_url": "https://..."
+    "referencia_url": "https://www.who.int (usar APENAS URLs da lista permitida)"
   }
 ]`;
 
