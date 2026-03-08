@@ -60,8 +60,9 @@ const URL_MAP: Record<string, Record<string, string>> = {
     "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
     "CUF": "https://www.cuf.pt/saude-a-z/perturbacoes-do-comportamento",
-    "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
     "INSA": "https://repositorio.insa.pt/home",
+    "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
+    "SAÚDE MENTAL PT": "https://saudementalpt.com/saude-mental/",
   },
   "alimentacao": {
     "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
@@ -70,6 +71,7 @@ const URL_MAP: Record<string, Record<string, string>> = {
     "CUF": "https://www.cuf.pt/saude-a-z",
     "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
     "INFARMED": "https://www.infarmed.pt",
+    "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
   },
   "menopausa": {
     "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
@@ -77,7 +79,6 @@ const URL_MAP: Record<string, Record<string, string>> = {
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
     "CUF": "https://www.cuf.pt/saude-a-z/menopausa",
     "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
-    "INSA": "https://repositorio.insa.pt/home",
   },
   "emergentes": {
     "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
@@ -99,8 +100,11 @@ const SOURCE_ALIASES: Record<string, string> = {
   "PSICÓLOGOS": "ORDEM DOS PSICÓLOGOS",
   "ORDEM DOS PSICOLOGOS": "ORDEM DOS PSICÓLOGOS",
   "LUZ SAUDE": "LUZ SAÚDE",
-  "LUZ SAÚDE": "LUZ SAÚDE",
   "HOSPITAL DA LUZ": "LUZ SAÚDE",
+  "SAUDEMENTALPT": "SAÚDE MENTAL PT",
+  "SAUDEMENTAL.PT": "SAÚDE MENTAL PT",
+  "SMPT": "SAÚDE MENTAL PT",
+  "SAUDE MENTAL PT": "SAÚDE MENTAL PT",
 };
 
 // Resolve a reference name to a curated URL for a given tema
