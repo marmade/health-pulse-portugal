@@ -16,9 +16,9 @@ const themes = [
 
 const sourceTypes = [
   { id: "todos", label: "TODOS" },
-  { id: "media", label: "📰 MEDIA" },
-  { id: "institucional", label: "🏥 INSTITUCIONAL" },
-  { id: "factcheck", label: "🔍 FACT-CHECK" },
+  { id: "media", label: "MEDIA" },
+  { id: "institucional", label: "INSTITUCIONAL" },
+  { id: "factcheck", label: "FACT-CHECK" },
 ];
 
 const sourceTypeBadge = (type?: string) => {
@@ -26,19 +26,19 @@ const sourceTypeBadge = (type?: string) => {
     case "institucional":
       return (
         <span className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary text-primary-foreground">
-          🏥 INST
+          INST
         </span>
       );
     case "factcheck":
       return (
         <span className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border border-dashed border-primary text-primary">
-          🔍 FC
+          FC
         </span>
       );
     default:
       return (
         <span className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border border-primary text-primary">
-          📰 MEDIA
+          MEDIA
         </span>
       );
   }
@@ -75,7 +75,7 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
         <p className="editorial-label">Cobertura Mediática</p>
         {lastFetchTimestamp && (
           <span className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 bg-primary/10 text-primary border border-primary/20">
-            ● Auto-actualizado {new Date(lastFetchTimestamp).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+            Auto-actualizado {new Date(lastFetchTimestamp).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
           </span>
         )}
       </div>

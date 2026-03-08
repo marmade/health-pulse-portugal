@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
 const axes = [
-  { emoji: "🧠", title: "SAÚDE MENTAL", desc: "Ansiedade, burnout, TDAH e bem-estar" },
-  { emoji: "🥗", title: "ALIMENTAÇÃO", desc: "Nutrição, dietas e comportamentos alimentares" },
-  { emoji: "🌿", title: "MENOPAUSA", desc: "Saúde feminina e hormonal" },
-  { emoji: "📡", title: "EMERGENTES", desc: "Novos temas e alertas de saúde pública" },
+  { title: "SAÚDE MENTAL", desc: "Ansiedade, burnout, TDAH e bem-estar" },
+  { title: "ALIMENTAÇÃO", desc: "Nutrição, dietas e comportamentos alimentares" },
+  { title: "MENOPAUSA", desc: "Saúde feminina e hormonal" },
+  { title: "EMERGENTES", desc: "Novos temas e alertas de saúde pública" },
 ];
 
 const fontes = [
@@ -87,8 +87,7 @@ const Sobre = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => (
             <div key={axis.title} className="border border-foreground/20 p-6">
-              <span className="text-2xl">{axis.emoji}</span>
-              <h3 className="text-xs font-bold uppercase tracking-[0.15em] mt-4">
+              <h3 className="text-xs font-bold uppercase tracking-[0.15em]">
                 {axis.title}
               </h3>
               <p className="text-xs mt-2 opacity-60 leading-relaxed">

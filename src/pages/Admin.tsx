@@ -13,9 +13,9 @@ import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = ["Saúde Mental", "Alimentação", "Menopausa", "Emergentes"];
 const SOURCE_TYPES = [
-  { value: "institutional", label: "🏥 INST" },
-  { value: "media", label: "📰 MEDIA" },
-  { value: "fact-check", label: "🔍 FC" },
+  { value: "institutional", label: "INST" },
+  { value: "media", label: "MEDIA" },
+  { value: "fact-check", label: "FC" },
 ];
 
 type Keyword = {
