@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { generatePdfReport } from "@/lib/pdfExport";
+import { generateCsvExport } from "@/lib/csvExport";
 import type { Keyword, DebunkItem, NewsItem } from "@/data/mockData";
 
 type AxisData = {
@@ -17,15 +18,16 @@ type Props = {
 };
 
 const DashboardFooter = ({ filters, axes, debunkingData, newsData }: Props) => {
-  const [isExporting, setIsExporting] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [isExportingCsv, setIsExportingCsv] = useState(false);
 
-  const handleExport = async () => {
+  const handleExportPdf = async () => {
     if (!filters || !axes || !debunkingData || !newsData) {
       console.warn("Export data not available");
       return;
     }
 
-    setIsExporting(true);
+    setIsExportingPdf(true);
     try {
       await generatePdfReport({
         filters,
@@ -36,7 +38,27 @@ const DashboardFooter = ({ filters, axes, debunkingData, newsData }: Props) => {
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
-      setIsExporting(false);
+      setIsExportingPdf(false);
+    }
+  };
+
+  const handleExportCsv = async () => {
+    if (!axes || !debunkingData || !newsData) {
+      console.warn("Export data not available");
+      return;
+    }
+
+    setIsExportingCsv(true);
+    try {
+      generateCsvExport({
+        axes,
+        debunkingData,
+        newsData,
+      });
+    } catch (error) {
+      console.error("Error generating CSV:", error);
+    } finally {
+      setIsExportingCsv(false);
     }
   };
 
@@ -50,14 +72,24 @@ const DashboardFooter = ({ filters, axes, debunkingData, newsData }: Props) => {
             Google Trends / Google Analytics
           </p>
         </div>
-        <button
-          onClick={handleExport}
-          disabled={isExporting || !axes}
-          className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          {isExporting && <Loader2 className="h-3 w-3 animate-spin" />}
-          {isExporting ? "A gerar..." : "Exportar Report PDF"}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleExportCsv}
+            disabled={isExportingCsv || !axes}
+            className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {isExportingCsv && <Loader2 className="h-3 w-3 animate-spin" />}
+            {isExportingCsv ? "A gerar..." : "Exportar CSV"}
+          </button>
+          <button
+            onClick={handleExportPdf}
+            disabled={isExportingPdf || !axes}
+            className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {isExportingPdf && <Loader2 className="h-3 w-3 animate-spin" />}
+            {isExportingPdf ? "A gerar..." : "Exportar Report PDF"}
+          </button>
+        </div>
       </div>
     </footer>
   );
