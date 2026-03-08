@@ -74,6 +74,52 @@ const bancoLabelMap: Record<string, string> = {
   menopausa: "MENOPAUSA",
   emergentes: "EMERGENTES",
 };
+// Known source URL map for banco base references
+const KNOWN_SOURCES: Record<string, string> = {
+  "OMS": "https://www.who.int",
+  "WHO": "https://www.who.int",
+  "DGS": "https://www.dgs.pt",
+  "SNS24": "https://www.sns24.gov.pt",
+  "INSA": "https://repositorio.insa.pt/home",
+  "INFARMED": "https://www.infarmed.pt",
+  "ECDC": "https://www.ecdc.europa.eu",
+  "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
+  "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
+};
+
+function ReferenceLinks({ text }: { text: string }) {
+  if (!text) return <span className="opacity-30">—</span>;
+
+  // Split by · or ; separators
+  const parts = text.split(/[·;]/).map((s) => s.trim()).filter(Boolean);
+
+  return (
+    <span className="flex flex-wrap gap-x-2 gap-y-0.5">
+      {parts.map((part, i) => {
+        // Check for PubMed with number
+        const pubmedMatch = part.match(/PubMed\s*(\d+)/i);
+        if (pubmedMatch) {
+          return (
+            <a key={i} href={`https://pubmed.ncbi.nlm.nih.gov/${pubmedMatch[1]}`} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
+              {part}
+            </a>
+          );
+        }
+        // Check known sources
+        const upper = part.toUpperCase();
+        const matchedKey = Object.keys(KNOWN_SOURCES).find((k) => upper.includes(k));
+        if (matchedKey) {
+          return (
+            <a key={i} href={KNOWN_SOURCES[matchedKey]} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
+              {part}
+            </a>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </span>
+  );
+}
 
 // ── PDF Export ─────────────────────────────────────────
 function exportGuiaoPdf(tema: string, semana: string, perguntas: Pergunta[]) {
