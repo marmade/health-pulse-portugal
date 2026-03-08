@@ -60,11 +60,12 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
             >
               {axis.label}
             </button>
-            {i < axes.length - 1 && (
-              <span className="text-foreground/20 text-xs font-light">/</span>
-            )}
+            <span className="text-foreground/20 text-xs font-light">/</span>
           </span>
         ))}
+        <Link to="/sobre" className="nav-link">
+          SOBRE
+        </Link>
       </nav>
       <div className="section-divider" />
     </header>
