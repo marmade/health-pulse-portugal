@@ -307,12 +307,15 @@ const Guioes = () => {
       if (error) throw new Error(error.message);
       if (data?.error) throw new Error(data.error);
 
-      const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => ({
-        pergunta: p.pergunta || "",
-        resposta_simples: p.resposta_simples || "",
-        referencia_nome: p.referencia_nome || "",
-        referencia_url: p.referencia_url || "",
-      }));
+      const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => {
+        const refNome = p.referencia_nome || "";
+        return {
+          pergunta: p.pergunta || "",
+          resposta_simples: p.resposta_simples || "",
+          referencia_nome: refNome,
+          referencia_url: resolveReferenceUrl(temaValue, refNome),
+        };
+      });
 
       // Upsert in local state
       setGuioesSemanais((prev) => {
