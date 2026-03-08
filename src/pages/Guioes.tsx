@@ -52,32 +52,77 @@ const TEMAS = [
   { value: "emergentes", label: "EMERGENTES", db: "emergentes" },
 ];
 
-// Approved domain whitelist — only these are shown as clickable links
-const APPROVED_DOMAINS = [
-  "dgs.pt",
-  "sns24.gov.pt",
-  "insa.min-saude.pt",
-  "repositorio.insa.pt",
-  "who.int",
-  "ecdc.europa.eu",
-  "pubmed.ncbi.nlm.nih.gov",
-  "ordemdosmedicos.pt",
-  "ordemdospsicologos.pt",
-  "infarmed.pt",
-  "cuf.pt",
-  "luzsaude.pt",
-  "sppsm.org",
-  "apah.pt",
-];
+// Curated URL map per tema + fonte (approved sources get precise URLs)
+const URL_MAP: Record<string, Record<string, string>> = {
+  "saude-mental": {
+    "DGS": "https://www.dgs.pt/saude-mental.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
+    "CUF": "https://www.cuf.pt/saude-a-z/perturbacoes-do-comportamento",
+    "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
+    "INSA": "https://repositorio.insa.pt/home",
+  },
+  "alimentacao": {
+    "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/alimentacao/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+    "CUF": "https://www.cuf.pt/saude-a-z",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
+    "INFARMED": "https://www.infarmed.pt",
+  },
+  "menopausa": {
+    "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-da-mulher/menopausa/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
+    "CUF": "https://www.cuf.pt/saude-a-z/menopausa",
+    "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
+    "INSA": "https://repositorio.insa.pt/home",
+  },
+  "emergentes": {
+    "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
+    "ECDC": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/doencas-infecciosas/",
+    "SNS24": "https://www.sns24.gov.pt",
+  },
+};
 
-function isApprovedUrl(url: string): boolean {
-  if (!url) return false;
-  try {
-    const hostname = new URL(url).hostname.replace(/^www\./, "");
-    return APPROVED_DOMAINS.some((d) => hostname === d || hostname.endsWith("." + d));
-  } catch {
-    return false;
+// Aliases: map common variations to canonical keys
+const SOURCE_ALIASES: Record<string, string> = {
+  "WHO": "OMS",
+  "WORLD HEALTH": "OMS",
+  "ORGANIZAÇÃO MUNDIAL": "OMS",
+  "DIREÇÃO-GERAL": "DGS",
+  "DIRECÇÃO-GERAL": "DGS",
+  "DIREÇÃO GERAL": "DGS",
+  "PSICÓLOGOS": "ORDEM DOS PSICÓLOGOS",
+  "ORDEM DOS PSICOLOGOS": "ORDEM DOS PSICÓLOGOS",
+  "LUZ SAUDE": "LUZ SAÚDE",
+  "LUZ SAÚDE": "LUZ SAÚDE",
+  "HOSPITAL DA LUZ": "LUZ SAÚDE",
+};
+
+// Resolve a reference name to a curated URL for a given tema
+// Returns { url, approved } — approved=true means it matched the curated map
+function resolveReference(tema: string, refNome: string, originalUrl: string): { url: string; approved: boolean } {
+  const temaMap = URL_MAP[tema];
+  if (!temaMap || !refNome) return { url: originalUrl, approved: false };
+
+  const upper = refNome.toUpperCase();
+
+  // Direct match against map keys
+  const directMatch = Object.keys(temaMap).find((k) => upper.includes(k));
+  if (directMatch) return { url: temaMap[directMatch], approved: true };
+
+  // Alias match
+  const aliasMatch = Object.entries(SOURCE_ALIASES).find(([alias]) => upper.includes(alias));
+  if (aliasMatch) {
+    const canonical = aliasMatch[1];
+    if (temaMap[canonical]) return { url: temaMap[canonical], approved: true };
   }
+
+  // Not in curated map — keep original URL, mark as not approved
+  return { url: originalUrl, approved: false };
 }
 
 
