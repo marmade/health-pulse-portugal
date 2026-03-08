@@ -540,55 +540,75 @@ const Guioes = () => {
               </TableHeader>
               <TableBody>
                 {currentPerguntas.map((p, i) => {
-                  const needsVerification = !p.referencia_url;
+                  const isAI = p.source === "ia";
+                  const isUnverified = isAI && p.approved === false;
+                  const rowNum = String(i + 1).padStart(2, "0");
+
                   return (
-                    <TableRow key={i} className="border-b border-border/50">
-                      <TableCell className="text-[10px] font-bold text-muted-foreground">
-                        {needsVerification && <span className="text-pink-400 mr-1">•</span>}
-                        {String(i + 1).padStart(2, "0")}
-                      </TableCell>
-                      <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
-                        {needsVerification ? (
-                          editCell?.idx === i && editCell?.field === "resposta_simples" ? (
-                            renderCell(i, "resposta_simples", p.resposta_simples)
+                    <React.Fragment key={i}>
+                      {/* Separator between banco (line 5) and IA (line 6) */}
+                      {i === 5 && (
+                        <TableRow className="border-b-0">
+                          <TableCell colSpan={4} className="py-1 px-4">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 border-t border-border" />
+                              <span className="text-[9px] font-bold tracking-wider text-pink-400">● IA</span>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                      <TableRow className="border-b border-border/50">
+                        <TableCell className="text-[10px] font-bold text-muted-foreground">
+                          {isUnverified ? (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="cursor-help">
+                                    <span className="text-pink-400 mr-1">•</span>{rowNum}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs">
+                                  Fonte não verificada — confirmar antes de usar
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          ) : (
+                            rowNum
+                          )}
+                        </TableCell>
+                        <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
+                        <TableCell className="text-xs text-muted-foreground">
+                          {renderCell(i, "resposta_simples", p.resposta_simples)}
+                        </TableCell>
+                        <TableCell className="text-xs">
+                          {!isAI ? (
+                            // Banco base: plain text reference
+                            <span className="text-muted-foreground italic">
+                              {p.referencia_nome || <span className="opacity-30">—</span>}
+                            </span>
+                          ) : editCell?.idx === i && editCell?.field === "referencia_nome" ? (
+                            renderCell(i, "referencia_nome", p.referencia_nome, true)
+                          ) : p.referencia_url ? (
+                            <a
+                              href={p.referencia_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0000FF] underline italic text-xs hover:opacity-70"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {p.referencia_nome || "Ver fonte"}
+                            </a>
                           ) : (
                             <span
-                              className="cursor-pointer hover:bg-muted/50 block p-1 -m-1"
-                              onClick={() => startEdit(i, "resposta_simples", p.resposta_simples)}
+                              className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground"
+                              onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
                             >
-                              {p.resposta_simples || (
-                                <span className="text-muted-foreground/50 italic">Preencher após verificação</span>
-                              )}
+                              {p.referencia_nome || <span className="opacity-30">—</span>}
                             </span>
-                          )
-                        ) : (
-                          renderCell(i, "resposta_simples", p.resposta_simples)
-                        )}
-                      </TableCell>
-                      <TableCell className="text-xs">
-                        {editCell?.idx === i && editCell?.field === "referencia_nome" ? (
-                          renderCell(i, "referencia_nome", p.referencia_nome, true)
-                        ) : p.referencia_url ? (
-                          <a
-                            href={p.referencia_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#0000FF] underline italic text-xs hover:opacity-70"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {p.referencia_nome || "Ver fonte"}
-                          </a>
-                        ) : (
-                          <span
-                            className="cursor-pointer hover:bg-muted/50 block p-1 -m-1 italic text-muted-foreground/50"
-                            onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
-                          >
-                            — verificar fonte —
-                          </span>
-                        )}
-                      </TableCell>
-                    </TableRow>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    </React.Fragment>
                   );
                 })}
               </TableBody>
