@@ -9,7 +9,7 @@ const axes = [
 
 const fontes = [
   { label: "Google Trends", desc: "Comportamento de pesquisa em Portugal" },
-  { label: "13 RSS Feeds", desc: "RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check" },
+  { label: "15 RSS Feeds", desc: "RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS" },
   { label: "Supabase", desc: "Base de dados em tempo real" },
 ];
 
