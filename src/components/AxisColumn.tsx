@@ -39,7 +39,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region }:
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h2 className="text-xs font-bold uppercase tracking-[0.15em]">
+        <h2 className="text-sm font-bold uppercase tracking-[0.15em]" style={{ color: "#0000FF" }}>
           {label}
           {region !== "pt" && (
             <span className="ml-2 text-[9px] font-medium normal-case opacity-50">
