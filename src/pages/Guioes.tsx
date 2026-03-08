@@ -137,7 +137,7 @@ const Guioes = () => {
 
   useEffect(() => { fetchRows(); }, []);
 
-  const filtered = filter === "TODOS" ? rows : rows.filter((r) => r.tema === filter);
+  const filtered = filter === "TODOS" ? rows : rows.filter((r) => r.tema === temaMap[filter]);
 
   const toggleSelect = (id: string) => {
     setSelected((prev) => {
