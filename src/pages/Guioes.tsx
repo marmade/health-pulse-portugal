@@ -261,13 +261,17 @@ const Guioes = () => {
 
       // Shuffle and take 5
       const shuffled = (bancoData || []).sort(() => Math.random() - 0.5).slice(0, 5);
-      const bancoPerguntas: Pergunta[] = shuffled.map((r: any) => ({
-        pergunta: r.pergunta || "",
-        resposta_simples: r.resposta || "",
-        referencia_nome: r.referencia_cientifica || "",
-        referencia_url: "",
-        source: "banco" as const,
-      }));
+      const bancoPerguntas: Pergunta[] = shuffled.map((r: any) => {
+        const refText = r.referencia_cientifica || "";
+        const { url } = resolveReference(temaValue, refText, "");
+        return {
+          pergunta: r.pergunta || "",
+          resposta_simples: r.resposta || "",
+          referencia_nome: refText,
+          referencia_url: url,
+          source: "banco" as const,
+        };
+      });
 
       // 2. Call Perplexity for 5 AI questions
       const temaKeywords = keywords
