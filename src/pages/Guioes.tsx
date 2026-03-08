@@ -242,11 +242,6 @@ const Guioes = () => {
   const [editCell, setEditCell] = useState<{ idx: number; field: keyof Pergunta } | null>(null);
   const [editValue, setEditValue] = useState("");
 
-  // Banco base
-  const [bancoRows, setBancoRows] = useState<BancoRow[]>([]);
-  const [bancoFilter, setBancoFilter] = useState("TODOS");
-  const [bancoLoading, setBancoLoading] = useState(true);
-
   // Keywords
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
 
@@ -256,15 +251,12 @@ const Guioes = () => {
   // Fetch data on mount and week change
   useEffect(() => {
     const fetchAll = async () => {
-      const [kwRes, bancoRes, guiaoRes] = await Promise.all([
+      const [kwRes, guiaoRes] = await Promise.all([
         supabase.from("keywords").select("term, axis, current_volume, change_percent").eq("is_active", true),
-        supabase.from("guioes").select("*").order("tema").order("ordem"),
         supabase.from("guioes_semanais").select("*").eq("semana", semanaStr),
       ]);
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
-      if (bancoRes.data) setBancoRows(bancoRes.data as BancoRow[]);
       if (guiaoRes.data) setGuioesSemanais(guiaoRes.data as GuiaoSemanal[]);
-      setBancoLoading(false);
     };
     fetchAll();
   }, [semanaStr]);
@@ -679,90 +671,6 @@ const Guioes = () => {
             </p>
           </div>
         )}
-
-        {/* ── Banco Base ────────────────────────────────── */}
-        <div className="section-divider mb-8" />
-
-        <div className="flex items-start justify-between mb-1">
-          <div>
-            <h2
-              className="text-[10px] font-bold uppercase tracking-[0.2em]"
-              style={{ color: "#0000FF" }}
-            >
-              BANCO BASE
-            </h2>
-            <p className="text-[10px] text-muted-foreground mt-1">
-              Perguntas permanentes — clica "+" para adicionar ao guião semanal
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-3 mt-4 mb-4 border-b border-border pb-3">
-          {BANCO_FILTROS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setBancoFilter(f)}
-              className={cn(
-                "text-[10px] font-bold uppercase tracking-[0.15em] pb-1 border-b-2 transition-colors",
-                bancoFilter === f
-                  ? "border-[#0000FF] text-[#0000FF]"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
-        {bancoLoading ? (
-          <p className="text-xs text-muted-foreground">A carregar...</p>
-        ) : Object.keys(bancoGroups).length === 0 ? (
-          <p className="text-xs text-muted-foreground">Nenhuma pergunta no banco base.</p>
-        ) : (
-          Object.entries(bancoGroups).map(([tema, rows]) => (
-            <div key={tema} className="mb-8">
-              <h3
-                className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3"
-                style={{ color: "#0000FF" }}
-              >
-                {bancoLabelMap[tema] || tema}
-              </h3>
-              <div className="border border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-b border-border">
-                      <TableHead className="w-10"></TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Pergunta</TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Resposta Simples</TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Referência Científica</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow key={row.id} className="border-b border-border/50">
-                        <TableCell className="w-10">
-                          <button
-                            onClick={() => addFromBanco(row)}
-                            className="text-[10px] font-bold text-[#0000FF] hover:bg-[#0000FF]/10 w-6 h-6 flex items-center justify-center border border-[#0000FF]/30"
-                            title="Adicionar ao guião semanal"
-                          >
-                            +
-                          </button>
-                        </TableCell>
-                        <TableCell className="text-xs font-medium">{row.pergunta}</TableCell>
-                        <TableCell className="text-xs text-muted-foreground">{row.resposta}</TableCell>
-                        <TableCell className="text-xs text-muted-foreground italic">
-                          <ReferenceLinks text={row.referencia_cientifica} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          ))
-        )}
-      </main>
 
       <DashboardFooter />
     </div>
