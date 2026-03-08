@@ -38,6 +38,42 @@ export type Database = {
         }
         Relationships: []
       }
+      briefings_archive: {
+        Row: {
+          created_at: string
+          id: string
+          top_debunking: Json
+          top_emerging: Json
+          top_news: Json
+          top_questions: Json
+          week_end: string
+          week_label: string
+          week_start: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          top_debunking?: Json
+          top_emerging?: Json
+          top_news?: Json
+          top_questions?: Json
+          week_end: string
+          week_label: string
+          week_start: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          top_debunking?: Json
+          top_emerging?: Json
+          top_news?: Json
+          top_questions?: Json
+          week_end?: string
+          week_label?: string
+          week_start?: string
+        }
+        Relationships: []
+      }
       debunking: {
         Row: {
           classification: string
