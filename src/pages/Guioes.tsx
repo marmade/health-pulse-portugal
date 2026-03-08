@@ -24,6 +24,20 @@ type GuiaoRow = {
 
 const FILTROS = ["TODOS", "SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"] as const;
 
+const temaMap: Record<string, string> = {
+  "SAÚDE MENTAL": "saude_mental",
+  "ALIMENTAÇÃO": "alimentacao",
+  "MENOPAUSA": "menopausa",
+  "EMERGENTES": "emergentes",
+};
+
+const temaLabelMap: Record<string, string> = {
+  saude_mental: "SAÚDE MENTAL",
+  alimentacao: "ALIMENTAÇÃO",
+  menopausa: "MENOPAUSA",
+  emergentes: "EMERGENTES",
+};
+
 function exportSelectedPdf(rows: GuiaoRow[]) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const margin = 20;
@@ -123,7 +137,7 @@ const Guioes = () => {
 
   useEffect(() => { fetchRows(); }, []);
 
-  const filtered = filter === "TODOS" ? rows : rows.filter((r) => r.tema === filter);
+  const filtered = filter === "TODOS" ? rows : rows.filter((r) => r.tema === temaMap[filter]);
 
   const toggleSelect = (id: string) => {
     setSelected((prev) => {
@@ -204,7 +218,7 @@ const Guioes = () => {
           Object.entries(temaGroups).map(([tema, temaRows]) => (
             <div key={tema} className="mb-8">
               <h2 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ color: "#0000FF" }}>
-                {tema}
+                {temaLabelMap[tema] || tema}
               </h2>
               <div className="border border-border">
                 <Table>
