@@ -28,6 +28,9 @@ const FEEDS: FeedSource[] = [
   // FACT-CHECKING
   { url: 'https://poligrafo.sapo.pt/feed', outlet: 'Polígrafo', type: 'factcheck' },
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
+  // INSTITUCIONAL (novos)
+  { url: 'https://www.insa.min-saude.pt/feed/', outlet: 'INSA', type: 'institucional' },
+  { url: 'https://www.sns.gov.pt/feed/', outlet: 'SNS', type: 'institucional' },
 ];
 
 function getSupabaseAdmin() {
