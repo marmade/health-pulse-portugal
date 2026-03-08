@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
+import { getTopQuestionsPerAxis } from "@/data/healthQuestions";
 import { toast } from "sonner";
 
 type KeywordRow = {
@@ -118,9 +119,12 @@ const Briefing = () => {
 
   const emergent = keywords.filter((k) => k.is_emergent);
 
-  const topVolume = [...keywords]
-    .sort((a, b) => b.current_volume - a.current_volume)
-    .slice(0, 5);
+  const topQuestions = getTopQuestionsPerAxis(2).slice(0, 5);
+
+  const topVolume = topQuestions.map((q) => ({
+    term: q.question,
+    current_volume: q.relativeVolume,
+  }));
 
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
