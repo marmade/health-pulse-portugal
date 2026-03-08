@@ -70,7 +70,7 @@ const Index = () => {
 
       {/* Data source indicator */}
       {error && (
-        <div className="px-6 py-2 bg-yellow-500/10 text-yellow-600 text-xs">
+        <div className="px-6 py-2 bg-muted text-muted-foreground text-xs">
           A usar dados de demonstração (erro: {error})
         </div>
       )}
