@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CalendarIcon, ChevronDown, ChevronUp, Pencil, FileText, Plus } from "lucide-react";
+import { CalendarIcon, ChevronDown, ChevronUp, Pencil, FileText, Plus, Sparkles, X, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -45,6 +45,49 @@ const ESTADO_LABELS: Record<string, string> = {
   rascunho: "RASCUNHO",
   aprovado: "APROVADO",
   gravado: "GRAVADO",
+};
+
+const SUBTEMAS: Record<string, string[]> = {
+  "SAÚDE MENTAL": [
+    "Ansiedade",
+    "Depressão",
+    "Burnout",
+    "Sono e insónia",
+    "Saúde mental nos jovens",
+    "Estigma da doença mental",
+    "Acesso a psicólogos no SNS",
+    "Automedicação com ansiolíticos",
+  ],
+  "ALIMENTAÇÃO": [
+    "Dietas da moda",
+    "Suplementos alimentares",
+    "Alimentação infantil",
+    "Ultra-processados",
+    "Rotulagem alimentar",
+    "Açúcar oculto",
+    "Alimentação e cancro",
+    "Vegetarianismo e veganismo",
+  ],
+  "MENOPAUSA": [
+    "Sintomas e diagnóstico",
+    "Terapia hormonal",
+    "Menopausa precoce",
+    "Saúde óssea",
+    "Saúde cardiovascular",
+    "Bem-estar emocional",
+    "Menopausa no trabalho",
+    "Mitos sobre menopausa",
+  ],
+  "EMERGENTES": [
+    "Ozempic e emagrecimento",
+    "Long COVID",
+    "Resistência a antibióticos",
+    "Saúde digital",
+    "Desinformação em saúde",
+    "Poluição e saúde",
+    "Alergias alimentares",
+    "Saúde oral",
+  ],
 };
 
 const temaBadgeColor = (tema: string) => {
@@ -147,6 +190,15 @@ const Guioes = () => {
   const [perguntasText, setPerguntasText] = useState("");
   const [estado, setEstado] = useState("rascunho");
 
+  // AI modal state
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [aiTema, setAiTema] = useState("");
+  const [aiSubtema, setAiSubtema] = useState("");
+  const [aiContexto, setAiContexto] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiPerguntas, setAiPerguntas] = useState<string[]>([]);
+  const [aiGenerated, setAiGenerated] = useState(false);
+
   const fetchGuioes = async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -175,6 +227,14 @@ const Guioes = () => {
     setPerguntasText("");
     setEstado("rascunho");
     setEditingGuiao(null);
+  };
+
+  const resetAiModal = () => {
+    setAiTema("");
+    setAiSubtema("");
+    setAiContexto("");
+    setAiPerguntas([]);
+    setAiGenerated(false);
   };
 
   const openCreate = () => {
@@ -237,6 +297,92 @@ const Guioes = () => {
     fetchGuioes();
   };
 
+  const handleAiGenerate = async () => {
+    if (!aiTema || !aiSubtema) {
+      toast.error("Selecciona tema e sub-tema.");
+      return;
+    }
+    setAiLoading(true);
+    setAiPerguntas([]);
+    setAiGenerated(false);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-guiao-questions", {
+        body: { tema: aiTema, subtema: aiSubtema, contexto: aiContexto },
+      });
+
+      if (error) {
+        toast.error("Erro ao gerar perguntas.");
+        console.error(error);
+        setAiLoading(false);
+        return;
+      }
+
+      if (data?.error) {
+        toast.error(data.error);
+        setAiLoading(false);
+        return;
+      }
+
+      const perguntas = data?.perguntas || [];
+      if (perguntas.length === 0) {
+        toast.error("Nenhuma pergunta gerada. Tenta novamente.");
+      } else {
+        setAiPerguntas(perguntas);
+        setAiGenerated(true);
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro de comunicação com a IA.");
+    }
+    setAiLoading(false);
+  };
+
+  const handleAiPerguntaChange = (index: number, value: string) => {
+    setAiPerguntas((prev) => prev.map((p, i) => (i === index ? value : p)));
+  };
+
+  const handleAiPerguntaRemove = (index: number) => {
+    setAiPerguntas((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAiPerguntaAdd = () => {
+    setAiPerguntas((prev) => [...prev, ""]);
+  };
+
+  const handleAiSave = async () => {
+    const validPerguntas = aiPerguntas.map((p) => p.trim()).filter(Boolean);
+    if (validPerguntas.length === 0) {
+      toast.error("Adiciona pelo menos uma pergunta.");
+      return;
+    }
+
+    const today = new Date();
+    // Find next Monday
+    const dayOfWeek = today.getDay();
+    const daysUntilMonday = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 0 : 8 - dayOfWeek;
+    const nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() + daysUntilMonday);
+
+    const { error } = await supabase.from("guioes").insert({
+      titulo: `${aiSubtema} — Gerado por IA`,
+      semana: format(nextMonday, "yyyy-MM-dd"),
+      tema: aiTema,
+      perguntas: validPerguntas,
+      estado: "rascunho",
+    });
+
+    if (error) {
+      toast.error("Erro ao guardar guião.");
+      return;
+    }
+
+    toast.success("Guião guardado como rascunho.");
+    setAiModalOpen(false);
+    resetAiModal();
+    fetchGuioes();
+  };
+
   const filtered = filter === "TODOS" ? guioes : guioes.filter((g) => g.tema === filter);
 
   return (
@@ -253,102 +399,115 @@ const Guioes = () => {
             <p className="editorial-label mt-1">BANCO DE PERGUNTAS PARA VOX POP</p>
           </div>
 
-          <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
-                onClick={openCreate}
-              >
-                <Plus className="h-3 w-3 mr-1" /> Novo Guião
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
-              <DialogHeader>
-                <DialogTitle className="text-sm font-bold uppercase tracking-[0.1em]">
-                  {editingGuiao ? "Editar Guião" : "Novo Guião"}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 mt-2">
-                <div>
-                  <label className="editorial-label mb-1 block">Título</label>
-                  <Input
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    placeholder="Ex: Semana 1 — Saúde Mental"
-                  />
-                </div>
-                <div>
-                  <label className="editorial-label mb-1 block">Semana</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !semana && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {semana ? format(semana, "d 'de' MMMM yyyy", { locale: pt }) : "Seleccionar segunda-feira"}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={semana}
-                        onSelect={setSemana}
-                        disabled={(date) => date.getDay() !== 1}
-                        className={cn("p-3 pointer-events-auto")}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <div>
-                  <label className="editorial-label mb-1 block">Tema</label>
-                  <Select value={tema} onValueChange={setTema}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar tema" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TEMAS.map((t) => (
-                        <SelectItem key={t} value={t}>{t}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="editorial-label mb-1 block">Perguntas (uma por linha)</label>
-                  <Textarea
-                    value={perguntasText}
-                    onChange={(e) => setPerguntasText(e.target.value)}
-                    rows={6}
-                    placeholder={"Já alguma vez procurou ajuda profissional para saúde mental?\nO que faz quando se sente ansioso/a?"}
-                  />
-                </div>
-                <div>
-                  <label className="editorial-label mb-1 block">Estado</label>
-                  <Select value={estado} onValueChange={setEstado}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ESTADOS.map((e) => (
-                        <SelectItem key={e} value={e}>{ESTADO_LABELS[e]}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div className="flex items-center gap-2">
+            {/* AI Generate button */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
+              onClick={() => { resetAiModal(); setAiModalOpen(true); }}
+            >
+              <Sparkles className="h-3 w-3 mr-1" /> Gerar com IA
+            </Button>
+
+            {/* New Guião button */}
+            <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
+              <DialogTrigger asChild>
                 <Button
-                  className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
-                  onClick={handleSubmit}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
+                  onClick={openCreate}
                 >
-                  {editingGuiao ? "Guardar Alterações" : "Criar Guião"}
+                  <Plus className="h-3 w-3 mr-1" /> Novo Guião
                 </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                  <DialogTitle className="text-sm font-bold uppercase tracking-[0.1em]">
+                    {editingGuiao ? "Editar Guião" : "Novo Guião"}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 mt-2">
+                  <div>
+                    <label className="editorial-label mb-1 block">Título</label>
+                    <Input
+                      value={titulo}
+                      onChange={(e) => setTitulo(e.target.value)}
+                      placeholder="Ex: Semana 1 — Saúde Mental"
+                    />
+                  </div>
+                  <div>
+                    <label className="editorial-label mb-1 block">Semana</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !semana && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {semana ? format(semana, "d 'de' MMMM yyyy", { locale: pt }) : "Seleccionar segunda-feira"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={semana}
+                          onSelect={setSemana}
+                          disabled={(date) => date.getDay() !== 1}
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <div>
+                    <label className="editorial-label mb-1 block">Tema</label>
+                    <Select value={tema} onValueChange={setTema}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar tema" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {TEMAS.map((t) => (
+                          <SelectItem key={t} value={t}>{t}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="editorial-label mb-1 block">Perguntas (uma por linha)</label>
+                    <Textarea
+                      value={perguntasText}
+                      onChange={(e) => setPerguntasText(e.target.value)}
+                      rows={6}
+                      placeholder={"Já alguma vez procurou ajuda profissional para saúde mental?\nO que faz quando se sente ansioso/a?"}
+                    />
+                  </div>
+                  <div>
+                    <label className="editorial-label mb-1 block">Estado</label>
+                    <Select value={estado} onValueChange={setEstado}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ESTADOS.map((e) => (
+                          <SelectItem key={e} value={e}>{ESTADO_LABELS[e]}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button
+                    className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
+                    onClick={handleSubmit}
+                  >
+                    {editingGuiao ? "Guardar Alterações" : "Criar Guião"}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         <div className="section-divider my-4" />
@@ -436,6 +595,132 @@ const Guioes = () => {
           </div>
         )}
       </main>
+
+      {/* AI Generation Modal */}
+      <Dialog open={aiModalOpen} onOpenChange={(open) => { setAiModalOpen(open); if (!open) resetAiModal(); }}>
+        <DialogContent className="sm:max-w-lg border-[#0000FF] shadow-none">
+          <DialogHeader>
+            <DialogTitle className="text-sm font-bold uppercase tracking-[0.1em] flex items-center gap-2">
+              <Sparkles className="h-4 w-4" style={{ color: "#0000FF" }} />
+              Gerar Perguntas com IA
+            </DialogTitle>
+          </DialogHeader>
+
+          {!aiGenerated ? (
+            <div className="space-y-4 mt-2">
+              <div>
+                <label className="editorial-label mb-1 block">Tema</label>
+                <Select value={aiTema} onValueChange={(v) => { setAiTema(v); setAiSubtema(""); }}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccionar tema" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TEMAS.map((t) => (
+                      <SelectItem key={t} value={t}>{t}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="editorial-label mb-1 block">Sub-tema</label>
+                <Select value={aiSubtema} onValueChange={setAiSubtema} disabled={!aiTema}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={aiTema ? "Seleccionar sub-tema" : "Selecciona primeiro o tema"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(SUBTEMAS[aiTema] || []).map((s) => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="editorial-label mb-1 block">Contexto adicional (opcional)</label>
+                <Textarea
+                  value={aiContexto}
+                  onChange={(e) => setAiContexto(e.target.value)}
+                  rows={3}
+                  placeholder="Ex: Foco em jovens universitários, zona urbana..."
+                />
+              </div>
+
+              <Button
+                className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
+                onClick={handleAiGenerate}
+                disabled={aiLoading || !aiTema || !aiSubtema}
+              >
+                {aiLoading ? (
+                  <>
+                    <Loader2 className="h-3 w-3 mr-2 animate-spin" />
+                    A gerar perguntas...
+                  </>
+                ) : (
+                  "Gerar"
+                )}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4 mt-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Badge variant="outline" className={cn("rounded text-[10px] font-bold uppercase tracking-wider", temaBadgeColor(aiTema))}>
+                  {aiTema}
+                </Badge>
+                <span className="text-[10px] text-muted-foreground">·</span>
+                <span className="text-[10px] text-muted-foreground">{aiSubtema}</span>
+              </div>
+
+              <div className="space-y-2">
+                {aiPerguntas.map((p, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-[10px] font-bold text-muted-foreground mt-2.5 w-4 shrink-0">{i + 1}.</span>
+                    <Input
+                      value={p}
+                      onChange={(e) => handleAiPerguntaChange(i, e.target.value)}
+                      className="text-xs"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                      onClick={() => handleAiPerguntaRemove(i)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[10px] font-bold uppercase tracking-wider"
+                onClick={handleAiPerguntaAdd}
+              >
+                <Plus className="h-3 w-3 mr-1" /> Adicionar pergunta
+              </Button>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
+                  onClick={() => setAiGenerated(false)}
+                >
+                  Voltar
+                </Button>
+                <Button
+                  className="flex-1 bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
+                  onClick={handleAiSave}
+                >
+                  Guardar como Rascunho
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <DashboardFooter />
     </div>
