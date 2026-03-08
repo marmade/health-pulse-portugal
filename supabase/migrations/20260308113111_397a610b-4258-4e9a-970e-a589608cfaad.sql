@@ -1,0 +1,1 @@
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS source_type text NOT NULL DEFAULT 'media';

@@ -1,0 +1,1 @@
+CREATE POLICY "Allow service role insert on news_items" ON public.news_items FOR INSERT TO service_role WITH CHECK (true);

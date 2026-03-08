@@ -19,7 +19,7 @@ const Index = () => {
 
   const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period, filters.region);
   const { data: dbDebunkingData } = useDebunkingData();
-  const { data: dbNewsData } = useNewsData();
+  const { data: dbNewsData, lastFetchTimestamp } = useNewsData();
 
   // Use DB data or fallback to mock
   const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
@@ -147,7 +147,7 @@ const Index = () => {
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:h-[500px]">
             <DebunkingTable items={debunkingData} />
-            <MediaTable items={newsData} />
+            <MediaTable items={newsData} lastFetchTimestamp={lastFetchTimestamp} />
           </div>
         </div>
       </main>

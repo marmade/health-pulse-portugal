@@ -254,6 +254,7 @@ export function useDebunkingData() {
 export function useNewsData() {
   const [data, setData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastFetchTimestamp, setLastFetchTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -269,7 +270,11 @@ export function useNewsData() {
           date: n.date,
           url: n.url,
           relatedTerm: n.related_term,
+          sourceType: (n as any).source_type || 'media',
         })));
+        // Use the most recent created_at as last fetch timestamp
+        const latest = news.reduce((max, n) => n.created_at > max ? n.created_at : max, news[0].created_at);
+        setLastFetchTimestamp(latest);
       }
       setIsLoading(false);
     };
@@ -277,5 +282,5 @@ export function useNewsData() {
     fetchData();
   }, []);
 
-  return { data, isLoading };
+  return { data, isLoading, lastFetchTimestamp };
 }

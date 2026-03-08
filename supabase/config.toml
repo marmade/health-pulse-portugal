@@ -2,3 +2,6 @@ project_id = "cyjwhmuakmiytypewwfw"
 
 [functions.google-trends]
 verify_jwt = false
+
+[functions.fetch-rss-feeds]
+verify_jwt = false
