@@ -63,11 +63,11 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
   pdf.setFontSize(18);
   pdf.setTextColor(blue);
   pdf.setFont("helvetica", "bold");
-  pdf.text("HEALTH PULSE PORTUGAL", margin, yPos);
+  pdf.text("REPORTAGEM VIVA", margin, yPos);
   yPos += 7;
   pdf.setFontSize(10);
   pdf.setFont("helvetica", "normal");
-  pdf.text("Relatório de Tendências", margin, yPos);
+  pdf.text("Monitorização de Tendências sobre Saúde em Portugal", margin, yPos);
   yPos += 10;
 
   const now = new Date();
@@ -404,8 +404,8 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
   yPos = pageHeight - 10;
   pdf.setFontSize(7);
   pdf.setTextColor("#999999");
-  pdf.text("Health Pulse Portugal © 2026 — Dados: Google Trends / Google Analytics", margin, yPos);
+  pdf.text("Reportagem Viva © 2026 — Dados: Google Trends / Google Analytics", margin, yPos);
 
   const dateStr = now.toISOString().split("T")[0];
-  pdf.save(`health-pulse-report-${dateStr}.pdf`);
+  pdf.save(`reportagem-viva-report-${dateStr}.pdf`);
 }
