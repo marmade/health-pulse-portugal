@@ -3,7 +3,6 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -38,16 +37,6 @@ type GuiaoSemanal = {
   created_at: string;
 };
 
-type BancoRow = {
-  id: string;
-  tema: string;
-  subtema: string;
-  pergunta: string;
-  resposta: string;
-  referencia_cientifica: string;
-  ordem: number;
-};
-
 type KeywordRow = {
   term: string;
   axis: string;
@@ -62,32 +51,6 @@ const TEMAS = [
   { value: "menopausa", label: "MENOPAUSA", db: "menopausa" },
   { value: "emergentes", label: "EMERGENTES", db: "emergentes" },
 ];
-
-const BANCO_FILTROS = ["TODOS", "SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"] as const;
-const bancoTemaMap: Record<string, string> = {
-  "SAÚDE MENTAL": "saude_mental",
-  "ALIMENTAÇÃO": "alimentacao",
-  "MENOPAUSA": "menopausa",
-  "EMERGENTES": "emergentes",
-};
-const bancoLabelMap: Record<string, string> = {
-  saude_mental: "SAÚDE MENTAL",
-  alimentacao: "ALIMENTAÇÃO",
-  menopausa: "MENOPAUSA",
-  emergentes: "EMERGENTES",
-};
-// Known source URL map for banco base references
-const KNOWN_SOURCES: Record<string, string> = {
-  "OMS": "https://www.who.int",
-  "WHO": "https://www.who.int",
-  "DGS": "https://www.dgs.pt",
-  "SNS24": "https://www.sns24.gov.pt",
-  "INSA": "https://repositorio.insa.pt/home",
-  "INFARMED": "https://www.infarmed.pt",
-  "ECDC": "https://www.ecdc.europa.eu",
-  "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
-  "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
-};
 
 // Approved domain whitelist — only these are shown as clickable links
 const APPROVED_DOMAINS = [
@@ -117,39 +80,6 @@ function isApprovedUrl(url: string): boolean {
   }
 }
 
-function ReferenceLinks({ text }: { text: string }) {
-  if (!text) return <span className="opacity-30">—</span>;
-
-  // Split by · or ; separators
-  const parts = text.split(/[·;]/).map((s) => s.trim()).filter(Boolean);
-
-  return (
-    <span className="flex flex-wrap gap-x-2 gap-y-0.5">
-      {parts.map((part, i) => {
-        // Check for PubMed with number
-        const pubmedMatch = part.match(/PubMed\s*(\d+)/i);
-        if (pubmedMatch) {
-          return (
-            <a key={i} href={`https://pubmed.ncbi.nlm.nih.gov/${pubmedMatch[1]}`} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
-              {part}
-            </a>
-          );
-        }
-        // Check known sources
-        const upper = part.toUpperCase();
-        const matchedKey = Object.keys(KNOWN_SOURCES).find((k) => upper.includes(k));
-        if (matchedKey) {
-          return (
-            <a key={i} href={KNOWN_SOURCES[matchedKey]} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
-              {part}
-            </a>
-          );
-        }
-        return <span key={i}>{part}</span>;
-      })}
-    </span>
-  );
-}
 
 // ── PDF Export ─────────────────────────────────────────
 function exportGuiaoPdf(tema: string, semana: string, perguntas: Pergunta[]) {
@@ -242,11 +172,6 @@ const Guioes = () => {
   const [editCell, setEditCell] = useState<{ idx: number; field: keyof Pergunta } | null>(null);
   const [editValue, setEditValue] = useState("");
 
-  // Banco base
-  const [bancoRows, setBancoRows] = useState<BancoRow[]>([]);
-  const [bancoFilter, setBancoFilter] = useState("TODOS");
-  const [bancoLoading, setBancoLoading] = useState(true);
-
   // Keywords
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
 
@@ -256,15 +181,12 @@ const Guioes = () => {
   // Fetch data on mount and week change
   useEffect(() => {
     const fetchAll = async () => {
-      const [kwRes, bancoRes, guiaoRes] = await Promise.all([
+      const [kwRes, guiaoRes] = await Promise.all([
         supabase.from("keywords").select("term, axis, current_volume, change_percent").eq("is_active", true),
-        supabase.from("guioes").select("*").order("tema").order("ordem"),
         supabase.from("guioes_semanais").select("*").eq("semana", semanaStr),
       ]);
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
-      if (bancoRes.data) setBancoRows(bancoRes.data as BancoRow[]);
       if (guiaoRes.data) setGuioesSemanais(guiaoRes.data as GuiaoSemanal[]);
-      setBancoLoading(false);
     };
     fetchAll();
   }, [semanaStr]);
@@ -411,53 +333,6 @@ const Guioes = () => {
     }
     setSaving(false);
   };
-
-  // Add banco question to current guião (no longer needed as standalone, kept for banco base section)
-  const addFromBanco = (row: BancoRow) => {
-    const newPergunta: Pergunta = {
-      pergunta: row.pergunta,
-      resposta_simples: row.resposta,
-      referencia_nome: row.referencia_cientifica,
-      referencia_url: "",
-      source: "banco",
-    };
-
-    setGuioesSemanais((prev) => {
-      const existing = prev.find((g) => g.tema === activeTema);
-      if (existing) {
-        return prev.map((g) =>
-          g.tema === activeTema
-            ? { ...g, perguntas: [...g.perguntas, newPergunta] }
-            : g
-        );
-      }
-      return [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          semana: semanaStr,
-          tema: activeTema,
-          perguntas: [newPergunta],
-          estado: "gravado",
-          gerado_por_ia: false,
-          created_at: new Date().toISOString(),
-        },
-      ];
-    });
-    toast.success("Pergunta adicionada ao guião");
-  };
-
-  // Banco filtering
-  const filteredBanco =
-    bancoFilter === "TODOS"
-      ? bancoRows
-      : bancoRows.filter((r) => r.tema === bancoTemaMap[bancoFilter]);
-
-  const bancoGroups = filteredBanco.reduce<Record<string, BancoRow[]>>((acc, row) => {
-    if (!acc[row.tema]) acc[row.tema] = [];
-    acc[row.tema].push(row);
-    return acc;
-  }, {});
 
   // PDF
   const handleExportPdf = () => {
@@ -678,89 +553,6 @@ const Guioes = () => {
               {TEMAS.find((t) => t.value === activeTema)?.label}
             </p>
           </div>
-        )}
-
-        {/* ── Banco Base ────────────────────────────────── */}
-        <div className="section-divider mb-8" />
-
-        <div className="flex items-start justify-between mb-1">
-          <div>
-            <h2
-              className="text-[10px] font-bold uppercase tracking-[0.2em]"
-              style={{ color: "#0000FF" }}
-            >
-              BANCO BASE
-            </h2>
-            <p className="text-[10px] text-muted-foreground mt-1">
-              Perguntas permanentes — clica "+" para adicionar ao guião semanal
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-3 mt-4 mb-4 border-b border-border pb-3">
-          {BANCO_FILTROS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setBancoFilter(f)}
-              className={cn(
-                "text-[10px] font-bold uppercase tracking-[0.15em] pb-1 border-b-2 transition-colors",
-                bancoFilter === f
-                  ? "border-[#0000FF] text-[#0000FF]"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
-        {bancoLoading ? (
-          <p className="text-xs text-muted-foreground">A carregar...</p>
-        ) : Object.keys(bancoGroups).length === 0 ? (
-          <p className="text-xs text-muted-foreground">Nenhuma pergunta no banco base.</p>
-        ) : (
-          Object.entries(bancoGroups).map(([tema, rows]) => (
-            <div key={tema} className="mb-8">
-              <h3
-                className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3"
-                style={{ color: "#0000FF" }}
-              >
-                {bancoLabelMap[tema] || tema}
-              </h3>
-              <div className="border border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-b border-border">
-                      <TableHead className="w-10"></TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Pergunta</TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Resposta Simples</TableHead>
-                      <TableHead className="text-[10px] font-bold uppercase tracking-wider">Referência Científica</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow key={row.id} className="border-b border-border/50">
-                        <TableCell className="w-10">
-                          <button
-                            onClick={() => addFromBanco(row)}
-                            className="text-[10px] font-bold text-[#0000FF] hover:bg-[#0000FF]/10 w-6 h-6 flex items-center justify-center border border-[#0000FF]/30"
-                            title="Adicionar ao guião semanal"
-                          >
-                            +
-                          </button>
-                        </TableCell>
-                        <TableCell className="text-xs font-medium">{row.pergunta}</TableCell>
-                        <TableCell className="text-xs text-muted-foreground">{row.resposta}</TableCell>
-                        <TableCell className="text-xs text-muted-foreground italic">
-                          <ReferenceLinks text={row.referencia_cientifica} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
-          ))
         )}
       </main>
 
