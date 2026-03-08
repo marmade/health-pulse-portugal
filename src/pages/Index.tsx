@@ -35,9 +35,45 @@ const Index = () => {
       ? axisOrder
       : axisOrder.filter((a) => a === activeAxis);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin h-8 w-8 border-2 border-foreground border-t-transparent rounded-full mx-auto mb-4" />
+            <p className="text-xs uppercase tracking-wider opacity-60">A carregar dados...</p>
+          </div>
+        </div>
+        <DashboardFooter />
+      </div>
+    );
+  }
+
+  // If no data at all
+  if (!filteredData) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-xs uppercase tracking-wider opacity-60">Sem dados disponíveis</p>
+        </div>
+        <DashboardFooter />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+
+      {/* Data source indicator */}
+      {error && (
+        <div className="px-6 py-2 bg-yellow-500/10 text-yellow-600 text-xs">
+          A usar dados de demonstração (erro: {error})
+        </div>
+      )}
 
       {/* Filters */}
       <div className="px-6 py-3 overflow-x-auto">
