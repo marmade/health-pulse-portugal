@@ -22,19 +22,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CalendarIcon, ChevronDown, ChevronUp, Pencil, FileText, Plus, Sparkles, X, Loader2 } from "lucide-react";
+import { CalendarIcon, ChevronDown, ChevronUp, Pencil, FileText, Plus, Sparkles, X, Loader2, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 
+type Pergunta = {
+  pergunta: string;
+  resposta: string;
+  referencia: string;
+};
+
 type Guiao = {
   id: string;
   titulo: string;
   semana: string;
   tema: string;
-  perguntas: string[];
+  subtema: string;
+  perguntas: Pergunta[];
   estado: string;
   created_at: string;
 };
@@ -48,46 +55,10 @@ const ESTADO_LABELS: Record<string, string> = {
 };
 
 const SUBTEMAS: Record<string, string[]> = {
-  "SAÚDE MENTAL": [
-    "Ansiedade",
-    "Depressão",
-    "Burnout",
-    "Sono e insónia",
-    "Saúde mental nos jovens",
-    "Estigma da doença mental",
-    "Acesso a psicólogos no SNS",
-    "Automedicação com ansiolíticos",
-  ],
-  "ALIMENTAÇÃO": [
-    "Dietas da moda",
-    "Suplementos alimentares",
-    "Alimentação infantil",
-    "Ultra-processados",
-    "Rotulagem alimentar",
-    "Açúcar oculto",
-    "Alimentação e cancro",
-    "Vegetarianismo e veganismo",
-  ],
-  "MENOPAUSA": [
-    "Sintomas e diagnóstico",
-    "Terapia hormonal",
-    "Menopausa precoce",
-    "Saúde óssea",
-    "Saúde cardiovascular",
-    "Bem-estar emocional",
-    "Menopausa no trabalho",
-    "Mitos sobre menopausa",
-  ],
-  "EMERGENTES": [
-    "Ozempic e emagrecimento",
-    "Long COVID",
-    "Resistência a antibióticos",
-    "Saúde digital",
-    "Desinformação em saúde",
-    "Poluição e saúde",
-    "Alergias alimentares",
-    "Saúde oral",
-  ],
+  "SAÚDE MENTAL": ["Ansiedade", "Depressão", "Burnout", "Sono e insónia", "Saúde mental nos jovens", "Estigma da doença mental", "Acesso a psicólogos no SNS", "Automedicação com ansiolíticos"],
+  "ALIMENTAÇÃO": ["Dietas da moda", "Suplementos alimentares", "Alimentação infantil", "Ultra-processados", "Rotulagem alimentar", "Açúcar oculto", "Alimentação e cancro", "Vegetarianismo e veganismo"],
+  "MENOPAUSA": ["Sintomas e diagnóstico", "Terapia hormonal", "Menopausa precoce", "Saúde óssea", "Saúde cardiovascular", "Bem-estar emocional", "Menopausa no trabalho", "Mitos sobre menopausa"],
+  "EMERGENTES": ["Ozempic e emagrecimento", "Long COVID", "Resistência a antibióticos", "Saúde digital", "Desinformação em saúde", "Poluição e saúde", "Alergias alimentares", "Saúde oral"],
 };
 
 const temaBadgeColor = (tema: string) => {
@@ -109,6 +80,13 @@ const estadoBadgeColor = (estado: string) => {
   }
 };
 
+const emptyPergunta = (): Pergunta => ({ pergunta: "", resposta: "", referencia: "" });
+
+function normalizePergunta(p: any): Pergunta {
+  if (typeof p === "string") return { pergunta: p, resposta: "", referencia: "" };
+  return { pergunta: p?.pergunta || "", resposta: p?.resposta || "", referencia: p?.referencia || "" };
+}
+
 function exportGuiaoPdf(guiao: Guiao) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const margin = 20;
@@ -123,7 +101,7 @@ function exportGuiaoPdf(guiao: Guiao) {
 
   doc.setFontSize(6);
   doc.setTextColor(100, 100, 100);
-  doc.text("GUIÃO DIZ QUE DISSE — VOX POP", margin, y);
+  doc.text("GUIÃO DIZ QUE DISSE — NOTAS DE FUNDAMENTO", margin, y);
   y += 10;
 
   doc.setDrawColor(0, 0, 255);
@@ -141,11 +119,13 @@ function exportGuiaoPdf(guiao: Guiao) {
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 100);
   const semanaDate = new Date(guiao.semana + "T00:00:00");
-  doc.text(
-    `Semana de ${format(semanaDate, "d 'de' MMMM yyyy", { locale: pt })}  ·  ${guiao.tema}  ·  ${ESTADO_LABELS[guiao.estado] || guiao.estado.toUpperCase()}`,
-    margin,
-    y
-  );
+  const meta = [
+    `Semana de ${format(semanaDate, "d 'de' MMMM yyyy", { locale: pt })}`,
+    guiao.tema,
+    guiao.subtema,
+    ESTADO_LABELS[guiao.estado] || guiao.estado.toUpperCase(),
+  ].filter(Boolean).join("  ·  ");
+  doc.text(meta, margin, y);
   y += 10;
 
   doc.setDrawColor(200, 200, 200);
@@ -158,18 +138,32 @@ function exportGuiaoPdf(guiao: Guiao) {
   doc.text("PERGUNTAS", margin, y);
   y += 6;
 
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(0, 0, 0);
-  doc.setFontSize(9);
-
   guiao.perguntas.forEach((p, i) => {
-    if (y > 270) {
-      doc.addPage();
-      y = margin;
+    if (y > 255) { doc.addPage(); y = margin; }
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    const qLines = doc.splitTextToSize(`${i + 1}. ${p.pergunta}`, pageWidth);
+    doc.text(qLines, margin, y);
+    y += qLines.length * 4.5 + 2;
+
+    if (p.resposta) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(60, 60, 60);
+      const aLines = doc.splitTextToSize(`R: ${p.resposta}`, pageWidth - 4);
+      doc.text(aLines, margin + 4, y);
+      y += aLines.length * 4 + 1;
     }
-    const lines = doc.splitTextToSize(`${i + 1}. ${p}`, pageWidth);
-    doc.text(lines, margin, y);
-    y += lines.length * 5 + 3;
+    if (p.referencia) {
+      doc.setFont("helvetica", "italic");
+      doc.setFontSize(7);
+      doc.setTextColor(120, 120, 120);
+      const rLines = doc.splitTextToSize(`Ref: ${p.referencia}`, pageWidth - 4);
+      doc.text(rLines, margin + 4, y);
+      y += rLines.length * 3.5 + 1;
+    }
+    y += 3;
   });
 
   doc.save(`guiao-${guiao.semana}-${guiao.tema.toLowerCase().replace(/\s+/g, "-")}.pdf`);
@@ -187,7 +181,8 @@ const Guioes = () => {
   const [titulo, setTitulo] = useState("");
   const [semana, setSemana] = useState<Date | undefined>();
   const [tema, setTema] = useState("");
-  const [perguntasText, setPerguntasText] = useState("");
+  const [subtema, setSubtema] = useState("");
+  const [perguntas, setPerguntas] = useState<Pergunta[]>([emptyPergunta()]);
   const [estado, setEstado] = useState("rascunho");
 
   // AI modal state
@@ -209,22 +204,22 @@ const Guioes = () => {
       setGuioes(
         data.map((d: any) => ({
           ...d,
-          perguntas: Array.isArray(d.perguntas) ? d.perguntas : [],
+          subtema: d.subtema || "",
+          perguntas: Array.isArray(d.perguntas) ? d.perguntas.map(normalizePergunta) : [],
         }))
       );
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchGuioes();
-  }, []);
+  useEffect(() => { fetchGuioes(); }, []);
 
   const resetForm = () => {
     setTitulo("");
     setSemana(undefined);
     setTema("");
-    setPerguntasText("");
+    setSubtema("");
+    setPerguntas([emptyPergunta()]);
     setEstado("rascunho");
     setEditingGuiao(null);
   };
@@ -237,59 +232,52 @@ const Guioes = () => {
     setAiGenerated(false);
   };
 
-  const openCreate = () => {
-    resetForm();
-    setDialogOpen(true);
-  };
+  const openCreate = () => { resetForm(); setDialogOpen(true); };
 
   const openEdit = (g: Guiao) => {
     setEditingGuiao(g);
     setTitulo(g.titulo);
     setSemana(new Date(g.semana + "T00:00:00"));
     setTema(g.tema);
-    setPerguntasText(g.perguntas.join("\n"));
+    setSubtema(g.subtema);
+    setPerguntas(g.perguntas.length > 0 ? g.perguntas : [emptyPergunta()]);
     setEstado(g.estado);
     setDialogOpen(true);
   };
+
+  const updatePergunta = (index: number, field: keyof Pergunta, value: string) => {
+    setPerguntas((prev) => prev.map((p, i) => i === index ? { ...p, [field]: value } : p));
+  };
+
+  const removePergunta = (index: number) => {
+    setPerguntas((prev) => prev.length <= 1 ? prev : prev.filter((_, i) => i !== index));
+  };
+
+  const addPergunta = () => setPerguntas((prev) => [...prev, emptyPergunta()]);
 
   const handleSubmit = async () => {
     if (!titulo || !semana || !tema) {
       toast.error("Preenche o título, semana e tema.");
       return;
     }
-    const perguntas = perguntasText
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean);
+    const validPerguntas = perguntas.filter((p) => p.pergunta.trim());
+
+    const payload = {
+      titulo,
+      semana: format(semana, "yyyy-MM-dd"),
+      tema,
+      subtema,
+      perguntas: validPerguntas as any,
+      estado,
+    };
 
     if (editingGuiao) {
-      const { error } = await supabase
-        .from("guioes")
-        .update({
-          titulo,
-          semana: format(semana, "yyyy-MM-dd"),
-          tema,
-          perguntas,
-          estado,
-        })
-        .eq("id", editingGuiao.id);
-      if (error) {
-        toast.error("Erro ao actualizar guião.");
-        return;
-      }
+      const { error } = await supabase.from("guioes").update(payload).eq("id", editingGuiao.id);
+      if (error) { toast.error("Erro ao actualizar guião."); return; }
       toast.success("Guião actualizado.");
     } else {
-      const { error } = await supabase.from("guioes").insert({
-        titulo,
-        semana: format(semana, "yyyy-MM-dd"),
-        tema,
-        perguntas,
-        estado,
-      });
-      if (error) {
-        toast.error("Erro ao criar guião.");
-        return;
-      }
+      const { error } = await supabase.from("guioes").insert(payload);
+      if (error) { toast.error("Erro ao criar guião."); return; }
       toast.success("Guião criado.");
     }
     setDialogOpen(false);
@@ -297,86 +285,41 @@ const Guioes = () => {
     fetchGuioes();
   };
 
+  // AI generation
   const handleAiGenerate = async () => {
-    if (!aiTema || !aiSubtema) {
-      toast.error("Selecciona tema e sub-tema.");
-      return;
-    }
+    if (!aiTema || !aiSubtema) { toast.error("Selecciona tema e sub-tema."); return; }
     setAiLoading(true);
     setAiPerguntas([]);
     setAiGenerated(false);
-
     try {
       const { data, error } = await supabase.functions.invoke("generate-guiao-questions", {
         body: { tema: aiTema, subtema: aiSubtema, contexto: aiContexto },
       });
-
-      if (error) {
-        toast.error("Erro ao gerar perguntas.");
-        console.error(error);
-        setAiLoading(false);
-        return;
-      }
-
-      if (data?.error) {
-        toast.error(data.error);
-        setAiLoading(false);
-        return;
-      }
-
-      const perguntas = data?.perguntas || [];
-      if (perguntas.length === 0) {
-        toast.error("Nenhuma pergunta gerada. Tenta novamente.");
-      } else {
-        setAiPerguntas(perguntas);
-        setAiGenerated(true);
-      }
-    } catch (e) {
-      console.error(e);
-      toast.error("Erro de comunicação com a IA.");
-    }
+      if (error || data?.error) { toast.error(data?.error || "Erro ao gerar perguntas."); setAiLoading(false); return; }
+      const result = data?.perguntas || [];
+      if (result.length === 0) { toast.error("Nenhuma pergunta gerada."); }
+      else { setAiPerguntas(result); setAiGenerated(true); }
+    } catch { toast.error("Erro de comunicação com a IA."); }
     setAiLoading(false);
   };
 
-  const handleAiPerguntaChange = (index: number, value: string) => {
-    setAiPerguntas((prev) => prev.map((p, i) => (i === index ? value : p)));
-  };
-
-  const handleAiPerguntaRemove = (index: number) => {
-    setAiPerguntas((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleAiPerguntaAdd = () => {
-    setAiPerguntas((prev) => [...prev, ""]);
-  };
-
   const handleAiSave = async () => {
-    const validPerguntas = aiPerguntas.map((p) => p.trim()).filter(Boolean);
-    if (validPerguntas.length === 0) {
-      toast.error("Adiciona pelo menos uma pergunta.");
-      return;
-    }
-
+    const valid = aiPerguntas.map((p) => p.trim()).filter(Boolean);
+    if (valid.length === 0) { toast.error("Adiciona pelo menos uma pergunta."); return; }
     const today = new Date();
-    // Find next Monday
     const dayOfWeek = today.getDay();
     const daysUntilMonday = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 0 : 8 - dayOfWeek;
     const nextMonday = new Date(today);
     nextMonday.setDate(today.getDate() + daysUntilMonday);
-
     const { error } = await supabase.from("guioes").insert({
       titulo: `${aiSubtema} — Gerado por IA`,
       semana: format(nextMonday, "yyyy-MM-dd"),
       tema: aiTema,
-      perguntas: validPerguntas,
+      subtema: aiSubtema,
+      perguntas: valid.map((p) => ({ pergunta: p, resposta: "", referencia: "" })) as any,
       estado: "rascunho",
     });
-
-    if (error) {
-      toast.error("Erro ao guardar guião.");
-      return;
-    }
-
+    if (error) { toast.error("Erro ao guardar guião."); return; }
     toast.success("Guião guardado como rascunho.");
     setAiModalOpen(false);
     resetAiModal();
@@ -396,33 +339,29 @@ const Guioes = () => {
             <h1 className="text-sm font-bold uppercase tracking-[0.15em]" style={{ color: "#0000FF" }}>
               GUIÕES DIZ QUE DISSE
             </h1>
-            <p className="editorial-label mt-1">BANCO DE PERGUNTAS PARA VOX POP</p>
+            <p className="editorial-label mt-1">NOTAS DE FUNDAMENTO</p>
           </div>
-
           <div className="flex items-center gap-2">
-            {/* AI Generate button */}
             <Button
               variant="outline"
               size="sm"
-              className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
+              className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5 rounded-none"
               onClick={() => { resetAiModal(); setAiModalOpen(true); }}
             >
               <Sparkles className="h-3 w-3 mr-1" /> Gerar com IA
             </Button>
-
-            {/* New Guião button */}
             <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
+                  className="text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5 rounded-none"
                   onClick={openCreate}
                 >
                   <Plus className="h-3 w-3 mr-1" /> Novo Guião
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-lg">
+              <DialogContent className="sm:max-w-2xl rounded-none border-[#0000FF] shadow-none max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="text-sm font-bold uppercase tracking-[0.1em]">
                     {editingGuiao ? "Editar Guião" : "Novo Guião"}
@@ -431,77 +370,69 @@ const Guioes = () => {
                 <div className="space-y-4 mt-2">
                   <div>
                     <label className="editorial-label mb-1 block">Título</label>
-                    <Input
-                      value={titulo}
-                      onChange={(e) => setTitulo(e.target.value)}
-                      placeholder="Ex: Semana 1 — Saúde Mental"
-                    />
+                    <Input value={titulo} onChange={(e) => setTitulo(e.target.value)} placeholder="Ex: Semana 1 — Saúde Mental" className="rounded-none" />
                   </div>
                   <div>
                     <label className="editorial-label mb-1 block">Semana</label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !semana && "text-muted-foreground"
-                          )}
-                        >
+                        <Button variant="outline" className={cn("w-full justify-start text-left font-normal rounded-none", !semana && "text-muted-foreground")}>
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {semana ? format(semana, "d 'de' MMMM yyyy", { locale: pt }) : "Seleccionar segunda-feira"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={semana}
-                          onSelect={setSemana}
-                          disabled={(date) => date.getDay() !== 1}
-                          className={cn("p-3 pointer-events-auto")}
-                        />
+                        <Calendar mode="single" selected={semana} onSelect={setSemana} disabled={(date) => date.getDay() !== 1} className={cn("p-3 pointer-events-auto")} />
                       </PopoverContent>
                     </Popover>
                   </div>
-                  <div>
-                    <label className="editorial-label mb-1 block">Tema</label>
-                    <Select value={tema} onValueChange={setTema}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccionar tema" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {TEMAS.map((t) => (
-                          <SelectItem key={t} value={t}>{t}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="editorial-label mb-1 block">Tema</label>
+                      <Select value={tema} onValueChange={setTema}>
+                        <SelectTrigger className="rounded-none"><SelectValue placeholder="Seleccionar tema" /></SelectTrigger>
+                        <SelectContent>{TEMAS.map((t) => (<SelectItem key={t} value={t}>{t}</SelectItem>))}</SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="editorial-label mb-1 block">Sub-tema</label>
+                      <Input value={subtema} onChange={(e) => setSubtema(e.target.value)} placeholder="Ex: Ansiedade nos jovens" className="rounded-none" />
+                    </div>
                   </div>
+
+                  {/* Perguntas */}
                   <div>
-                    <label className="editorial-label mb-1 block">Perguntas (uma por linha)</label>
-                    <Textarea
-                      value={perguntasText}
-                      onChange={(e) => setPerguntasText(e.target.value)}
-                      rows={6}
-                      placeholder={"Já alguma vez procurou ajuda profissional para saúde mental?\nO que faz quando se sente ansioso/a?"}
-                    />
+                    <label className="editorial-label mb-2 block">Perguntas</label>
+                    <div className="space-y-3">
+                      {perguntas.map((p, i) => (
+                        <div key={i} className="border border-border p-3 space-y-2 relative">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pergunta {i + 1}</span>
+                            {perguntas.length > 1 && (
+                              <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-destructive" onClick={() => removePergunta(i)}>
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            )}
+                          </div>
+                          <Input value={p.pergunta} onChange={(e) => updatePergunta(i, "pergunta", e.target.value)} placeholder="Pergunta" className="rounded-none text-xs" />
+                          <Input value={p.resposta} onChange={(e) => updatePergunta(i, "resposta", e.target.value)} placeholder="Resposta simples" className="rounded-none text-xs" />
+                          <Input value={p.referencia} onChange={(e) => updatePergunta(i, "referencia", e.target.value)} placeholder="Referência (fonte, URL, etc.)" className="rounded-none text-xs" />
+                        </div>
+                      ))}
+                    </div>
+                    <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-wider mt-2" onClick={addPergunta}>
+                      <Plus className="h-3 w-3 mr-1" /> Adicionar pergunta
+                    </Button>
                   </div>
+
                   <div>
                     <label className="editorial-label mb-1 block">Estado</label>
                     <Select value={estado} onValueChange={setEstado}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ESTADOS.map((e) => (
-                          <SelectItem key={e} value={e}>{ESTADO_LABELS[e]}</SelectItem>
-                        ))}
-                      </SelectContent>
+                      <SelectTrigger className="rounded-none"><SelectValue /></SelectTrigger>
+                      <SelectContent>{ESTADOS.map((e) => (<SelectItem key={e} value={e}>{ESTADO_LABELS[e]}</SelectItem>))}</SelectContent>
                     </Select>
                   </div>
-                  <Button
-                    className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
-                    onClick={handleSubmit}
-                  >
+                  <Button className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider rounded-none" onClick={handleSubmit}>
                     {editingGuiao ? "Guardar Alterações" : "Criar Guião"}
                   </Button>
                 </div>
@@ -515,11 +446,7 @@ const Guioes = () => {
         {/* Filters */}
         <nav className="flex items-center gap-2 mb-6 flex-wrap">
           {["TODOS", ...TEMAS].map((t) => (
-            <button
-              key={t}
-              onClick={() => setFilter(t)}
-              className={`nav-link ${filter === t ? "nav-link-active" : ""}`}
-            >
+            <button key={t} onClick={() => setFilter(t)} className={`nav-link ${filter === t ? "nav-link-active" : ""}`}>
               {t}
             </button>
           ))}
@@ -540,54 +467,46 @@ const Guioes = () => {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <Badge variant="outline" className={cn("rounded text-[10px] font-bold uppercase tracking-wider", temaBadgeColor(g.tema))}>
+                        <Badge variant="outline" className={cn("rounded-none text-[10px] font-bold uppercase tracking-wider", temaBadgeColor(g.tema))}>
                           {g.tema}
                         </Badge>
-                        <Badge variant="outline" className={cn("rounded text-[10px] font-bold uppercase tracking-wider", estadoBadgeColor(g.estado))}>
+                        <Badge variant="outline" className={cn("rounded-none text-[10px] font-bold uppercase tracking-wider", estadoBadgeColor(g.estado))}>
                           {ESTADO_LABELS[g.estado] || g.estado.toUpperCase()}
                         </Badge>
                       </div>
                       <p className="text-xs font-bold uppercase tracking-wide mt-1">
                         {format(semanaDate, "'Semana de' d MMM yyyy", { locale: pt })} — {g.titulo}
                       </p>
+                      {g.subtema && (
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{g.subtema}</p>
+                      )}
                       <p className="text-[10px] text-muted-foreground mt-0.5">
                         {g.perguntas.length} pergunta{g.perguntas.length !== 1 ? "s" : ""}
                       </p>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-[10px] font-bold uppercase tracking-wider h-7 px-2"
-                        onClick={() => setExpandedId(isExpanded ? null : g.id)}
-                      >
+                      <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-wider h-7 px-2" onClick={() => setExpandedId(isExpanded ? null : g.id)}>
                         {isExpanded ? <ChevronUp className="h-3 w-3 mr-1" /> : <ChevronDown className="h-3 w-3 mr-1" />}
                         Ver
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-[10px] font-bold uppercase tracking-wider h-7 px-2"
-                        onClick={() => openEdit(g)}
-                      >
+                      <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-wider h-7 px-2" onClick={() => openEdit(g)}>
                         <Pencil className="h-3 w-3 mr-1" /> Editar
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-[10px] font-bold uppercase tracking-wider h-7 px-2"
-                        onClick={() => exportGuiaoPdf(g)}
-                      >
+                      <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-wider h-7 px-2" onClick={() => exportGuiaoPdf(g)}>
                         <FileText className="h-3 w-3 mr-1" /> PDF
                       </Button>
                     </div>
                   </div>
                   {isExpanded && (
-                    <ol className="mt-3 ml-4 space-y-1 list-decimal list-inside">
+                    <div className="mt-3 ml-4 space-y-3">
                       {g.perguntas.map((p, i) => (
-                        <li key={i} className="text-xs leading-relaxed">{p}</li>
+                        <div key={i} className="border-l-2 border-[#0000FF]/20 pl-3">
+                          <p className="text-xs font-bold">{i + 1}. {p.pergunta}</p>
+                          {p.resposta && <p className="text-xs text-muted-foreground mt-0.5">R: {p.resposta}</p>}
+                          {p.referencia && <p className="text-[10px] text-muted-foreground/60 mt-0.5 italic">Ref: {p.referencia}</p>}
+                        </div>
                       ))}
-                    </ol>
+                    </div>
                   )}
                 </div>
               );
@@ -598,7 +517,7 @@ const Guioes = () => {
 
       {/* AI Generation Modal */}
       <Dialog open={aiModalOpen} onOpenChange={(open) => { setAiModalOpen(open); if (!open) resetAiModal(); }}>
-        <DialogContent className="sm:max-w-lg border-[#0000FF] shadow-none">
+        <DialogContent className="sm:max-w-lg border-[#0000FF] shadow-none rounded-none">
           <DialogHeader>
             <DialogTitle className="text-sm font-bold uppercase tracking-[0.1em] flex items-center gap-2">
               <Sparkles className="h-4 w-4" style={{ color: "#0000FF" }} />
@@ -611,109 +530,51 @@ const Guioes = () => {
               <div>
                 <label className="editorial-label mb-1 block">Tema</label>
                 <Select value={aiTema} onValueChange={(v) => { setAiTema(v); setAiSubtema(""); }}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccionar tema" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TEMAS.map((t) => (
-                      <SelectItem key={t} value={t}>{t}</SelectItem>
-                    ))}
-                  </SelectContent>
+                  <SelectTrigger className="rounded-none"><SelectValue placeholder="Seleccionar tema" /></SelectTrigger>
+                  <SelectContent>{TEMAS.map((t) => (<SelectItem key={t} value={t}>{t}</SelectItem>))}</SelectContent>
                 </Select>
               </div>
-
               <div>
                 <label className="editorial-label mb-1 block">Sub-tema</label>
                 <Select value={aiSubtema} onValueChange={setAiSubtema} disabled={!aiTema}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={aiTema ? "Seleccionar sub-tema" : "Selecciona primeiro o tema"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(SUBTEMAS[aiTema] || []).map((s) => (
-                      <SelectItem key={s} value={s}>{s}</SelectItem>
-                    ))}
-                  </SelectContent>
+                  <SelectTrigger className="rounded-none"><SelectValue placeholder={aiTema ? "Seleccionar sub-tema" : "Selecciona primeiro o tema"} /></SelectTrigger>
+                  <SelectContent>{(SUBTEMAS[aiTema] || []).map((s) => (<SelectItem key={s} value={s}>{s}</SelectItem>))}</SelectContent>
                 </Select>
               </div>
-
               <div>
                 <label className="editorial-label mb-1 block">Contexto adicional (opcional)</label>
-                <Textarea
-                  value={aiContexto}
-                  onChange={(e) => setAiContexto(e.target.value)}
-                  rows={3}
-                  placeholder="Ex: Foco em jovens universitários, zona urbana..."
-                />
+                <Textarea value={aiContexto} onChange={(e) => setAiContexto(e.target.value)} rows={3} placeholder="Ex: Foco em jovens universitários, zona urbana..." className="rounded-none" />
               </div>
-
-              <Button
-                className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
-                onClick={handleAiGenerate}
-                disabled={aiLoading || !aiTema || !aiSubtema}
-              >
-                {aiLoading ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-2 animate-spin" />
-                    A gerar perguntas...
-                  </>
-                ) : (
-                  "Gerar"
-                )}
+              <Button className="w-full bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider rounded-none" onClick={handleAiGenerate} disabled={aiLoading || !aiTema || !aiSubtema}>
+                {aiLoading ? (<><Loader2 className="h-3 w-3 mr-2 animate-spin" />A gerar perguntas...</>) : "Gerar"}
               </Button>
             </div>
           ) : (
             <div className="space-y-4 mt-2">
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="outline" className={cn("rounded text-[10px] font-bold uppercase tracking-wider", temaBadgeColor(aiTema))}>
-                  {aiTema}
-                </Badge>
+                <Badge variant="outline" className={cn("rounded-none text-[10px] font-bold uppercase tracking-wider", temaBadgeColor(aiTema))}>{aiTema}</Badge>
                 <span className="text-[10px] text-muted-foreground">·</span>
                 <span className="text-[10px] text-muted-foreground">{aiSubtema}</span>
               </div>
-
               <div className="space-y-2">
                 {aiPerguntas.map((p, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <span className="text-[10px] font-bold text-muted-foreground mt-2.5 w-4 shrink-0">{i + 1}.</span>
-                    <Input
-                      value={p}
-                      onChange={(e) => handleAiPerguntaChange(i, e.target.value)}
-                      className="text-xs"
-                    />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
-                      onClick={() => handleAiPerguntaRemove(i)}
-                    >
+                    <Input value={p} onChange={(e) => setAiPerguntas((prev) => prev.map((x, j) => j === i ? e.target.value : x))} className="text-xs rounded-none" />
+                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive" onClick={() => setAiPerguntas((prev) => prev.filter((_, j) => j !== i))}>
                       <X className="h-3 w-3" />
                     </Button>
                   </div>
                 ))}
               </div>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-[10px] font-bold uppercase tracking-wider"
-                onClick={handleAiPerguntaAdd}
-              >
+              <Button variant="ghost" size="sm" className="text-[10px] font-bold uppercase tracking-wider" onClick={() => setAiPerguntas((prev) => [...prev, ""])}>
                 <Plus className="h-3 w-3 mr-1" /> Adicionar pergunta
               </Button>
-
               <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5"
-                  onClick={() => setAiGenerated(false)}
-                >
+                <Button variant="outline" size="sm" className="flex-1 text-xs font-bold uppercase tracking-wider border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF]/5 rounded-none" onClick={() => setAiGenerated(false)}>
                   Voltar
                 </Button>
-                <Button
-                  className="flex-1 bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider"
-                  onClick={handleAiSave}
-                >
+                <Button className="flex-1 bg-[#0000FF] hover:bg-[#0000CC] text-white text-xs font-bold uppercase tracking-wider rounded-none" onClick={handleAiSave}>
                   Guardar como Rascunho
                 </Button>
               </div>

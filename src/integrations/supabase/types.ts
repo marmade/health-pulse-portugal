@@ -111,6 +111,7 @@ export type Database = {
           id: string
           perguntas: Json
           semana: string
+          subtema: string
           tema: string
           titulo: string
         }
@@ -120,6 +121,7 @@ export type Database = {
           id?: string
           perguntas?: Json
           semana: string
+          subtema?: string
           tema: string
           titulo?: string
         }
@@ -129,6 +131,7 @@ export type Database = {
           id?: string
           perguntas?: Json
           semana?: string
+          subtema?: string
           tema?: string
           titulo?: string
         }
