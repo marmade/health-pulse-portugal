@@ -118,15 +118,30 @@ Responde APENAS com este JSON:
       }
     }
 
+    // Allowed source URLs
+    const allowedUrls: Record<string, string> = {
+      "OMS": "https://www.who.int",
+      "DGS": "https://www.dgs.pt",
+      "SNS24": "https://www.sns24.gov.pt",
+      "INSA": "https://www.insa.min-saude.pt",
+      "INFARMED": "https://www.infarmed.pt",
+      "PubMed": "https://pubmed.ncbi.nlm.nih.gov",
+      "ECDC": "https://www.ecdc.europa.eu",
+    };
+
     // Validate and normalize each item
     perguntas = perguntas
       .filter((p: any) => p && typeof p === "object" && p.pergunta)
-      .map((p: any) => ({
-        pergunta: String(p.pergunta || ""),
-        resposta_simples: String(p.resposta_simples || ""),
-        referencia_nome: String(p.referencia_nome || ""),
-        referencia_url: String(p.referencia_url || ""),
-      }));
+      .map((p: any) => {
+        const nome = String(p.referencia_nome || "OMS").toUpperCase().trim();
+        const matchedKey = Object.keys(allowedUrls).find((k) => nome.includes(k)) || "OMS";
+        return {
+          pergunta: String(p.pergunta || ""),
+          resposta_simples: String(p.resposta_simples || p.reposta_simples || "Consulte a fonte indicada para mais informações."),
+          referencia_nome: matchedKey,
+          referencia_url: allowedUrls[matchedKey],
+        };
+      });
 
     console.log(`Parsed ${perguntas.length} questions`);
 
