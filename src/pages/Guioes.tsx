@@ -87,6 +87,51 @@ const KNOWN_SOURCES: Record<string, string> = {
   "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
 };
 
+// Fixed URL map per tema + fonte (never trust AI-generated URLs)
+const URL_MAP: Record<string, Record<string, string>> = {
+  "saude-mental": {
+    "DGS": "https://www.dgs.pt/saude-mental.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
+    "INSA": "https://repositorio.insa.pt/handle/10400.18/8949",
+    "Ordem dos Psicólogos": "https://www.ordemdospsicologos.pt",
+    "default": "https://www.dgs.pt/saude-mental.aspx",
+  },
+  "alimentacao": {
+    "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/alimentacao/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
+    "INFARMED": "https://www.infarmed.pt",
+    "default": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
+  },
+  "menopausa": {
+    "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
+    "SNS24": "https://www.sns24.gov.pt/tema/saude-da-mulher/menopausa/",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
+    "INSA": "https://repositorio.insa.pt/home",
+    "default": "https://www.who.int/news-room/fact-sheets/detail/menopause",
+  },
+  "emergentes": {
+    "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
+    "OMS": "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
+    "ECDC": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
+    "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/doencas-infecciosas/",
+    "SNS24": "https://www.sns24.gov.pt",
+    "default": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
+  },
+};
+
+function resolveReferenceUrl(tema: string, refNome: string): string {
+  const temaMap = URL_MAP[tema];
+  if (!temaMap) return "";
+  const upper = refNome.toUpperCase();
+  const matchedKey = Object.keys(temaMap).find(
+    (k) => k !== "default" && upper.includes(k.toUpperCase())
+  );
+  return matchedKey ? temaMap[matchedKey] : temaMap["default"] || "";
+}
+
 function ReferenceLinks({ text }: { text: string }) {
   if (!text) return <span className="opacity-30">—</span>;
 
@@ -262,12 +307,15 @@ const Guioes = () => {
       if (error) throw new Error(error.message);
       if (data?.error) throw new Error(data.error);
 
-      const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => ({
-        pergunta: p.pergunta || "",
-        resposta_simples: p.resposta_simples || "",
-        referencia_nome: p.referencia_nome || "",
-        referencia_url: p.referencia_url || "",
-      }));
+      const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => {
+        const refNome = p.referencia_nome || "";
+        return {
+          pergunta: p.pergunta || "",
+          resposta_simples: p.resposta_simples || "",
+          referencia_nome: refNome,
+          referencia_url: resolveReferenceUrl(temaValue, refNome),
+        };
+      });
 
       // Upsert in local state
       setGuioesSemanais((prev) => {
