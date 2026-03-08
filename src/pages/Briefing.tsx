@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
+import { generateBriefingPdf } from "@/lib/briefingPdfExport";
+import { toast } from "sonner";
 
 type KeywordRow = {
   term: string;
@@ -26,6 +28,18 @@ type DebunkingRow = {
   classification: string;
   source: string;
   url: string;
+};
+
+type ArchivedBriefing = {
+  id: string;
+  week_start: string;
+  week_end: string;
+  week_label: string;
+  top_emerging: any[];
+  top_questions: any[];
+  top_debunking: any[];
+  top_news: any[];
+  created_at: string;
 };
 
 const axisLabels: Record<string, string> = {
@@ -53,10 +67,16 @@ function getWeekRange() {
   const fmt = (d: Date) =>
     d.toLocaleDateString("pt-PT", { day: "2-digit", month: "short" });
 
+  const fmtShort = (d: Date) =>
+    d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
+
   return {
     start: monday,
     end: sunday,
     label: `${fmt(monday)} — ${fmt(sunday)} ${now.getFullYear()}`,
+    shortLabel: `${fmtShort(monday)} — ${fmtShort(sunday)} ${now.getFullYear()}`,
+    isoStart: monday.toISOString().split("T")[0],
+    isoEnd: sunday.toISOString().split("T")[0],
   };
 }
 
@@ -66,23 +86,29 @@ const Briefing = () => {
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
+  const [archiving, setArchiving] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [archives, setArchives] = useState<ArchivedBriefing[]>([]);
+  const [expandedArchive, setExpandedArchive] = useState<string | null>(null);
 
   const week = getWeekRange();
 
   useEffect(() => {
-    const fetch = async () => {
-      const [kwRes, newsRes, debunkRes] = await Promise.all([
+    const fetchData = async () => {
+      const [kwRes, newsRes, debunkRes, archiveRes] = await Promise.all([
         supabase.from("keywords").select("*").eq("is_active", true),
         supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
         supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
+        supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
+      if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, []);
 
   // Derived data
@@ -99,6 +125,103 @@ const Briefing = () => {
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
     : topGrowing[0];
+
+  // PDF export
+  const handleExportPdf = async () => {
+    setExporting(true);
+    try {
+      await generateBriefingPdf({
+        weekLabel: week.label,
+        generatedAt,
+        topGrowing,
+        emergent,
+        topVolume,
+        news,
+        debunking,
+        topEmergent,
+      });
+      toast.success("PDF exportado com sucesso");
+    } catch {
+      toast.error("Erro ao exportar PDF");
+    }
+    setExporting(false);
+  };
+
+  // Archive
+  const handleArchive = async () => {
+    const existing = archives.find((a) => a.week_start === week.isoStart);
+    if (existing) {
+      const confirmed = window.confirm("Já existe um arquivo para esta semana. Substituir?");
+      if (!confirmed) return;
+    }
+
+    setArchiving(true);
+    try {
+      const archiveData = {
+        week_start: week.isoStart,
+        week_end: week.isoEnd,
+        week_label: week.shortLabel,
+        top_emerging: emergent.slice(0, 5).map((k) => ({
+          term: k.term,
+          axis: k.axis,
+          change_percent: k.change_percent,
+        })),
+        top_questions: topVolume.map((k) => ({
+          term: k.term,
+          current_volume: k.current_volume,
+        })),
+        top_debunking: debunking.slice(0, 5).map((d) => ({
+          term: d.term,
+          title: d.title,
+          classification: d.classification,
+          source: d.source,
+        })),
+        top_news: news.slice(0, 5).map((n) => ({
+          title: n.title,
+          outlet: n.outlet,
+          date: n.date,
+          source_type: n.source_type,
+        })),
+      };
+
+      if (existing) {
+        await supabase
+          .from("briefings_archive")
+          .update(archiveData)
+          .eq("id", existing.id);
+      } else {
+        await supabase.from("briefings_archive").insert(archiveData);
+      }
+
+      // Refresh archives
+      const { data } = await supabase
+        .from("briefings_archive")
+        .select("*")
+        .order("week_start", { ascending: false });
+      if (data) setArchives(data as ArchivedBriefing[]);
+      toast.success("Semana arquivada com sucesso");
+    } catch {
+      toast.error("Erro ao arquivar");
+    }
+    setArchiving(false);
+  };
+
+  // Export archived briefing as PDF
+  const handleArchivePdf = async (archive: ArchivedBriefing) => {
+    await generateBriefingPdf({
+      weekLabel: archive.week_label,
+      generatedAt: new Date(archive.created_at),
+      topGrowing: (archive.top_emerging || []).map((e: any) => ({
+        ...e,
+        current_volume: 0,
+      })),
+      emergent: archive.top_emerging || [],
+      topVolume: archive.top_questions || [],
+      news: (archive.top_news || []).map((n: any) => ({ ...n, url: "" })),
+      debunking: (archive.top_debunking || []).map((d: any) => ({ ...d, url: "" })),
+      topEmergent: archive.top_emerging?.[0] || null,
+    });
+  };
 
   if (loading) {
     return (
@@ -127,6 +250,42 @@ const Briefing = () => {
         <p className="text-sm mt-3 opacity-80">
           O que está a acontecer esta semana em Portugal
         </p>
+
+        {/* Action buttons */}
+        <div className="flex items-center gap-3 mt-6">
+          <button
+            onClick={handleExportPdf}
+            disabled={exporting}
+            className="text-[10px] font-bold uppercase tracking-[0.15em] border px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-40"
+            style={{ borderColor: "#0000FF", color: "#0000FF" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#0000FF";
+              e.currentTarget.style.color = "#FFFFFF";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "#0000FF";
+            }}
+          >
+            {exporting ? "A exportar..." : "Exportar PDF"}
+          </button>
+          <button
+            onClick={handleArchive}
+            disabled={archiving}
+            className="text-[10px] font-bold uppercase tracking-[0.15em] border px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-40"
+            style={{ borderColor: "#0000FF", color: "#0000FF" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#0000FF";
+              e.currentTarget.style.color = "#FFFFFF";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "#0000FF";
+            }}
+          >
+            {archiving ? "A arquivar..." : "Arquivar esta semana"}
+          </button>
+        </div>
       </section>
 
       <div className="section-divider" />
@@ -307,6 +466,120 @@ const Briefing = () => {
           </div>
         ) : (
           <p className="text-sm opacity-60">Sem sugestões esta semana.</p>
+        )}
+      </section>
+
+      <div className="section-divider" />
+
+      {/* ARCHIVE SECTION */}
+      <section className="px-6 py-10">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+          Arquivo
+        </h2>
+        {archives.length === 0 ? (
+          <p className="text-sm opacity-60">Nenhum briefing arquivado.</p>
+        ) : (
+          <div className="space-y-0 max-w-2xl">
+            {archives.map((archive) => {
+              const isExpanded = expandedArchive === archive.id;
+              return (
+                <div key={archive.id}>
+                  <div className="flex items-center justify-between py-3 border-b border-foreground/10">
+                    <span className="text-sm font-semibold">{archive.week_label}</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setExpandedArchive(isExpanded ? null : archive.id)}
+                        className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1.5 transition-colors"
+                        style={{ borderColor: "#0000FF", color: "#0000FF" }}
+                      >
+                        {isExpanded ? "Fechar" : "Ver"}
+                      </button>
+                      <button
+                        onClick={() => handleArchivePdf(archive)}
+                        className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1.5 transition-colors"
+                        style={{ borderColor: "#0000FF", color: "#0000FF" }}
+                      >
+                        PDF
+                      </button>
+                    </div>
+                  </div>
+
+                  {isExpanded && (
+                    <div className="py-6 pl-4 border-l-2 ml-2 mb-4" style={{ borderColor: "#0000FF" }}>
+                      {/* Emerging */}
+                      {archive.top_emerging?.length > 0 && (
+                        <div className="mb-5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                            Sinais emergentes
+                          </p>
+                          {archive.top_emerging.map((e: any, i: number) => (
+                            <div key={i} className="flex items-center gap-3 mb-2">
+                              <span className="tag-emergent">Emergente</span>
+                              <span className="text-sm font-semibold">{e.term}</span>
+                              <span className="text-[10px] uppercase tracking-wider opacity-50">
+                                {axisLabels[e.axis] || e.axis}
+                              </span>
+                              <span className="text-xs font-bold ml-auto">
+                                +{Number(e.change_percent).toFixed(0)}%
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Questions */}
+                      {archive.top_questions?.length > 0 && (
+                        <div className="mb-5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                            Perguntas mais pesquisadas
+                          </p>
+                          {archive.top_questions.map((q: any, i: number) => (
+                            <div key={i} className="flex items-baseline justify-between mb-2">
+                              <span className="text-sm">{q.term}</span>
+                              <span className="text-xs font-bold tabular-nums">{q.current_volume}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* News */}
+                      {archive.top_news?.length > 0 && (
+                        <div className="mb-5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                            Media
+                          </p>
+                          {archive.top_news.map((n: any, i: number) => (
+                            <div key={i} className="mb-2">
+                              <span className="text-[9px] font-bold uppercase tracking-wider border border-foreground/30 px-1.5 py-0.5 mr-2">
+                                {sourceTypeBadge[n.source_type] || "MEDIA"}
+                              </span>
+                              <span className="text-sm">{n.title}</span>
+                              <span className="text-[10px] opacity-50 ml-2">{n.outlet}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Debunking */}
+                      {archive.top_debunking?.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                            Debunking
+                          </p>
+                          {archive.top_debunking.map((d: any, i: number) => (
+                            <div key={i} className="mb-2">
+                              <span className="tag-emergent mr-2">{d.classification}</span>
+                              <span className="text-sm">{d.title}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         )}
       </section>
 
