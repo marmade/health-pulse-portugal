@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const axes = [
   { id: "all", label: "OVERVIEW" },
@@ -6,7 +6,6 @@ const axes = [
   { id: "alimentacao", label: "ALIMENTAÇÃO" },
   { id: "menopausa", label: "MENOPAUSA" },
   { id: "emergentes", label: "EMERGENTES" },
-  { id: "briefing", label: "BRIEFING" },
 ];
 
 type Props = {
@@ -16,6 +15,7 @@ type Props = {
 };
 
 const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => {
+  const navigate = useNavigate();
   const displayDate = lastRefreshed
     ? new Date(lastRefreshed)
     : new Date();
@@ -79,6 +79,12 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
             <span className="text-foreground/20 text-xs font-light">/</span>
           </span>
         ))}
+        <Link
+          to="/briefing"
+          className="nav-link"
+        >
+          BRIEFING
+        </Link>
       </nav>
 
       <div className="section-divider" />
