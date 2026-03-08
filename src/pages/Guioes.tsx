@@ -24,6 +24,20 @@ type GuiaoRow = {
 
 const FILTROS = ["TODOS", "SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"] as const;
 
+const temaMap: Record<string, string> = {
+  "SAÚDE MENTAL": "saude_mental",
+  "ALIMENTAÇÃO": "alimentacao",
+  "MENOPAUSA": "menopausa",
+  "EMERGENTES": "emergentes",
+};
+
+const temaLabelMap: Record<string, string> = {
+  saude_mental: "SAÚDE MENTAL",
+  alimentacao: "ALIMENTAÇÃO",
+  menopausa: "MENOPAUSA",
+  emergentes: "EMERGENTES",
+};
+
 function exportSelectedPdf(rows: GuiaoRow[]) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const margin = 20;
