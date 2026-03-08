@@ -35,9 +35,9 @@ const axisLabels: Record<string, string> = {
 };
 
 const sourceTypeBadge: Record<string, string> = {
-  institucional: "🏥 INST",
-  media: "📰 MEDIA",
-  "fact-check": "🔍 FC",
+  institucional: "INST",
+  media: "MEDIA",
+  "fact-check": "FC",
 };
 
 function getWeekRange() {
@@ -235,7 +235,7 @@ const Briefing = () => {
             <div key={i} className="border-b border-foreground/10 pb-4">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[9px] font-bold uppercase tracking-wider border border-foreground/30 px-1.5 py-0.5">
-                  {sourceTypeBadge[item.source_type] || "📰 MEDIA"}
+                  {sourceTypeBadge[item.source_type] || "MEDIA"}
                 </span>
                 <span className="text-[10px] uppercase tracking-wider opacity-50">
                   {item.outlet}
