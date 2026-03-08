@@ -42,7 +42,7 @@ const Textos = () => {
           Textos
         </h1>
         <p className="mt-2 text-xs font-medium tracking-[0.15em] uppercase opacity-50">
-          Notas de investigação
+          Notas de fundamento
         </p>
       </section>
 
