@@ -137,6 +137,36 @@ export type Database = {
         }
         Relationships: []
       }
+      guioes_semanais: {
+        Row: {
+          created_at: string
+          estado: string
+          gerado_por_ia: boolean
+          id: string
+          perguntas: Json
+          semana: string
+          tema: string
+        }
+        Insert: {
+          created_at?: string
+          estado?: string
+          gerado_por_ia?: boolean
+          id?: string
+          perguntas?: Json
+          semana: string
+          tema: string
+        }
+        Update: {
+          created_at?: string
+          estado?: string
+          gerado_por_ia?: boolean
+          id?: string
+          perguntas?: Json
+          semana?: string
+          tema?: string
+        }
+        Relationships: []
+      }
       historical_snapshots: {
         Row: {
           axis: string
