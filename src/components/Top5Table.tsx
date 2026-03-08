@@ -2,25 +2,17 @@ import type { Keyword } from "@/data/mockData";
 
 type Props = {
   keywords: Keyword[];
-  onKeywordClick?: (term: string) => void;
-  selectedTerms?: string[];
 };
 
-const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [] }: Props) => {
+const Top5Table = ({ keywords }: Props) => {
   return (
     <div>
-      <p className="editorial-label mb-3">Top 5 — Palavras mais pesquisadas</p>
+      <p className="editorial-label mb-3">Top 5 — Keywords</p>
       <div className="space-y-0">
         {keywords.map((kw, i) => {
-          const isSelected = selectedTerms.includes(kw.term);
           return (
             <div key={kw.term}>
-              <div
-                className={`flex items-start gap-3 py-2.5 ${
-                  onKeywordClick ? "cursor-pointer hover:bg-foreground/5 -mx-2 px-2 transition-colors" : ""
-                } ${isSelected ? "bg-foreground/5 -mx-2 px-2" : ""}`}
-                onClick={() => onKeywordClick?.(kw.term)}
-              >
+              <div className="flex items-start gap-3 py-2.5">
                 <span className="text-[10px] font-bold text-foreground/30 mt-0.5 w-3 shrink-0">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -29,11 +21,6 @@ const Top5Table = ({ keywords, onKeywordClick, selectedTerms = [] }: Props) => {
                     <span className="text-sm font-semibold truncate">{kw.term}</span>
                     {kw.isEmergent && (
                       <span className="tag-emergent">SINAL EMERGENTE</span>
-                    )}
-                    {isSelected && (
-                      <span className="text-[8px] font-bold uppercase tracking-wider text-foreground/40">
-                        ✓ comparar
-                      </span>
                     )}
                   </div>
                   <div className="flex items-center gap-3 mt-1">
