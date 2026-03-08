@@ -7,8 +7,9 @@ import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
 import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
 import Filters from "@/components/Filters";
-import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
+import { debunkingData as mockDebunkingData, newsData as mockNewsData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
+import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -16,13 +17,16 @@ const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
   const [filters, setFilters] = useState({ period: "12m", region: "pt" });
 
-  const filteredData = useMemo(
-    () => getFilteredAxisData(filters.period, filters.region),
-    [filters.period, filters.region]
-  );
+  const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period, filters.region);
+  const { data: dbDebunkingData } = useDebunkingData();
+  const { data: dbNewsData } = useNewsData();
+
+  // Use DB data or fallback to mock
+  const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
+  const newsData = dbNewsData.length > 0 ? dbNewsData : mockNewsData;
 
   const alerts = useMemo(
-    () => detectAlerts(filteredData, filters.period, filters.region),
+    () => filteredData ? detectAlerts(filteredData, filters.period, filters.region) : [],
     [filteredData, filters.period, filters.region]
   );
 
