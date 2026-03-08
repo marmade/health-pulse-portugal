@@ -671,6 +671,7 @@ const Guioes = () => {
             </p>
           </div>
         )}
+      </main>
 
       <DashboardFooter />
     </div>
