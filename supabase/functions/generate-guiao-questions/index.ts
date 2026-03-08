@@ -6,6 +6,45 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+// Allowed source URLs
+const allowedUrls: Record<string, string> = {
+  "OMS": "https://www.who.int",
+  "WHO": "https://www.who.int",
+  "DGS": "https://www.dgs.pt",
+  "SNS24": "https://www.sns24.gov.pt",
+  "INSA": "https://repositorio.insa.pt/home",
+  "INFARMED": "https://www.infarmed.pt",
+  "PUBMED": "https://pubmed.ncbi.nlm.nih.gov",
+  "ECDC": "https://www.ecdc.europa.eu",
+  "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
+  "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
+};
+
+async function tryInsaLookup(keyword: string): Promise<string | null> {
+  try {
+    const query = encodeURIComponent(keyword);
+    const url = `https://repositorio.insa.pt/search?query=${query}&rpp=1&format=json`;
+    const resp = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    // DSpace REST API format
+    const items = data?.items || data?.searchResult?.searchItem || data?._embedded?.searchResult?._embedded?.objects;
+    if (Array.isArray(items) && items.length > 0) {
+      const item = items[0]?._embedded?.indexableObject || items[0];
+      const handle = item?.handle || item?.metadata?.["dc.identifier.uri"]?.[0]?.value;
+      if (handle) {
+        return handle.startsWith("http") ? handle : `https://repositorio.insa.pt/handle/${handle}`;
+      }
+      if (item?.id) {
+        return `https://repositorio.insa.pt/items/${item.id}`;
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -30,13 +69,19 @@ Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
 
 Todas as perguntas devem ter resposta_simples preenchida — nunca vazio.
 
-Responde APENAS com este JSON, sem mais nada:
+Para cada pergunta, pesquisa uma fonte real usando estes URLs base:
+- Repositório Científico INSA: https://repositorio.insa.pt/search?query=[keyword]&rpp=1
+- DGS: https://www.dgs.pt
+- SNS24: https://www.sns24.gov.pt
+- OMS: https://www.who.int
+
+Responde APENAS com este JSON:
 [
   {
     "pergunta": "texto da pergunta",
-    "resposta_simples": "resposta em 1-2 frases em português",
-    "referencia_nome": "nome da fonte (ex: OMS, DGS, SNS24, INSA)",
-    "referencia_url": "URL da página principal da fonte"
+    "resposta_simples": "resposta em 1-2 frases em português europeu, baseada em evidência científica",
+    "referencia_nome": "nome da instituição (ex: INSA, DGS, OMS)",
+    "referencia_url": "URL real e verificado da fonte"
   }
 ]`;
 
@@ -85,9 +130,7 @@ Responde APENAS com este JSON, sem mais nada:
 
     let perguntas: any[] = [];
 
-    // Try parsing the content directly as JSON array
     try {
-      // Remove any markdown backticks if present
       const cleaned = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       const parsed = JSON.parse(cleaned);
       if (Array.isArray(parsed)) {
@@ -96,7 +139,6 @@ Responde APENAS com este JSON, sem mais nada:
         perguntas = parsed.perguntas;
       }
     } catch {
-      // Try to extract JSON array from content
       try {
         const match = content.match(/\[[\s\S]*\]/);
         if (match) {
@@ -107,19 +149,6 @@ Responde APENAS com este JSON, sem mais nada:
       }
     }
 
-    // Allowed source URLs
-    const allowedUrls: Record<string, string> = {
-      "OMS": "https://www.who.int",
-      "DGS": "https://www.dgs.pt",
-      "SNS24": "https://www.sns24.gov.pt",
-      "INSA": "https://www.insa.min-saude.pt",
-      "INFARMED": "https://www.infarmed.pt",
-      "PubMed": "https://pubmed.ncbi.nlm.nih.gov",
-      "ECDC": "https://www.ecdc.europa.eu",
-      "ORDEM DOS MÉDICOS": "https://www.ordemdosmedicos.pt",
-      "ORDEM DOS PSICÓLOGOS": "https://www.ordemdospsicologos.pt",
-    };
-
     // Validate and normalize each item
     perguntas = perguntas
       .filter((p: any) => p && typeof p === "object" && p.pergunta)
@@ -129,14 +158,39 @@ Responde APENAS com este JSON, sem mais nada:
         return {
           pergunta: String(p.pergunta || ""),
           resposta_simples: String(p.resposta_simples || p.reposta_simples || "Consulte a fonte indicada para mais informações."),
-          referencia_nome: matchedKey,
+          referencia_nome: matchedKey === "WHO" ? "OMS" : matchedKey,
           referencia_url: allowedUrls[matchedKey],
+          _keyword_hint: String(p.pergunta || "").split(" ").slice(0, 3).join(" "),
         };
       });
 
-    console.log(`Parsed ${perguntas.length} questions`);
+    // Try INSA repository lookup for each question
+    const keywordTerms = (keywords || []).map((k: any) => String(k.term));
+    const enriched = await Promise.all(
+      perguntas.map(async (p: any) => {
+        // Pick a relevant keyword from the list for INSA search
+        const relevantKw = keywordTerms.find((kw: string) =>
+          p.pergunta.toLowerCase().includes(kw.toLowerCase())
+        ) || keywordTerms[0] || p._keyword_hint;
 
-    return new Response(JSON.stringify({ perguntas }), {
+        const insaUrl = await tryInsaLookup(relevantKw);
+        if (insaUrl) {
+          return {
+            pergunta: p.pergunta,
+            resposta_simples: p.resposta_simples,
+            referencia_nome: "INSA",
+            referencia_url: insaUrl,
+          };
+        }
+        // Remove internal hint
+        const { _keyword_hint, ...clean } = p;
+        return clean;
+      })
+    );
+
+    console.log(`Parsed ${enriched.length} questions`);
+
+    return new Response(JSON.stringify({ perguntas: enriched }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
