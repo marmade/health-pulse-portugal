@@ -7,8 +7,9 @@ import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
 import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
 import Filters from "@/components/Filters";
-import { debunkingData, newsData, getFilteredAxisData } from "@/data/mockData";
+import { debunkingData as mockDebunkingData, newsData as mockNewsData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
+import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -16,13 +17,16 @@ const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
   const [filters, setFilters] = useState({ period: "12m", region: "pt" });
 
-  const filteredData = useMemo(
-    () => getFilteredAxisData(filters.period, filters.region),
-    [filters.period, filters.region]
-  );
+  const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period, filters.region);
+  const { data: dbDebunkingData } = useDebunkingData();
+  const { data: dbNewsData } = useNewsData();
+
+  // Use DB data or fallback to mock
+  const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
+  const newsData = dbNewsData.length > 0 ? dbNewsData : mockNewsData;
 
   const alerts = useMemo(
-    () => detectAlerts(filteredData, filters.period, filters.region),
+    () => filteredData ? detectAlerts(filteredData, filters.period, filters.region) : [],
     [filteredData, filters.period, filters.region]
   );
 
@@ -31,9 +35,45 @@ const Index = () => {
       ? axisOrder
       : axisOrder.filter((a) => a === activeAxis);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin h-8 w-8 border-2 border-foreground border-t-transparent rounded-full mx-auto mb-4" />
+            <p className="text-xs uppercase tracking-wider opacity-60">A carregar dados...</p>
+          </div>
+        </div>
+        <DashboardFooter />
+      </div>
+    );
+  }
+
+  // If no data at all
+  if (!filteredData) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-xs uppercase tracking-wider opacity-60">Sem dados disponíveis</p>
+        </div>
+        <DashboardFooter />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+
+      {/* Data source indicator */}
+      {error && (
+        <div className="px-6 py-2 bg-muted text-muted-foreground text-xs">
+          A usar dados de demonstração (erro: {error})
+        </div>
+      )}
 
       {/* Filters */}
       <div className="px-6 py-3 overflow-x-auto">
