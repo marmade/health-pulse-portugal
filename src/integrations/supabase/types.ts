@@ -14,6 +14,155 @@ export type Database = {
   }
   public: {
     Tables: {
+      debunking: {
+        Row: {
+          classification: string
+          created_at: string
+          id: string
+          source: string
+          term: string
+          title: string
+          url: string
+        }
+        Insert: {
+          classification: string
+          created_at?: string
+          id?: string
+          source: string
+          term: string
+          title: string
+          url: string
+        }
+        Update: {
+          classification?: string
+          created_at?: string
+          id?: string
+          source?: string
+          term?: string
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      keywords: {
+        Row: {
+          axis: string
+          category: string
+          change_percent: number
+          created_at: string
+          current_volume: number
+          id: string
+          is_active: boolean
+          is_emergent: boolean
+          last_peak: string | null
+          previous_volume: number
+          source: string
+          synonyms: string[]
+          term: string
+          trend: string
+        }
+        Insert: {
+          axis: string
+          category: string
+          change_percent?: number
+          created_at?: string
+          current_volume?: number
+          id?: string
+          is_active?: boolean
+          is_emergent?: boolean
+          last_peak?: string | null
+          previous_volume?: number
+          source: string
+          synonyms?: string[]
+          term: string
+          trend?: string
+        }
+        Update: {
+          axis?: string
+          category?: string
+          change_percent?: number
+          created_at?: string
+          current_volume?: number
+          id?: string
+          is_active?: boolean
+          is_emergent?: boolean
+          last_peak?: string | null
+          previous_volume?: number
+          source?: string
+          synonyms?: string[]
+          term?: string
+          trend?: string
+        }
+        Relationships: []
+      }
+      news_items: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          outlet: string
+          related_term: string
+          title: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          outlet: string
+          related_term: string
+          title: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          outlet?: string
+          related_term?: string
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      trend_data: {
+        Row: {
+          created_at: string
+          id: string
+          keyword_id: string
+          period_date: string
+          region: string
+          search_index: number
+          year_label: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          keyword_id: string
+          period_date: string
+          region?: string
+          search_index?: number
+          year_label: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          keyword_id?: string
+          period_date?: string
+          region?: string
+          search_index?: number
+          year_label?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trend_data_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trends_cache: {
         Row: {
           cache_key: string
