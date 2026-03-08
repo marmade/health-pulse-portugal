@@ -34,18 +34,7 @@ const Textos = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <header className="w-full">
-        <div className="px-6 py-5 flex items-baseline justify-between">
-          <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-          <Link to="/" className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors">
-            ← Dashboard
-          </Link>
-        </div>
-        <div className="section-divider" />
-      </header>
+      <DashboardHeader activePage="textos" />
 
       {/* Page Title */}
       <section className="px-6 pt-12 pb-6">
