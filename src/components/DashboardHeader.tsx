@@ -67,18 +67,14 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       <nav className="px-6 py-2 flex justify-end items-center gap-4">
         <Link
           to="/textos"
-          className={`text-[10px] font-semibold uppercase tracking-[0.15em] hover:text-foreground transition-colors ${
-            activePage === "textos" ? "text-foreground" : "text-foreground/40"
-          }`}
+          className={`nav-link ${activePage === "textos" ? "nav-link-active" : ""}`}
         >
           Textos
         </Link>
-        <span className="text-foreground/15 text-[10px]">|</span>
+        <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
         <Link
           to="/sobre"
-          className={`text-[10px] font-semibold uppercase tracking-[0.15em] hover:text-foreground transition-colors ${
-            activePage === "sobre" ? "text-foreground" : "text-foreground/40"
-          }`}
+          className={`nav-link ${activePage === "sobre" ? "nav-link-active" : ""}`}
         >
           Sobre
         </Link>

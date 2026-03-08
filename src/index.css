@@ -87,11 +87,16 @@
   }
 
   .nav-link {
-    @apply text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40 hover:text-foreground transition-colors cursor-pointer;
+    @apply text-xs font-normal uppercase tracking-widest transition-colors cursor-pointer;
+    color: #0000FF;
+    opacity: 0.4;
+  }
+  .nav-link:hover {
+    opacity: 1;
   }
 
   .nav-link-active {
-    @apply text-foreground;
+    opacity: 1;
   }
 
   .tag-emergent {
