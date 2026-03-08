@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import type { DebunkItem } from "@/data/mockData";
 
 type Props = {
@@ -11,43 +12,74 @@ const classificationStyle: Record<string, string> = {
   IMPRECISO: "border-foreground/50 text-foreground/60",
 };
 
+const classifications = ["TODOS", "FALSO", "ENGANADOR", "SEM EVIDÊNCIA", "IMPRECISO"];
+
 const DebunkingTable = ({ items }: Props) => {
+  const [activeFilter, setActiveFilter] = useState("TODOS");
+
+  const filteredItems = useMemo(() => {
+    if (activeFilter === "TODOS") return items;
+    return items.filter((item) => item.classification === activeFilter);
+  }, [items, activeFilter]);
+
   return (
     <div className="flex flex-col h-full min-h-0">
-      <p className="editorial-label mb-3 flex-shrink-0">Debunking & Desinformação</p>
-      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
-        {items.map((item, i) => (
-          <div key={i}>
-            <div className="py-2.5">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-semibold text-foreground/40 uppercase tracking-wider mb-0.5">
-                    {item.term}
-                  </p>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-medium hover:underline leading-tight block"
-                  >
-                    {item.title}
-                  </a>
-                  <p className="text-[9px] text-foreground/40 mt-1">{item.source}</p>
-                </div>
-                <span
-                  className={`text-[8px] font-bold uppercase tracking-wider border px-1.5 py-0.5 shrink-0 mt-0.5 ${
-                    classificationStyle[item.classification] || ""
-                  }`}
-                >
-                  {item.classification}
-                </span>
-              </div>
-            </div>
-            {i < items.length - 1 && (
-              <div className="border-t border-foreground/10" />
-            )}
-          </div>
+      <p className="editorial-label mb-2 flex-shrink-0">Debunking & Desinformação</p>
+      
+      {/* Classification filter */}
+      <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
+        {classifications.map((c) => (
+          <button
+            key={c}
+            onClick={() => setActiveFilter(c)}
+            className={`text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+              activeFilter === c
+                ? "border-foreground bg-foreground text-background"
+                : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+            }`}
+          >
+            {c}
+          </button>
         ))}
+      </div>
+
+      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
+        {filteredItems.length === 0 ? (
+          <p className="text-xs text-foreground/40 py-4">Nenhum item encontrado.</p>
+        ) : (
+          filteredItems.map((item, i) => (
+            <div key={i}>
+              <div className="py-2.5">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-semibold text-foreground/40 uppercase tracking-wider mb-0.5">
+                      {item.term}
+                    </p>
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-medium hover:underline leading-tight block"
+                    >
+                      {item.title}
+                    </a>
+                    <p className="text-[9px] text-foreground/40 mt-1">{item.source}</p>
+                  </div>
+                  <span
+                    className={`text-[8px] font-bold uppercase tracking-wider border px-1.5 py-0.5 shrink-0 mt-0.5 ${
+                      classificationStyle[item.classification] || ""
+                    }`}
+                  >
+                    {item.classification}
+                  </span>
+                </div>
+              </div>
+              {i < filteredItems.length - 1 && (
+                <div className="border-t border-foreground/10" />
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
