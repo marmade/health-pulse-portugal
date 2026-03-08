@@ -17,9 +17,10 @@ const FALLBACKS: Record<string, { nome: string; url: string }> = {
 async function searchInsa(keyword: string): Promise<{ nome: string; url: string } | null> {
   try {
     const query = encodeURIComponent(keyword);
-    const apiUrl = `https://repositorio.insa.pt/server/api/discover/search/objects?query=${query}&size=1&f.access_status=open.access,equals&f.language=por,equals`;
-    console.log("INSA search:", apiUrl);
-    const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(6000) });
+    // Simpler query without restrictive filters for faster response
+    const apiUrl = `https://repositorio.insa.pt/server/api/discover/search/objects?query=${query}&size=1`;
+    console.log("INSA search:", keyword);
+    const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(8000) });
     if (!resp.ok) {
       console.log("INSA API returned", resp.status);
       return null;
