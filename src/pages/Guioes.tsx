@@ -228,7 +228,7 @@ const Guioes = () => {
         const existing = prev.find((g) => g.tema === temaValue);
         if (existing) {
           return prev.map((g) =>
-            g.tema === temaValue ? { ...g, perguntas, estado: "rascunho", gerado_por_ia: true } : g
+            g.tema === temaValue ? { ...g, perguntas, gerado_por_ia: true } : g
           );
         }
         return [
@@ -238,7 +238,7 @@ const Guioes = () => {
             semana: semanaStr,
             tema: temaValue,
             perguntas,
-            estado: "rascunho",
+            estado: "gravado",
             gerado_por_ia: true,
             created_at: new Date().toISOString(),
           },
@@ -266,7 +266,7 @@ const Guioes = () => {
         if (g.tema !== activeTema) return g;
         const updated = [...g.perguntas];
         updated[editCell.idx] = { ...updated[editCell.idx], [editCell.field]: editValue };
-        return { ...g, perguntas: updated, estado: "rascunho" };
+        return { ...g, perguntas: updated };
       })
     );
     setEditCell(null);
@@ -325,7 +325,7 @@ const Guioes = () => {
       if (existing) {
         return prev.map((g) =>
           g.tema === activeTema
-            ? { ...g, perguntas: [...g.perguntas, newPergunta], estado: "rascunho" }
+            ? { ...g, perguntas: [...g.perguntas, newPergunta] }
             : g
         );
       }
@@ -336,7 +336,7 @@ const Guioes = () => {
           semana: semanaStr,
           tema: activeTema,
           perguntas: [newPergunta],
-          estado: "rascunho",
+          estado: "gravado",
           gerado_por_ia: false,
           created_at: new Date().toISOString(),
         },
@@ -461,18 +461,6 @@ const Guioes = () => {
             </PopoverContent>
           </Popover>
 
-          {currentGuiao?.estado && (
-            <span
-              className={cn(
-                "text-[9px] font-bold uppercase tracking-wider border px-2 py-0.5",
-                currentGuiao.estado === "gravado"
-                  ? "border-green-600 text-green-600"
-                  : "border-foreground/30 text-foreground/50"
-              )}
-            >
-              {currentGuiao.estado}
-            </span>
-          )}
         </div>
 
         {/* ── Tema Tabs + Generate ──────────────────────── */}
@@ -491,7 +479,7 @@ const Guioes = () => {
                   )}
                 >
                   {t.label}
-                  {hasGuiao && " ✓"}
+                  {hasGuiao && <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-[#0000FF]" />}
                 </button>
               </div>
             );
