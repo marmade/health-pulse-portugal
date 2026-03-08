@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const axes = [
   { id: "all", label: "OVERVIEW" },
   { id: "saude-mental", label: "SAÚDE MENTAL" },
@@ -11,9 +9,14 @@ const axes = [
 type Props = {
   activeAxis: string;
   onAxisChange: (id: string) => void;
+  lastRefreshed?: string | null;
 };
 
-const DashboardHeader = ({ activeAxis, onAxisChange }: Props) => {
+const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => {
+  const displayDate = lastRefreshed
+    ? new Date(lastRefreshed)
+    : new Date();
+
   return (
     <header className="w-full">
       <div className="px-6 py-5">
@@ -27,15 +30,17 @@ const DashboardHeader = ({ activeAxis, onAxisChange }: Props) => {
             </p>
           </div>
           <div className="text-right">
-            <p className="editorial-label">Última atualização</p>
+            <p className="editorial-label">
+              {lastRefreshed ? "Actualizado" : "Última atualização"}
+            </p>
             <p className="text-xs font-medium mt-0.5">
-              {new Date().toLocaleDateString("pt-PT", {
+              {displayDate.toLocaleDateString("pt-PT", {
                 day: "2-digit",
                 month: "short",
                 year: "numeric",
               })}
               {" — "}
-              {new Date().toLocaleTimeString("pt-PT", {
+              {displayDate.toLocaleTimeString("pt-PT", {
                 hour: "2-digit",
                 minute: "2-digit",
               })}

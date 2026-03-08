@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import { generatePdfReport } from "@/lib/pdfExport";
 import { generateCsvExport } from "@/lib/csvExport";
 import type { Keyword, DebunkItem, NewsItem } from "@/data/mockData";
+import type { HistoricalSnapshot } from "@/hooks/useHistoricalData";
 
 type AxisData = {
   label: string;
@@ -15,9 +16,10 @@ type Props = {
   axes?: Record<string, AxisData>;
   debunkingData?: DebunkItem[];
   newsData?: NewsItem[];
+  historicalData?: HistoricalSnapshot[];
 };
 
-const DashboardFooter = ({ filters, axes, debunkingData, newsData }: Props) => {
+const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData }: Props) => {
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isExportingCsv, setIsExportingCsv] = useState(false);
 
@@ -34,6 +36,7 @@ const DashboardFooter = ({ filters, axes, debunkingData, newsData }: Props) => {
         axes,
         debunkingData,
         newsData,
+        historicalData: historicalData || [],
       });
     } catch (error) {
       console.error("Error generating PDF:", error);

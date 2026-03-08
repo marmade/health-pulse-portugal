@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          created_at: string
+          id: string
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       debunking: {
         Row: {
           classification: string
@@ -41,6 +65,39 @@ export type Database = {
           term?: string
           title?: string
           url?: string
+        }
+        Relationships: []
+      }
+      historical_snapshots: {
+        Row: {
+          axis: string
+          change_percent: number
+          created_at: string
+          id: string
+          is_emergent: boolean
+          keyword: string
+          search_index: number
+          snapshot_date: string
+        }
+        Insert: {
+          axis: string
+          change_percent?: number
+          created_at?: string
+          id?: string
+          is_emergent?: boolean
+          keyword: string
+          search_index?: number
+          snapshot_date: string
+        }
+        Update: {
+          axis?: string
+          change_percent?: number
+          created_at?: string
+          id?: string
+          is_emergent?: boolean
+          keyword?: string
+          search_index?: number
+          snapshot_date?: string
         }
         Relationships: []
       }

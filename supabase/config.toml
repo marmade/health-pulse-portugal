@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.fetch-rss-feeds]
 verify_jwt = false
+
+[functions.refresh-trends]
+verify_jwt = false
