@@ -87,7 +87,9 @@
   }
 
   .nav-link {
-    @apply text-xs font-normal uppercase tracking-widest transition-colors cursor-pointer;
+    @apply font-normal uppercase transition-colors cursor-pointer;
+    font-size: 10px;
+    letter-spacing: 1.5px;
     color: #0000FF;
     opacity: 0.4;
   }
