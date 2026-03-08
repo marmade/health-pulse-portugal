@@ -631,7 +631,7 @@ const Guioes = () => {
                         <TableCell className="text-xs font-medium">{row.pergunta}</TableCell>
                         <TableCell className="text-xs text-muted-foreground">{row.resposta}</TableCell>
                         <TableCell className="text-xs text-muted-foreground italic">
-                          {row.referencia_cientifica}
+                          <ReferenceLinks text={row.referencia_cientifica} />
                         </TableCell>
                       </TableRow>
                     ))}
