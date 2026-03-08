@@ -543,7 +543,7 @@ const Guioes = () => {
             ) : (
               <Sparkles className="h-3 w-3 mr-1" />
             )}
-            {generating === activeTema ? "A gerar..." : "Gerar perguntas da semana"}
+            {generating === activeTema ? "A consultar fontes..." : "Gerar perguntas da semana"}
           </Button>
         </div>
 
