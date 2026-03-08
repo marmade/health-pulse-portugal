@@ -51,18 +51,20 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
         </div>
       </div>
       <div className="section-divider" />
-      <nav className="px-6 py-3 flex items-center gap-2">
-        {axes.map((axis, i) => (
-          <span key={axis.id} className="flex items-center gap-2">
-            <button
-              onClick={() => onAxisChange(axis.id)}
-              className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
-            >
-              {axis.label}
-            </button>
-            <span className="text-foreground/20 text-xs font-light">/</span>
-          </span>
-        ))}
+      <nav className="px-6 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {axes.map((axis) => (
+            <span key={axis.id} className="flex items-center gap-2">
+              <button
+                onClick={() => onAxisChange(axis.id)}
+                className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
+              >
+                {axis.label}
+              </button>
+              <span className="text-foreground/20 text-xs font-light">/</span>
+            </span>
+          ))}
+        </div>
         <Link to="/sobre" className="nav-link">
           SOBRE
         </Link>

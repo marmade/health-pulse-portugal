@@ -13,6 +13,22 @@ const fontes = [
   { label: "Supabase", desc: "Base de dados em tempo real" },
 ];
 
+const paraQueServe = [
+  "Identificar os temas de saúde mais pesquisados em Portugal",
+  "Detectar sinais emergentes antes de chegarem aos media",
+  "Cruzar picos de pesquisa com desinformação e facto-verificação",
+  "Informar a escolha de temas para comunicação em saúde",
+];
+
+const agradecimentos = [
+  "António Granado",
+  "Matilde Gonçalves",
+  "Luís Veríssimo",
+  "Ana Sanchez",
+  "Joana Lobo Antunes",
+  "António Gomes da Costa",
+];
+
 const Sobre = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -20,7 +36,7 @@ const Sobre = () => {
       <header className="w-full">
         <div className="px-6 py-5 flex items-baseline justify-between">
           <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-            Health Pulse Portugal
+            Reportagem Viva
           </Link>
           <Link to="/" className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors">
             ← Dashboard
@@ -32,13 +48,10 @@ const Sobre = () => {
       {/* Hero */}
       <section className="px-6 py-16 md:py-24">
         <h1 className="text-3xl md:text-5xl font-bold tracking-[0.04em] uppercase leading-tight">
-          Health Pulse<br />Portugal
+          Reportagem<br />Viva
         </h1>
         <p className="mt-4 text-sm md:text-base font-medium tracking-wide uppercase opacity-80">
           Monitorização de Tendências sobre Saúde em Portugal
-        </p>
-        <p className="mt-6 text-xs md:text-sm max-w-xl leading-relaxed opacity-60">
-          Uma ferramenta de análise em tempo real para jornalistas, investigadores e profissionais de saúde pública.
         </p>
       </section>
 
@@ -48,8 +61,22 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">O que é</h2>
         <p className="text-sm md:text-base max-w-2xl leading-relaxed">
-          O Health Pulse Portugal monitoriza o comportamento de pesquisa online sobre temas de saúde em Portugal, cruzando tendências reais com cobertura mediática e sinais de desinformação — em tempo real.
+          O Reportagem Viva é um dashboard pessoal de monitorização de tendências de saúde em Portugal. Cruza o comportamento de pesquisa online com cobertura mediática e sinais de desinformação — para informar a produção de conteúdos de comunicação científica.
         </p>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* Para que serve */}
+      <section className="px-6 py-12">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Para que serve</h2>
+        <div className="space-y-3 max-w-2xl">
+          {paraQueServe.map((item) => (
+            <p key={item} className="text-sm leading-relaxed">
+              — {item}
+            </p>
+          ))}
+        </div>
       </section>
 
       <div className="section-divider" />
@@ -108,11 +135,27 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
+      {/* Agradecimentos */}
+      <section className="px-6 py-12">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Agradecimentos</h2>
+        <p className="text-sm max-w-2xl leading-relaxed mb-6">
+          Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental em abrir horizontes e na transmissão do pensamento científico e da ética colaborativa:
+        </p>
+        <div className="space-y-2 max-w-2xl">
+          {agradecimentos.map((nome) => (
+            <p key={nome} className="text-sm">— {nome}</p>
+          ))}
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
       {/* Créditos */}
       <footer className="px-6 py-12">
         <p className="text-[10px] uppercase tracking-[0.15em] leading-relaxed opacity-50">
-          Desenvolvido por Marta Madeira<br />
+          Marta Madeira<br />
           Mestrado em Comunicação de Ciência<br />
+          Faculdade de Ciências Sociais e Humanas<br />
           Universidade Nova de Lisboa · 2026
         </p>
       </footer>
