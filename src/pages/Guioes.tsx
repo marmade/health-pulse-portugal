@@ -13,6 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { FileText, CalendarIcon, Sparkles, Save, Loader2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { format, startOfWeek, addDays } from "date-fns";
 import { pt } from "date-fns/locale";
@@ -24,6 +25,7 @@ type Pergunta = {
   resposta_simples: string;
   referencia_nome: string;
   referencia_url: string;
+  source: "banco" | "ia";
 };
 
 type GuiaoSemanal = {
@@ -271,13 +273,31 @@ const Guioes = () => {
   const currentGuiao = guioesSemanais.find((g) => g.tema === activeTema);
   const currentPerguntas: Pergunta[] = currentGuiao?.perguntas || [];
 
-  // Generate questions via AI
+  // Generate 5+5 guião: 5 from banco base + 5 from Perplexity
   const handleGenerate = async (temaValue: string) => {
     const temaObj = TEMAS.find((t) => t.value === temaValue);
     if (!temaObj) return;
 
     setGenerating(temaValue);
     try {
+      // 1. Fetch 5 random banco base questions for this tema
+      const { data: bancoData } = await supabase
+        .from("guioes")
+        .select("pergunta, resposta, referencia_cientifica")
+        .ilike("tema", temaObj.db)
+        .limit(50);
+
+      // Shuffle and take 5
+      const shuffled = (bancoData || []).sort(() => Math.random() - 0.5).slice(0, 5);
+      const bancoPerguntas: Pergunta[] = shuffled.map((r: any) => ({
+        pergunta: r.pergunta || "",
+        resposta_simples: r.resposta || "",
+        referencia_nome: r.referencia_cientifica || "",
+        referencia_url: "",
+        source: "banco" as const,
+      }));
+
+      // 2. Call Perplexity for 5 AI questions
       const temaKeywords = keywords
         .filter((k) => k.axis === temaValue)
         .sort((a, b) => b.change_percent - a.change_percent)
@@ -290,7 +310,7 @@ const Guioes = () => {
       if (error) throw new Error(error.message);
       if (data?.error) throw new Error(data.error);
 
-      const perguntas: Pergunta[] = (data.perguntas || []).map((p: any) => {
+      const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
         const url = p.referencia_url || "";
         const approved = isApprovedUrl(url);
         return {
@@ -298,15 +318,18 @@ const Guioes = () => {
           resposta_simples: approved ? (p.resposta_simples || "") : "",
           referencia_nome: approved ? (p.referencia_nome || "") : "",
           referencia_url: approved ? url : "",
+          source: "ia" as const,
         };
       });
+
+      const allPerguntas = [...bancoPerguntas, ...aiPerguntas];
 
       // Upsert in local state
       setGuioesSemanais((prev) => {
         const existing = prev.find((g) => g.tema === temaValue);
         if (existing) {
           return prev.map((g) =>
-            g.tema === temaValue ? { ...g, perguntas, gerado_por_ia: true } : g
+            g.tema === temaValue ? { ...g, perguntas: allPerguntas, gerado_por_ia: true } : g
           );
         }
         return [
@@ -315,7 +338,7 @@ const Guioes = () => {
             id: crypto.randomUUID(),
             semana: semanaStr,
             tema: temaValue,
-            perguntas,
+            perguntas: allPerguntas,
             estado: "gravado",
             gerado_por_ia: true,
             created_at: new Date().toISOString(),
@@ -324,7 +347,7 @@ const Guioes = () => {
       });
 
       setActiveTema(temaValue);
-      toast.success(`${perguntas.length} perguntas geradas para ${temaObj.label}`);
+      toast.success(`Guião gerado: ${bancoPerguntas.length} do banco + ${aiPerguntas.length} por IA`);
     } catch (e: any) {
       toast.error(e.message || "Erro ao gerar perguntas");
     }
@@ -389,13 +412,14 @@ const Guioes = () => {
     setSaving(false);
   };
 
-  // Add banco question to current guião
+  // Add banco question to current guião (no longer needed as standalone, kept for banco base section)
   const addFromBanco = (row: BancoRow) => {
     const newPergunta: Pergunta = {
       pergunta: row.pergunta,
       resposta_simples: row.resposta,
       referencia_nome: row.referencia_cientifica,
       referencia_url: "",
+      source: "banco",
     };
 
     setGuioesSemanais((prev) => {
