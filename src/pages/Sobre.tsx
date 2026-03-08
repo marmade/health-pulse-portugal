@@ -48,7 +48,7 @@ const Sobre = () => {
       {/* Hero */}
       <section className="px-6 py-16 md:py-24">
         <h1 className="text-3xl md:text-5xl font-bold tracking-[0.04em] uppercase leading-tight">
-          Reportagem<br />Viva
+          Reportagem Viva
         </h1>
         <p className="mt-4 text-sm md:text-base font-medium tracking-wide uppercase opacity-80">
           Monitorização de Tendências sobre Saúde em Portugal

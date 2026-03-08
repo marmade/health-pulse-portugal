@@ -6,6 +6,7 @@ const axes = [
   { id: "alimentacao", label: "ALIMENTAÇÃO" },
   { id: "menopausa", label: "MENOPAUSA" },
   { id: "emergentes", label: "EMERGENTES" },
+  { id: "briefing", label: "BRIEFING" },
 ];
 
 type Props = {
@@ -28,7 +29,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
               Reportagem Viva
             </h1>
             <p className="editorial-label mt-1">
-              Monitorização de pesquisas de saúde em Portugal
+              Monitorização de Tendências sobre Saúde em Portugal
             </p>
           </div>
           <div className="text-right">
@@ -51,24 +52,35 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
         </div>
       </div>
       <div className="section-divider" />
-      <nav className="px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {axes.map((axis) => (
-            <span key={axis.id} className="flex items-center gap-2">
-              <button
-                onClick={() => onAxisChange(axis.id)}
-                className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
-              >
-                {axis.label}
-              </button>
-              <span className="text-foreground/20 text-xs font-light">/</span>
-            </span>
-          ))}
-        </div>
-        <Link to="/sobre" className="nav-link">
-          SOBRE
+
+      {/* LINE 1 — Editorial links (right-aligned, smaller) */}
+      <nav className="px-6 py-2 flex justify-end items-center gap-4">
+        <Link to="/textos" className="text-[10px] font-semibold uppercase tracking-[0.15em] text-foreground/40 hover:text-foreground transition-colors">
+          Textos
+        </Link>
+        <span className="text-foreground/15 text-[10px]">|</span>
+        <Link to="/sobre" className="text-[10px] font-semibold uppercase tracking-[0.15em] text-foreground/40 hover:text-foreground transition-colors">
+          Sobre
         </Link>
       </nav>
+
+      <div className="section-divider" />
+
+      {/* LINE 2 — Dashboard axis links */}
+      <nav className="px-6 py-3 flex items-center gap-2">
+        {axes.map((axis) => (
+          <span key={axis.id} className="flex items-center gap-2">
+            <button
+              onClick={() => onAxisChange(axis.id)}
+              className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
+            >
+              {axis.label}
+            </button>
+            <span className="text-foreground/20 text-xs font-light">/</span>
+          </span>
+        ))}
+      </nav>
+
       <div className="section-divider" />
     </header>
   );
