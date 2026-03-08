@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 
 type KeywordRow = {

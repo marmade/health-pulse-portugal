@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DashboardHeader from "@/components/DashboardHeader";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 

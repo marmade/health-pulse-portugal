@@ -9,25 +9,35 @@ const axes = [
 ];
 
 type Props = {
-  activeAxis: string;
-  onAxisChange: (id: string) => void;
+  activeAxis?: string;
+  onAxisChange?: (id: string) => void;
   lastRefreshed?: string | null;
+  /** Highlights this page link in the nav */
+  activePage?: "briefing" | "textos" | "sobre";
 };
 
-const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => {
+const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }: Props) => {
   const navigate = useNavigate();
   const displayDate = lastRefreshed
     ? new Date(lastRefreshed)
     : new Date();
+
+  const handleAxisClick = (id: string) => {
+    if (onAxisChange) {
+      onAxisChange(id);
+    } else {
+      navigate(`/?axis=${id}`);
+    }
+  };
 
   return (
     <header className="w-full">
       <div className="px-6 py-5">
         <div className="flex items-baseline justify-between">
           <div>
-            <h1 className="text-lg font-bold tracking-[0.05em] uppercase">
+            <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
               Reportagem Viva
-            </h1>
+            </Link>
             <p className="editorial-label mt-1">
               Monitorização de Tendências sobre Saúde em Portugal
             </p>
@@ -55,23 +65,33 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
 
       {/* LINE 1 — Editorial links (right-aligned, smaller) */}
       <nav className="px-6 py-2 flex justify-end items-center gap-4">
-        <Link to="/textos" className="text-[10px] font-semibold uppercase tracking-[0.15em] text-foreground/40 hover:text-foreground transition-colors">
+        <Link
+          to="/textos"
+          className={`text-[10px] font-semibold uppercase tracking-[0.15em] hover:text-foreground transition-colors ${
+            activePage === "textos" ? "text-foreground" : "text-foreground/40"
+          }`}
+        >
           Textos
         </Link>
         <span className="text-foreground/15 text-[10px]">|</span>
-        <Link to="/sobre" className="text-[10px] font-semibold uppercase tracking-[0.15em] text-foreground/40 hover:text-foreground transition-colors">
+        <Link
+          to="/sobre"
+          className={`text-[10px] font-semibold uppercase tracking-[0.15em] hover:text-foreground transition-colors ${
+            activePage === "sobre" ? "text-foreground" : "text-foreground/40"
+          }`}
+        >
           Sobre
         </Link>
       </nav>
 
       <div className="section-divider" />
 
-      {/* LINE 2 — Dashboard axis links */}
+      {/* LINE 2 — Dashboard axis links + Briefing */}
       <nav className="px-6 py-3 flex items-center gap-2">
         {axes.map((axis) => (
           <span key={axis.id} className="flex items-center gap-2">
             <button
-              onClick={() => onAxisChange(axis.id)}
+              onClick={() => handleAxisClick(axis.id)}
               className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
             >
               {axis.label}
@@ -81,7 +101,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed }: Props) => 
         ))}
         <Link
           to="/briefing"
-          className="nav-link"
+          className={`nav-link ${activePage === "briefing" ? "nav-link-active" : ""}`}
         >
           BRIEFING
         </Link>
