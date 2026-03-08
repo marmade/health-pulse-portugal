@@ -22,6 +22,8 @@ const Index = () => {
   const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period, filters.region);
   const { data: dbDebunkingData } = useDebunkingData();
   const { data: dbNewsData, lastFetchTimestamp } = useNewsData();
+  const lastRefreshed = useLastRefreshed();
+  const { data: historicalData } = useHistoricalData();
 
   // Use DB data or fallback to mock
   const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
@@ -68,7 +70,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} />
+      <DashboardHeader activeAxis={activeAxis} onAxisChange={setActiveAxis} lastRefreshed={lastRefreshed} />
 
       {/* Data source indicator */}
       {error && (
