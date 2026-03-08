@@ -89,6 +89,12 @@ const URL_MAP: Record<string, Record<string, string>> = {
   },
 };
 
+// Global sources (not tema-specific)
+const GLOBAL_SOURCES: Record<string, string> = {
+  "PUBMED": "https://pubmed.ncbi.nlm.nih.gov/",
+  "NIMH": "https://www.nimh.nih.gov",
+};
+
 // Aliases: map common variations to canonical keys
 const SOURCE_ALIASES: Record<string, string> = {
   "WHO": "OMS",
@@ -105,9 +111,56 @@ const SOURCE_ALIASES: Record<string, string> = {
   "SAUDEMENTAL.PT": "SAÚDE MENTAL PT",
   "SMPT": "SAÚDE MENTAL PT",
   "SAUDE MENTAL PT": "SAÚDE MENTAL PT",
+  "SNS": "SNS24",
 };
 
-// Resolve a reference name to a curated URL for a given tema
+// Parse a reference fragment and return its URL
+function getFragmentUrl(tema: string, fragment: string): string | null {
+  const upper = fragment.toUpperCase().trim();
+  const temaMap = URL_MAP[tema] || {};
+
+  // Check for PubMed with ID
+  const pubmedMatch = fragment.match(/PubMed\s*(\d+)/i);
+  if (pubmedMatch) {
+    return `https://pubmed.ncbi.nlm.nih.gov/${pubmedMatch[1]}/`;
+  }
+
+  // Check global sources
+  for (const [key, url] of Object.entries(GLOBAL_SOURCES)) {
+    if (upper.includes(key)) return url;
+  }
+
+  // Direct match against tema map keys
+  const directMatch = Object.keys(temaMap).find((k) => upper.includes(k));
+  if (directMatch) return temaMap[directMatch];
+
+  // Alias match
+  const aliasMatch = Object.entries(SOURCE_ALIASES).find(([alias]) => upper.includes(alias));
+  if (aliasMatch) {
+    const canonical = aliasMatch[1];
+    if (temaMap[canonical]) return temaMap[canonical];
+  }
+
+  return null;
+}
+
+// Type for parsed reference fragments
+type RefFragment = { text: string; url: string | null };
+
+// Parse referencia_cientifica into fragments with URLs
+function parseReference(tema: string, refText: string): RefFragment[] {
+  if (!refText) return [];
+  
+  // Split by · (middle dot), — (em dash), , (comma), ; (semicolon)
+  const parts = refText.split(/[·—,;]/).map(s => s.trim()).filter(s => s.length > 0);
+  
+  return parts.map(part => ({
+    text: part,
+    url: getFragmentUrl(tema, part),
+  }));
+}
+
+// Resolve a reference name to a curated URL for a given tema (legacy, for AI refs)
 // Returns { url, approved } — approved=true means it matched the curated map
 function resolveReference(tema: string, refNome: string, originalUrl: string): { url: string; approved: boolean } {
   const temaMap = URL_MAP[tema];
