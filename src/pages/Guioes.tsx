@@ -38,16 +38,6 @@ type GuiaoSemanal = {
   created_at: string;
 };
 
-type BancoRow = {
-  id: string;
-  tema: string;
-  subtema: string;
-  pergunta: string;
-  resposta: string;
-  referencia_cientifica: string;
-  ordem: number;
-};
-
 type KeywordRow = {
   term: string;
   axis: string;
@@ -117,39 +107,6 @@ function isApprovedUrl(url: string): boolean {
   }
 }
 
-function ReferenceLinks({ text }: { text: string }) {
-  if (!text) return <span className="opacity-30">—</span>;
-
-  // Split by · or ; separators
-  const parts = text.split(/[·;]/).map((s) => s.trim()).filter(Boolean);
-
-  return (
-    <span className="flex flex-wrap gap-x-2 gap-y-0.5">
-      {parts.map((part, i) => {
-        // Check for PubMed with number
-        const pubmedMatch = part.match(/PubMed\s*(\d+)/i);
-        if (pubmedMatch) {
-          return (
-            <a key={i} href={`https://pubmed.ncbi.nlm.nih.gov/${pubmedMatch[1]}`} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
-              {part}
-            </a>
-          );
-        }
-        // Check known sources
-        const upper = part.toUpperCase();
-        const matchedKey = Object.keys(KNOWN_SOURCES).find((k) => upper.includes(k));
-        if (matchedKey) {
-          return (
-            <a key={i} href={KNOWN_SOURCES[matchedKey]} target="_blank" rel="noopener noreferrer" className="text-[#0000FF] underline hover:opacity-70">
-              {part}
-            </a>
-          );
-        }
-        return <span key={i}>{part}</span>;
-      })}
-    </span>
-  );
-}
 
 // ── PDF Export ─────────────────────────────────────────
 function exportGuiaoPdf(tema: string, semana: string, perguntas: Pergunta[]) {
