@@ -50,13 +50,13 @@ const Textos = () => {
 
       {/* Epígrafe */}
       <section className="px-6 py-16 md:py-24 max-w-3xl mx-auto text-center">
-        <blockquote className="text-lg md:text-xl leading-relaxed italic text-foreground">
+        <blockquote className="text-sm md:text-base leading-relaxed italic text-foreground">
           "A promoção e protecção da saúde dos povos é essencial
           para o contínuo desenvolvimento económico e social
           e contribui para a melhoria na qualidade da vida
           e para a paz mundial."
         </blockquote>
-        <p className="mt-6 text-xs font-medium tracking-[0.1em] uppercase opacity-50">
+        <p className="mt-4 text-[10px] font-medium tracking-[0.1em] uppercase opacity-50">
           — Declaração Alma-Ata, Conferência Internacional sobre Cuidados Primários de Saúde, URSS, 1978
         </p>
       </section>
