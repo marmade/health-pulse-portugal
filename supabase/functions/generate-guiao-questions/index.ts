@@ -12,17 +12,17 @@ serve(async (req) => {
   }
 
   try {
-    const { tema, subtema, contexto } = await req.json();
+    const { tema, keywords } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `És um assistente especializado em comunicação de ciência e saúde pública em Portugal. Geras perguntas para vox pop — perguntas simples, directas, que testam a literacia em saúde de cidadãos comuns na rua. As perguntas não julgam nem acusam — apenas revelam o que as pessoas sabem ou não sabem. Respondes sempre em português europeu.`;
+    const keywordList = (keywords || [])
+      .map((k: any) => `- ${k.term} (vol: ${k.current_volume}, crescimento: ${k.change_percent}%)`)
+      .join("\n");
 
-    let userPrompt = `Gera 5 perguntas de vox pop sobre ${subtema} no contexto de ${tema}, adequadas para abordar pessoas na rua em Portugal.`;
-    if (contexto && contexto.trim()) {
-      userPrompt += ` Contexto extra: ${contexto}`;
-    }
-    userPrompt += ` As perguntas devem testar literacia, não verificar factos.`;
+    const systemPrompt = `És um especialista em comunicação de ciência e saúde pública em Portugal. Com base nas keywords de saúde em tendência nesta semana, gera exactamente 10 perguntas de vox pop por tema. As perguntas testam literacia em saúde de cidadãos comuns. Não julgam comportamentos. São directas e concretas. Cada pergunta tem: pergunta (texto), resposta_simples (1-2 frases claras), referencia_nome (nome da fonte real, ex: OMS, DGS, PubMed), referencia_url (URL real e verificável da fonte). Respondes sempre em português europeu.`;
+
+    const userPrompt = `Tema: ${tema}\n\nKeywords em tendência esta semana:\n${keywordList}\n\nGera 10 perguntas de vox pop baseadas nestas tendências.`;
 
     const response = await fetch(
       "https://ai.gateway.lovable.dev/v1/chat/completions",
@@ -43,14 +43,23 @@ serve(async (req) => {
               type: "function",
               function: {
                 name: "return_perguntas",
-                description: "Return an array of vox pop questions.",
+                description: "Return an array of vox pop questions with answers and references.",
                 parameters: {
                   type: "object",
                   properties: {
                     perguntas: {
                       type: "array",
-                      items: { type: "string" },
-                      description: "Array of questions in Portuguese",
+                      items: {
+                        type: "object",
+                        properties: {
+                          pergunta: { type: "string" },
+                          resposta_simples: { type: "string" },
+                          referencia_nome: { type: "string" },
+                          referencia_url: { type: "string" },
+                        },
+                        required: ["pergunta", "resposta_simples", "referencia_nome", "referencia_url"],
+                        additionalProperties: false,
+                      },
                     },
                   },
                   required: ["perguntas"],
@@ -90,7 +99,7 @@ serve(async (req) => {
 
     const data = await response.json();
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
-    let perguntas: string[] = [];
+    let perguntas: any[] = [];
 
     if (toolCall?.function?.arguments) {
       try {
@@ -101,18 +110,15 @@ serve(async (req) => {
       }
     }
 
-    // Fallback: try to parse from content if tool call failed
+    // Fallback: try content
     if (perguntas.length === 0) {
       const content = data.choices?.[0]?.message?.content || "";
       try {
-        const match = content.match(/\{[\s\S]*"perguntas"[\s\S]*\}/);
+        const match = content.match(/\[[\s\S]*\]/);
         if (match) {
-          const parsed = JSON.parse(match[0]);
-          perguntas = parsed.perguntas || [];
+          perguntas = JSON.parse(match[0]);
         }
-      } catch {
-        // ignore
-      }
+      } catch { /* ignore */ }
     }
 
     return new Response(JSON.stringify({ perguntas }), {
