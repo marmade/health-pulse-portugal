@@ -25,6 +25,7 @@ type Pergunta = {
   referencia_nome: string;
   referencia_url: string;
   source: "banco" | "ia";
+  approved?: boolean;
 };
 
 type GuiaoSemanal = {
@@ -278,14 +279,16 @@ const Guioes = () => {
       if (data?.error) throw new Error(data.error);
 
       const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
-        const url = p.referencia_url || "";
-        const approved = isApprovedUrl(url);
+        const refNome = p.referencia_nome || "";
+        const originalUrl = p.referencia_url || "";
+        const { url, approved } = resolveReference(temaValue, refNome, originalUrl);
         return {
           pergunta: p.pergunta || "",
-          resposta_simples: approved ? (p.resposta_simples || "") : "",
-          referencia_nome: approved ? (p.referencia_nome || "") : "",
-          referencia_url: approved ? url : "",
+          resposta_simples: p.resposta_simples || "",
+          referencia_nome: refNome,
+          referencia_url: url,
           source: "ia" as const,
+          approved,
         };
       });
 
