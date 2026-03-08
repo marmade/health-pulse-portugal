@@ -156,6 +156,11 @@ Responde APENAS com este JSON:
       (p: any) => p && typeof p === "object" && p.pergunta
     );
 
+    console.log(`Parsed ${rawPerguntas.length} raw questions before INSA enrichment`);
+    if (rawPerguntas.length === 0) {
+      console.error("No valid questions parsed from AI. Content preview:", content.substring(0, 1000));
+    }
+
     const fallback = FALLBACKS[tema] || { nome: "OMS", url: "https://www.who.int" };
 
     // Enrich each question with INSA lookup in parallel
