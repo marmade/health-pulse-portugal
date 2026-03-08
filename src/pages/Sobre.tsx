@@ -138,13 +138,11 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Agradecimentos</h2>
         <p className="text-sm max-w-2xl leading-relaxed mb-6">
-          Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental em abrir horizontes e na transmissão do pensamento científico e da ética colaborativa:
+          Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental na transmissão do pensamento crítico, científico e da ética colaborativa:
         </p>
-        <div className="space-y-2 max-w-2xl">
-          {agradecimentos.map((nome) => (
-            <p key={nome} className="text-sm">— {nome}</p>
-          ))}
-        </div>
+        <p className="text-sm max-w-2xl leading-relaxed">
+          Ana Sanchez; António Gomes da Costa; António Granado; Joana Lobo Antunes; Luís Veríssimo; Matilde Gonçalves
+        </p>
       </section>
 
       <div className="section-divider" />
@@ -152,7 +150,7 @@ const Sobre = () => {
       {/* Créditos */}
       <footer className="px-6 py-12">
         <p className="text-[10px] uppercase tracking-[0.15em] leading-relaxed opacity-50">
-          Marta Madeira<br />
+          Marta Madeira · 2024110168<br />
           Mestrado em Comunicação de Ciência<br />
           Faculdade de Ciências Sociais e Humanas<br />
           Universidade Nova de Lisboa · 2026
