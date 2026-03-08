@@ -102,6 +102,7 @@ export type Database = {
           id: string
           outlet: string
           related_term: string
+          source_type: string
           title: string
           url: string
         }
@@ -111,6 +112,7 @@ export type Database = {
           id?: string
           outlet: string
           related_term: string
+          source_type?: string
           title: string
           url: string
         }
@@ -120,6 +122,7 @@ export type Database = {
           id?: string
           outlet?: string
           related_term?: string
+          source_type?: string
           title?: string
           url?: string
         }
