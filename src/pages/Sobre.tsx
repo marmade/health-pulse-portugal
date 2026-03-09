@@ -108,20 +108,61 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
-      {/* Fontes de dados */}
+      {/* Fontes de dados + Metodologia side by side */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
-        <div className="space-y-4 max-w-2xl">
-          {fontes.map((f) => (
-            <div key={f.label} className="flex gap-3">
-              <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">
-                — {f.label}
-              </span>
-              <span className="text-xs opacity-60 leading-relaxed">
-                · {f.desc}
-              </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Coluna esquerda — Fontes de dados */}
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
+            <div className="space-y-6">
+              <div>
+                <div className="flex gap-3">
+                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">— Google Trends</span>
+                  <span className="text-xs opacity-60 leading-relaxed">· Comportamento de pesquisa em Portugal</span>
+                </div>
+                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                  Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
+                </p>
+              </div>
+              <div>
+                <div className="flex gap-3">
+                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">— 15 RSS Feeds</span>
+                  <span className="text-xs opacity-60 leading-relaxed">· RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</span>
+                </div>
+                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                  Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.
+                </p>
+              </div>
+              <div>
+                <div className="flex gap-3">
+                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">— Supabase</span>
+                  <span className="text-xs opacity-60 leading-relaxed">· Base de dados em tempo real</span>
+                </div>
+                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                  Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Coluna direita — Metodologia */}
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
+            <div className="space-y-4 text-sm leading-relaxed">
+              <p>
+                <span className="font-bold">Sinais emergentes:</span> crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+              </p>
+              <p>
+                <span className="font-bold">Debunking</span> categorizado em: <span className="font-bold">FALSO</span> / <span className="font-bold">ENGANADOR</span> / <span className="font-bold">SEM EVIDÊNCIA</span> / <span className="font-bold">IMPRECISO</span>
+              </p>
+              <div className="mt-6">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary mb-3">O Índice Google Trends</h3>
+                <p className="text-sm leading-relaxed">
+                  O índice varia entre 0 e 100 — não representa o número absoluto de pesquisas, mas o interesse relativo de um termo numa região e período. O valor 100 corresponde ao pico máximo de interesse no período analisado. As percentagens de crescimento (+X%) comparam o volume da semana actual com a média das semanas anteriores do mesmo período.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -151,21 +192,6 @@ const Sobre = () => {
               )}
             </div>
           ))}
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
-      {/* Metodologia */}
-      <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
-        <div className="space-y-4 max-w-2xl text-sm leading-relaxed">
-          <p>
-            <span className="font-bold">Sinais emergentes:</span> crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
-          </p>
-          <p>
-            <span className="font-bold">Debunking</span> categorizado em: <span className="font-bold">FALSO</span> / <span className="font-bold">ENGANADOR</span> / <span className="font-bold">SEM EVIDÊNCIA</span> / <span className="font-bold">IMPRECISO</span>
-          </p>
         </div>
       </section>
 
