@@ -66,13 +66,6 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       {/* LINE 1 — Editorial links (right-aligned, smaller) */}
       <nav className="px-6 py-2 flex justify-end items-center gap-4">
         <Link
-          to="/guioes"
-          className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}
-        >
-          Guiões
-        </Link>
-        <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-        <Link
           to="/textos"
           className={`nav-link ${activePage === "textos" ? "nav-link-active" : ""}`}
         >
