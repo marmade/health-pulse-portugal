@@ -13,7 +13,7 @@ type Props = {
   onAxisChange?: (id: string) => void;
   lastRefreshed?: string | null;
   /** Highlights this page link in the nav */
-  activePage?: "briefing" | "guioes" | "textos" | "sobre";
+  activePage?: "briefing" | "guioes" | "textos" | "plataforma" | "sobre";
 };
 
 const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }: Props) => {
