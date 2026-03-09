@@ -80,7 +80,7 @@ const Index = () => {
       )}
 
       {/* Filters */}
-      <div className="px-6 py-3 overflow-x-auto">
+      <div className="px-6 py-2 overflow-x-auto">
         <Filters onFilterChange={setFilters} />
       </div>
 
@@ -149,7 +149,7 @@ const Index = () => {
         {/* Side tables */}
         <div className="mt-10">
           <div className="section-divider mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:h-[500px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
             <DebunkingTable items={debunkingData} />
             <MediaTable items={newsData} lastFetchTimestamp={lastFetchTimestamp} />
           </div>

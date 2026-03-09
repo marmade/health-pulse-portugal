@@ -24,15 +24,15 @@ const DebunkingTable = ({ items }: Props) => {
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      <p className="editorial-label mb-2 flex-shrink-0">Debunking & Desinformação</p>
+      <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5 flex-shrink-0">Debunking & Desinformação</p>
       
       {/* Classification filter */}
-      <div className="flex flex-wrap gap-1 mb-3 flex-shrink-0">
+      <div className="flex flex-wrap gap-0.5 mb-2 flex-shrink-0">
         {classifications.map((c) => (
           <button
             key={c}
             onClick={() => setActiveFilter(c)}
-            className={`text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+            className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
               activeFilter === c
                 ? "border-foreground bg-foreground text-background"
                 : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
@@ -45,28 +45,28 @@ const DebunkingTable = ({ items }: Props) => {
 
       <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
         {filteredItems.length === 0 ? (
-          <p className="text-xs text-foreground/40 py-4">Nenhum item encontrado.</p>
+          <p className="text-[10px] text-foreground/40 py-3">Nenhum item encontrado.</p>
         ) : (
           filteredItems.map((item, i) => (
             <div key={i}>
-              <div className="py-2.5">
-                <div className="flex items-start justify-between gap-2">
+              <div className="py-1.5">
+                <div className="flex items-start justify-between gap-1.5">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] font-semibold text-foreground/40 uppercase tracking-wider mb-0.5">
+                    <p className="text-[8px] font-semibold text-foreground/40 uppercase tracking-wider mb-0.5">
                       {item.term}
                     </p>
                     <a
                       href={item.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-medium hover:underline leading-tight block"
+                      className="text-[10px] font-medium hover:underline leading-tight block"
                     >
                       {item.title}
                     </a>
-                    <p className="text-[9px] text-foreground/40 mt-1">{item.source}</p>
+                    <p className="text-[8px] text-foreground/40 mt-0.5">{item.source}</p>
                   </div>
                   <span
-                    className={`text-[8px] font-bold uppercase tracking-wider border px-1.5 py-0.5 shrink-0 mt-0.5 ${
+                    className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 shrink-0 mt-0.5 ${
                       classificationStyle[item.classification] || ""
                     }`}
                   >
