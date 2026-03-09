@@ -4,6 +4,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { getTopQuestionsPerAxis } from "@/data/healthQuestions";
+import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
 
 type KeywordRow = {
