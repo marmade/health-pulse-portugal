@@ -575,7 +575,6 @@ const Briefing = () => {
                         )}
                       </p>
                     )}
-                  </div>
                 </div>
               </div>
             ) : null}
