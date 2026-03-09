@@ -87,11 +87,12 @@ Responde APENAS com este JSON:
 
     perguntas = perguntas
       .filter((p: any) => p && typeof p === "object" && p.pergunta)
-      .map((p: any) => ({
+      .map((p: any, i: number) => ({
         pergunta: String(p.pergunta || ""),
         resposta_simples: String(p.resposta_simples || "Consulte a fonte indicada para mais informações."),
         referencia_nome: String(p.referencia_nome || ""),
-        referencia_url: String(p.referencia_url || ""),
+        // Use real Perplexity citation URL at index i; fallback to AI-provided URL or empty
+        referencia_url: citations[i] || String(p.referencia_url || ""),
       }));
 
     console.log(`Generated ${perguntas.length} questions via Perplexity Sonar`);

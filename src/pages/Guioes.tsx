@@ -308,7 +308,7 @@ const Guioes = () => {
       // 1. Fetch 5 random banco base questions for this tema
       const { data: bancoData } = await supabase
         .from("guioes")
-        .select("pergunta, resposta, referencia_cientifica")
+        .select("pergunta, resposta, referencia_cientifica, referencia_url")
         .ilike("tema", temaObj.db)
         .limit(50);
 
@@ -316,12 +316,12 @@ const Guioes = () => {
       const shuffled = (bancoData || []).sort(() => Math.random() - 0.5).slice(0, 5);
       const bancoPerguntas: Pergunta[] = shuffled.map((r: any) => {
         const refText = r.referencia_cientifica || "";
-        const { url } = resolveReference(temaValue, refText, "");
         return {
           pergunta: r.pergunta || "",
           resposta_simples: r.resposta || "",
           referencia_nome: refText,
-          referencia_url: url,
+          // If referencia_url is set in DB, use directly; otherwise parseReference handles it during render
+          referencia_url: r.referencia_url || "",
           source: "banco" as const,
         };
       });
@@ -341,15 +341,15 @@ const Guioes = () => {
 
       const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
         const refNome = p.referencia_nome || "";
-        const originalUrl = p.referencia_url || "";
-        const { url, approved } = resolveReference(temaValue, refNome, originalUrl);
+        // Use Perplexity citation URL directly (already mapped in edge function via citations[i])
+        const refUrl = p.referencia_url || "";
         return {
           pergunta: p.pergunta || "",
           resposta_simples: p.resposta_simples || "",
           referencia_nome: refNome,
-          referencia_url: url,
+          referencia_url: refUrl,
           source: "ia" as const,
-          approved,
+          approved: !!refUrl,
         };
       });
 
@@ -638,8 +638,17 @@ const Guioes = () => {
                       </TableCell>
                       <TableCell className="text-xs">
                         {!isAI ? (
-                          // Banco base: render each fragment as link or text
-                          bancoRefs.length > 0 ? (
+                          // Banco base: if direct referencia_url set, use it; else parse fragments
+                          p.referencia_url ? (
+                            <a
+                              href={p.referencia_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0000FF] underline italic text-xs hover:opacity-70"
+                            >
+                              {p.referencia_nome || "Ver fonte"}
+                            </a>
+                          ) : bancoRefs.length > 0 ? (
                             <span className="italic">
                               {bancoRefs.map((frag, fi) => (
                                 <span key={fi}>
