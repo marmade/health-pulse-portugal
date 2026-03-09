@@ -137,6 +137,17 @@ const S = {
 /* ── Page ── */
 const Plataforma = () => {
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [tbarWidth, setTbarWidth] = useState(0);
+  const channelsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      if (channelsRef.current) setTbarWidth(channelsRef.current.offsetWidth);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const open = (id: string) => setOpenModal(id);
   const close = () => setOpenModal(null);
