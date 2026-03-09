@@ -540,7 +540,7 @@ const Briefing = () => {
                 </div>
 
                 {/* Dupla Científica Sugerida */}
-                <div className="border-l border-blue-100 p-4">
+                <div className="border-l p-4" style={{ borderColor: "#0000FF" }}>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
                     Dupla Científica Sugerida
                   </p>
