@@ -7,6 +7,7 @@ import {
   getRelatedNews,
   getRelatedDebunks,
 } from "@/data/healthQuestions";
+import { getAxisColors } from "@/lib/axisColors";
 
 type Props = {
   debunkingData: DebunkItem[];
@@ -15,12 +16,7 @@ type Props = {
   axisLabel?: string;
 };
 
-const axisStyles: Record<string, { bg: string }> = {
-  "saude-mental": { bg: "rgba(0,255,200,0.12)" },
-  alimentacao: { bg: "rgba(255,230,0,0.20)" },
-  menopausa: { bg: "rgba(255,0,150,0.12)" },
-  emergentes: { bg: "rgba(0,0,255,0.08)" },
-};
+// Colors will be handled by getAxisColors
 
 const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -66,7 +62,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                       <div className="flex items-center gap-2 mt-1">
                         <span
                           className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
-                          style={{ backgroundColor: axisStyles[q.axis]?.bg || "rgba(0,0,255,0.08)", color: "#0000FF" }}
+                          style={{ backgroundColor: getAxisColors(q.axis).bg, color: getAxisColors(q.axis).text }}
                         >
                           {q.axisLabel}
                         </span>
