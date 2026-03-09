@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 /* ── Modal data ── */
@@ -130,13 +130,24 @@ const S = {
   nucleo: { border: "2px solid #0000FF", color: "#0000FF", fontWeight: 700 },
   digital: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
   canais: { border: "1px solid rgba(0,0,255,0.45)", color: "rgba(0,0,255,0.55)" },
-  publico: { border: "1px solid rgba(0,0,255,0.12)", color: "rgba(0,0,255,0.22)" },
-  extensoes: { border: "1px solid rgba(0,0,255,0.07)", color: "rgba(0,0,255,0.15)" },
+  publico: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
+  extensoes: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
 };
 
 /* ── Page ── */
 const Plataforma = () => {
   const [openModal, setOpenModal] = useState<string | null>(null);
+  const [tbarWidth, setTbarWidth] = useState(0);
+  const channelsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      if (channelsRef.current) setTbarWidth(channelsRef.current.offsetWidth);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const open = (id: string) => setOpenModal(id);
   const close = () => setOpenModal(null);
@@ -147,11 +158,6 @@ const Plataforma = () => {
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <header className="w-full">
-        <div className="px-6 py-5 flex items-baseline justify-between">
-          <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-        </div>
         <div className="section-divider" />
         <nav className="px-6 py-2 flex justify-end items-center gap-4">
           <Link to="/guioes" className="nav-link">Guiões</Link>
@@ -169,7 +175,7 @@ const Plataforma = () => {
       <section className="px-6 py-12 md:py-16 max-w-3xl">
         <p className="editorial-label mb-3">Estrutura do Projecto</p>
         <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
-          Uma Plataforma, Várias Dimensões
+          Uma Plataforma,<br />Várias Dimensões
         </h1>
         <p className="text-sm md:text-base mt-2 opacity-70">
           Ecossistema digital e de proximidade do projecto Reportagem Viva
@@ -210,26 +216,28 @@ const Plataforma = () => {
           <DiagramBox label="APP" id="app" style={S.digital} onClick={open} />
         </div>
 
-        {/* T-bar connector */}
-        <div className="flex flex-col items-center w-full max-w-md mt-1">
-          {/* vertical line down */}
+        {/* T-bar connector + Canais */}
+        <div className="flex flex-col items-center mt-1">
+          {/* vertical line down from Site/APP */}
           <div className="w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-          {/* horizontal bar */}
-          <div className="w-full relative" style={{ height: 1, background: "rgba(0,0,255,0.3)" }}>
-            {/* 3 vertical feet */}
-            <div className="absolute left-[16.6%] top-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-            <div className="absolute left-1/2 -translate-x-px top-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-            <div className="absolute right-[16.6%] top-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
+          {/* The channels row — we measure against this */}
+          <div className="flex flex-col items-center">
+            {/* horizontal bar + feet, width matches channel boxes */}
+            <div className="relative" style={{ width: tbarWidth || "auto", height: 16 }}>
+              <div className="absolute top-0 left-0 right-0" style={{ height: 1, background: "rgba(0,0,255,0.3)" }} />
+              <div className="absolute top-0 left-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
+              <div className="absolute top-0 left-1/2 -translate-x-px w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
+              <div className="absolute top-0 right-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
+            </div>
+            <div className="mt-2">
+              <SectionLabel>Canais de Distribuição</SectionLabel>
+            </div>
+            <div ref={channelsRef} className="flex gap-3 justify-center flex-wrap">
+              <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} />
+              <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} />
+              <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} />
+            </div>
           </div>
-        </div>
-
-        <div className="mt-4">
-          <SectionLabel>Canais de Distribuição</SectionLabel>
-        </div>
-        <div className="flex gap-3 justify-center flex-wrap">
-          <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} />
-          <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} />
-          <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} />
         </div>
 
         <Arrow opacity={0.15} />
@@ -255,23 +263,21 @@ const Plataforma = () => {
 
       <div className="section-divider" />
 
-      {/* Legend */}
-      <section className="px-6 py-8 flex justify-end">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
+        {/* Legend — inline, centered, below diagram */}
+        <div className="mt-10 flex justify-center gap-6 flex-wrap">
+          <div className="flex items-center gap-2">
             <div className="w-5 h-3" style={{ border: "2px solid #0000FF" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.6)" }}>Âmbito actual (2026)</span>
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Âmbito actual (2026)</span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-3" style={{ border: "1px solid rgba(0,0,255,0.12)" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.4)" }}>Ecossistema Público</span>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-3" style={{ border: "1px dashed #0000FF" }} />
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Ecossistema Público</span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-3" style={{ border: "1px solid rgba(0,0,255,0.07)" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.3)" }}>Extensões</span>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-3" style={{ border: "1px dashed #0000FF" }} />
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Extensões</span>
           </div>
         </div>
-      </section>
 
       {/* Modal overlay */}
       {modal && openModal && (
