@@ -114,21 +114,21 @@ const Sobre = () => {
           {/* Coluna esquerda — Fontes de dados */}
           <div>
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
-            <div className="space-y-4">
+            <div className="flex flex-col gap-5">
               <div>
-                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Google Trends</p>
-                <p className="text-xs opacity-60 mt-0.5">Comportamento de pesquisa em Portugal</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.</p>
+                <p className="text-xs uppercase font-medium text-primary/60">Google Trends</p>
+                <p className="text-xs text-primary mt-1">Comportamento de pesquisa em Portugal</p>
+                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.</p>
               </div>
               <div>
-                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">15 RSS Feeds</p>
-                <p className="text-xs opacity-60 mt-0.5 leading-relaxed">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.</p>
+                <p className="text-xs uppercase font-medium text-primary/60">15 RSS Feeds</p>
+                <p className="text-xs text-primary mt-1">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
+                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.</p>
               </div>
               <div>
-                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Supabase</p>
-                <p className="text-xs opacity-60 mt-0.5">Base de dados em tempo real</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.</p>
+                <p className="text-xs uppercase font-medium text-primary/60">Supabase</p>
+                <p className="text-xs text-primary mt-1">Base de dados em tempo real</p>
+                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.</p>
               </div>
             </div>
           </div>
