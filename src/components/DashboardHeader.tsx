@@ -80,6 +80,13 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         </Link>
         <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
         <Link
+          to="/plataforma"
+          className={`nav-link ${activePage === "plataforma" ? "nav-link-active" : ""}`}
+        >
+          Plataforma
+        </Link>
+        <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+        <Link
           to="/sobre"
           className={`nav-link ${activePage === "sobre" ? "nav-link-active" : ""}`}
         >
