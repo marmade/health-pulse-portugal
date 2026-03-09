@@ -247,6 +247,7 @@ export const debunkingData: DebunkItem[] = [
   { term: "mpox portugal", title: "Mpox só se transmite através de contacto sexual? Fact-check", classification: "FALSO", source: "Observador", url: "https://observador.pt/factchecks/fact-check-mpox-so-se-transmite-atraves-de-contacto-sexual/" },
   { term: "suplementos alimentares", title: "Vitamina D previne covid-19? Falta de evidência científica", classification: "SEM EVIDÊNCIA", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/suplementos-alimentares-o-que-a-ciencia-diz/" },
   { term: "fitoterapia menopausa", title: "Está provado que beber sumo de maracujá emagrece?", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/plantas-e-remedios-naturais-para-a-menopausa-o-que-esta-provado/" },
+  { term: "gripe aviária H5N1", title: "Gripe aviária transmite-se pelo consumo de ovos? É falso", classification: "FALSO", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/gripe-aviaria-risco-transmissao-humana/" },
 ];
 
 export const newsData: NewsItem[] = [
