@@ -381,24 +381,20 @@ const Briefing = () => {
         ) : (
           <div className="space-y-3 max-w-2xl">
             {emergent.map((kw) => {
-              const axisColors = {
-                "saude-mental": { bg: "rgba(0,128,128,0.12)", border: "rgba(0,128,128,0.30)", text: "rgb(0,128,128)" },
-                alimentacao: { bg: "rgba(255,200,0,0.15)", border: "rgba(255,200,0,0.40)", text: "rgb(180,140,0)" },
-                menopausa: { bg: "rgba(255,0,128,0.12)", border: "rgba(255,0,128,0.30)", text: "rgb(200,0,100)" },
-              } as Record<string, { bg: string; border: string; text: string }>;
-              const c = axisColors[kw.axis];
+              const axisColors: Record<string, { bg: string; text: string }> = {
+                "saude-mental": { bg: "rgba(0,128,128,0.12)", text: "rgb(0,128,128)" },
+                alimentacao: { bg: "rgba(255,200,0,0.15)", text: "rgb(180,140,0)" },
+                menopausa: { bg: "rgba(255,0,128,0.12)", text: "rgb(200,0,100)" },
+                emergentes: { bg: "rgba(0,0,255,0.08)", text: "#0000FF" },
+              };
+              const c = axisColors[kw.axis] || { bg: "rgba(0,0,255,0.08)", text: "#0000FF" };
               return (
               <div key={kw.term} className="flex items-center gap-3">
-                <span
-                  className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm border"
-                  style={c ? { backgroundColor: c.bg, borderColor: c.border, color: c.text } : { backgroundColor: "transparent", borderColor: "#0000FF", color: "#0000FF" }}
-                >
-                  Emergente
-                </span>
+                <span className="tag-emergent">Emergente</span>
                 <span className="text-sm font-semibold">{kw.term}</span>
                 <span
-                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm border"
-                  style={c ? { backgroundColor: c.bg, borderColor: c.border, color: c.text } : { backgroundColor: "transparent", borderColor: "transparent", color: "#0000FF" }}
+                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                  style={{ backgroundColor: c.bg, color: c.text }}
                 >
                   {axisLabels[kw.axis] || kw.axis}
                 </span>
