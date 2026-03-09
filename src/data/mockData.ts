@@ -243,9 +243,9 @@ export const axisData: Record<string, { label: string; keywords: Keyword[]; tren
 };
 export const debunkingData: DebunkItem[] = [
   { term: "jejum intermitente", title: "Jejum, água com limão e hidratos de carbono: sete mitos e verdades sobre nutrição", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/saude/jejum-agua-com-limao-e-hidratos-de-carbono-sete-mitos-e-verdades-sobre-nutricao/" },
-  { term: "terapia hormonal", title: "Terapia hormonal causa cancro? Análise dos estudos recentes", classification: "IMPRECISO", source: "Health Feedback", url: "https://science.feedback.org/review/dozens-of-clinical-trials-ongoing-to-investigate-whether-vitamin-d-prevents-covid-19-no-firm-evidence-yet/" },
+  { term: "terapia hormonal", title: "Terapia hormonal causa cancro? Análise dos estudos recentes", classification: "IMPRECISO", source: "Health Feedback", url: "https://healthfeedback.org/claimreview/studies-show-mixed-results-on-breast-cancer-risk-from-hormone-therapy/" },
   { term: "mpox portugal", title: "Mpox só se transmite através de contacto sexual? Fact-check", classification: "FALSO", source: "Observador", url: "https://observador.pt/factchecks/fact-check-mpox-so-se-transmite-atraves-de-contacto-sexual/" },
-  { term: "suplementos alimentares", title: "Vitamina D previne covid-19? Falta de evidência científica", classification: "SEM EVIDÊNCIA", source: "Science Feedback", url: "https://science.feedback.org/review/dozens-of-clinical-trials-ongoing-to-investigate-whether-vitamin-d-prevents-covid-19-no-firm-evidence-yet/" },
+  { term: "suplementos alimentares", title: "Vitamina D previne covid-19? Falta de evidência científica", classification: "SEM EVIDÊNCIA", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/suplementos-alimentares-o-que-a-ciencia-diz/" },
   { term: "fitoterapia menopausa", title: "Está provado que beber sumo de maracujá emagrece?", classification: "ENGANADOR", source: "Polígrafo", url: "https://poligrafo.sapo.pt/fact-check/esta-provado-que-beber-sumo-de-maracuja-emagrece/" },
 ];
 
