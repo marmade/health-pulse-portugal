@@ -384,7 +384,16 @@ const Briefing = () => {
               <div key={kw.term} className="flex items-center gap-3">
                 <span className="tag-emergent">Emergente</span>
                 <span className="text-sm font-semibold">{kw.term}</span>
-                <span className="text-[10px] uppercase tracking-wider opacity-50">
+                <span
+                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                  style={{
+                    color: "#0000FF",
+                    backgroundColor: kw.axis === "saude-mental" ? "rgba(0,0,255,0.08)"
+                      : kw.axis === "alimentacao" ? "rgba(0,0,255,0.15)"
+                      : kw.axis === "menopausa" ? "rgba(0,0,255,0.25)"
+                      : "rgba(0,0,255,0.40)",
+                  }}
+                >
                   {axisLabels[kw.axis] || kw.axis}
                 </span>
                 <span className="text-xs font-bold ml-auto">
