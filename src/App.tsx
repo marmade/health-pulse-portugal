@@ -8,6 +8,7 @@ import Sobre from "./pages/Sobre";
 import Textos from "./pages/Textos";
 import Briefing from "./pages/Briefing";
 import Guioes from "./pages/Guioes";
+import Plataforma from "./pages/Plataforma";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
