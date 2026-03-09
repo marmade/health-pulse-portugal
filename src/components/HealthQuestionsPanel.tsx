@@ -15,11 +15,11 @@ type Props = {
   axisLabel?: string;
 };
 
-const axisColors: Record<string, string> = {
-  "saude-mental": "bg-chart-1/20 text-chart-1",
-  alimentacao: "bg-chart-2/20 text-chart-2",
-  menopausa: "bg-chart-3/20 text-chart-3",
-  emergentes: "bg-chart-4/20 text-chart-4",
+const axisStyles: Record<string, { bg: string }> = {
+  "saude-mental": { bg: "rgba(0,255,200,0.12)" },
+  alimentacao: { bg: "rgba(255,255,0,0.15)" },
+  menopausa: { bg: "rgba(255,0,150,0.12)" },
+  emergentes: { bg: "rgba(0,0,255,0.08)" },
 };
 
 const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
