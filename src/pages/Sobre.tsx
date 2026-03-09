@@ -20,6 +20,14 @@ const paraQueServe = [
   "Informar a escolha de temas para comunicação em saúde",
 ];
 
+const fluxo = [
+  { title: "GOOGLE TRENDS", subtitle: "pesquisas em tempo real" },
+  { title: "SUPABASE", subtitle: "base de dados + keywords" },
+  { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
+  { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
+  { title: "GUIÃO", subtitle: "10 perguntas por tema" },
+];
+
 const agradecimentos = [
   "Ana Sanchez",
   "António Gomes da Costa",
@@ -119,16 +127,64 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
+      {/* Como funciona */}
+      <section className="px-6 py-12">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Como funciona</h2>
+
+        <div className="flex flex-col md:flex-row md:items-stretch md:justify-between gap-3 md:gap-2">
+          {fluxo.map((step, idx) => (
+            <div key={step.title} className="flex flex-col md:flex-row md:items-center md:flex-1 gap-3 md:gap-2">
+              <div className="border border-primary p-4 md:min-h-[84px] flex flex-col justify-center">
+                <h3 className="text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed mt-1 lowercase">
+                  {step.subtitle}
+                </p>
+              </div>
+
+              {idx < fluxo.length - 1 && (
+                <>
+                  <span className="hidden md:inline-block text-primary text-xs font-bold select-none">→</span>
+                  <span className="md:hidden block text-primary text-xs font-bold text-center leading-none select-none">↓</span>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
       {/* Metodologia */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
-        <div className="space-y-4 max-w-2xl text-sm leading-relaxed">
-          <p>
-            <span className="font-bold">Sinais emergentes:</span> crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
-          </p>
-          <p>
-            <span className="font-bold">Debunking</span> categorizado em: <span className="font-bold">FALSO</span> / <span className="font-bold">ENGANADOR</span> / <span className="font-bold">SEM EVIDÊNCIA</span> / <span className="font-bold">IMPRECISO</span>
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
+            <div className="space-y-4 max-w-2xl text-sm leading-relaxed">
+              <p>
+                <span className="font-bold">Sinais emergentes:</span> crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+              </p>
+              <p>
+                <span className="font-bold">Debunking</span> categorizado em: <span className="font-bold">FALSO</span> / <span className="font-bold">ENGANADOR</span> / <span className="font-bold">SEM EVIDÊNCIA</span> / <span className="font-bold">IMPRECISO</span>
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6 text-primary">Contexto de investigação</h2>
+            <div className="space-y-4 text-sm leading-relaxed text-primary">
+              <p>
+                Este dashboard foi desenvolvido no âmbito de um projecto de dissertação de mestrado em Comunicação de Ciência na FCSH-UNL, orientado pelo Professor Alexandre Duarte.
+              </p>
+              <p>
+                O objectivo é demonstrar como ferramentas de monitorização de tendências digitais podem informar a produção jornalística em saúde — identificando em tempo real os temas que preocupam os portugueses online.
+              </p>
+              <p>
+                A plataforma combina dados quantitativos (Google Trends, RSS) com análise qualitativa (debunking, categorização), gerando guiões de entrevista adaptados ao formato Vox Pop.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
