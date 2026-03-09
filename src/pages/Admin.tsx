@@ -68,6 +68,13 @@ type GuiaoRow = {
   ordem: number;
 };
 
+type PopupItem = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  text: string;
+};
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
@@ -120,6 +127,11 @@ export default function Admin() {
   const [guiaoForm, setGuiaoForm] = useState<Omit<GuiaoRow, "id">>(emptyGuiao());
   const [guiaoFilter, setGuiaoFilter] = useState("TODOS");
 
+  // Popups state
+  const [popups, setPopups] = useState<PopupItem[]>([]);
+  const [editingPopupId, setEditingPopupId] = useState<string | null>(null);
+  const [popupForm, setPopupForm] = useState({ eyebrow: "", title: "", text: "" });
+
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
 
@@ -149,18 +161,20 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx, gu] = await Promise.all([
+    const [kw, db, nw, tx, gu, pp] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
       supabase.from("textos").select("*").order("ordem"),
       supabase.from("guioes").select("*").order("tema").order("ordem"),
+      supabase.from("plataforma_popups").select("*"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
     if (nw.data) setNews(nw.data);
     if (tx.data) setTextos(tx.data.map((t: any) => ({ ...t, referencias: t.referencias || [] })));
     if (gu.data) setGuioes(gu.data as GuiaoRow[]);
+    if (pp.data) setPopups(pp.data as PopupItem[]);
   };
 
   // Keywords CRUD
@@ -295,6 +309,21 @@ export default function Admin() {
     setDeleteConfirm(null);
   };
 
+  // Popups CRUD
+  const openPopupForm = (p: PopupItem) => {
+    setEditingPopupId(p.id);
+    setPopupForm({ eyebrow: p.eyebrow, title: p.title, text: p.text });
+  };
+
+  const savePopup = async () => {
+    if (!editingPopupId) return;
+    const { error } = await supabase.from("plataforma_popups").update({
+      eyebrow: popupForm.eyebrow, title: popupForm.title, text: popupForm.text,
+    }).eq("id", editingPopupId);
+    if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
+    else { toast({ title: "Guardado ✓" }); setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); fetchAll(); }
+  };
+
   const filteredGuioes = guiaoFilter === "TODOS" ? guioes : guioes.filter((g) => g.tema === guiaoFilter);
 
   // Login screen
@@ -343,6 +372,7 @@ export default function Admin() {
             <TabsTrigger value="news" className={tabTriggerClass}>NOTÍCIAS</TabsTrigger>
             <TabsTrigger value="textos" className={tabTriggerClass}>TEXTOS</TabsTrigger>
             <TabsTrigger value="guioes" className={tabTriggerClass}>GUIÕES</TabsTrigger>
+            <TabsTrigger value="popups" className={tabTriggerClass}>PLATAFORMA</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -667,6 +697,53 @@ export default function Admin() {
                             <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "guiao", id: g.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
                           </div>
                         )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          {/* Plataforma Popups Tab */}
+          <TabsContent value="popups" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Pop-ups da Plataforma ({popups.length})</h2>
+            </div>
+
+            {editingPopupId && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar: {editingPopupId}</p>
+                <Input placeholder="Eyebrow (ex: Parceiros Institucionais)" value={popupForm.eyebrow} onChange={(e) => setPopupForm({ ...popupForm, eyebrow: e.target.value })} />
+                <Input placeholder="Título" value={popupForm.title} onChange={(e) => setPopupForm({ ...popupForm, title: e.target.value })} />
+                <Textarea placeholder="Texto descritivo" rows={4} value={popupForm.text} onChange={(e) => setPopupForm({ ...popupForm, text: e.target.value })} />
+                <div className="flex gap-2">
+                  <Button onClick={savePopup} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="border border-foreground/20 max-h-[500px] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead className="w-24">ID</TableHead>
+                    <TableHead>Eyebrow</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead className="max-w-xs">Texto</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {popups.map((p) => (
+                    <TableRow key={p.id} className="border-b border-foreground/10">
+                      <TableCell className="text-xs font-mono">{p.id}</TableCell>
+                      <TableCell className="text-xs">{p.eyebrow}</TableCell>
+                      <TableCell className="text-xs font-medium">{p.title}</TableCell>
+                      <TableCell className="text-xs max-w-xs truncate">{p.text}</TableCell>
+                      <TableCell>
+                        <Button size="sm" variant="ghost" onClick={() => openPopupForm(p)}><Pencil className="w-4 h-4" /></Button>
                       </TableCell>
                     </TableRow>
                   ))}

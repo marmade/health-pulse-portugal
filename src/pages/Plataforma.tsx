@@ -1,83 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
-/* ── Modal data ── */
-const modals: Record<string, { eyebrow: string; title: string; text: string }> = {
-  dgs: {
-    eyebrow: "Parceiros Institucionais",
-    title: "DGS — Direcção-Geral da Saúde",
-    text: "A DGS é uma fonte primária de informação científica validada. O projecto utiliza os seus comunicados, orientações clínicas e alertas de saúde pública como base para a monitorização de tendências e validação do conteúdo produzido.",
-  },
-  sns: {
-    eyebrow: "Parceiros Institucionais",
-    title: "SNS — Serviço Nacional de Saúde",
-    text: "O SNS fornece dados epidemiológicos, estatísticas de saúde e informação institucional que alimentam os eixos temáticos do dashboard.",
-  },
-  rtp: {
-    eyebrow: "Amplificação",
-    title: "RTP",
-    text: "Parceiro de amplificação com potencial para co-produção de conteúdo ou divulgação junto de públicos mais alargados através dos canais digitais e televisivos.",
-  },
-  plataforma: {
-    eyebrow: "Núcleo",
-    title: "Plataforma",
-    text: "O centro do projecto. Agrega o dashboard privado de monitorização de tendências, o arquivo de guiões e o sistema de verificação de mitos. É a ferramenta de estratégia que alimenta todos os canais de comunicação.",
-  },
-  site: {
-    eyebrow: "Ecossistema Digital",
-    title: "Site",
-    text: "O arquivo público do projecto. Aloja todos os vídeos, textos e verificações produzidos. O que é distribuído pelas redes sociais tem sempre o site como destino e fonte original.",
-  },
-  app: {
-    eyebrow: "Ecossistema Digital",
-    title: "APP — Bom Saber!",
-    text: "Aplicação móvel consultável com arquivo de mitos vs. factos em saúde. Permite ao utilizador pesquisar temas e aceder a respostas com fundamento científico.",
-  },
-  instagram: {
-    eyebrow: "Canal de Distribuição",
-    title: "Instagram",
-    text: "Canal de distribuição para públicos jovens e adultos. O formato Diz que Disse — vox pop + dupla científica — é especialmente adequado para Reels e Stories.",
-  },
-  tiktok: {
-    eyebrow: "Canal de Distribuição",
-    title: "TikTok",
-    text: "Canal de distribuição para públicos mais jovens. O formato curto e dinâmico é ideal para os vídeos vox pop.",
-  },
-  youtube: {
-    eyebrow: "Canal de Distribuição",
-    title: "YouTube",
-    text: "Canal de distribuição e arquivo permanente para conteúdo mais longo e aprofundado, complementando o site.",
-  },
-  conversa: {
-    eyebrow: "Ecossistema Público",
-    title: "Conversa em Dia",
-    text: "Formato de encontro presencial com especialistas e público geral. Sessões de conversa sobre temas de saúde actuais, com mediação científica.",
-  },
-  academia: {
-    eyebrow: "Ecossistema Público",
-    title: "Academia",
-    text: "Parceria com universidades e centros de investigação para produção e validação de conteúdo científico.",
-  },
-  bairros: {
-    eyebrow: "Ecossistema Público",
-    title: "Bairros",
-    text: "Iniciativa de proximidade que leva informação de saúde com fundamento científico a comunidades locais.",
-  },
-  centros: {
-    eyebrow: "Ecossistema Público",
-    title: "Centros de Saúde",
-    text: "Colaboração com centros de saúde do SNS para distribuição de conteúdo informativo validado nos espaços de espera e consultas.",
-  },
-  comunidade: {
-    eyebrow: "Extensões",
-    title: "Comunidade Científica Portuguesa",
-    text: "Extensão futura que prevê certificados de competências para profissionais e instituições que participem na validação de conteúdo científico.",
-  },
-  assistente: {
-    eyebrow: "Extensões",
-    title: "Assistente Virtual Voz",
-    text: "Interface de voz para acesso a informação de saúde validada — qualquer utilizador pode fazer perguntas e receber respostas em formato áudio.",
-  },
+/* ── Fallback modal data ── */
+const fallbackModals: Record<string, { eyebrow: string; title: string; text: string }> = {
+  dgs: { eyebrow: "Parceiros Institucionais", title: "DGS — Direcção-Geral da Saúde", text: "A DGS é uma fonte primária de informação científica validada. O projecto utiliza os seus comunicados, orientações clínicas e alertas de saúde pública como base para a monitorização de tendências e validação do conteúdo produzido." },
+  sns: { eyebrow: "Parceiros Institucionais", title: "SNS — Serviço Nacional de Saúde", text: "O SNS fornece dados epidemiológicos, estatísticas de saúde e informação institucional que alimentam os eixos temáticos do dashboard." },
+  rtp: { eyebrow: "Amplificação", title: "RTP", text: "Parceiro de amplificação com potencial para co-produção de conteúdo ou divulgação junto de públicos mais alargados através dos canais digitais e televisivos." },
+  plataforma: { eyebrow: "Núcleo", title: "Plataforma", text: "O centro do projecto. Agrega o dashboard privado de monitorização de tendências, o arquivo de guiões e o sistema de verificação de mitos. É a ferramenta de estratégia que alimenta todos os canais de comunicação." },
+  site: { eyebrow: "Ecossistema Digital", title: "Site", text: "O arquivo público do projecto. Aloja todos os vídeos, textos e verificações produzidos. O que é distribuído pelas redes sociais tem sempre o site como destino e fonte original." },
+  app: { eyebrow: "Ecossistema Digital", title: "APP — Bom Saber!", text: "Aplicação móvel consultável com arquivo de mitos vs. factos em saúde. Permite ao utilizador pesquisar temas e aceder a respostas com fundamento científico." },
+  instagram: { eyebrow: "Canal de Distribuição", title: "Instagram", text: "Canal de distribuição para públicos jovens e adultos. O formato Diz que Disse — vox pop + dupla científica — é especialmente adequado para Reels e Stories." },
+  tiktok: { eyebrow: "Canal de Distribuição", title: "TikTok", text: "Canal de distribuição para públicos mais jovens. O formato curto e dinâmico é ideal para os vídeos vox pop." },
+  youtube: { eyebrow: "Canal de Distribuição", title: "YouTube", text: "Canal de distribuição e arquivo permanente para conteúdo mais longo e aprofundado, complementando o site." },
+  conversa: { eyebrow: "Ecossistema Público", title: "Conversa em Dia", text: "Formato de encontro presencial com especialistas e público geral. Sessões de conversa sobre temas de saúde actuais, com mediação científica." },
+  academia: { eyebrow: "Ecossistema Público", title: "Academia", text: "Parceria com universidades e centros de investigação para produção e validação de conteúdo científico." },
+  bairros: { eyebrow: "Ecossistema Público", title: "Bairros", text: "Iniciativa de proximidade que leva informação de saúde com fundamento científico a comunidades locais." },
+  centros: { eyebrow: "Ecossistema Público", title: "Centros de Saúde", text: "Colaboração com centros de saúde do SNS para distribuição de conteúdo informativo validado nos espaços de espera e consultas." },
+  ccp: { eyebrow: "Extensões", title: "Comunidade Científica Portuguesa", text: "Extensão futura que prevê certificados de competências para profissionais e instituições que participem na validação de conteúdo científico." },
+  voz: { eyebrow: "Extensões", title: "Assistente Virtual Voz", text: "Interface de voz para acesso a informação de saúde validada — qualquer utilizador pode fazer perguntas e receber respostas em formato áudio." },
 };
 
 /* ── Reusable box ── */
@@ -139,6 +80,19 @@ const Plataforma = () => {
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [tbarWidth, setTbarWidth] = useState(0);
   const channelsRef = useRef<HTMLDivElement>(null);
+  const [modals, setModals] = useState<Record<string, { eyebrow: string; title: string; text: string }>>(fallbackModals);
+
+  useEffect(() => {
+    const fetchPopups = async () => {
+      const { data } = await supabase.from("plataforma_popups").select("*");
+      if (data && data.length > 0) {
+        const map: Record<string, { eyebrow: string; title: string; text: string }> = {};
+        data.forEach((row: any) => { map[row.id] = { eyebrow: row.eyebrow, title: row.title, text: row.text }; });
+        setModals({ ...fallbackModals, ...map });
+      }
+    };
+    fetchPopups();
+  }, []);
 
   useEffect(() => {
     const measure = () => {
@@ -256,8 +210,8 @@ const Plataforma = () => {
         {/* 6 — Extensões */}
         <SectionLabel>Extensões</SectionLabel>
         <div className="flex gap-3 justify-center flex-wrap">
-          <DiagramBox label="Comunidade Científica Portuguesa" id="comunidade" style={S.extensoes} onClick={open} />
-          <DiagramBox label="Assistente Virtual Voz" id="assistente" style={S.extensoes} onClick={open} />
+          <DiagramBox label="Comunidade Científica Portuguesa" id="ccp" style={S.extensoes} onClick={open} />
+          <DiagramBox label="Assistente Virtual Voz" id="voz" style={S.extensoes} onClick={open} />
         </div>
       </section>
 
