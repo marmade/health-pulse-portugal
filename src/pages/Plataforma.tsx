@@ -266,23 +266,21 @@ const Plataforma = () => {
 
       <div className="section-divider" />
 
-      {/* Legend */}
-      <section className="px-6 py-8 flex justify-end">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
+        {/* Legend — inline, centered, below diagram */}
+        <div className="mt-10 flex justify-center gap-6 flex-wrap">
+          <div className="flex items-center gap-2">
             <div className="w-5 h-3" style={{ border: "2px solid #0000FF" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.6)" }}>Âmbito actual (2026)</span>
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Âmbito actual (2026)</span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-3" style={{ border: "1px solid rgba(0,0,255,0.12)" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.4)" }}>Ecossistema Público</span>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-3" style={{ border: "1px dashed #0000FF" }} />
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Ecossistema Público</span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-3" style={{ border: "1px solid rgba(0,0,255,0.07)" }} />
-            <span className="text-[10px] tracking-[0.1em]" style={{ color: "rgba(0,0,255,0.3)" }}>Extensões</span>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-3" style={{ border: "1px dashed #0000FF" }} />
+            <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Extensões</span>
           </div>
         </div>
-      </section>
 
       {/* Modal overlay */}
       {modal && openModal && (
