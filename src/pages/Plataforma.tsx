@@ -130,8 +130,8 @@ const S = {
   nucleo: { border: "2px solid #0000FF", color: "#0000FF", fontWeight: 700 },
   digital: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
   canais: { border: "1px solid rgba(0,0,255,0.45)", color: "rgba(0,0,255,0.55)" },
-  publico: { border: "1px solid rgba(0,0,255,0.12)", color: "rgba(0,0,255,0.22)" },
-  extensoes: { border: "1px solid rgba(0,0,255,0.07)", color: "rgba(0,0,255,0.15)" },
+  publico: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
+  extensoes: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
 };
 
 /* ── Page ── */
