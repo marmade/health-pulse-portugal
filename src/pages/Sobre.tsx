@@ -114,17 +114,20 @@ const Sobre = () => {
           {/* Coluna esquerda — Fontes de dados */}
           <div>
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div>
-                <p className="text-xs"><span className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Google Trends</span> <span className="opacity-60">· Comportamento de pesquisa em Portugal</span></p>
+                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Google Trends</p>
+                <p className="text-xs opacity-60 mt-0.5">Comportamento de pesquisa em Portugal</p>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.</p>
               </div>
               <div>
-                <p className="text-xs"><span className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">15 RSS Feeds</span> <span className="opacity-60">· RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</span></p>
+                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">15 RSS Feeds</p>
+                <p className="text-xs opacity-60 mt-0.5">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.</p>
               </div>
               <div>
-                <p className="text-xs"><span className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Supabase</span> <span className="opacity-60">· Base de dados em tempo real</span></p>
+                <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">Supabase</p>
+                <p className="text-xs opacity-60 mt-0.5">Base de dados em tempo real</p>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.</p>
               </div>
             </div>
