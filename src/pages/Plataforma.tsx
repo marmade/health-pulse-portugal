@@ -222,31 +222,17 @@ const Plataforma = () => {
           <div className="w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
           {/* The channels row — we measure against this */}
           <div className="flex flex-col items-center">
-            {/* horizontal bar spanning the 3 channel boxes */}
-            <div className="flex gap-3 justify-center" style={{ position: "relative" }}>
-              {/* invisible row to set width, then overlay bar */}
-              <div className="flex gap-3 justify-center" id="channels-row" style={{ visibility: "hidden", height: 0 }}>
-                <span className="px-4 py-2 text-[11px]">Instagram</span>
-                <span className="px-4 py-2 text-[11px]">TikTok</span>
-                <span className="px-4 py-2 text-[11px]">YouTube</span>
-              </div>
-            </div>
-            <div className="flex gap-3 justify-center relative">
-              {/* horizontal bar */}
+            {/* horizontal bar + feet, width matches channel boxes */}
+            <div className="relative" style={{ width: tbarWidth || "auto", height: 16 }}>
               <div className="absolute top-0 left-0 right-0" style={{ height: 1, background: "rgba(0,0,255,0.3)" }} />
-              {/* left foot */}
               <div className="absolute top-0 left-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-              {/* center foot */}
               <div className="absolute top-0 left-1/2 -translate-x-px w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-              {/* right foot */}
               <div className="absolute top-0 right-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-              {/* spacer for the feet */}
-              <div className="h-4" />
             </div>
             <div className="mt-2">
               <SectionLabel>Canais de Distribuição</SectionLabel>
             </div>
-            <div className="flex gap-3 justify-center flex-wrap">
+            <div ref={channelsRef} className="flex gap-3 justify-center flex-wrap">
               <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} />
               <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} />
               <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} />
