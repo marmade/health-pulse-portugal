@@ -40,30 +40,18 @@ const agradecimentos = [
 const Sobre = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
+      {/* Nav — editorial only */}
       <header className="w-full">
-        <div className="px-6 py-5 flex items-baseline justify-between">
-          <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-          <Link to="/" className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors">
-            ← Dashboard
-          </Link>
-        </div>
+        <div className="section-divider" />
+        <nav className="px-6 py-2 flex justify-end items-center gap-4">
+          <Link to="/textos" className="nav-link">Textos</Link>
+          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+          <Link to="/plataforma" className="nav-link">Plataforma</Link>
+          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+          <Link to="/sobre" className="nav-link nav-link-active">Sobre</Link>
+        </nav>
         <div className="section-divider" />
       </header>
-
-      {/* Hero */}
-      <section className="px-6 py-16 md:py-24">
-        <h1 className="text-3xl md:text-5xl font-bold tracking-[0.04em] uppercase leading-tight">
-          Reportagem Viva
-        </h1>
-        <p className="mt-4 text-sm md:text-base font-medium tracking-wide uppercase opacity-80">
-          Monitorização de Tendências sobre Saúde em Portugal
-        </p>
-      </section>
-
-      <div className="section-divider" />
 
       {/* O que é */}
       <section className="px-6 py-12">

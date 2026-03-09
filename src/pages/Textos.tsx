@@ -37,8 +37,6 @@ const Textos = () => {
       <header className="w-full">
         <div className="section-divider" />
         <nav className="px-6 py-2 flex justify-end items-center gap-4">
-          <Link to="/guioes" className="nav-link">Guiões</Link>
-          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
           <Link to="/textos" className="nav-link nav-link-active">Textos</Link>
           <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
           <Link to="/plataforma" className="nav-link">Plataforma</Link>
