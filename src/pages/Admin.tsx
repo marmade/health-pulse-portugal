@@ -704,6 +704,53 @@ export default function Admin() {
               </Table>
             </div>
           </TabsContent>
+
+          {/* Plataforma Popups Tab */}
+          <TabsContent value="popups" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Pop-ups da Plataforma ({popups.length})</h2>
+            </div>
+
+            {editingPopupId && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar: {editingPopupId}</p>
+                <Input placeholder="Eyebrow (ex: Parceiros Institucionais)" value={popupForm.eyebrow} onChange={(e) => setPopupForm({ ...popupForm, eyebrow: e.target.value })} />
+                <Input placeholder="Título" value={popupForm.title} onChange={(e) => setPopupForm({ ...popupForm, title: e.target.value })} />
+                <Textarea placeholder="Texto descritivo" rows={4} value={popupForm.text} onChange={(e) => setPopupForm({ ...popupForm, text: e.target.value })} />
+                <div className="flex gap-2">
+                  <Button onClick={savePopup} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="border border-foreground/20 max-h-[500px] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead className="w-24">ID</TableHead>
+                    <TableHead>Eyebrow</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead className="max-w-xs">Texto</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {popups.map((p) => (
+                    <TableRow key={p.id} className="border-b border-foreground/10">
+                      <TableCell className="text-xs font-mono">{p.id}</TableCell>
+                      <TableCell className="text-xs">{p.eyebrow}</TableCell>
+                      <TableCell className="text-xs font-medium">{p.title}</TableCell>
+                      <TableCell className="text-xs max-w-xs truncate">{p.text}</TableCell>
+                      <TableCell>
+                        <Button size="sm" variant="ghost" onClick={() => openPopupForm(p)}><Pencil className="w-4 h-4" /></Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
     </div>
