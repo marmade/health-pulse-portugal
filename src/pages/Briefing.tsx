@@ -371,66 +371,6 @@ const Briefing = () => {
 
       <div className="section-divider" />
 
-      {/* SECTION — Sugestão Diz Que Disse */}
-      <section className="px-6 py-10">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-          Sugestão Diz Que Disse
-        </h2>
-        {dizQueDisseLoading ? (
-          <div className="flex items-center gap-3 max-w-2xl">
-            <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
-            <p className="text-xs opacity-60">A gerar sugestão...</p>
-          </div>
-        ) : dizQueDisseError || !dizQueDisse ? (
-          <p className="text-sm opacity-60">Sugestão indisponível esta semana.</p>
-        ) : (
-          <div className="max-w-2xl space-y-6">
-            {/* Vox Pop Questions */}
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
-                Perguntas Vox Pop
-              </p>
-              <ol className="space-y-2">
-                {dizQueDisse.perguntas_voxpop.map((q, i) => (
-                  <li key={i} className="text-sm leading-relaxed">
-                    <span className="text-xs font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
-                    {q}
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            {/* Dupla Científica */}
-            <div className="border-l-2 pl-3" style={{ borderColor: "#0000FF" }}>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
-                Dupla Científica Sugerida
-              </p>
-              <p className="text-sm font-semibold mb-2">{dizQueDisse.especialista_sugerido}</p>
-              <p className="text-xs leading-relaxed opacity-80 mb-2">{dizQueDisse.justificacao}</p>
-              {dizQueDisse.fonte_cientifica && (
-                <p className="text-[10px] opacity-50">
-                  Fonte:{" "}
-                  {dizQueDisse.fonte_url ? (
-                    <a
-                      href={dizQueDisse.fonte_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:opacity-70"
-                    >
-                      {dizQueDisse.fonte_cientifica}
-                    </a>
-                  ) : (
-                    dizQueDisse.fonte_cientifica
-                  )}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-      </section>
-
-      <div className="section-divider" />
-
       {/* SECTION 2 — Sinal de alerta */}
       <section className="px-6 py-10">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
@@ -564,14 +504,68 @@ const Briefing = () => {
           Sugestão de conteúdo
         </h2>
         {topEmergent ? (
-          <div className="max-w-2xl border border-foreground/20 p-6">
-            <p className="text-sm leading-relaxed">
-              Esta semana vale a pena falar sobre{" "}
-              <span className="font-bold">{topEmergent.term}</span> —{" "}
-              {topEmergent.is_emergent
-                ? `sinal emergente com crescimento de +${Number(topEmergent.change_percent).toFixed(0)}%, sem histórico significativo no período anterior.`
-                : `crescimento de +${Number(topEmergent.change_percent).toFixed(0)}% no volume de pesquisa esta semana, indicando interesse crescente dos portugueses neste tema.`}
-            </p>
+          <div className="max-w-2xl space-y-8">
+            {/* Intro line */}
+            <div className="border border-foreground/20 p-6">
+              <p className="text-sm leading-relaxed">
+                Esta semana vale a pena falar sobre{" "}
+                <span className="font-bold">{topEmergent.term}</span> —{" "}
+                {topEmergent.is_emergent
+                  ? `sinal emergente com crescimento de +${Number(topEmergent.change_percent).toFixed(0)}%, sem histórico significativo no período anterior.`
+                  : `crescimento de +${Number(topEmergent.change_percent).toFixed(0)}% no volume de pesquisa esta semana, indicando interesse crescente dos portugueses neste tema.`}
+              </p>
+            </div>
+
+            {/* Perplexity-powered content */}
+            {dizQueDisseLoading ? (
+              <div className="flex items-center gap-3">
+                <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                <p className="text-xs opacity-60">A gerar sugestão...</p>
+              </div>
+            ) : dizQueDisse ? (
+              <>
+                {/* Perguntas para a rua */}
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                    Perguntas para a rua
+                  </p>
+                  <ol className="space-y-2">
+                    {dizQueDisse.perguntas_voxpop.map((q, i) => (
+                      <li key={i} className="text-sm leading-relaxed">
+                        <span className="text-xs font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
+                        {q}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Dupla Científica Sugerida */}
+                <div className="border-l-2 pl-3" style={{ borderColor: "#0000FF" }}>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                    Dupla Científica Sugerida
+                  </p>
+                  <p className="text-sm font-semibold mb-2">{dizQueDisse.especialista_sugerido}</p>
+                  <p className="text-xs leading-relaxed opacity-80 mb-2">{dizQueDisse.justificacao}</p>
+                  {dizQueDisse.fonte_cientifica && (
+                    <p className="text-[10px] opacity-50">
+                      Fonte:{" "}
+                      {dizQueDisse.fonte_url ? (
+                        <a
+                          href={dizQueDisse.fonte_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:opacity-70"
+                        >
+                          {dizQueDisse.fonte_cientifica}
+                        </a>
+                      ) : (
+                        dizQueDisse.fonte_cientifica
+                      )}
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : null}
           </div>
         ) : (
           <p className="text-sm opacity-60">Sem sugestões esta semana.</p>

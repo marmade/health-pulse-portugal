@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.generate-guiao-questions]
 verify_jwt = false
+
+[functions.generate-diz-que-disse]
+verify_jwt = false
