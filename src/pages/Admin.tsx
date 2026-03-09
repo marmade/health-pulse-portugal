@@ -309,6 +309,21 @@ export default function Admin() {
     setDeleteConfirm(null);
   };
 
+  // Popups CRUD
+  const openPopupForm = (p: PopupItem) => {
+    setEditingPopupId(p.id);
+    setPopupForm({ eyebrow: p.eyebrow, title: p.title, text: p.text });
+  };
+
+  const savePopup = async () => {
+    if (!editingPopupId) return;
+    const { error } = await supabase.from("plataforma_popups").update({
+      eyebrow: popupForm.eyebrow, title: popupForm.title, text: popupForm.text,
+    }).eq("id", editingPopupId);
+    if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
+    else { toast({ title: "Guardado ✓" }); setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); fetchAll(); }
+  };
+
   const filteredGuioes = guiaoFilter === "TODOS" ? guioes : guioes.filter((g) => g.tema === guiaoFilter);
 
   // Login screen
