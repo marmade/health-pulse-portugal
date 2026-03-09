@@ -556,7 +556,7 @@ const Briefing = () => {
                   <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
                     Dupla Científica Sugerida
                   </p>
-                  <div className="border-l p-4" style={{ borderColor: "#0000FF" }}>
+                  <div className="border-l pl-4 pr-4 pb-4" style={{ borderColor: "#0000FF" }}>
                     <p className="text-sm font-medium text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
                     <p className="text-sm font-normal leading-relaxed text-primary mb-2">{dizQueDisse.justificacao}</p>
                     {dizQueDisse.fonte_cientifica && (
