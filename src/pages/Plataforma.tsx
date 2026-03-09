@@ -164,7 +164,7 @@ const Plataforma = () => {
       <section className="px-6 py-12 md:py-16 max-w-3xl">
         <p className="editorial-label mb-3">Estrutura do Projecto</p>
         <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
-          Uma Plataforma, Várias Dimensões
+          Uma Plataforma,<br />Várias Dimensões
         </h1>
         <p className="text-sm md:text-base mt-2 opacity-70">
           Ecossistema digital e de proximidade do projecto Reportagem Viva
