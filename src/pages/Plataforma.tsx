@@ -147,11 +147,6 @@ const Plataforma = () => {
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <header className="w-full">
-        <div className="px-6 py-5 flex items-baseline justify-between">
-          <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-        </div>
         <div className="section-divider" />
         <nav className="px-6 py-2 flex justify-end items-center gap-4">
           <Link to="/guioes" className="nav-link">Guiões</Link>
