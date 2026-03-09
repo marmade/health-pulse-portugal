@@ -17,7 +17,7 @@ type Props = {
 
 const axisStyles: Record<string, { bg: string }> = {
   "saude-mental": { bg: "rgba(0,255,200,0.12)" },
-  alimentacao: { bg: "rgba(255,255,0,0.15)" },
+  alimentacao: { bg: "rgba(255,230,0,0.20)" },
   menopausa: { bg: "rgba(255,0,150,0.12)" },
   emergentes: { bg: "rgba(0,0,255,0.08)" },
 };
