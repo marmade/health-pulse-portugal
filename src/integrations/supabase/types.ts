@@ -111,6 +111,7 @@ export type Database = {
           ordem: number
           pergunta: string
           referencia_cientifica: string
+          referencia_url: string | null
           resposta: string
           subtema: string
           tema: string
@@ -121,6 +122,7 @@ export type Database = {
           ordem?: number
           pergunta?: string
           referencia_cientifica?: string
+          referencia_url?: string | null
           resposta?: string
           subtema?: string
           tema: string
@@ -131,6 +133,7 @@ export type Database = {
           ordem?: number
           pergunta?: string
           referencia_cientifica?: string
+          referencia_url?: string | null
           resposta?: string
           subtema?: string
           tema?: string
