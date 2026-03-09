@@ -113,12 +113,17 @@ const Plataforma = () => {
       {/* Nav */}
       <header className="w-full">
         <div className="section-divider" />
-        <nav className="px-6 py-2 flex justify-end items-center gap-4">
-          <Link to="/textos" className="nav-link">Textos</Link>
-          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link to="/plataforma" className="nav-link nav-link-active">Plataforma</Link>
-          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link to="/sobre" className="nav-link">Sobre</Link>
+        <nav className="px-6 py-2 flex items-center justify-between">
+          <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
+            Reportagem Viva
+          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/textos" className="nav-link">Textos</Link>
+            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+            <Link to="/plataforma" className="nav-link nav-link-active">Plataforma</Link>
+            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+            <Link to="/sobre" className="nav-link">Sobre</Link>
+          </div>
         </nav>
         <div className="section-divider" />
       </header>
