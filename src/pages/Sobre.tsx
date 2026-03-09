@@ -197,21 +197,6 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
-      {/* Metodologia */}
-      <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
-        <div className="space-y-4 max-w-2xl text-sm leading-relaxed">
-          <p>
-            <span className="font-bold">Sinais emergentes:</span> crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
-          </p>
-          <p>
-            <span className="font-bold">Debunking</span> categorizado em: <span className="font-bold">FALSO</span> / <span className="font-bold">ENGANADOR</span> / <span className="font-bold">SEM EVIDÊNCIA</span> / <span className="font-bold">IMPRECISO</span>
-          </p>
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
       {/* Agradecimentos */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Agradecimentos</h2>
