@@ -122,7 +122,7 @@ const Sobre = () => {
               </div>
               <div>
                 <p className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground">15 RSS Feeds</p>
-                <p className="text-xs opacity-60 mt-0.5">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
+                <p className="text-xs opacity-60 mt-0.5 leading-relaxed">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.</p>
               </div>
               <div>
