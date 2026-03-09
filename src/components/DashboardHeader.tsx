@@ -108,6 +108,13 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         >
           BRIEFING
         </Link>
+        <span className="text-foreground/20 text-xs font-light">/</span>
+        <Link
+          to="/guioes"
+          className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}
+        >
+          GUIÕES
+        </Link>
       </nav>
 
       <div className="section-divider" />
