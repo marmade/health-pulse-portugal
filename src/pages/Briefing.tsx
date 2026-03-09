@@ -43,6 +43,14 @@ type ArchivedBriefing = {
   created_at: string;
 };
 
+type DizQueDisse = {
+  perguntas_voxpop: string[];
+  especialista_sugerido: string;
+  justificacao: string;
+  fonte_cientifica: string;
+  fonte_url: string;
+};
+
 const axisLabels: Record<string, string> = {
   "saude-mental": "Saúde Mental",
   alimentacao: "Alimentação",
@@ -81,16 +89,37 @@ function getWeekRange() {
   };
 }
 
+function getPreviousWeekRange() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1) - 7);
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  const fmtShort = (d: Date) =>
+    d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
+
+  return {
+    isoStart: monday.toISOString().split("T")[0],
+    isoEnd: sunday.toISOString().split("T")[0],
+    shortLabel: `${fmtShort(monday)} — ${fmtShort(sunday)} ${monday.getFullYear()}`,
+  };
+}
+
 const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
-  const [archiving, setArchiving] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [archives, setArchives] = useState<ArchivedBriefing[]>([]);
   const [expandedArchive, setExpandedArchive] = useState<string | null>(null);
+  const [dizQueDisse, setDizQueDisse] = useState<DizQueDisse | null>(null);
+  const [dizQueDisseLoading, setDizQueDisseLoading] = useState(false);
+  const [dizQueDisseError, setDizQueDisseError] = useState(false);
 
   const week = getWeekRange();
 
@@ -108,9 +137,100 @@ const Briefing = () => {
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
       setLoading(false);
+
+      // Auto-archive previous week silently
+      autoArchivePreviousWeek(
+        kwRes.data as KeywordRow[] || [],
+        newsRes.data as NewsRow[] || [],
+        debunkRes.data as DebunkingRow[] || [],
+        archiveRes.data as ArchivedBriefing[] || [],
+      );
     };
     fetchData();
   }, []);
+
+  // Fetch Diz Que Disse when keywords are loaded
+  useEffect(() => {
+    if (keywords.length === 0) return;
+
+    const emergent = keywords.filter((k) => k.is_emergent);
+    const topGrowing = [...keywords].sort((a, b) => b.change_percent - a.change_percent);
+    const topKeyword = emergent.length > 0
+      ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
+      : topGrowing[0];
+
+    if (!topKeyword) return;
+
+    const fetchDizQueDisse = async () => {
+      setDizQueDisseLoading(true);
+      setDizQueDisseError(false);
+      try {
+        const { data, error } = await supabase.functions.invoke("generate-diz-que-disse", {
+          body: { keyword: topKeyword.term },
+        });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        setDizQueDisse(data as DizQueDisse);
+      } catch (e) {
+        console.error("Diz Que Disse error:", e);
+        setDizQueDisseError(true);
+      }
+      setDizQueDisseLoading(false);
+    };
+    fetchDizQueDisse();
+  }, [keywords]);
+
+  const autoArchivePreviousWeek = async (
+    kw: KeywordRow[],
+    nws: NewsRow[],
+    dbk: DebunkingRow[],
+    existingArchives: ArchivedBriefing[],
+  ) => {
+    const prev = getPreviousWeekRange();
+    const alreadyArchived = existingArchives.some((a) => a.week_start === prev.isoStart);
+    if (alreadyArchived) return;
+
+    const emergentKw = kw.filter((k) => k.is_emergent);
+    const topQuestions = getTopQuestionsPerAxis(2).slice(0, 5);
+
+    try {
+      await supabase.from("briefings_archive").insert({
+        week_start: prev.isoStart,
+        week_end: prev.isoEnd,
+        week_label: prev.shortLabel,
+        top_emerging: emergentKw.slice(0, 5).map((k) => ({
+          term: k.term,
+          axis: k.axis,
+          change_percent: k.change_percent,
+        })),
+        top_questions: topQuestions.map((q) => ({
+          term: q.question,
+          current_volume: q.relativeVolume,
+        })),
+        top_debunking: dbk.slice(0, 5).map((d) => ({
+          term: d.term,
+          title: d.title,
+          classification: d.classification,
+          source: d.source,
+        })),
+        top_news: nws.slice(0, 5).map((n) => ({
+          title: n.title,
+          outlet: n.outlet,
+          date: n.date,
+          source_type: n.source_type,
+        })),
+      });
+
+      // Refresh archives silently
+      const { data } = await supabase
+        .from("briefings_archive")
+        .select("*")
+        .order("week_start", { ascending: false });
+      if (data) setArchives(data as ArchivedBriefing[]);
+    } catch (e) {
+      console.error("Auto-archive error:", e);
+    }
+  };
 
   // Derived data
   const topGrowing = [...keywords]
@@ -149,65 +269,6 @@ const Briefing = () => {
       toast.error("Erro ao exportar PDF");
     }
     setExporting(false);
-  };
-
-  // Archive
-  const handleArchive = async () => {
-    const existing = archives.find((a) => a.week_start === week.isoStart);
-    if (existing) {
-      const confirmed = window.confirm("Já existe um arquivo para esta semana. Substituir?");
-      if (!confirmed) return;
-    }
-
-    setArchiving(true);
-    try {
-      const archiveData = {
-        week_start: week.isoStart,
-        week_end: week.isoEnd,
-        week_label: week.shortLabel,
-        top_emerging: emergent.slice(0, 5).map((k) => ({
-          term: k.term,
-          axis: k.axis,
-          change_percent: k.change_percent,
-        })),
-        top_questions: topVolume.map((k) => ({
-          term: k.term,
-          current_volume: k.current_volume,
-        })),
-        top_debunking: debunking.slice(0, 5).map((d) => ({
-          term: d.term,
-          title: d.title,
-          classification: d.classification,
-          source: d.source,
-        })),
-        top_news: news.slice(0, 5).map((n) => ({
-          title: n.title,
-          outlet: n.outlet,
-          date: n.date,
-          source_type: n.source_type,
-        })),
-      };
-
-      if (existing) {
-        await supabase
-          .from("briefings_archive")
-          .update(archiveData)
-          .eq("id", existing.id);
-      } else {
-        await supabase.from("briefings_archive").insert(archiveData);
-      }
-
-      // Refresh archives
-      const { data } = await supabase
-        .from("briefings_archive")
-        .select("*")
-        .order("week_start", { ascending: false });
-      if (data) setArchives(data as ArchivedBriefing[]);
-      toast.success("Semana arquivada com sucesso");
-    } catch {
-      toast.error("Erro ao arquivar");
-    }
-    setArchiving(false);
   };
 
   // Export archived briefing as PDF
@@ -255,7 +316,7 @@ const Briefing = () => {
           O que está a acontecer esta semana em Portugal
         </p>
 
-        {/* Action buttons */}
+        {/* Action buttons — only Export PDF */}
         <div className="flex items-center gap-3 mt-6">
           <button
             onClick={handleExportPdf}
@@ -272,22 +333,6 @@ const Briefing = () => {
             }}
           >
             {exporting ? "A exportar..." : "Exportar PDF"}
-          </button>
-          <button
-            onClick={handleArchive}
-            disabled={archiving}
-            className="text-[10px] font-bold uppercase tracking-[0.15em] border px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-40"
-            style={{ borderColor: "#0000FF", color: "#0000FF" }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#0000FF";
-              e.currentTarget.style.color = "#FFFFFF";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color = "#0000FF";
-            }}
-          >
-            {archiving ? "A arquivar..." : "Arquivar esta semana"}
           </button>
         </div>
       </section>
@@ -322,6 +367,66 @@ const Briefing = () => {
             </div>
           ))}
         </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* SECTION — Sugestão Diz Que Disse */}
+      <section className="px-6 py-10">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+          Sugestão Diz Que Disse
+        </h2>
+        {dizQueDisseLoading ? (
+          <div className="flex items-center gap-3 max-w-2xl">
+            <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+            <p className="text-xs opacity-60">A gerar sugestão...</p>
+          </div>
+        ) : dizQueDisseError || !dizQueDisse ? (
+          <p className="text-sm opacity-60">Sugestão indisponível esta semana.</p>
+        ) : (
+          <div className="max-w-2xl space-y-6">
+            {/* Vox Pop Questions */}
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                Perguntas Vox Pop
+              </p>
+              <ol className="space-y-2">
+                {dizQueDisse.perguntas_voxpop.map((q, i) => (
+                  <li key={i} className="text-sm leading-relaxed">
+                    <span className="text-xs font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
+                    {q}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Dupla Científica */}
+            <div className="border-l-2 pl-3" style={{ borderColor: "#0000FF" }}>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                Dupla Científica Sugerida
+              </p>
+              <p className="text-sm font-semibold mb-2">{dizQueDisse.especialista_sugerido}</p>
+              <p className="text-xs leading-relaxed opacity-80 mb-2">{dizQueDisse.justificacao}</p>
+              {dizQueDisse.fonte_cientifica && (
+                <p className="text-[10px] opacity-50">
+                  Fonte:{" "}
+                  {dizQueDisse.fonte_url ? (
+                    <a
+                      href={dizQueDisse.fonte_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:opacity-70"
+                    >
+                      {dizQueDisse.fonte_cientifica}
+                    </a>
+                  ) : (
+                    dizQueDisse.fonte_cientifica
+                  )}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </section>
 
       <div className="section-divider" />
