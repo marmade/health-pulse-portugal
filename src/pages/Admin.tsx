@@ -127,6 +127,11 @@ export default function Admin() {
   const [guiaoForm, setGuiaoForm] = useState<Omit<GuiaoRow, "id">>(emptyGuiao());
   const [guiaoFilter, setGuiaoFilter] = useState("TODOS");
 
+  // Popups state
+  const [popups, setPopups] = useState<PopupItem[]>([]);
+  const [editingPopupId, setEditingPopupId] = useState<string | null>(null);
+  const [popupForm, setPopupForm] = useState({ eyebrow: "", title: "", text: "" });
+
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
 
