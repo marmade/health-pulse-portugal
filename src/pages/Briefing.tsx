@@ -383,7 +383,7 @@ const Briefing = () => {
             {emergent.map((kw) => {
               const axisColors: Record<string, { bg: string; text: string }> = {
                 "saude-mental": { bg: "rgba(0,255,200,0.12)", text: "#0000FF" },
-                alimentacao: { bg: "rgba(255,255,0,0.15)", text: "#0000FF" },
+                alimentacao: { bg: "rgba(255,230,0,0.20)", text: "#0000FF" },
                 menopausa: { bg: "rgba(255,0,150,0.12)", text: "#0000FF" },
                 emergentes: { bg: "rgba(0,0,255,0.08)", text: "#0000FF" },
               };
