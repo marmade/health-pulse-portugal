@@ -341,15 +341,16 @@ const Guioes = () => {
 
       const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
         const refNome = p.referencia_nome || "";
-        // Use Perplexity citation URL directly (already mapped in edge function via citations[i])
-        const refUrl = p.referencia_url || "";
+        // Use Perplexity citation URL directly; if missing, fallback to URL_MAP by reference name
+        const citationUrl = p.referencia_url || "";
+        const fallback = citationUrl ? { url: citationUrl, approved: true } : resolveReference(temaValue, refNome, "");
         return {
           pergunta: p.pergunta || "",
           resposta_simples: p.resposta_simples || "",
           referencia_nome: refNome,
-          referencia_url: refUrl,
+          referencia_url: fallback.url,
           source: "ia" as const,
-          approved: !!refUrl,
+          approved: fallback.approved,
         };
       });
 
