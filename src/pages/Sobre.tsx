@@ -172,23 +172,62 @@ const Sobre = () => {
       <section className="px-6 py-8">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Como funciona</h2>
 
-        <div className="flex flex-col md:flex-row md:items-center gap-2">
-          {fluxo.map((step, idx) => (
-            <div key={step.title} className="flex flex-col md:flex-row md:items-center gap-2">
-              <div className="border border-primary px-3 py-2 w-full md:w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">
-                  {step.title}
-                </h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">
-                  {step.subtitle}
-                </p>
+        {/* Desktop layout */}
+        <div className="hidden md:flex items-center gap-2">
+          {/* Left: two sources converging */}
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2">
+              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Google Trends</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">pesquisas em tempo real</p>
               </div>
+              <span className="text-primary text-[10px] font-bold select-none">↘</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">15 feeds portugueses</p>
+              </div>
+              <span className="text-primary text-[10px] font-bold select-none">↗</span>
+            </div>
+          </div>
 
-              {idx < fluxo.length - 1 && (
-                <>
-                  <span className="hidden md:inline-block text-primary text-[10px] font-bold select-none flex-shrink-0">→</span>
-                  <span className="md:hidden block text-primary text-[10px] font-bold text-center select-none leading-none">↓</span>
-                </>
+          {/* Right: linear chain */}
+          {[
+            { title: "SUPABASE", subtitle: "base de dados + keywords" },
+            { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
+            { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
+            { title: "GUIÃO", subtitle: "10 perguntas por tema" },
+          ].map((step, idx, arr) => (
+            <div key={step.title} className="flex items-center gap-2">
+              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{step.subtitle}</p>
+              </div>
+              {idx < arr.length - 1 && (
+                <span className="text-primary text-[10px] font-bold select-none flex-shrink-0">→</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile layout — vertical stack */}
+        <div className="flex md:hidden flex-col gap-2">
+          {[
+            { title: "GOOGLE TRENDS", subtitle: "pesquisas em tempo real" },
+            { title: "RSS FEEDS", subtitle: "15 feeds portugueses" },
+            { title: "SUPABASE", subtitle: "base de dados + keywords" },
+            { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
+            { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
+            { title: "GUIÃO", subtitle: "10 perguntas por tema" },
+          ].map((step, idx, arr) => (
+            <div key={step.title} className="flex flex-col items-center gap-2">
+              <div className="border border-primary px-3 py-2 w-full">
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{step.subtitle}</p>
+              </div>
+              {idx < arr.length - 1 && (
+                <span className="text-primary text-[10px] font-bold select-none leading-none">↓</span>
               )}
             </div>
           ))}
