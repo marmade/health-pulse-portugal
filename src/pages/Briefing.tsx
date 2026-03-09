@@ -380,19 +380,25 @@ const Briefing = () => {
           <p className="text-sm opacity-60">Nenhum sinal emergente esta semana.</p>
         ) : (
           <div className="space-y-3 max-w-2xl">
-            {emergent.map((kw) => (
+            {emergent.map((kw) => {
+              const axisColors = {
+                "saude-mental": { bg: "rgba(0,128,128,0.12)", border: "rgba(0,128,128,0.30)", text: "rgb(0,128,128)" },
+                alimentacao: { bg: "rgba(255,200,0,0.15)", border: "rgba(255,200,0,0.40)", text: "rgb(180,140,0)" },
+                menopausa: { bg: "rgba(255,0,128,0.12)", border: "rgba(255,0,128,0.30)", text: "rgb(200,0,100)" },
+              } as Record<string, { bg: string; border: string; text: string }>;
+              const c = axisColors[kw.axis];
+              return (
               <div key={kw.term} className="flex items-center gap-3">
-                <span className="tag-emergent">Emergente</span>
+                <span
+                  className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm border"
+                  style={c ? { backgroundColor: c.bg, borderColor: c.border, color: c.text } : { backgroundColor: "transparent", borderColor: "#0000FF", color: "#0000FF" }}
+                >
+                  Emergente
+                </span>
                 <span className="text-sm font-semibold">{kw.term}</span>
                 <span
-                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
-                  style={{
-                    color: "#0000FF",
-                    backgroundColor: kw.axis === "saude-mental" ? "rgba(0,0,255,0.08)"
-                      : kw.axis === "alimentacao" ? "rgba(0,0,255,0.15)"
-                      : kw.axis === "menopausa" ? "rgba(0,0,255,0.25)"
-                      : "transparent",
-                  }}
+                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm border"
+                  style={c ? { backgroundColor: c.bg, borderColor: c.border, color: c.text } : { backgroundColor: "transparent", borderColor: "transparent", color: "#0000FF" }}
                 >
                   {axisLabels[kw.axis] || kw.axis}
                 </span>
@@ -400,7 +406,8 @@ const Briefing = () => {
                   +{Number(kw.change_percent).toFixed(0)}%
                 </span>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
