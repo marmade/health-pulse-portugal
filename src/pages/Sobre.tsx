@@ -114,31 +114,31 @@ const Sobre = () => {
           {/* Coluna esquerda — Fontes de dados */}
           <div>
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div>
-                <div className="flex gap-3">
-                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">Google Trends</span>
-                  <span className="text-xs opacity-60 leading-relaxed">· Comportamento de pesquisa em Portugal</span>
-                </div>
-                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                <p className="text-sm">
+                  <span className="font-semibold uppercase text-primary">Google Trends</span>
+                  <span className="text-xs opacity-60"> · Comportamento de pesquisa em Portugal</span>
+                </p>
+                <p className="text-xs text-muted-foreground pl-4 mt-1 leading-relaxed">
                   Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
                 </p>
               </div>
               <div>
-                <div className="flex gap-3">
-                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">15 RSS Feeds</span>
-                  <span className="text-xs opacity-60 leading-relaxed">· RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</span>
-                </div>
-                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                <p className="text-sm">
+                  <span className="font-semibold uppercase text-primary">15 RSS Feeds</span>
+                  <span className="text-xs opacity-60"> · RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</span>
+                </p>
+                <p className="text-xs text-muted-foreground pl-4 mt-1 leading-relaxed">
                   Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.
                 </p>
               </div>
               <div>
-                <div className="flex gap-3">
-                  <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">Supabase</span>
-                  <span className="text-xs opacity-60 leading-relaxed">· Base de dados em tempo real</span>
-                </div>
-                <p className="text-xs text-muted-foreground pl-4 mt-2 leading-relaxed">
+                <p className="text-sm">
+                  <span className="font-semibold uppercase text-primary">Supabase</span>
+                  <span className="text-xs opacity-60"> · Base de dados em tempo real</span>
+                </p>
+                <p className="text-xs text-muted-foreground pl-4 mt-1 leading-relaxed">
                   Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.
                 </p>
               </div>
