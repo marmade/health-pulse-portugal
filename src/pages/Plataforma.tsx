@@ -210,8 +210,8 @@ const Plataforma = () => {
         {/* 6 — Extensões */}
         <SectionLabel>Extensões</SectionLabel>
         <div className="flex gap-3 justify-center flex-wrap">
-          <DiagramBox label="Comunidade Científica Portuguesa" id="comunidade" style={S.extensoes} onClick={open} />
-          <DiagramBox label="Assistente Virtual Voz" id="assistente" style={S.extensoes} onClick={open} />
+          <DiagramBox label="Comunidade Científica Portuguesa" id="ccp" style={S.extensoes} onClick={open} />
+          <DiagramBox label="Assistente Virtual Voz" id="voz" style={S.extensoes} onClick={open} />
         </div>
       </section>
 

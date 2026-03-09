@@ -68,6 +68,13 @@ type GuiaoRow = {
   ordem: number;
 };
 
+type PopupItem = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  text: string;
+};
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
