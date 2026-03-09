@@ -106,6 +106,8 @@ const Plataforma = () => {
   const open = (id: string) => setOpenModal(id);
   const close = () => setOpenModal(null);
 
+  const modal = openModal ? modals[openModal] : null;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
