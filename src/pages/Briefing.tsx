@@ -523,7 +523,7 @@ const Briefing = () => {
                 <p className="text-xs opacity-60">A gerar sugestão...</p>
               </div>
             ) : dizQueDisse ? (
-              <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Perguntas para a rua */}
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
@@ -564,7 +564,7 @@ const Briefing = () => {
                     </p>
                   )}
                 </div>
-              </>
+              </div>
             ) : null}
           </div>
         ) : (
