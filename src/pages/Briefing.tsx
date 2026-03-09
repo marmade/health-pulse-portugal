@@ -391,7 +391,7 @@ const Briefing = () => {
                     backgroundColor: kw.axis === "saude-mental" ? "rgba(0,0,255,0.08)"
                       : kw.axis === "alimentacao" ? "rgba(0,0,255,0.15)"
                       : kw.axis === "menopausa" ? "rgba(0,0,255,0.25)"
-                      : "rgba(0,0,255,0.40)",
+                      : "transparent",
                   }}
                 >
                   {axisLabels[kw.axis] || kw.axis}
