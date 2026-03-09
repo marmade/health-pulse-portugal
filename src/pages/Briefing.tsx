@@ -381,13 +381,7 @@ const Briefing = () => {
         ) : (
           <div className="space-y-3 max-w-2xl">
             {emergent.map((kw) => {
-              const axisColors: Record<string, { bg: string; text: string }> = {
-                "saude-mental": { bg: "rgba(0,255,200,0.12)", text: "#0000FF" },
-                alimentacao: { bg: "rgba(255,230,0,0.20)", text: "#0000FF" },
-                menopausa: { bg: "rgba(255,0,150,0.12)", text: "#0000FF" },
-                emergentes: { bg: "rgba(0,0,255,0.08)", text: "#0000FF" },
-              };
-              const c = axisColors[kw.axis] || { bg: "rgba(0,0,255,0.08)", text: "#0000FF" };
+              const c = getAxisColors(kw.axis);
               return (
               <div key={kw.term} className="flex items-center gap-3">
                 <span className="tag-emergent">Emergente</span>
