@@ -65,9 +65,8 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         <span
-                          className={`inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 ${
-                            axisColors[q.axis] || "bg-muted text-muted-foreground"
-                          }`}
+                          className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                          style={{ backgroundColor: axisStyles[q.axis]?.bg || "rgba(0,0,255,0.08)", color: "#0000FF" }}
                         >
                           {q.axisLabel}
                         </span>
