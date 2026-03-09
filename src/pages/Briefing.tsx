@@ -535,15 +535,15 @@ const Briefing = () => {
                 <p className="text-xs opacity-60">A gerar sugestão...</p>
               </div>
             ) : dizQueDisse ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                 {/* Perguntas para a rua */}
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                  <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
                     Perguntas para a rua
                   </p>
                   <ol className="space-y-2">
                     {dizQueDisse.perguntas_voxpop.map((q, i) => (
-                      <li key={i} className="text-sm leading-relaxed">
+                      <li key={i} className="text-sm leading-relaxed text-primary">
                         <span className="text-xs font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
                         {q}
                       </li>
@@ -552,29 +552,31 @@ const Briefing = () => {
                 </div>
 
                 {/* Dupla Científica Sugerida */}
-                <div className="border-l p-4" style={{ borderColor: "#0000FF" }}>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
                     Dupla Científica Sugerida
                   </p>
-                  <p className="text-sm font-semibold mb-2">{dizQueDisse.especialista_sugerido}</p>
-                  <p className="text-xs leading-relaxed opacity-80 mb-2">{dizQueDisse.justificacao}</p>
-                  {dizQueDisse.fonte_cientifica && (
-                    <p className="text-[10px] opacity-50">
-                      Fonte:{" "}
-                      {dizQueDisse.fonte_url ? (
-                        <a
-                          href={dizQueDisse.fonte_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline hover:opacity-70"
-                        >
-                          {dizQueDisse.fonte_cientifica}
-                        </a>
-                      ) : (
-                        dizQueDisse.fonte_cientifica
-                      )}
-                    </p>
-                  )}
+                  <div className="border-l p-4" style={{ borderColor: "#0000FF" }}>
+                    <p className="text-sm font-semibold text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
+                    <p className="text-sm leading-relaxed text-primary opacity-80 mb-2">{dizQueDisse.justificacao}</p>
+                    {dizQueDisse.fonte_cientifica && (
+                      <p className="text-[10px] text-primary opacity-50">
+                        Fonte:{" "}
+                        {dizQueDisse.fonte_url ? (
+                          <a
+                            href={dizQueDisse.fonte_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:opacity-70"
+                          >
+                            {dizQueDisse.fonte_cientifica}
+                          </a>
+                        ) : (
+                          dizQueDisse.fonte_cientifica
+                        )}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             ) : null}
