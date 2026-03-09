@@ -557,10 +557,10 @@ const Briefing = () => {
                     Dupla Científica Sugerida
                   </p>
                   <div className="border-l p-4" style={{ borderColor: "#0000FF" }}>
-                    <p className="text-sm font-semibold text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
-                    <p className="text-sm leading-relaxed text-primary opacity-80 mb-2">{dizQueDisse.justificacao}</p>
+                    <p className="text-sm font-medium text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
+                    <p className="text-sm font-normal leading-relaxed text-primary mb-2">{dizQueDisse.justificacao}</p>
                     {dizQueDisse.fonte_cientifica && (
-                      <p className="text-[10px] text-primary opacity-50">
+                      <p className="text-xs text-primary/50">
                         Fonte:{" "}
                         {dizQueDisse.fonte_url ? (
                           <a
