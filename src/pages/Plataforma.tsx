@@ -178,7 +178,7 @@ const Plataforma = () => {
           Uma Plataforma,<br />Várias Dimensões
         </h1>
         <p className="text-sm md:text-base mt-2 opacity-70">
-          Ecossistema digital e de proximidade do projecto Reportagem Viva
+          Ecossistema digital e público
         </p>
         <p className="text-sm mt-6 max-w-2xl leading-relaxed opacity-80">
           Este projecto pretende promover e democratizar o acesso à informação com fundamento científico para a valorização da saúde e para o exercício de cidadania. O diagrama representa as várias frentes que o projecto pretende alcançar.
