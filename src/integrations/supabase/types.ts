@@ -287,6 +287,27 @@ export type Database = {
         }
         Relationships: []
       }
+      plataforma_popups: {
+        Row: {
+          eyebrow: string
+          id: string
+          text: string
+          title: string
+        }
+        Insert: {
+          eyebrow?: string
+          id: string
+          text?: string
+          title?: string
+        }
+        Update: {
+          eyebrow?: string
+          id?: string
+          text?: string
+          title?: string
+        }
+        Relationships: []
+      }
       textos: {
         Row: {
           ativo: boolean
