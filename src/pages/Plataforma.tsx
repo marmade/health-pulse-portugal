@@ -80,6 +80,19 @@ const Plataforma = () => {
   const [openModal, setOpenModal] = useState<string | null>(null);
   const [tbarWidth, setTbarWidth] = useState(0);
   const channelsRef = useRef<HTMLDivElement>(null);
+  const [modals, setModals] = useState<Record<string, { eyebrow: string; title: string; text: string }>>(fallbackModals);
+
+  useEffect(() => {
+    const fetchPopups = async () => {
+      const { data } = await supabase.from("plataforma_popups").select("*");
+      if (data && data.length > 0) {
+        const map: Record<string, { eyebrow: string; title: string; text: string }> = {};
+        data.forEach((row: any) => { map[row.id] = { eyebrow: row.eyebrow, title: row.title, text: row.text }; });
+        setModals({ ...fallbackModals, ...map });
+      }
+    };
+    fetchPopups();
+  }, []);
 
   useEffect(() => {
     const measure = () => {
@@ -92,8 +105,6 @@ const Plataforma = () => {
 
   const open = (id: string) => setOpenModal(id);
   const close = () => setOpenModal(null);
-
-  const modal = openModal ? modals[openModal] : null;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
