@@ -413,6 +413,7 @@ export default function Admin() {
             <TabsTrigger value="guioes" className={tabTriggerClass}>GUIÕES</TabsTrigger>
             <TabsTrigger value="popups" className={tabTriggerClass}>PLATAFORMA</TabsTrigger>
             <TabsTrigger value="sobre" className={tabTriggerClass}>SOBRE</TabsTrigger>
+          </TabsList>
 
           {/* Keywords Tab */}
           <TabsContent value="keywords" className="mt-0">
