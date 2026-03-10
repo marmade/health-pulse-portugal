@@ -791,6 +791,62 @@ export default function Admin() {
               </Table>
             </div>
           </TabsContent>
+
+          {/* Sobre Tab */}
+          <TabsContent value="sobre" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Conteúdo da página Sobre ({sobreItems.length} blocos guardados)</h2>
+            </div>
+
+            {editingSobreId && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar: {SOBRE_BLOCKS.find(b => b.id === editingSobreId)?.label || editingSobreId}</p>
+                <Input placeholder="Título da secção" value={sobreForm.titulo} onChange={(e) => setSobreForm({ ...sobreForm, titulo: e.target.value })} />
+                <Textarea placeholder="Conteúdo (texto livre, usar &#10; para nova linha)" rows={10} value={sobreForm.conteudo} onChange={(e) => setSobreForm({ ...sobreForm, conteudo: e.target.value })} />
+                <p className="text-[10px] text-muted-foreground">
+                  Dica: Para "OS 4 EIXOS" e "COMO FUNCIONA", use o formato TÍTULO|descrição por linha. Para "PARA QUE SERVE", uma frase por linha.
+                </p>
+                <div className="flex gap-2">
+                  <Button onClick={saveSobre} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setEditingSobreId(null); setSobreForm({ titulo: "", conteudo: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="border border-foreground/20">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead className="w-40">Bloco</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead>Conteúdo (preview)</TableHead>
+                    <TableHead className="w-24">Estado</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {SOBRE_BLOCKS.map((block) => {
+                    const saved = sobreItems.find((s) => s.id === block.id);
+                    return (
+                      <TableRow key={block.id} className="border-b border-foreground/10">
+                        <TableCell className="text-xs font-bold">{block.label}</TableCell>
+                        <TableCell className="text-xs">{saved?.titulo || "—"}</TableCell>
+                        <TableCell className="text-xs max-w-xs truncate">{saved?.conteudo?.slice(0, 80) || "— (fallback)"}</TableCell>
+                        <TableCell className="text-xs">
+                          {saved ? <span className="text-green-600 font-medium">Guardado</span> : <span className="text-muted-foreground">Fallback</span>}
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="ghost" onClick={() => openSobreForm(saved || { id: block.id, titulo: "", conteudo: "" })}>
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
     </div>
