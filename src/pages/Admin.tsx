@@ -75,6 +75,12 @@ type PopupItem = {
   text: string;
 };
 
+type SobreItem = {
+  id: string;
+  titulo: string;
+  conteudo: string;
+};
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
