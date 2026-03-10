@@ -424,6 +424,42 @@ export type Database = {
         }
         Relationships: []
       }
+      youtube_trends: {
+        Row: {
+          canal: string
+          created_at: string
+          data_publicacao: string
+          eixo: string
+          id: string
+          thumbnail_url: string | null
+          titulo: string
+          url: string
+          views: number
+        }
+        Insert: {
+          canal?: string
+          created_at?: string
+          data_publicacao?: string
+          eixo?: string
+          id?: string
+          thumbnail_url?: string | null
+          titulo?: string
+          url?: string
+          views?: number
+        }
+        Update: {
+          canal?: string
+          created_at?: string
+          data_publicacao?: string
+          eixo?: string
+          id?: string
+          thumbnail_url?: string | null
+          titulo?: string
+          url?: string
+          views?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
