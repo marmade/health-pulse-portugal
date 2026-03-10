@@ -308,6 +308,24 @@ export type Database = {
         }
         Relationships: []
       }
+      sobre_conteudo: {
+        Row: {
+          conteudo: string
+          id: string
+          titulo: string
+        }
+        Insert: {
+          conteudo?: string
+          id: string
+          titulo?: string
+        }
+        Update: {
+          conteudo?: string
+          id?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
       textos: {
         Row: {
           ativo: boolean
