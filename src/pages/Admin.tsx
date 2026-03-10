@@ -75,6 +75,12 @@ type PopupItem = {
   text: string;
 };
 
+type SobreItem = {
+  id: string;
+  titulo: string;
+  conteudo: string;
+};
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
@@ -132,6 +138,20 @@ export default function Admin() {
   const [editingPopupId, setEditingPopupId] = useState<string | null>(null);
   const [popupForm, setPopupForm] = useState({ eyebrow: "", title: "", text: "" });
 
+  // Sobre state
+  const SOBRE_BLOCKS = [
+    { id: "o-que-e", label: "O QUE É" },
+    { id: "para-que-serve", label: "PARA QUE SERVE" },
+    { id: "os-4-eixos", label: "OS 4 EIXOS" },
+    { id: "fontes-de-dados", label: "FONTES DE DADOS" },
+    { id: "metodologia", label: "METODOLOGIA" },
+    { id: "como-funciona", label: "COMO FUNCIONA" },
+    { id: "agradecimentos", label: "AGRADECIMENTOS" },
+  ];
+  const [sobreItems, setSobreItems] = useState<SobreItem[]>([]);
+  const [editingSobreId, setEditingSobreId] = useState<string | null>(null);
+  const [sobreForm, setSobreForm] = useState({ titulo: "", conteudo: "" });
+
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
 
@@ -161,13 +181,14 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx, gu, pp] = await Promise.all([
+    const [kw, db, nw, tx, gu, pp, sb] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
       supabase.from("textos").select("*").order("ordem"),
       supabase.from("guioes").select("*").order("tema").order("ordem"),
       supabase.from("plataforma_popups").select("*"),
+      supabase.from("sobre_conteudo").select("*"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
@@ -175,6 +196,7 @@ export default function Admin() {
     if (tx.data) setTextos(tx.data.map((t: any) => ({ ...t, referencias: t.referencias || [] })));
     if (gu.data) setGuioes(gu.data as GuiaoRow[]);
     if (pp.data) setPopups(pp.data as PopupItem[]);
+    if (sb.data) setSobreItems(sb.data as SobreItem[]);
   };
 
   // Keywords CRUD
@@ -324,6 +346,23 @@ export default function Admin() {
     else { toast({ title: "Guardado ✓" }); setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); fetchAll(); }
   };
 
+  // Sobre CRUD
+  const openSobreForm = (item: SobreItem) => {
+    setEditingSobreId(item.id);
+    setSobreForm({ titulo: item.titulo, conteudo: item.conteudo });
+  };
+
+  const saveSobre = async () => {
+    if (!editingSobreId) return;
+    const existing = sobreItems.find((s) => s.id === editingSobreId);
+    const payload = { id: editingSobreId, titulo: sobreForm.titulo, conteudo: sobreForm.conteudo };
+    const { error } = existing
+      ? await supabase.from("sobre_conteudo").update({ titulo: sobreForm.titulo, conteudo: sobreForm.conteudo }).eq("id", editingSobreId)
+      : await supabase.from("sobre_conteudo").insert(payload);
+    if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
+    else { toast({ title: "Guardado ✓" }); setEditingSobreId(null); setSobreForm({ titulo: "", conteudo: "" }); fetchAll(); }
+  };
+
   const filteredGuioes = guiaoFilter === "TODOS" ? guioes : guioes.filter((g) => g.tema === guiaoFilter);
 
   // Login screen
@@ -373,6 +412,7 @@ export default function Admin() {
             <TabsTrigger value="textos" className={tabTriggerClass}>TEXTOS</TabsTrigger>
             <TabsTrigger value="guioes" className={tabTriggerClass}>GUIÕES</TabsTrigger>
             <TabsTrigger value="popups" className={tabTriggerClass}>PLATAFORMA</TabsTrigger>
+            <TabsTrigger value="sobre" className={tabTriggerClass}>SOBRE</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -747,6 +787,62 @@ export default function Admin() {
                       </TableCell>
                     </TableRow>
                   ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          {/* Sobre Tab */}
+          <TabsContent value="sobre" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Conteúdo da página Sobre ({sobreItems.length} blocos guardados)</h2>
+            </div>
+
+            {editingSobreId && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar: {SOBRE_BLOCKS.find(b => b.id === editingSobreId)?.label || editingSobreId}</p>
+                <Input placeholder="Título da secção" value={sobreForm.titulo} onChange={(e) => setSobreForm({ ...sobreForm, titulo: e.target.value })} />
+                <Textarea placeholder="Conteúdo (texto livre, usar &#10; para nova linha)" rows={10} value={sobreForm.conteudo} onChange={(e) => setSobreForm({ ...sobreForm, conteudo: e.target.value })} />
+                <p className="text-[10px] text-muted-foreground">
+                  Dica: Para "OS 4 EIXOS" e "COMO FUNCIONA", use o formato TÍTULO|descrição por linha. Para "PARA QUE SERVE", uma frase por linha.
+                </p>
+                <div className="flex gap-2">
+                  <Button onClick={saveSobre} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setEditingSobreId(null); setSobreForm({ titulo: "", conteudo: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+
+            <div className="border border-foreground/20">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead className="w-40">Bloco</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead>Conteúdo (preview)</TableHead>
+                    <TableHead className="w-24">Estado</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {SOBRE_BLOCKS.map((block) => {
+                    const saved = sobreItems.find((s) => s.id === block.id);
+                    return (
+                      <TableRow key={block.id} className="border-b border-foreground/10">
+                        <TableCell className="text-xs font-bold">{block.label}</TableCell>
+                        <TableCell className="text-xs">{saved?.titulo || "—"}</TableCell>
+                        <TableCell className="text-xs max-w-xs truncate">{saved?.conteudo?.slice(0, 80) || "— (fallback)"}</TableCell>
+                        <TableCell className="text-xs">
+                          {saved ? <span className="text-green-600 font-medium">Guardado</span> : <span className="text-muted-foreground">Fallback</span>}
+                        </TableCell>
+                        <TableCell>
+                          <Button size="sm" variant="ghost" onClick={() => openSobreForm(saved || { id: block.id, titulo: "", conteudo: "" })}>
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

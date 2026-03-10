@@ -1,43 +1,124 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const axes = [
-  { title: "SAÚDE MENTAL", desc: "Ansiedade, burnout, TDAH e bem-estar" },
-  { title: "ALIMENTAÇÃO", desc: "Nutrição, dietas e comportamentos alimentares" },
-  { title: "MENOPAUSA", desc: "Saúde feminina e hormonal" },
-  { title: "EMERGENTES", desc: "Novos temas e alertas de saúde pública" },
-];
+/* ── Fallback content ── */
+const fallbackContent: Record<string, { titulo: string; conteudo: string }> = {
+  "o-que-e": {
+    titulo: "O que é",
+    conteudo: "O Reportagem Viva é um dashboard pessoal de monitorização de tendências de saúde em Portugal. Cruza o comportamento de pesquisa online com cobertura mediática e sinais de desinformação — para informar a produção de conteúdos de comunicação científica.",
+  },
+  "para-que-serve": {
+    titulo: "Para que serve",
+    conteudo: "Identificar os temas de saúde mais pesquisados em Portugal\nDetectar sinais emergentes antes de chegarem aos media\nCruzar picos de pesquisa com desinformação e facto-verificação\nInformar a escolha de temas para comunicação em saúde",
+  },
+  "os-4-eixos": {
+    titulo: "Os 4 eixos",
+    conteudo: "SAÚDE MENTAL|Ansiedade, burnout, TDAH e bem-estar\nALIMENTAÇÃO|Nutrição, dietas e comportamentos alimentares\nMENOPAUSA|Saúde feminina e hormonal\nEMERGENTES|Novos temas e alertas de saúde pública",
+  },
+  "fontes-de-dados": {
+    titulo: "Fontes de dados",
+    conteudo: `RECOLHA AUTOMÁTICA
 
-const fontes = [
-  { label: "Google Trends", desc: "Comportamento de pesquisa em Portugal" },
-  { label: "15 RSS Feeds", desc: "RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS" },
-  { label: "Supabase", desc: "Base de dados em tempo real" },
-];
+— Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends). Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
 
-const paraQueServe = [
-  "Identificar os temas de saúde mais pesquisados em Portugal",
-  "Detectar sinais emergentes antes de chegarem aos media",
-  "Cruzar picos de pesquisa com desinformação e facto-verificação",
-  "Informar a escolha de temas para comunicação em saúde",
-];
+— RSS Feeds: 15 fontes portuguesas recolhidas em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
 
-const fluxo = [
-  { title: "GOOGLE TRENDS", subtitle: "pesquisas em tempo real" },
-  { title: "SUPABASE", subtitle: "base de dados + keywords" },
-  { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
-  { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
-  { title: "GUIÃO", subtitle: "10 perguntas por tema" },
-];
+DETECÇÃO ASSISTIDA
 
-const agradecimentos = [
-  "Ana Sanchez",
-  "António Gomes da Costa",
-  "António Granado",
-  "Joana Lobo Antunes",
-  "Luís Veríssimo",
-  "Matilde Gonçalves",
-];
+— Keywords e sinais emergentes identificados automaticamente pelo sistema. Crescimento superior a 200% ou termos sem histórico no ano anterior são sinalizados como emergentes.
+
+CURADORIA EDITORIAL
+
+— Debunking: verificação e categorização manual de mitos e desinformação em saúde, com validação científica. Classificação: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO.
+
+— Cobertura mediática: curadoria editorial dos artigos recolhidos via RSS com base em relevância e fundamento científico.`,
+  },
+  metodologia: {
+    titulo: "Metodologia",
+    conteudo: `Sinais emergentes: crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+
+Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
+
+O ÍNDICE GOOGLE TRENDS
+
+O índice varia entre 0 e 100 — não representa o número absoluto de pesquisas, mas o interesse relativo de um termo numa região e período. O valor 100 corresponde ao pico máximo de interesse no período analisado. As percentagens de crescimento (+X%) comparam o volume da semana actual com a média das semanas anteriores do mesmo período.`,
+  },
+  "como-funciona": {
+    titulo: "Como funciona",
+    conteudo: "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|15 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
+  },
+  agradecimentos: {
+    titulo: "Agradecimentos",
+    conteudo: `Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental na transmissão do pensamento crítico, científico e da ética colaborativa:
+
+Ana Sanchez; António Gomes da Costa; António Granado; Joana Lobo Antunes; Luís Veríssimo; Matilde Gonçalves`,
+  },
+};
 
 const Sobre = () => {
+  const [content, setContent] = useState(fallbackContent);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await supabase.from("sobre_conteudo").select("*");
+      if (data && data.length > 0) {
+        const map: Record<string, { titulo: string; conteudo: string }> = {};
+        data.forEach((row: any) => {
+          map[row.id] = { titulo: row.titulo, conteudo: row.conteudo };
+        });
+        setContent({ ...fallbackContent, ...map });
+      }
+    };
+    fetchContent();
+  }, []);
+
+  const get = (id: string) => content[id] || fallbackContent[id];
+
+  /* Parse axes from pipe-delimited format */
+  const parseAxes = (text: string) =>
+    text.split("\n").map((line) => {
+      const [title, desc] = line.split("|");
+      return { title: title.trim(), desc: desc?.trim() || "" };
+    });
+
+  /* Parse list items from newline-delimited format */
+  const parseList = (text: string) => text.split("\n").filter(Boolean);
+
+  /* Parse fontes de dados into structured blocks */
+  const renderFontesDeDados = (text: string) => {
+    const blocks = text.split(/\n\n+/);
+    return blocks.map((block, i) => {
+      const trimmed = block.trim();
+      // Check if it's a section header (all uppercase, no dash prefix)
+      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+        return (
+          <p key={i} className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary/70 mt-6 mb-2 first:mt-0">
+            {trimmed}
+          </p>
+        );
+      }
+      return (
+        <p key={i} className="text-xs leading-relaxed opacity-80 mb-3">
+          {trimmed}
+        </p>
+      );
+    });
+  };
+
+  /* Parse fluxo steps */
+  const parseFluxo = (text: string) =>
+    text.split("\n").map((line) => {
+      const [title, subtitle] = line.split("|");
+      return { title: title.trim(), subtitle: subtitle?.trim() || "" };
+    });
+
+  const axes = parseAxes(get("os-4-eixos").conteudo);
+  const paraQueServe = parseList(get("para-que-serve").conteudo);
+  const fluxoSteps = parseFluxo(get("como-funciona").conteudo);
+  const agradecimentosText = get("agradecimentos").conteudo;
+  const agradecimentosParts = agradecimentosText.split("\n\n");
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav — editorial only */}
@@ -60,9 +141,9 @@ const Sobre = () => {
 
       {/* O que é */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">O que é</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("o-que-e").titulo}</h2>
         <p className="text-sm md:text-base max-w-2xl leading-relaxed">
-          O Reportagem Viva é um dashboard pessoal de monitorização de tendências de saúde em Portugal. Cruza o comportamento de pesquisa online com cobertura mediática e sinais de desinformação — para informar a produção de conteúdos de comunicação científica.
+          {get("o-que-e").conteudo}
         </p>
       </section>
 
@@ -70,7 +151,7 @@ const Sobre = () => {
 
       {/* Para que serve */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Para que serve</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("para-que-serve").titulo}</h2>
         <div className="space-y-3 max-w-2xl">
           {paraQueServe.map((item) => (
             <p key={item} className="text-sm leading-relaxed">
@@ -84,7 +165,7 @@ const Sobre = () => {
 
       {/* Os 4 eixos */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Os 4 eixos</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("os-4-eixos").titulo}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => (
             <div key={axis.title} className="border border-foreground/20 p-6">
@@ -106,42 +187,27 @@ const Sobre = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Coluna esquerda — Fontes de dados */}
           <div>
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Fontes de dados</h2>
-            <div className="flex flex-col gap-5">
-              <div>
-                <p className="text-xs uppercase font-medium text-primary/60">Google Trends</p>
-                <p className="text-xs text-primary mt-1">Comportamento de pesquisa em Portugal</p>
-                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Dados recolhidos semanalmente via script Python (pytrends) e actualizados manualmente. Os valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase font-medium text-primary/60">15 RSS Feeds</p>
-                <p className="text-xs text-primary mt-1">RTP, Público, Expresso, JN, DN, TSF, SIC, Observador, CMJornal, DGS, Ordem dos Médicos, Polígrafo, Observador Fact-Check, INSA, SNS</p>
-                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Artigos recolhidos em tempo real via Edge Function automatizada. Actualização contínua.</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase font-medium text-primary/60">Supabase</p>
-                <p className="text-xs text-primary mt-1">Base de dados em tempo real</p>
-                <p className="text-xs text-primary/40 mt-1 leading-relaxed">Keywords, debunking e categorização inseridos e verificados manualmente. Os dados de pesquisa são actualizados semanalmente.</p>
-              </div>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("fontes-de-dados").titulo}</h2>
+            <div className="flex flex-col">
+              {renderFontesDeDados(get("fontes-de-dados").conteudo)}
             </div>
           </div>
 
           {/* Coluna direita — Metodologia */}
           <div>
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Metodologia</h2>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("metodologia").titulo}</h2>
             <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
-              <p>
-                Sinais emergentes: crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
-              </p>
-              <p>
-                Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
-              </p>
-              <div className="mt-6">
-                <h3 className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground mb-3">O Índice Google Trends</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  O índice varia entre 0 e 100 — não representa o número absoluto de pesquisas, mas o interesse relativo de um termo numa região e período. O valor 100 corresponde ao pico máximo de interesse no período analisado. As percentagens de crescimento (+X%) comparam o volume da semana actual com a média das semanas anteriores do mesmo período.
-                </p>
-              </div>
+              {get("metodologia").conteudo.split(/\n\n+/).map((block, i) => {
+                const trimmed = block.trim();
+                if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+                  return (
+                    <h3 key={i} className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground mt-4 mb-1">
+                      {trimmed}
+                    </h3>
+                  );
+                }
+                return <p key={i}>{trimmed}</p>;
+              })}
             </div>
           </div>
         </div>
@@ -151,7 +217,7 @@ const Sobre = () => {
 
       {/* Como funciona */}
       <section className="px-6 py-8">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Como funciona</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("como-funciona").titulo}</h2>
 
         {/* Desktop layout */}
         <div className="hidden md:flex items-center gap-2">
@@ -159,27 +225,22 @@ const Sobre = () => {
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-2">
               <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Google Trends</h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">pesquisas em tempo real</p>
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{fluxoSteps[0]?.title}</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{fluxoSteps[0]?.subtitle}</p>
               </div>
               <span className="text-primary text-[10px] font-bold select-none">↘</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">15 feeds portugueses</p>
+                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{fluxoSteps[1]?.title}</h3>
+                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{fluxoSteps[1]?.subtitle}</p>
               </div>
               <span className="text-primary text-[10px] font-bold select-none">↗</span>
             </div>
           </div>
 
           {/* Right: linear chain */}
-          {[
-            { title: "SUPABASE", subtitle: "base de dados + keywords" },
-            { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
-            { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
-            { title: "GUIÃO", subtitle: "10 perguntas por tema" },
-          ].map((step, idx, arr) => (
+          {fluxoSteps.slice(2).map((step, idx, arr) => (
             <div key={step.title} className="flex items-center gap-2">
               <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
                 <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
@@ -194,14 +255,7 @@ const Sobre = () => {
 
         {/* Mobile layout — vertical stack */}
         <div className="flex md:hidden flex-col gap-2">
-          {[
-            { title: "GOOGLE TRENDS", subtitle: "pesquisas em tempo real" },
-            { title: "RSS FEEDS", subtitle: "15 feeds portugueses" },
-            { title: "SUPABASE", subtitle: "base de dados + keywords" },
-            { title: "EDGE FUNCTIONS", subtitle: "automação diária" },
-            { title: "PERPLEXITY SONAR", subtitle: "geração com citações" },
-            { title: "GUIÃO", subtitle: "10 perguntas por tema" },
-          ].map((step, idx, arr) => (
+          {fluxoSteps.map((step, idx, arr) => (
             <div key={step.title} className="flex flex-col items-center gap-2">
               <div className="border border-primary px-3 py-2 w-full">
                 <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
@@ -219,13 +273,12 @@ const Sobre = () => {
 
       {/* Agradecimentos */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Agradecimentos</h2>
-        <p className="text-sm max-w-2xl leading-relaxed mb-6">
-          Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental na transmissão do pensamento crítico, científico e da ética colaborativa:
-        </p>
-        <p className="text-sm max-w-2xl leading-relaxed">
-          Ana Sanchez; António Gomes da Costa; António Granado; Joana Lobo Antunes; Luís Veríssimo; Matilde Gonçalves
-        </p>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("agradecimentos").titulo}</h2>
+        {agradecimentosParts.map((part, i) => (
+          <p key={i} className="text-sm max-w-2xl leading-relaxed mb-6 last:mb-0">
+            {part}
+          </p>
+        ))}
       </section>
 
       <div className="section-divider" />
