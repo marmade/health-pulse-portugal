@@ -133,17 +133,23 @@ const Index = () => {
           </div>
         )}
 
-        {/* Alerts + Health Questions side by side */}
+        {/* Alerts */}
+        <div className="mt-10">
+          <div className="section-divider mb-6" />
+          <SearchAlerts
+            alerts={alerts}
+            period={filters.period}
+            debunkingData={debunkingData}
+            newsData={newsData}
+          />
+        </div>
+
+        {/* Health Questions + YouTube Trends side by side */}
         <div className="mt-10">
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <SearchAlerts
-              alerts={alerts}
-              period={filters.period}
-              debunkingData={debunkingData}
-              newsData={newsData}
-            />
             <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+            <YouTubeTrendsPanel />
           </div>
         </div>
 
