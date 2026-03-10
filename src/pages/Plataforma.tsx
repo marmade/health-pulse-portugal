@@ -72,7 +72,7 @@ const S = {
   digital: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
   canais: { border: "1px solid rgba(0,0,255,0.45)", color: "rgba(0,0,255,0.55)" },
   publico: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
-  extensoes: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
+  extensoes: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
 };
 
 /* ── Page ── */
