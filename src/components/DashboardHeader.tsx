@@ -63,11 +63,8 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       </div>
       <div className="section-divider" />
 
-      {/* LINE 1 — Editorial links (right-aligned, smaller) */}
-      <nav className="px-6 py-2 flex items-center justify-between">
-        <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-          Reportagem Viva
-        </Link>
+      {/* LINE 1 — Editorial links (right-aligned, no branding on dashboard) */}
+      <nav className="px-6 py-2 flex items-center justify-end">
         <div className="flex items-center gap-4">
           <Link
             to="/textos"

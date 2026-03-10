@@ -72,7 +72,7 @@ const S = {
   digital: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
   canais: { border: "1px solid rgba(0,0,255,0.45)", color: "rgba(0,0,255,0.55)" },
   publico: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
-  extensoes: { border: "1px dashed #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
+  extensoes: { border: "1px solid #0000FF", color: "#0000FF", bg: "rgba(0,0,255,0.03)" },
 };
 
 /* ── Page ── */
@@ -135,7 +135,7 @@ const Plataforma = () => {
           Uma Plataforma,<br />Várias Dimensões
         </h1>
         <p className="text-sm md:text-base mt-2 opacity-70">
-          Ecossistema digital e público
+          para um Serviço Nacional de Literacia em Saúde
         </p>
         <p className="text-sm mt-6 max-w-2xl leading-relaxed opacity-80">
           Este projecto pretende promover e democratizar o acesso à informação com fundamento científico para a valorização da saúde e para o exercício de cidadania. O diagrama representa as várias frentes que o projecto pretende alcançar.
@@ -175,16 +175,19 @@ const Plataforma = () => {
 
         {/* T-bar connector + Canais */}
         <div className="flex flex-col items-center mt-1">
-          {/* vertical line down from Site/APP */}
+          {/* vertical stem down from Site/APP */}
           <div className="w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-          {/* The channels row — we measure against this */}
+          {/* Inverted T: horizontal bar with 3 feet */}
           <div className="flex flex-col items-center">
-            {/* horizontal bar + feet, width matches channel boxes */}
             <div className="relative" style={{ width: tbarWidth || "auto", height: 16 }}>
+              {/* horizontal bar */}
               <div className="absolute top-0 left-0 right-0" style={{ height: 1, background: "rgba(0,0,255,0.3)" }} />
-              <div className="absolute top-0 left-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-              <div className="absolute top-0 left-1/2 -translate-x-px w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
-              <div className="absolute top-0 right-0 w-px h-4" style={{ background: "rgba(0,0,255,0.3)" }} />
+              {/* left foot */}
+              <div className="absolute top-0 w-px h-4" style={{ left: 0, background: "rgba(0,0,255,0.3)" }} />
+              {/* center foot */}
+              <div className="absolute top-0 w-px h-4" style={{ left: "50%", transform: "translateX(-0.5px)", background: "rgba(0,0,255,0.3)" }} />
+              {/* right foot */}
+              <div className="absolute top-0 w-px h-4" style={{ right: 0, background: "rgba(0,0,255,0.3)" }} />
             </div>
             <div className="mt-2">
               <SectionLabel>Canais de Distribuição</SectionLabel>
