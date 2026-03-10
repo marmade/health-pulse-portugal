@@ -346,6 +346,23 @@ export default function Admin() {
     else { toast({ title: "Guardado ✓" }); setEditingPopupId(null); setPopupForm({ eyebrow: "", title: "", text: "" }); fetchAll(); }
   };
 
+  // Sobre CRUD
+  const openSobreForm = (item: SobreItem) => {
+    setEditingSobreId(item.id);
+    setSobreForm({ titulo: item.titulo, conteudo: item.conteudo });
+  };
+
+  const saveSobre = async () => {
+    if (!editingSobreId) return;
+    const existing = sobreItems.find((s) => s.id === editingSobreId);
+    const payload = { id: editingSobreId, titulo: sobreForm.titulo, conteudo: sobreForm.conteudo };
+    const { error } = existing
+      ? await supabase.from("sobre_conteudo").update({ titulo: sobreForm.titulo, conteudo: sobreForm.conteudo }).eq("id", editingSobreId)
+      : await supabase.from("sobre_conteudo").insert(payload);
+    if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
+    else { toast({ title: "Guardado ✓" }); setEditingSobreId(null); setSobreForm({ titulo: "", conteudo: "" }); fetchAll(); }
+  };
+
   const filteredGuioes = guiaoFilter === "TODOS" ? guioes : guioes.filter((g) => g.tema === guiaoFilter);
 
   // Login screen
