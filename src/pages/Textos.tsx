@@ -53,7 +53,7 @@ const Textos = () => {
 
       {/* Page Title */}
       <section className="px-6 pt-12 pb-6">
-        <h1 className="text-3xl md:text-5xl font-bold tracking-[0.04em]">
+        <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
           Enquadramento Teórico e Pesquisas
         </h1>
         <p className="mt-2 text-xs font-medium tracking-[0.15em] uppercase opacity-50">
