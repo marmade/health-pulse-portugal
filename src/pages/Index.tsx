@@ -6,6 +6,7 @@ import DebunkingTable from "@/components/DebunkingTable";
 import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
 import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
+import YouTubeTrendsPanel from "@/components/YouTubeTrendsPanel";
 import Filters from "@/components/Filters";
 import { debunkingData as mockDebunkingData, newsData as mockNewsData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
