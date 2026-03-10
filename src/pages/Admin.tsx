@@ -181,13 +181,14 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx, gu, pp] = await Promise.all([
+    const [kw, db, nw, tx, gu, pp, sb] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
       supabase.from("textos").select("*").order("ordem"),
       supabase.from("guioes").select("*").order("tema").order("ordem"),
       supabase.from("plataforma_popups").select("*"),
+      supabase.from("sobre_conteudo").select("*"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
@@ -195,6 +196,7 @@ export default function Admin() {
     if (tx.data) setTextos(tx.data.map((t: any) => ({ ...t, referencias: t.referencias || [] })));
     if (gu.data) setGuioes(gu.data as GuiaoRow[]);
     if (pp.data) setPopups(pp.data as PopupItem[]);
+    if (sb.data) setSobreItems(sb.data as SobreItem[]);
   };
 
   // Keywords CRUD
