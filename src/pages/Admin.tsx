@@ -11,8 +11,18 @@ import { toast } from "@/hooks/use-toast";
 import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 
 const ADMIN_PASSWORD = "healthpulse2026";
-const AXES = ["Saúde Mental", "Alimentação", "Menopausa", "Emergentes"];
-const TEMAS_GUIOES = ["SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"];
+const AXES = [
+  { value: "saude-mental", label: "Saúde Mental" },
+  { value: "alimentacao", label: "Alimentação" },
+  { value: "menopausa", label: "Menopausa" },
+  { value: "emergentes", label: "Emergentes" },
+];
+const TEMAS_GUIOES = [
+  { value: "saude-mental", label: "SAÚDE MENTAL" },
+  { value: "alimentacao", label: "ALIMENTAÇÃO" },
+  { value: "menopausa", label: "MENOPAUSA" },
+  { value: "emergentes", label: "EMERGENTES" },
+];
 const SOURCE_TYPES = [
   { value: "institutional", label: "INST" },
   { value: "media", label: "MEDIA" },
