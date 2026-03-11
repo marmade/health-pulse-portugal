@@ -156,18 +156,11 @@ const Mural = () => {
                 <div
                   className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 px-2 py-1"
                   style={{
-                    background: "rgba(255,255,255,0.95)",
-                    border: "1px solid rgba(0,0,255,0.1)",
+                    background: axisColors.bg,
+                    color: "#0000FF",
                   }}
                 >
-                  {/* Axis badge */}
-                  <span
-                    className="text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5"
-                    style={{
-                      background: axisColors.bg,
-                      color: axisColors.text,
-                    }}
-                  >
+                  <span className="text-[8px] font-bold uppercase tracking-wider">
                     {item.axisLabel}
                   </span>
                   {hasScores && item.score > 0 && (
