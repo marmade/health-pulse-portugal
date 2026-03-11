@@ -20,9 +20,11 @@ const fallbackContent: Record<string, { titulo: string; conteudo: string }> = {
     titulo: "Fontes de dados",
     conteudo: `RECOLHA AUTOMÁTICA
 
-— Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends). Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
+— Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends), com actualização do dashboard às segundas-feiras. Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
 
-— RSS Feeds: 15 fontes portuguesas recolhidas em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
+— RSS Feeds: 15 fontes portuguesas com recolha contínua em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
+
+— YouTube: vídeos de saúde recolhidos semanalmente via script Python. Inclui título, canal, número de visualizações e URL. Dados organizados por eixo temático e usados para calcular o score de tendência do Mural de Keywords.
 
 DETECÇÃO ASSISTIDA
 
@@ -42,7 +44,11 @@ Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
 
 O ÍNDICE GOOGLE TRENDS
 
-O índice varia entre 0 e 100 — não representa o número absoluto de pesquisas, mas o interesse relativo de um termo numa região e período. O valor 100 corresponde ao pico máximo de interesse no período analisado. As percentagens de crescimento (+X%) comparam o volume da semana actual com a média das semanas anteriores do mesmo período.`,
+O índice varia entre 0 e 100 — não representa o número absoluto de pesquisas, mas o interesse relativo de um termo numa região e período. O valor 100 corresponde ao pico máximo de interesse no período analisado. As percentagens de crescimento (+X%) comparam o volume da semana actual com a média das semanas anteriores do mesmo período.
+
+GERAÇÃO DE GUIÕES
+
+Geração de guiões: os dados recolhidos pelo sistema alimentam um prompt estruturado enviado ao Perplexity Sonar, um modelo de linguagem com acesso a fontes verificadas em tempo real. O output é um guião com 10 perguntas por tema, com citações a fontes científicas e jornalísticas. Esta etapa é assistida por IA e sujeita a revisão editorial. Periodicidade: semanal, às segundas-feiras.`,
   },
   "como-funciona": {
     titulo: "Como funciona",
@@ -228,55 +234,151 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
-      {/* Como funciona */}
+      {/* Limitações */}
+      <section className="px-6 py-12">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Limitações</h2>
+        <div className="space-y-3 max-w-2xl">
+          <p className="text-sm leading-relaxed">— O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.</p>
+          <p className="text-sm leading-relaxed">— A cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.</p>
+          <p className="text-sm leading-relaxed">— O debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.</p>
+          <p className="text-sm leading-relaxed">— O threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.</p>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* Como funciona — two-level diagram */}
       <section className="px-6 py-8">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("como-funciona").titulo}</h2>
 
         {/* Desktop layout */}
-        <div className="hidden md:flex items-center gap-2">
-          {/* Left: two sources converging */}
-          <div className="flex flex-col items-end gap-1">
+        <div className="hidden md:flex flex-col gap-6">
+          {/* Nível 1 — Recolha automática */}
+          <div>
+            <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground mb-3">Nível 1 — Recolha Automática</p>
             <div className="flex items-center gap-2">
-              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{fluxoSteps[0]?.title}</h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{fluxoSteps[0]?.subtitle}</p>
+              {/* Three sources converging */}
+              <div className="flex flex-col items-end gap-1">
+                <div className="flex items-center gap-2">
+                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Google Trends</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal</p>
+                  </div>
+                  <span className="text-primary text-[10px] font-bold select-none">↘</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">tempo real</p>
+                  </div>
+                  <span className="text-primary text-[10px] font-bold select-none">→</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">YouTube</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal</p>
+                  </div>
+                  <span className="text-primary text-[10px] font-bold select-none">↗</span>
+                </div>
               </div>
-              <span className="text-primary text-[10px] font-bold select-none">↘</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{fluxoSteps[1]?.title}</h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{fluxoSteps[1]?.subtitle}</p>
-              </div>
-              <span className="text-primary text-[10px] font-bold select-none">↗</span>
+              {/* Supabase → Edge Functions → Dashboard */}
+              {[
+                { title: "Supabase", subtitle: "base de dados" },
+                { title: "Edge Functions", subtitle: "automação" },
+                { title: "Dashboard", subtitle: "visualização" },
+              ].map((step, idx, arr) => (
+                <div key={step.title} className="flex items-center gap-2">
+                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{step.subtitle}</p>
+                  </div>
+                  {idx < arr.length - 1 && (
+                    <span className="text-primary text-[10px] font-bold select-none flex-shrink-0">→</span>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right: linear chain */}
-          {fluxoSteps.slice(2).map((step, idx, arr) => (
-            <div key={step.title} className="flex items-center gap-2">
-              <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
-                <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
-                <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{step.subtitle}</p>
-              </div>
-              {idx < arr.length - 1 && (
-                <span className="text-primary text-[10px] font-bold select-none flex-shrink-0">→</span>
-              )}
+          {/* Nível 2 — Produção editorial */}
+          <div>
+            <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground mb-3">Nível 2 — Produção Editorial</p>
+            <div className="flex items-center gap-2">
+              {[
+                { title: "Dashboard", subtitle: "dados agregados", human: false },
+                { title: "Curadoria Editorial", subtitle: "selecção humana", human: true },
+                { title: "Perplexity Sonar", subtitle: "geração com citações", human: false },
+                { title: "Guião", subtitle: "10 perguntas por tema", human: false },
+                { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
+              ].map((step, idx, arr) => (
+                <div key={step.title} className="flex items-center gap-2">
+                  <div
+                    className={`px-3 py-2 w-[120px] flex-shrink-0 ${
+                      step.terminal
+                        ? "border-2 border-primary bg-primary/5"
+                        : "border border-primary"
+                    }`}
+                  >
+                    <h3
+                      className={`text-[9px] uppercase tracking-[0.12em] leading-tight ${
+                        step.human
+                          ? "font-normal italic text-primary/70"
+                          : step.terminal
+                          ? "font-bold text-primary"
+                          : "font-bold text-primary"
+                      }`}
+                    >
+                      {step.title}
+                    </h3>
+                    <p className={`text-[9px] mt-0.5 lowercase leading-tight ${step.human ? "text-muted-foreground/70 italic" : "text-muted-foreground"}`}>
+                      {step.subtitle}
+                    </p>
+                  </div>
+                  {idx < arr.length - 1 && (
+                    <span className="text-primary text-[10px] font-bold select-none flex-shrink-0">→</span>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Mobile layout — vertical stack */}
-        <div className="flex md:hidden flex-col gap-2">
-          {fluxoSteps.map((step, idx, arr) => (
+        <div className="flex md:hidden flex-col gap-4">
+          <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 1 — Recolha Automática</p>
+          {[
+            { title: "Google Trends", subtitle: "semanal" },
+            { title: "RSS Feeds", subtitle: "tempo real" },
+            { title: "YouTube", subtitle: "semanal" },
+            { title: "Supabase", subtitle: "base de dados" },
+            { title: "Edge Functions", subtitle: "automação" },
+            { title: "Dashboard", subtitle: "visualização" },
+          ].map((step, idx, arr) => (
             <div key={step.title} className="flex flex-col items-center gap-2">
               <div className="border border-primary px-3 py-2 w-full">
                 <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">{step.title}</h3>
                 <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">{step.subtitle}</p>
               </div>
-              {idx < arr.length - 1 && (
-                <span className="text-primary text-[10px] font-bold select-none leading-none">↓</span>
-              )}
+              {idx < arr.length - 1 && <span className="text-primary text-[10px] font-bold select-none leading-none">↓</span>}
+            </div>
+          ))}
+
+          <div className="section-divider my-2" />
+
+          <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 2 — Produção Editorial</p>
+          {[
+            { title: "Dashboard", subtitle: "dados agregados", human: false, terminal: false },
+            { title: "Curadoria Editorial", subtitle: "selecção humana", human: true, terminal: false },
+            { title: "Perplexity Sonar", subtitle: "geração com citações", human: false, terminal: false },
+            { title: "Guião", subtitle: "10 perguntas por tema", human: false, terminal: false },
+            { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
+          ].map((step, idx, arr) => (
+            <div key={step.title} className="flex flex-col items-center gap-2">
+              <div className={`px-3 py-2 w-full ${step.terminal ? "border-2 border-primary bg-primary/5" : "border border-primary"}`}>
+                <h3 className={`text-[9px] uppercase tracking-[0.12em] leading-tight ${step.human ? "font-normal italic text-primary/70" : "font-bold text-primary"}`}>{step.title}</h3>
+                <p className={`text-[9px] mt-0.5 lowercase leading-tight ${step.human ? "text-muted-foreground/70 italic" : "text-muted-foreground"}`}>{step.subtitle}</p>
+              </div>
+              {idx < arr.length - 1 && <span className="text-primary text-[10px] font-bold select-none leading-none">↓</span>}
             </div>
           ))}
         </div>
