@@ -1,3 +1,34 @@
+## Sessão — Março 2026: YouTube Trends + Automação GitHub Actions
+
+### O que foi construído
+
+**Coluna "Tendências YouTube"** — nova secção no dashboard, coluna direita da área "Perguntas de Saúde em Crescimento":
+- Componente `YouTubeTrendsPanel` criado via Lovable
+- Tabela `youtube_trends` criada automaticamente pelo Lovable no Supabase (`cyjwhmuakmiytypewwfw`)
+- Estrutura da tabela: `id, titulo, canal, views, url, eixo, data_publicacao, thumbnail_url, created_at`
+- O dashboard lê: `youtube_trends?select=*&order=views.desc&limit=15`
+- Visual final: thumbnail + título clicável + canal + eixo temático + views formatadas
+- [DECISÃO] Thumbnails mantidas — ficam mais ricas visualmente
+
+**Script Python** — `scripts/4_fetch_youtube_trends.py` (na raiz do repositório, pasta `scripts/`):
+- Lê as 73 keywords activas do Supabase
+- Faz pesquisa na YouTube Data API v3
+- Escreve top vídeos em `youtube_trends`
+- Execução manual: `python3 4_fetch_youtube_trends.py A_CHAVE_YOUTUBE`
+
+**GitHub Actions** — automação semanal:
+- Ficheiro: `.github/workflows/youtube-trends.yml`
+- Corre todas as segundas-feiras às 06:00 UTC (cron: `0 6 * * 1`)
+- Também pode ser disparado manualmente (workflow_dispatch)
+- YouTube API key guardada como secret no repositório: `YOUTUBE_API_KEY`
+- Testado e confirmado: **Status Success** (51s) ✅
+
+### Problema encontrado e resolvido
+O ficheiro `.github/workflows/youtube-trends.yml` foi inicialmente criado dentro de `scripts/` em vez da raiz — o GitHub não reconhecia o workflow. Corrigido criando o ficheiro no caminho correcto via URL directa do GitHub.
+
+### Aviso menor
+O workflow mostra 1 warning: `actions/checkout@v3` e `actions/setup-python@v4` usam Node.js 20 que está deprecated. Não afecta funcionamento actual mas convém actualizar para `@v4` / `@v5` numa próxima sessão.
+
 # CONTEXT.md — Reportagem Viva
 > Ficheiro de memória do projeto para continuidade entre sessões de trabalho com IA.
 > Atualizar no final de cada sessão relevante.
