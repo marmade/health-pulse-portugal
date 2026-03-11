@@ -99,7 +99,7 @@ const Mural = () => {
 
       <main className="px-6 py-8 max-w-[1400px] mx-auto">
         <h1
-          className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight uppercase"
+          className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight"
           style={{ color: "#0000FF" }}
         >
           Mural
