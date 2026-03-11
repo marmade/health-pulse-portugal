@@ -82,7 +82,7 @@ const Index = () => {
 
       {/* Filters */}
       <div className="px-6 py-2 overflow-x-auto">
-        <Filters onFilterChange={setFilters} />
+        <Filters filters={filters} onFilterChange={setFilters} />
       </div>
 
       {/* Main grid */}
