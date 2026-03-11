@@ -13,7 +13,7 @@ type Props = {
   onAxisChange?: (id: string) => void;
   lastRefreshed?: string | null;
   /** Highlights this page link in the nav */
-  activePage?: "briefing" | "guioes" | "textos" | "plataforma" | "sobre";
+  activePage?: "briefing" | "guioes" | "mural" | "textos" | "plataforma" | "sobre";
 };
 
 const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }: Props) => {
@@ -109,6 +109,13 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
           className={`nav-link ${activePage === "briefing" ? "nav-link-active" : ""}`}
         >
           BRIEFING
+        </Link>
+        <span className="text-foreground/20 text-xs font-light">/</span>
+        <Link
+          to="/mural"
+          className={`nav-link ${activePage === "mural" ? "nav-link-active" : ""}`}
+        >
+          MURAL
         </Link>
         <span className="text-foreground/20 text-xs font-light">/</span>
         <Link
