@@ -153,15 +153,6 @@ export default function Admin() {
   const [popupForm, setPopupForm] = useState({ eyebrow: "", title: "", text: "" });
 
   // Sobre state
-  const SOBRE_BLOCKS = [
-    { id: "o-que-e", label: "O QUE É" },
-    { id: "para-que-serve", label: "PARA QUE SERVE" },
-    { id: "os-4-eixos", label: "OS 4 EIXOS" },
-    { id: "fontes-de-dados", label: "FONTES DE DADOS" },
-    { id: "metodologia", label: "METODOLOGIA" },
-    { id: "como-funciona", label: "COMO FUNCIONA" },
-    { id: "agradecimentos", label: "AGRADECIMENTOS" },
-  ];
   const [sobreItems, setSobreItems] = useState<SobreItem[]>([]);
   const [editingSobreId, setEditingSobreId] = useState<string | null>(null);
   const [sobreForm, setSobreForm] = useState({ titulo: "", conteudo: "" });
