@@ -112,6 +112,13 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         </Link>
         <span className="text-foreground/20 text-xs font-light">/</span>
         <Link
+          to="/mural"
+          className={`nav-link ${activePage === "mural" ? "nav-link-active" : ""}`}
+        >
+          MURAL
+        </Link>
+        <span className="text-foreground/20 text-xs font-light">/</span>
+        <Link
           to="/guioes"
           className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}
         >
