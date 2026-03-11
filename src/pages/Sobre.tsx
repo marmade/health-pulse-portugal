@@ -20,9 +20,11 @@ const fallbackContent: Record<string, { titulo: string; conteudo: string }> = {
     titulo: "Fontes de dados",
     conteudo: `RECOLHA AUTOMÁTICA
 
-— Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends). Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
+— Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends), com actualização do dashboard às segundas-feiras. Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
 
-— RSS Feeds: 15 fontes portuguesas recolhidas em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
+— RSS Feeds: 15 fontes portuguesas com recolha contínua em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
+
+— YouTube: vídeos de saúde recolhidos semanalmente via script Python. Inclui título, canal, número de visualizações e URL. Dados organizados por eixo temático e usados para calcular o score de tendência do Mural de Keywords.
 
 DETECÇÃO ASSISTIDA
 
