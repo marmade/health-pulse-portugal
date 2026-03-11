@@ -219,8 +219,8 @@ const Sobre = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Coluna esquerda — Fontes de dados */}
           <div className="md:border-r md:border-foreground/10 md:pr-6">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("fontes-de-dados").titulo}</h2>
-            <div className="flex flex-col">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{get("fontes-de-dados").titulo}</h2>
+            <div className="border-t border-foreground/10 pt-4 flex flex-col">
               {renderFontesDeDados(get("fontes-de-dados").conteudo)}
             </div>
           </div>
