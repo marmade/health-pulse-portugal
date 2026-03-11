@@ -203,14 +203,24 @@ export default function Admin() {
   };
 
   // Keywords CRUD
-  const addKeyword = async () => {
+  const openKeywordForm = (kw?: Keyword) => {
+    if (kw) {
+      setEditingKeywordId(kw.id);
+      setNewKeyword({ term: kw.term, axis: kw.axis, is_active: kw.is_active });
+    } else {
+      setEditingKeywordId(null);
+      setNewKeyword({ term: "", axis: "", is_active: true });
+    }
+    setShowKeywordForm(true);
+  };
+
+  const saveKeyword = async () => {
     if (!newKeyword.term || !newKeyword.axis) return;
-    const { error } = await supabase.from("keywords").insert({
-      term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active,
-      category: newKeyword.axis, source: "manual", synonyms: [],
-    });
+    const { error } = editingKeywordId
+      ? await supabase.from("keywords").update({ term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active }).eq("id", editingKeywordId)
+      : await supabase.from("keywords").insert({ term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active, category: newKeyword.axis, source: "manual", synonyms: [] });
     if (error) { toast({ title: "Erro ao guardar", variant: "destructive" }); }
-    else { toast({ title: "Guardado ✓" }); setNewKeyword({ term: "", axis: "", is_active: true }); setShowKeywordForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewKeyword({ term: "", axis: "", is_active: true }); setShowKeywordForm(false); setEditingKeywordId(null); fetchAll(); }
   };
 
   const deleteKeyword = async (id: string) => {
@@ -221,14 +231,25 @@ export default function Admin() {
   };
 
   // Debunking CRUD
-  const addDebunk = async () => {
+  const openDebunkForm = (item?: DebunkingItem) => {
+    if (item) {
+      setEditingDebunkId(item.id);
+      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url });
+    } else {
+      setEditingDebunkId(null);
+      setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+    }
+    setShowDebunkForm(true);
+  };
+
+  const saveDebunk = async () => {
     if (!newDebunk.title || !newDebunk.term) return;
-    const { error } = await supabase.from("debunking").insert({
-      title: newDebunk.title, term: newDebunk.term, source: newDebunk.source,
-      classification: newDebunk.classification, url: newDebunk.url,
-    });
+    const payload = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    const { error } = editingDebunkId
+      ? await supabase.from("debunking").update(payload).eq("id", editingDebunkId)
+      : await supabase.from("debunking").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
   };
 
   const deleteDebunk = async (id: string) => {
@@ -239,14 +260,25 @@ export default function Admin() {
   };
 
   // News CRUD
-  const addNews = async () => {
+  const openNewsForm = (item?: NewsItem) => {
+    if (item) {
+      setEditingNewsId(item.id);
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: item.related_term, date: item.date });
+    } else {
+      setEditingNewsId(null);
+      setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
+    }
+    setShowNewsForm(true);
+  };
+
+  const saveNews = async () => {
     if (!newNews.title || !newNews.outlet || !newNews.date) return;
-    const { error } = await supabase.from("news_items").insert({
-      title: newNews.title, url: newNews.url, outlet: newNews.outlet,
-      source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date,
-    });
+    const payload = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    const { error } = editingNewsId
+      ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
+      : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
