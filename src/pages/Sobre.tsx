@@ -190,7 +190,7 @@ const Sobre = () => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => (
-            <div key={axis.title} className="border border-foreground/20 p-6">
+            <div key={axis.title} className="border border-foreground/20 p-4">
               <h3 className="text-xs font-bold uppercase tracking-[0.15em]">
                 {axis.title}
               </h3>
