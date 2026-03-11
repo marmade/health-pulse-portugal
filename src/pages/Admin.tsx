@@ -726,15 +726,15 @@ export default function Admin() {
 
             {/* Filter */}
             <div className="flex gap-2 mb-4">
-              {["TODOS", ...TEMAS_GUIOES].map((f) => (
+              {[{ value: "TODOS", label: "TODOS" }, ...TEMAS_GUIOES].map((f) => (
                 <button
-                  key={f}
-                  onClick={() => setGuiaoFilter(f)}
+                  key={f.value}
+                  onClick={() => setGuiaoFilter(f.value)}
                   className={`text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-1 border transition-colors ${
-                    guiaoFilter === f ? "border-foreground text-foreground" : "border-foreground/20 text-muted-foreground hover:text-foreground"
+                    guiaoFilter === f.value ? "border-foreground text-foreground" : "border-foreground/20 text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {f}
+                  {f.label}
                 </button>
               ))}
             </div>
