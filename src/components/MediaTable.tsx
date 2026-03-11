@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import type { NewsItem } from "@/data/mockData";
+import { getAxisFilterStyle } from "@/lib/axisColors";
 
 type Props = {
   items: NewsItem[];
