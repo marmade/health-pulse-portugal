@@ -39,7 +39,9 @@ CURADORIA EDITORIAL
   },
   metodologia: {
     titulo: "Metodologia",
-    conteudo: `Sinais emergentes: crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+    conteudo: `SINAIS EMERGENTES
+
+Crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
 
 Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
 
