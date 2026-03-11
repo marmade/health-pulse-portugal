@@ -454,12 +454,13 @@ export default function Admin() {
           <TabsContent value="keywords" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Keywords ({keywords.length})</h2>
-              <Button onClick={() => setShowKeywordForm(!showKeywordForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openKeywordForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar keyword
               </Button>
             </div>
             {showKeywordForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingKeywordId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar keyword</p>}
                 <Input placeholder="Keyword" value={newKeyword.term} onChange={(e) => setNewKeyword({ ...newKeyword, term: e.target.value })} />
                 <Select value={newKeyword.axis} onValueChange={(v) => setNewKeyword({ ...newKeyword, axis: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
@@ -470,8 +471,8 @@ export default function Admin() {
                   <span className="text-sm">Ativo</span>
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={addKeyword} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowKeywordForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveKeyword} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowKeywordForm(false); setEditingKeywordId(null); setNewKeyword({ term: "", axis: "", is_active: true }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -479,7 +480,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Keyword</TableHead><TableHead>Tema</TableHead><TableHead>Ativo</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Keyword</TableHead><TableHead>Tema</TableHead><TableHead>Ativo</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -495,7 +496,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "keyword", id: kw.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openKeywordForm(kw)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "keyword", id: kw.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
