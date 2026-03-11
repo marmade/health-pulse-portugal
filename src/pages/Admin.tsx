@@ -474,7 +474,7 @@ export default function Admin() {
                 <Input placeholder="Keyword" value={newKeyword.term} onChange={(e) => setNewKeyword({ ...newKeyword, term: e.target.value })} />
                 <Select value={newKeyword.axis} onValueChange={(v) => setNewKeyword({ ...newKeyword, axis: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
                 <div className="flex items-center gap-2">
                   <Switch checked={newKeyword.is_active} onCheckedChange={(c) => setNewKeyword({ ...newKeyword, is_active: c })} />
