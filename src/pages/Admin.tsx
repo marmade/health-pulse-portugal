@@ -11,8 +11,18 @@ import { toast } from "@/hooks/use-toast";
 import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 
 const ADMIN_PASSWORD = "healthpulse2026";
-const AXES = ["Saúde Mental", "Alimentação", "Menopausa", "Emergentes"];
-const TEMAS_GUIOES = ["SAÚDE MENTAL", "ALIMENTAÇÃO", "MENOPAUSA", "EMERGENTES"];
+const AXES = [
+  { value: "saude-mental", label: "Saúde Mental" },
+  { value: "alimentacao", label: "Alimentação" },
+  { value: "menopausa", label: "Menopausa" },
+  { value: "emergentes", label: "Emergentes" },
+];
+const TEMAS_GUIOES = [
+  { value: "saude-mental", label: "SAÚDE MENTAL" },
+  { value: "alimentacao", label: "ALIMENTAÇÃO" },
+  { value: "menopausa", label: "MENOPAUSA" },
+  { value: "emergentes", label: "EMERGENTES" },
+];
 const SOURCE_TYPES = [
   { value: "institutional", label: "INST" },
   { value: "media", label: "MEDIA" },
@@ -464,7 +474,7 @@ export default function Admin() {
                 <Input placeholder="Keyword" value={newKeyword.term} onChange={(e) => setNewKeyword({ ...newKeyword, term: e.target.value })} />
                 <Select value={newKeyword.axis} onValueChange={(v) => setNewKeyword({ ...newKeyword, axis: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
                 <div className="flex items-center gap-2">
                   <Switch checked={newKeyword.is_active} onCheckedChange={(c) => setNewKeyword({ ...newKeyword, is_active: c })} />
@@ -524,10 +534,7 @@ export default function Admin() {
                 <Textarea placeholder="Classificação (ex: FALSO, ENGANADOR)" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
-                <Select value={newDebunk.term} onValueChange={(v) => setNewDebunk({ ...newDebunk, term: v })}>
-                  <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
-                </Select>
+                <Input placeholder="Termo relacionado" value={newDebunk.term} onChange={(e) => setNewDebunk({ ...newDebunk, term: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
                   <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
@@ -587,7 +594,7 @@ export default function Admin() {
                 </Select>
                 <Select value={newNews.related_term} onValueChange={(v) => setNewNews({ ...newNews, related_term: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
@@ -719,15 +726,15 @@ export default function Admin() {
 
             {/* Filter */}
             <div className="flex gap-2 mb-4">
-              {["TODOS", ...TEMAS_GUIOES].map((f) => (
+              {[{ value: "TODOS", label: "TODOS" }, ...TEMAS_GUIOES].map((f) => (
                 <button
-                  key={f}
-                  onClick={() => setGuiaoFilter(f)}
+                  key={f.value}
+                  onClick={() => setGuiaoFilter(f.value)}
                   className={`text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-1 border transition-colors ${
-                    guiaoFilter === f ? "border-foreground text-foreground" : "border-foreground/20 text-muted-foreground hover:text-foreground"
+                    guiaoFilter === f.value ? "border-foreground text-foreground" : "border-foreground/20 text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {f}
+                  {f.label}
                 </button>
               ))}
             </div>
@@ -737,7 +744,7 @@ export default function Admin() {
                 <div className="grid grid-cols-2 gap-3">
                   <Select value={guiaoForm.tema} onValueChange={(v) => setGuiaoForm({ ...guiaoForm, tema: v })}>
                     <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                    <SelectContent>{TEMAS_GUIOES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                    <SelectContent>{TEMAS_GUIOES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
                   </Select>
                   <Input placeholder="Sub-tema" value={guiaoForm.subtema} onChange={(e) => setGuiaoForm({ ...guiaoForm, subtema: e.target.value })} />
                 </div>
