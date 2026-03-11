@@ -2,10 +2,7 @@
 4_fetch_youtube_trends.py
 =========================
 Reportagem Viva - busca os top videos YouTube para as keywords activas.
-Melhorias v2:
-  - Pesquisa contextualizada: "<keyword> saude portugal" evita videos virais irrelevantes
-  - Delete robusto antes de reinserir (usa filtro not.is.null)
-  - De-duplicacao por video_id
+v3: filtra videos brasileiros (pt-BR), mantém apenas pt-PT e sem linguagem definida
 
 Como correr:
   python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
@@ -33,7 +30,14 @@ HEADERS = {
 }
 
 TOP_GLOBAL = 10
-VIDEOS_POR_KEYWORD = 5
+VIDEOS_POR_KEYWORD = 8  # buscar mais para compensar os filtrados
+
+# Canais brasileiros conhecidos a excluir
+CANAIS_BR = {
+    "Drauzio Varella", "Sempre Questione", "Dr. Dayan Siebra",
+    "Dr. Victor Sorrentino", "Mundo da Saude", "Canal Saude",
+    "Saude em Dia", "CFM", "CFO", "Drauzio"
+}
 
 
 def buscar_keywords():
@@ -44,6 +48,23 @@ def buscar_keywords():
     )
     r.raise_for_status()
     return r.json()
+
+
+def e_brasileiro(video):
+    """Devolve True se o video parecer brasileiro."""
+    audio_lang = video.get("defaultAudioLanguage", "") or ""
+    default_lang = video.get("defaultLanguage", "") or ""
+    canal = video.get("canal", "") or ""
+
+    # Excluir pt-BR explícito
+    if audio_lang.startswith("pt-BR") or default_lang.startswith("pt-BR"):
+        return True
+
+    # Excluir canais brasileiros conhecidos
+    if canal in CANAIS_BR:
+        return True
+
+    return False
 
 
 def pesquisar_videos(youtube, keyword, axis):
@@ -64,7 +85,7 @@ def pesquisar_videos(youtube, keyword, axis):
             return []
 
         detalhes = youtube.videos().list(
-            part="snippet,statistics",
+            part="snippet,statistics,localizations",
             id=",".join(ids),
         ).execute()
 
@@ -72,7 +93,8 @@ def pesquisar_videos(youtube, keyword, axis):
         for v in detalhes.get("items", []):
             snippet = v.get("snippet", {})
             stats = v.get("statistics", {})
-            resultados.append({
+
+            candidato = {
                 "video_id": v["id"],
                 "titulo": snippet.get("title", ""),
                 "canal": snippet.get("channelTitle", ""),
@@ -81,7 +103,18 @@ def pesquisar_videos(youtube, keyword, axis):
                 "eixo": axis,
                 "data_publicacao": snippet.get("publishedAt", "")[:10],
                 "thumbnail_url": snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
-            })
+                "defaultAudioLanguage": snippet.get("defaultAudioLanguage", ""),
+                "defaultLanguage": snippet.get("defaultLanguage", ""),
+            }
+
+            if e_brasileiro(candidato):
+                print(f"    [filtrado BR] {candidato['titulo'][:50]}")
+                continue
+
+            # Remover campos internos antes de guardar
+            resultados.append({k: v for k, v in candidato.items()
+                               if k not in ("defaultAudioLanguage", "defaultLanguage")})
+
         return resultados
 
     except Exception as e:
@@ -90,7 +123,7 @@ def pesquisar_videos(youtube, keyword, axis):
 
 
 def main():
-    print("Reportagem Viva - YouTube Trends v2")
+    print("Reportagem Viva - YouTube Trends v3 (filtro PT)")
     print(f"{datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
@@ -107,7 +140,7 @@ def main():
         videos = pesquisar_videos(youtube, kw, axis)
         if videos:
             todos.extend(videos)
-            print(f"  {len(videos)} videos")
+            print(f"  {len(videos)} videos (apos filtro PT)")
         else:
             print(f"  Sem resultados")
 
@@ -130,19 +163,12 @@ def main():
         headers=HEADERS,
         params={"id": "not.is.null"}
     )
-    if r.status_code in (200, 204):
-        print("  Tabela limpa")
-    else:
-        print(f"  Delete retornou {r.status_code}: {r.text[:100]}")
+    print("  Tabela limpa" if r.status_code in (200, 204) else f"  Delete {r.status_code}")
 
     print(f"A inserir top {len(top)} videos...")
     for v in top:
         payload = {k: val for k, val in v.items() if k != "video_id"}
-        r = requests.post(
-            f"{SUPABASE_URL}/rest/v1/youtube_trends",
-            headers=HEADERS,
-            json=payload
-        )
+        r = requests.post(f"{SUPABASE_URL}/rest/v1/youtube_trends", headers=HEADERS, json=payload)
         views_fmt = f"{v['views']:,}".replace(",", ".")
         status = "OK" if r.status_code in (200, 201) else f"ERRO {r.status_code}"
         print(f"  {status} {v['titulo'][:55]}")
