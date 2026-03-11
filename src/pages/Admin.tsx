@@ -744,7 +744,7 @@ export default function Admin() {
                 <div className="grid grid-cols-2 gap-3">
                   <Select value={guiaoForm.tema} onValueChange={(v) => setGuiaoForm({ ...guiaoForm, tema: v })}>
                     <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                    <SelectContent>{TEMAS_GUIOES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                    <SelectContent>{TEMAS_GUIOES.map((t) => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}</SelectContent>
                   </Select>
                   <Input placeholder="Sub-tema" value={guiaoForm.subtema} onChange={(e) => setGuiaoForm({ ...guiaoForm, subtema: e.target.value })} />
                 </div>
