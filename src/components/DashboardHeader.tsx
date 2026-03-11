@@ -99,6 +99,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
 
       {/* LINE 2 — OVERVIEW · EIXOS (dropdown) · MURAL · BRIEFING · GUIÕES */}
       <nav className="px-6 py-2 flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-1">
         {/* OVERVIEW */}
         <button
           onClick={() => handleAxisClick("all")}
@@ -156,6 +157,10 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         {/* GUIÕES */}
         <Link to="/guioes" className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}>
           GUIÕES
+        </Link>
+        </div>
+        <Link to="/plataforma" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
+          Diz que Disse
         </Link>
       </nav>
 
