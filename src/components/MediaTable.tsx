@@ -74,11 +74,12 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
     <div className="flex flex-col h-full min-h-0">
       <div className="flex items-center gap-1.5 mb-1.5 flex-shrink-0">
         <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50">Cobertura Mediática</p>
-        {lastFetchTimestamp && (
-          <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
-            Auto-actualizado {new Date(lastFetchTimestamp).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
-          </span>
-        )}
+        <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
+          RSS — Tempo Real
+        </span>
+        <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
+          Trends + YouTube — Semanal
+        </span>
       </div>
       
       {/* Theme filter */}
