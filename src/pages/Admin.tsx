@@ -594,7 +594,7 @@ export default function Admin() {
                 </Select>
                 <Select value={newNews.related_term} onValueChange={(v) => setNewNews({ ...newNews, related_term: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
