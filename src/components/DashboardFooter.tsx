@@ -20,7 +20,7 @@ type Props = {
   hideExport?: boolean;
 };
 
-const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData }: Props) => {
+const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData, hideExport }: Props) => {
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isExportingCsv, setIsExportingCsv] = useState(false);
 
