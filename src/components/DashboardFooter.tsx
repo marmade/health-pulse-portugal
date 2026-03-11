@@ -17,9 +17,10 @@ type Props = {
   debunkingData?: DebunkItem[];
   newsData?: NewsItem[];
   historicalData?: HistoricalSnapshot[];
+  hideExport?: boolean;
 };
 
-const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData }: Props) => {
+const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData, hideExport }: Props) => {
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isExportingCsv, setIsExportingCsv] = useState(false);
 
@@ -75,24 +76,26 @@ const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalDat
             Google Trends / Google Analytics
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleExportCsv}
-            disabled={isExportingCsv || !axes}
-            className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {isExportingCsv && <Loader2 className="h-3 w-3 animate-spin" />}
-            {isExportingCsv ? "A gerar..." : "Exportar CSV"}
-          </button>
-          <button
-            onClick={handleExportPdf}
-            disabled={isExportingPdf || !axes}
-            className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {isExportingPdf && <Loader2 className="h-3 w-3 animate-spin" />}
-            {isExportingPdf ? "A gerar..." : "Exportar Report PDF"}
-          </button>
-        </div>
+        {!hideExport && (
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleExportCsv}
+              disabled={isExportingCsv || !axes}
+              className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isExportingCsv && <Loader2 className="h-3 w-3 animate-spin" />}
+              {isExportingCsv ? "A gerar..." : "Exportar CSV"}
+            </button>
+            <button
+              onClick={handleExportPdf}
+              disabled={isExportingPdf || !axes}
+              className="text-[10px] font-bold uppercase tracking-[0.15em] border border-foreground px-4 py-2 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isExportingPdf && <Loader2 className="h-3 w-3 animate-spin" />}
+              {isExportingPdf ? "A gerar..." : "Exportar Report PDF"}
+            </button>
+          </div>
+        )}
       </div>
     </footer>
   );
