@@ -108,16 +108,19 @@ export default function Admin() {
   // Keywords state
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [showKeywordForm, setShowKeywordForm] = useState(false);
+  const [editingKeywordId, setEditingKeywordId] = useState<string | null>(null);
   const [newKeyword, setNewKeyword] = useState({ term: "", axis: "", is_active: true });
 
   // Debunking state
   const [debunking, setDebunking] = useState<DebunkingItem[]>([]);
   const [showDebunkForm, setShowDebunkForm] = useState(false);
+  const [editingDebunkId, setEditingDebunkId] = useState<string | null>(null);
   const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "" });
 
   // News state
   const [news, setNews] = useState<NewsItem[]>([]);
   const [showNewsForm, setShowNewsForm] = useState(false);
+  const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
   const [newNews, setNewNews] = useState({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
 
   // Textos state
@@ -200,14 +203,24 @@ export default function Admin() {
   };
 
   // Keywords CRUD
-  const addKeyword = async () => {
+  const openKeywordForm = (kw?: Keyword) => {
+    if (kw) {
+      setEditingKeywordId(kw.id);
+      setNewKeyword({ term: kw.term, axis: kw.axis, is_active: kw.is_active });
+    } else {
+      setEditingKeywordId(null);
+      setNewKeyword({ term: "", axis: "", is_active: true });
+    }
+    setShowKeywordForm(true);
+  };
+
+  const saveKeyword = async () => {
     if (!newKeyword.term || !newKeyword.axis) return;
-    const { error } = await supabase.from("keywords").insert({
-      term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active,
-      category: newKeyword.axis, source: "manual", synonyms: [],
-    });
+    const { error } = editingKeywordId
+      ? await supabase.from("keywords").update({ term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active }).eq("id", editingKeywordId)
+      : await supabase.from("keywords").insert({ term: newKeyword.term, axis: newKeyword.axis, is_active: newKeyword.is_active, category: newKeyword.axis, source: "manual", synonyms: [] });
     if (error) { toast({ title: "Erro ao guardar", variant: "destructive" }); }
-    else { toast({ title: "Guardado ✓" }); setNewKeyword({ term: "", axis: "", is_active: true }); setShowKeywordForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewKeyword({ term: "", axis: "", is_active: true }); setShowKeywordForm(false); setEditingKeywordId(null); fetchAll(); }
   };
 
   const deleteKeyword = async (id: string) => {
@@ -218,14 +231,25 @@ export default function Admin() {
   };
 
   // Debunking CRUD
-  const addDebunk = async () => {
+  const openDebunkForm = (item?: DebunkingItem) => {
+    if (item) {
+      setEditingDebunkId(item.id);
+      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url });
+    } else {
+      setEditingDebunkId(null);
+      setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+    }
+    setShowDebunkForm(true);
+  };
+
+  const saveDebunk = async () => {
     if (!newDebunk.title || !newDebunk.term) return;
-    const { error } = await supabase.from("debunking").insert({
-      title: newDebunk.title, term: newDebunk.term, source: newDebunk.source,
-      classification: newDebunk.classification, url: newDebunk.url,
-    });
+    const payload = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    const { error } = editingDebunkId
+      ? await supabase.from("debunking").update(payload).eq("id", editingDebunkId)
+      : await supabase.from("debunking").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
   };
 
   const deleteDebunk = async (id: string) => {
@@ -236,14 +260,25 @@ export default function Admin() {
   };
 
   // News CRUD
-  const addNews = async () => {
+  const openNewsForm = (item?: NewsItem) => {
+    if (item) {
+      setEditingNewsId(item.id);
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: item.related_term, date: item.date });
+    } else {
+      setEditingNewsId(null);
+      setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
+    }
+    setShowNewsForm(true);
+  };
+
+  const saveNews = async () => {
     if (!newNews.title || !newNews.outlet || !newNews.date) return;
-    const { error } = await supabase.from("news_items").insert({
-      title: newNews.title, url: newNews.url, outlet: newNews.outlet,
-      source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date,
-    });
+    const payload = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    const { error } = editingNewsId
+      ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
+      : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
@@ -419,12 +454,13 @@ export default function Admin() {
           <TabsContent value="keywords" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Keywords ({keywords.length})</h2>
-              <Button onClick={() => setShowKeywordForm(!showKeywordForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openKeywordForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar keyword
               </Button>
             </div>
             {showKeywordForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingKeywordId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar keyword</p>}
                 <Input placeholder="Keyword" value={newKeyword.term} onChange={(e) => setNewKeyword({ ...newKeyword, term: e.target.value })} />
                 <Select value={newKeyword.axis} onValueChange={(v) => setNewKeyword({ ...newKeyword, axis: v })}>
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
@@ -435,8 +471,8 @@ export default function Admin() {
                   <span className="text-sm">Ativo</span>
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={addKeyword} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowKeywordForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveKeyword} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowKeywordForm(false); setEditingKeywordId(null); setNewKeyword({ term: "", axis: "", is_active: true }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -444,7 +480,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Keyword</TableHead><TableHead>Tema</TableHead><TableHead>Ativo</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Keyword</TableHead><TableHead>Tema</TableHead><TableHead>Ativo</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -460,7 +496,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "keyword", id: kw.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openKeywordForm(kw)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "keyword", id: kw.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
@@ -474,14 +513,15 @@ export default function Admin() {
           <TabsContent value="debunking" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Debunking ({debunking.length})</h2>
-              <Button onClick={() => setShowDebunkForm(!showDebunkForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openDebunkForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar mito
               </Button>
             </div>
             {showDebunkForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingDebunkId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar mito</p>}
                 <Input placeholder="Título do mito" value={newDebunk.title} onChange={(e) => setNewDebunk({ ...newDebunk, title: e.target.value })} />
-                <Textarea placeholder="Explicação / fact-check" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
+                <Textarea placeholder="Classificação (ex: FALSO, ENGANADOR)" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
                 <Select value={newDebunk.term} onValueChange={(v) => setNewDebunk({ ...newDebunk, term: v })}>
@@ -489,8 +529,8 @@ export default function Admin() {
                   <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
                 <div className="flex gap-2">
-                  <Button onClick={addDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowDebunkForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -498,7 +538,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Título</TableHead><TableHead>Tema</TableHead><TableHead>Fonte</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Título</TableHead><TableHead>Tema</TableHead><TableHead>Fonte</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -514,7 +554,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "debunk", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openDebunkForm(item)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "debunk", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
@@ -528,12 +571,13 @@ export default function Admin() {
           <TabsContent value="news" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Notícias ({news.length})</h2>
-              <Button onClick={() => setShowNewsForm(!showNewsForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openNewsForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar notícia
               </Button>
             </div>
             {showNewsForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingNewsId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar notícia</p>}
                 <Input placeholder="Título" value={newNews.title} onChange={(e) => setNewNews({ ...newNews, title: e.target.value })} />
                 <Input placeholder="URL" value={newNews.url} onChange={(e) => setNewNews({ ...newNews, url: e.target.value })} />
                 <Input placeholder="Fonte (ex: Público, DGS)" value={newNews.outlet} onChange={(e) => setNewNews({ ...newNews, outlet: e.target.value })} />
@@ -547,8 +591,8 @@ export default function Admin() {
                 </Select>
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
-                  <Button onClick={addNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowNewsForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -556,7 +600,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Data</TableHead><TableHead>Tema</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Data</TableHead><TableHead>Tema</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -573,7 +617,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "news", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openNewsForm(item)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "news", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
