@@ -385,8 +385,12 @@ export default function Admin() {
 
   // Sobre CRUD
   const openSobreForm = (item: SobreItem) => {
+    const fallback = fallbackSobreContent[item.id] || { titulo: item.titulo, conteudo: item.conteudo };
     setEditingSobreId(item.id);
-    setSobreForm({ titulo: item.titulo, conteudo: item.conteudo });
+    setSobreForm({
+      titulo: item.titulo || fallback.titulo,
+      conteudo: item.conteudo || fallback.conteudo,
+    });
   };
 
   const saveSobre = async () => {
