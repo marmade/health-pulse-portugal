@@ -41,7 +41,7 @@ const Textos = () => {
         </div>
         <nav className="px-6 py-2 flex items-center justify-between" style={{ borderTop: "1px solid rgba(0,0,255,0.15)", borderBottom: "1px solid rgba(0,0,255,0.15)" }}>
           <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva Editorial
+            Reportagem Viva
           </Link>
           <div className="flex items-center gap-4">
             <Link to="/textos" className="nav-link nav-link-active">Textos</Link>

@@ -142,7 +142,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         </Link>
         </div>
         <Link to="/plataforma" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-          Diz que Disse
+          Diz que Disse Editorial
         </Link>
       </nav>
 
