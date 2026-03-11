@@ -513,14 +513,15 @@ export default function Admin() {
           <TabsContent value="debunking" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Debunking ({debunking.length})</h2>
-              <Button onClick={() => setShowDebunkForm(!showDebunkForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openDebunkForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar mito
               </Button>
             </div>
             {showDebunkForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingDebunkId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar mito</p>}
                 <Input placeholder="Título do mito" value={newDebunk.title} onChange={(e) => setNewDebunk({ ...newDebunk, title: e.target.value })} />
-                <Textarea placeholder="Explicação / fact-check" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
+                <Textarea placeholder="Classificação (ex: FALSO, ENGANADOR)" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
                 <Select value={newDebunk.term} onValueChange={(v) => setNewDebunk({ ...newDebunk, term: v })}>
@@ -528,8 +529,8 @@ export default function Admin() {
                   <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
                 <div className="flex gap-2">
-                  <Button onClick={addDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowDebunkForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -537,7 +538,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Título</TableHead><TableHead>Tema</TableHead><TableHead>Fonte</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Título</TableHead><TableHead>Tema</TableHead><TableHead>Fonte</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -553,7 +554,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "debunk", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openDebunkForm(item)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "debunk", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
@@ -567,12 +571,13 @@ export default function Admin() {
           <TabsContent value="news" className="mt-0">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Notícias ({news.length})</h2>
-              <Button onClick={() => setShowNewsForm(!showNewsForm)} className="bg-primary hover:bg-primary/90" size="sm">
+              <Button onClick={() => openNewsForm()} className="bg-primary hover:bg-primary/90" size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Adicionar notícia
               </Button>
             </div>
             {showNewsForm && (
               <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingNewsId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar notícia</p>}
                 <Input placeholder="Título" value={newNews.title} onChange={(e) => setNewNews({ ...newNews, title: e.target.value })} />
                 <Input placeholder="URL" value={newNews.url} onChange={(e) => setNewNews({ ...newNews, url: e.target.value })} />
                 <Input placeholder="Fonte (ex: Público, DGS)" value={newNews.outlet} onChange={(e) => setNewNews({ ...newNews, outlet: e.target.value })} />
@@ -586,8 +591,8 @@ export default function Admin() {
                 </Select>
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
-                  <Button onClick={addNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => setShowNewsForm(false)} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={saveNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
@@ -595,7 +600,7 @@ export default function Admin() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-foreground/20">
-                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Data</TableHead><TableHead>Tema</TableHead><TableHead className="w-20"></TableHead>
+                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Data</TableHead><TableHead>Tema</TableHead><TableHead className="w-28"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -612,7 +617,10 @@ export default function Admin() {
                             <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
                           </div>
                         ) : (
-                          <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "news", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openNewsForm(item)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "news", id: item.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
                         )}
                       </TableCell>
                     </TableRow>
