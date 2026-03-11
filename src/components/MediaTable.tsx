@@ -87,11 +87,11 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
           <button
             key={t.id}
             onClick={() => setActiveTheme(t.id)}
-            className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors"
+            className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
             style={
               activeTheme === t.id
-                ? { background: getAxisFilterStyle(t.id).bg, borderColor: getAxisFilterStyle(t.id).border, color: getAxisFilterStyle(t.id).text }
-                : { background: "transparent", borderColor: "rgba(0,0,255,0.2)", color: "rgba(0,0,255,0.4)" }
+                ? { background: getAxisFilterStyle(t.id).bg, color: getAxisFilterStyle(t.id).text }
+                : { background: "transparent", color: "rgba(0,0,255,0.3)" }
             }
           >
             {t.label}
@@ -105,11 +105,12 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
           <button
             key={t.id}
             onClick={() => setActiveSourceType(t.id)}
-            className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
+            className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
+            style={
               activeSourceType === t.id
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-primary/20 text-primary/40 hover:text-primary hover:border-primary"
-            }`}
+                ? { background: getAxisFilterStyle(t.id).bg, color: getAxisFilterStyle(t.id).text }
+                : { background: "transparent", color: "rgba(0,0,255,0.3)" }
+            }
           >
             {t.label}
           </button>

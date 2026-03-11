@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import type { DebunkItem } from "@/data/mockData";
+import { getAxisFilterStyle } from "@/lib/axisColors";
 
 type Props = {
   items: DebunkItem[];
@@ -32,11 +33,12 @@ const DebunkingTable = ({ items }: Props) => {
           <button
             key={c}
             onClick={() => setActiveFilter(c)}
-            className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
+            className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
+            style={
               activeFilter === c
-                ? "border-foreground bg-foreground text-background"
-                : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
-            }`}
+                ? { background: getAxisFilterStyle(c).bg, color: getAxisFilterStyle(c).text }
+                : { background: "transparent", color: "rgba(0,0,255,0.3)" }
+            }
           >
             {c}
           </button>
