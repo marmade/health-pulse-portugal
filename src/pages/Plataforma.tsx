@@ -116,10 +116,9 @@ const Plataforma = () => {
           <p className="text-lg font-bold tracking-[0.05em] uppercase">Diz que Disse</p>
           <p className="editorial-label mt-1" style={{ opacity: 0.5 }}>Serviço Nacional de Literacia em Saúde</p>
         </div>
-        <div className="section-divider" />
-        <nav className="px-6 py-2 flex items-center justify-between">
+        <nav className="px-6 py-2 flex items-center justify-between" style={{ borderTop: "1px solid rgba(0,0,255,0.15)", borderBottom: "1px solid rgba(0,0,255,0.15)" }}>
           <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
+            Reportagem Viva Editorial
           </Link>
           <div className="flex items-center gap-4">
             <Link to="/textos" className="nav-link">Textos</Link>
@@ -129,7 +128,6 @@ const Plataforma = () => {
             <Link to="/sobre" className="nav-link">Sobre</Link>
           </div>
         </nav>
-        <div className="section-divider" />
       </header>
 
       {/* Intro */}
