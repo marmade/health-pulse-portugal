@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { getAxisColors } from "@/lib/axisColors";
+import { getAxisColors, getAxisFilterStyle } from "@/lib/axisColors";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 
@@ -113,11 +113,12 @@ const Mural = () => {
               <button
                 key={f.id}
                 onClick={() => setFilter(f.id)}
-                className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
+                className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors"
+                style={
                   isActive
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
-                }`}
+                    ? { background: getAxisFilterStyle(f.id).bg, borderColor: getAxisFilterStyle(f.id).border, color: getAxisFilterStyle(f.id).text }
+                    : { background: "transparent", borderColor: "rgba(0,0,255,0.2)", color: "rgba(0,0,255,0.4)" }
+                }
               >
                 {f.label}
               </button>
