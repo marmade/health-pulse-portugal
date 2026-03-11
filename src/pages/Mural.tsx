@@ -113,24 +113,11 @@ const Mural = () => {
               <button
                 key={f.id}
                 onClick={() => setFilter(f.id)}
-                className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors rounded-none"
-                style={{
-                  background: isActive ? "#0000FF" : "transparent",
-                  borderColor: isActive ? "#0000FF" : "rgba(0,0,255,0.2)",
-                  color: isActive ? "#FFFFFF" : "rgba(0,0,255,0.4)",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = "#0000FF";
-                    e.currentTarget.style.borderColor = "#0000FF";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = "rgba(0,0,255,0.4)";
-                    e.currentTarget.style.borderColor = "rgba(0,0,255,0.2)";
-                  }
-                }}
+                className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
+                  isActive
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+                }`}
               >
                 {f.label}
               </button>
