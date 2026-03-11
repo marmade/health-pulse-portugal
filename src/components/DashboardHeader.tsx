@@ -1,7 +1,7 @@
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const axes = [
-  { id: "all", label: "OVERVIEW" },
+const axisItems = [
   { id: "saude-mental", label: "SAÚDE MENTAL" },
   { id: "alimentacao", label: "ALIMENTAÇÃO" },
   { id: "menopausa", label: "MENOPAUSA" },
@@ -12,15 +12,15 @@ type Props = {
   activeAxis?: string;
   onAxisChange?: (id: string) => void;
   lastRefreshed?: string | null;
-  /** Highlights this page link in the nav */
   activePage?: "briefing" | "guioes" | "mural" | "textos" | "plataforma" | "sobre";
 };
 
 const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }: Props) => {
   const navigate = useNavigate();
-  const displayDate = lastRefreshed
-    ? new Date(lastRefreshed)
-    : new Date();
+  const [eixosOpen, setEixosOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const displayDate = lastRefreshed ? new Date(lastRefreshed) : new Date();
 
   const handleAxisClick = (id: string) => {
     if (onAxisChange) {
@@ -28,7 +28,22 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
     } else {
       navigate(`/?axis=${id}`);
     }
+    setEixosOpen(false);
   };
+
+  const isAxisActive = axisItems.some((a) => a.id === activeAxis);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!eixosOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setEixosOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [eixosOpen]);
 
   return (
     <header className="w-full">
@@ -63,27 +78,18 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       </div>
       <div className="section-divider" />
 
-      {/* LINE 1 — Editorial links (right-aligned, no branding on dashboard) */}
+      {/* LINE 1 — Editorial links */}
       <nav className="px-6 py-2 flex items-center justify-end">
         <div className="flex items-center gap-4">
-          <Link
-            to="/textos"
-            className={`nav-link ${activePage === "textos" ? "nav-link-active" : ""}`}
-          >
+          <Link to="/textos" className={`nav-link ${activePage === "textos" ? "nav-link-active" : ""}`}>
             Textos
           </Link>
           <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link
-            to="/plataforma"
-            className={`nav-link ${activePage === "plataforma" ? "nav-link-active" : ""}`}
-          >
+          <Link to="/plataforma" className={`nav-link ${activePage === "plataforma" ? "nav-link-active" : ""}`}>
             Plataforma
           </Link>
           <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link
-            to="/sobre"
-            className={`nav-link ${activePage === "sobre" ? "nav-link-active" : ""}`}
-          >
+          <Link to="/sobre" className={`nav-link ${activePage === "sobre" ? "nav-link-active" : ""}`}>
             Sobre
           </Link>
         </div>
@@ -91,37 +97,64 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
 
       <div className="section-divider" />
 
-      {/* LINE 2 — Dashboard axis links + Briefing */}
+      {/* LINE 2 — OVERVIEW · EIXOS (dropdown) · MURAL · BRIEFING · GUIÕES */}
       <nav className="px-6 py-3 flex items-center gap-2">
-        {axes.map((axis) => (
-          <span key={axis.id} className="flex items-center gap-2">
-            <button
-              onClick={() => handleAxisClick(axis.id)}
-              className={`nav-link ${activeAxis === axis.id ? "nav-link-active" : ""}`}
-            >
-              {axis.label}
-            </button>
-            <span className="text-foreground/20 text-xs font-light">/</span>
-          </span>
-        ))}
-        <Link
-          to="/briefing"
-          className={`nav-link ${activePage === "briefing" ? "nav-link-active" : ""}`}
+        {/* OVERVIEW */}
+        <button
+          onClick={() => handleAxisClick("all")}
+          className={`nav-link ${activeAxis === "all" ? "nav-link-active" : ""}`}
         >
-          BRIEFING
-        </Link>
+          OVERVIEW
+        </button>
         <span className="text-foreground/20 text-xs font-light">/</span>
-        <Link
-          to="/mural"
-          className={`nav-link ${activePage === "mural" ? "nav-link-active" : ""}`}
-        >
+
+        {/* EIXOS dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setEixosOpen((prev) => !prev)}
+            className={`nav-link ${isAxisActive ? "nav-link-active" : ""}`}
+          >
+            EIXOS
+          </button>
+          {eixosOpen && (
+            <div
+              className="absolute left-0 top-full mt-1 z-50 py-2 px-1 min-w-[160px]"
+              style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,255,0.1)" }}
+            >
+              {axisItems.map((axis) => (
+                <button
+                  key={axis.id}
+                  onClick={() => handleAxisClick(axis.id)}
+                  className="block w-full text-left px-3 py-1.5 text-[10px] font-medium tracking-[1.5px] uppercase transition-colors"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    color: activeAxis === axis.id ? "#0000FF" : "#BBBBC4",
+                    background: "transparent",
+                    border: "none",
+                  }}
+                >
+                  {axis.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <span className="text-foreground/20 text-xs font-light">/</span>
+
+        {/* MURAL */}
+        <Link to="/mural" className={`nav-link ${activePage === "mural" ? "nav-link-active" : ""}`}>
           MURAL
         </Link>
         <span className="text-foreground/20 text-xs font-light">/</span>
-        <Link
-          to="/guioes"
-          className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}
-        >
+
+        {/* BRIEFING */}
+        <Link to="/briefing" className={`nav-link ${activePage === "briefing" ? "nav-link-active" : ""}`}>
+          BRIEFING
+        </Link>
+        <span className="text-foreground/20 text-xs font-light">/</span>
+
+        {/* GUIÕES */}
+        <Link to="/guioes" className={`nav-link ${activePage === "guioes" ? "nav-link-active" : ""}`}>
           GUIÕES
         </Link>
       </nav>
