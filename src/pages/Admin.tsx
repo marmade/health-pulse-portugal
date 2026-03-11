@@ -108,16 +108,19 @@ export default function Admin() {
   // Keywords state
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [showKeywordForm, setShowKeywordForm] = useState(false);
+  const [editingKeywordId, setEditingKeywordId] = useState<string | null>(null);
   const [newKeyword, setNewKeyword] = useState({ term: "", axis: "", is_active: true });
 
   // Debunking state
   const [debunking, setDebunking] = useState<DebunkingItem[]>([]);
   const [showDebunkForm, setShowDebunkForm] = useState(false);
+  const [editingDebunkId, setEditingDebunkId] = useState<string | null>(null);
   const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "" });
 
   // News state
   const [news, setNews] = useState<NewsItem[]>([]);
   const [showNewsForm, setShowNewsForm] = useState(false);
+  const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
   const [newNews, setNewNews] = useState({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
 
   // Textos state
