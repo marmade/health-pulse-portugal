@@ -89,28 +89,36 @@ const Mural = () => {
         </h1>
 
         {/* Filters */}
-        <nav className="mt-6 flex items-center gap-4 flex-wrap">
-          {FILTERS.map((f, i) => (
-            <span key={f.id} className="flex items-center gap-4">
+        <nav className="mt-6 flex items-center gap-1.5 flex-wrap">
+          {FILTERS.map((f) => {
+            const isActive = filter === f.id;
+            return (
               <button
+                key={f.id}
                 onClick={() => setFilter(f.id)}
-                className="text-[10px] font-medium tracking-[1.5px] uppercase transition-colors"
+                className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors rounded-none"
                 style={{
-                  color: filter === f.id ? "#0000FF" : "#BBBBC4",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
+                  background: isActive ? "#0000FF" : "transparent",
+                  borderColor: isActive ? "#0000FF" : "rgba(0,0,255,0.2)",
+                  color: isActive ? "#FFFFFF" : "rgba(0,0,255,0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = "#0000FF";
+                    e.currentTarget.style.borderColor = "#0000FF";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = "rgba(0,0,255,0.4)";
+                    e.currentTarget.style.borderColor = "rgba(0,0,255,0.2)";
+                  }
                 }}
               >
                 {f.label}
               </button>
-              {i < FILTERS.length - 1 && (
-                <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>
-                  ·
-                </span>
-              )}
-            </span>
-          ))}
+            );
+          })}
         </nav>
 
         <div className="section-divider mt-4 mb-8" />
