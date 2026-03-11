@@ -21,7 +21,7 @@ const Sobre = () => {
     fetchContent();
   }, []);
 
-  const get = (id: string) => content[id] || fallbackContent[id];
+  const get = (id: string) => content[id] || fallbackSobreContent[id];
 
   /* Parse axes from pipe-delimited format */
   const parseAxes = (text: string) =>
