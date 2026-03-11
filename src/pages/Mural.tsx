@@ -113,11 +113,11 @@ const Mural = () => {
               <button
                 key={f.id}
                 onClick={() => setFilter(f.id)}
-                className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors"
+                className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
                 style={
                   isActive
-                    ? { background: getAxisFilterStyle(f.id).bg, borderColor: getAxisFilterStyle(f.id).border, color: getAxisFilterStyle(f.id).text }
-                    : { background: "transparent", borderColor: "rgba(0,0,255,0.2)", color: "rgba(0,0,255,0.4)" }
+                    ? { background: getAxisFilterStyle(f.id).bg, color: getAxisFilterStyle(f.id).text }
+                    : { background: "transparent", color: "rgba(0,0,255,0.3)" }
                 }
               >
                 {f.label}
