@@ -100,7 +100,7 @@ const Sobre = () => {
     let headerCount = 0;
     return blocks.map((block, i) => {
       const trimmed = block.trim();
-      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
         headerCount++;
         return (
           <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mt-6 mb-2 ${headerCount === 1 ? "mt-0" : "pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
