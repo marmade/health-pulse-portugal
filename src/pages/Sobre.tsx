@@ -11,11 +11,11 @@ const Sobre = () => {
     const fetchContent = async () => {
       const { data } = await supabase.from("sobre_conteudo").select("*");
       if (data && data.length > 0) {
-        const map: Record<string, { titulo: string; conteudo: string }> = {};
-        data.forEach((row: any) => {
-          map[row.id] = { titulo: row.titulo, conteudo: row.conteudo };
-        });
-        setContent({ ...fallbackContent, ...map });
+      const map: Record<string, { titulo: string; conteudo: string }> = {};
+      data.forEach((row: any) => {
+        map[row.id] = { titulo: row.titulo, conteudo: row.conteudo };
+      });
+      setContent({ ...fallbackSobreContent, ...map });
       }
     };
     fetchContent();
