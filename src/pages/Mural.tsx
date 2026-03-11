@@ -135,7 +135,7 @@ const Mural = () => {
             return (
               <div key={item.id} className="group relative">
                 <span
-                  className="text-lg md:text-2xl font-bold lowercase tracking-[0.04em] transition-all duration-300 cursor-default"
+                  className="text-lg md:text-2xl font-bold lowercase tracking-[0.02em] transition-all duration-300 cursor-default"
                   style={{
                     fontFamily: "'Space Grotesk', sans-serif",
                     opacity: 0.15,
