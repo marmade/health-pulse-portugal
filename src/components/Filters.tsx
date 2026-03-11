@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 type Props = {
+  filters: { period: string; region: string };
   onFilterChange: (filters: { period: string; region: string }) => void;
 };
 
@@ -18,18 +17,13 @@ const regions = [
   { id: "sul", label: "SUL" },
 ];
 
-const Filters = ({ onFilterChange }: Props) => {
-  const [activePeriod, setActivePeriod] = useState("12m");
-  const [activeRegion, setActiveRegion] = useState("pt");
-
+const Filters = ({ filters, onFilterChange }: Props) => {
   const handlePeriod = (id: string) => {
-    setActivePeriod(id);
-    onFilterChange({ period: id, region: activeRegion });
+    onFilterChange({ period: id, region: filters.region });
   };
 
   const handleRegion = (id: string) => {
-    setActiveRegion(id);
-    onFilterChange({ period: activePeriod, region: id });
+    onFilterChange({ period: filters.period, region: id });
   };
 
   return (
@@ -41,7 +35,7 @@ const Filters = ({ onFilterChange }: Props) => {
             key={p.id}
             onClick={() => handlePeriod(p.id)}
             className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
-              activePeriod === p.id
+              filters.period === p.id
                 ? "border-foreground bg-foreground text-background"
                 : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
             }`}
@@ -57,7 +51,7 @@ const Filters = ({ onFilterChange }: Props) => {
             key={r.id}
             onClick={() => handleRegion(r.id)}
             className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
-              activeRegion === r.id
+              filters.region === r.id
                 ? "border-foreground bg-foreground text-background"
                 : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
             }`}
