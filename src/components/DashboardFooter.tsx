@@ -17,6 +17,7 @@ type Props = {
   debunkingData?: DebunkItem[];
   newsData?: NewsItem[];
   historicalData?: HistoricalSnapshot[];
+  hideExport?: boolean;
 };
 
 const DashboardFooter = ({ filters, axes, debunkingData, newsData, historicalData }: Props) => {
