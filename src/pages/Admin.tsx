@@ -534,10 +534,7 @@ export default function Admin() {
                 <Textarea placeholder="Classificação (ex: FALSO, ENGANADOR)" value={newDebunk.classification} onChange={(e) => setNewDebunk({ ...newDebunk, classification: e.target.value })} />
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
-                <Select value={newDebunk.term} onValueChange={(v) => setNewDebunk({ ...newDebunk, term: v })}>
-                  <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
-                  <SelectContent>{AXES.map((a) => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
-                </Select>
+                <Input placeholder="Termo relacionado" value={newDebunk.term} onChange={(e) => setNewDebunk({ ...newDebunk, term: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
                   <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
