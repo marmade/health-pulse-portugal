@@ -116,11 +116,11 @@ const Mural = () => {
         <div className="section-divider mt-4 mb-8" />
 
         {/* Keyword grid */}
-        <div className="flex flex-wrap gap-x-6 gap-y-4">
+        <div className="flex flex-wrap gap-x-6 gap-y-1">
           {filtered.map((item) => (
             <div key={item.id} className="group relative">
               <span
-                className="text-lg md:text-2xl font-bold uppercase tracking-[0.04em] transition-all duration-300 cursor-default"
+                className="text-lg md:text-2xl font-bold lowercase tracking-[0.04em] transition-all duration-300 cursor-default"
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
                   opacity: 0.15,
