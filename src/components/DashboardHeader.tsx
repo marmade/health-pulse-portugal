@@ -80,7 +80,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
 
 
       {/* LINE 2 — OVERVIEW · EIXOS (dropdown) · MURAL · BRIEFING · GUIÕES */}
-      <nav className="px-6 py-2 flex items-center gap-2" style={{ borderTop: "1px solid rgba(0,0,255,0.15)" }}>
+      <nav className="px-6 py-2 flex items-center gap-2" style={{ borderTop: "1px solid rgba(0,0,255,0.15)", borderBottom: "1px solid rgba(0,0,255,0.15)" }}>
         <div className="flex items-center gap-2 flex-1">
         {/* OVERVIEW */}
         <button
@@ -146,7 +146,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         </Link>
       </nav>
 
-      <div className="section-divider" />
+      
     </header>
   );
 };
