@@ -146,7 +146,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         </Link>
       </nav>
 
-      <div className="section-divider" />
+      
     </header>
   );
 };
