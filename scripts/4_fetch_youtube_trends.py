@@ -1,10 +1,14 @@
 """
 4_fetch_youtube_trends.py
 =========================
-Reportagem Viva — busca os top 5 vídeos YouTube para as keywords activas.
+Reportagem Viva - busca os top videos YouTube para as keywords activas.
+Melhorias v2:
+  - Pesquisa contextualizada: "<keyword> saude portugal" evita videos virais irrelevantes
+  - Delete robusto antes de reinserir (usa filtro not.is.null)
+  - De-duplicacao por video_id
 
 Como correr:
-    python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
+  python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
 """
 
 import sys
@@ -12,9 +16,8 @@ import requests
 from datetime import datetime
 from googleapiclient.discovery import build
 
-# Chave YouTube passada como argumento
 if len(sys.argv) < 2:
-    print("❌ Uso: python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE")
+    print("Uso: python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE")
     sys.exit(1)
 
 YOUTUBE_API_KEY = sys.argv[1]
@@ -26,9 +29,10 @@ HEADERS = {
     "apikey": SUPABASE_KEY,
     "Authorization": f"Bearer {SUPABASE_KEY}",
     "Content-Type": "application/json",
+    "Prefer": "return=minimal",
 }
 
-TOP_GLOBAL = 5
+TOP_GLOBAL = 10
 VIDEOS_POR_KEYWORD = 5
 
 
@@ -43,11 +47,16 @@ def buscar_keywords():
 
 
 def pesquisar_videos(youtube, keyword, axis):
+    query = f"{keyword} saude portugal"
     try:
         pesquisa = youtube.search().list(
-            q=keyword, part="id", type="video",
-            regionCode="PT", relevanceLanguage="pt",
-            order="viewCount", maxResults=VIDEOS_POR_KEYWORD,
+            q=query,
+            part="id",
+            type="video",
+            regionCode="PT",
+            relevanceLanguage="pt",
+            order="relevance",
+            maxResults=VIDEOS_POR_KEYWORD,
         ).execute()
 
         ids = [item["id"]["videoId"] for item in pesquisa.get("items", [])]
@@ -55,73 +64,92 @@ def pesquisar_videos(youtube, keyword, axis):
             return []
 
         detalhes = youtube.videos().list(
-            part="snippet,statistics", id=",".join(ids),
+            part="snippet,statistics",
+            id=",".join(ids),
         ).execute()
 
         resultados = []
         for v in detalhes.get("items", []):
             snippet = v.get("snippet", {})
-            stats   = v.get("statistics", {})
+            stats = v.get("statistics", {})
             resultados.append({
-                "titulo":          snippet.get("title", ""),
-                "canal":           snippet.get("channelTitle", ""),
-                "views":           int(stats.get("viewCount", 0)),
-                "url":             f"https://www.youtube.com/watch?v={v['id']}",
-                "eixo":            axis,
+                "video_id": v["id"],
+                "titulo": snippet.get("title", ""),
+                "canal": snippet.get("channelTitle", ""),
+                "views": int(stats.get("viewCount", 0)),
+                "url": f"https://www.youtube.com/watch?v={v['id']}",
+                "eixo": axis,
                 "data_publicacao": snippet.get("publishedAt", "")[:10],
-                "thumbnail_url":   snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
+                "thumbnail_url": snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
             })
         return resultados
+
     except Exception as e:
-        print(f"    ❌ Erro para '{keyword}': {e}")
+        print(f"  Erro para '{keyword}': {e}")
         return []
 
 
 def main():
-    print("📊 Reportagem Viva — YouTube Trends")
-    print(f"📅 {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+    print("Reportagem Viva - YouTube Trends v2")
+    print(f"{datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
     youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
-    print("📋 A carregar keywords do Supabase...")
+    print("A carregar keywords do Supabase...")
     keywords = buscar_keywords()
-    print(f"   ✅ {len(keywords)} keywords activas\n")
+    print(f"  {len(keywords)} keywords activas")
 
     todos = []
     for entrada in keywords:
         kw, axis = entrada["term"], entrada["axis"]
-        print(f"🔍 [{axis}] {kw}")
+        print(f"[{axis}] {kw}")
         videos = pesquisar_videos(youtube, kw, axis)
         if videos:
             todos.extend(videos)
-            print(f"   ✅ {len(videos)} vídeos")
+            print(f"  {len(videos)} videos")
         else:
-            print(f"   ⚠️  Sem resultados")
+            print(f"  Sem resultados")
 
-    print(f"\n📹 Total recolhido: {len(todos)} vídeos")
+    print(f"Total recolhido: {len(todos)} videos (antes de de-duplicar)")
 
-    todos.sort(key=lambda v: v["views"], reverse=True)
     vistos, top = set(), []
+    todos.sort(key=lambda v: v["views"], reverse=True)
     for v in todos:
-        if v["url"] not in vistos:
-            vistos.add(v["url"])
+        if v["video_id"] not in vistos:
+            vistos.add(v["video_id"])
             top.append(v)
-        if len(top) == TOP_GLOBAL:
-            break
+            if len(top) == TOP_GLOBAL:
+                break
 
-    print(f"\n🗑️  A limpar registos anteriores...")
-    requests.delete(f"{SUPABASE_URL}/rest/v1/youtube_trends", headers=HEADERS, params={"id": "gte.0"})
+    print(f"Apos de-duplicacao: {len(top)} videos unicos")
 
-    print(f"💾 A inserir top {len(top)} vídeos...")
+    print("A limpar registos anteriores...")
+    r = requests.delete(
+        f"{SUPABASE_URL}/rest/v1/youtube_trends",
+        headers=HEADERS,
+        params={"id": "not.is.null"}
+    )
+    if r.status_code in (200, 204):
+        print("  Tabela limpa")
+    else:
+        print(f"  Delete retornou {r.status_code}: {r.text[:100]}")
+
+    print(f"A inserir top {len(top)} videos...")
     for v in top:
-        r = requests.post(f"{SUPABASE_URL}/rest/v1/youtube_trends", headers=HEADERS, json=v)
+        payload = {k: val for k, val in v.items() if k != "video_id"}
+        r = requests.post(
+            f"{SUPABASE_URL}/rest/v1/youtube_trends",
+            headers=HEADERS,
+            json=payload
+        )
         views_fmt = f"{v['views']:,}".replace(",", ".")
-        print(f"   ✅ {v['titulo'][:55]}")
-        print(f"      👁 {views_fmt} views · {v['canal']} · [{v['eixo']}]")
+        status = "OK" if r.status_code in (200, 201) else f"ERRO {r.status_code}"
+        print(f"  {status} {v['titulo'][:55]}")
+        print(f"      {views_fmt} views - {v['canal']} - [{v['eixo']}]")
 
-    print("\n" + "=" * 60)
-    print(f"✅ Concluído — {len(top)} vídeos guardados no Supabase")
+    print("=" * 60)
+    print(f"Concluido - {len(top)} videos guardados no Supabase")
     print("=" * 60)
 
 
