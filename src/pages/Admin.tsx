@@ -883,7 +883,7 @@ export default function Admin() {
                           {saved ? <span className="text-green-600 font-medium">Guardado</span> : <span className="text-muted-foreground">Fallback</span>}
                         </TableCell>
                         <TableCell>
-                          <Button size="sm" variant="ghost" onClick={() => openSobreForm(saved || { id: block.id, titulo: fallbackContent[block.id]?.titulo || "", conteudo: fallbackContent[block.id]?.conteudo || "" })}>
+                          <Button size="sm" variant="ghost" onClick={() => openSobreForm(saved || { id: block.id, titulo: block.label, conteudo: "" })}>
                             <Pencil className="w-4 h-4" />
                           </Button>
                         </TableCell>
