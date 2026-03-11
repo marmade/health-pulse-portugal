@@ -112,6 +112,10 @@ const Plataforma = () => {
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
       <header className="w-full">
+        <div className="px-6 py-5">
+          <p className="text-[10px] font-bold tracking-[0.15em] uppercase" style={{ color: "#0000FF" }}>Diz que Disse</p>
+          <p className="editorial-label mt-1" style={{ opacity: 0.5 }}>Serviço Nacional de Literacia em Saúde</p>
+        </div>
         <div className="section-divider" />
         <nav className="px-6 py-2 flex items-center justify-between">
           <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
