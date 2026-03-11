@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { AXIS_COLORS, type AxisId } from "@/lib/axisColors";
 
 /* ── Fallback content ── */
 const fallbackContent: Record<string, { titulo: string; conteudo: string }> = {
