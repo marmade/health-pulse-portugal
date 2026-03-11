@@ -227,14 +227,14 @@ const Sobre = () => {
 
           {/* Coluna direita — Metodologia */}
           <div className="md:pl-6">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("metodologia").titulo}</h2>
-            <div className="space-y-0 text-xs text-muted-foreground leading-relaxed">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{get("metodologia").titulo}</h2>
+            <div className="border-t border-foreground/10 pt-4 space-y-0 text-xs text-muted-foreground leading-relaxed">
               {(() => {
                 const blocks = get("metodologia").conteudo.split(/\n\n+/);
                 let headerCount = 0;
                 return blocks.map((block, i) => {
                   const trimmed = block.trim();
-                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
                     headerCount++;
                     return (
                       <h3 key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${headerCount === 1 ? "mt-0" : "mt-6 pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
