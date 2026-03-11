@@ -109,7 +109,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         <span className="text-foreground/20 text-xs font-light">/</span>
 
         {/* EIXOS dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative flex items-center" ref={dropdownRef}>
           <button
             onClick={() => setEixosOpen((prev) => !prev)}
             className={`nav-link ${isAxisActive ? "nav-link-active" : ""}`}
