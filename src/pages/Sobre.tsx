@@ -194,9 +194,6 @@ const Sobre = () => {
               <h3 className="text-xs font-bold uppercase tracking-[0.15em]">
                 {axis.title}
               </h3>
-              <p className="text-xs mt-2 opacity-60 leading-relaxed">
-                {axis.desc}
-              </p>
             </div>
           ))}
         </div>
