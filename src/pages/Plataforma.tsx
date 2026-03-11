@@ -136,9 +136,6 @@ const Plataforma = () => {
         <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
           Uma Plataforma,<br />Várias Dimensões
         </h1>
-        <p className="text-sm md:text-base mt-2 opacity-70">
-          para um Serviço Nacional de Literacia em Saúde
-        </p>
         <p className="text-sm mt-6 max-w-2xl leading-relaxed opacity-80">
           Este projecto pretende promover e democratizar o acesso à informação com fundamento científico para a valorização da saúde e para o exercício de cidadania. O diagrama representa as várias frentes que o projecto pretende alcançar.
         </p>
