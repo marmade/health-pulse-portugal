@@ -218,7 +218,7 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Coluna esquerda — Fontes de dados */}
-          <div className="border border-foreground/10 md:border-r-0 p-6">
+          <div className="md:border-r md:border-foreground/10 md:pr-6">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("fontes-de-dados").titulo}</h2>
             <div className="flex flex-col">
               {renderFontesDeDados(get("fontes-de-dados").conteudo)}
@@ -226,20 +226,25 @@ const Sobre = () => {
           </div>
 
           {/* Coluna direita — Metodologia */}
-          <div className="border border-foreground/10 p-6">
+          <div className="md:pl-6">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("metodologia").titulo}</h2>
-            <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
-              {get("metodologia").conteudo.split(/\n\n+/).map((block, i) => {
-                const trimmed = block.trim();
-                if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
-                  return (
-                    <h3 key={i} className="text-[9px] font-bold uppercase tracking-wider mt-4 mb-1" style={{ color: "#0000FF" }}>
-                      {trimmed}
-                    </h3>
-                  );
-                }
-                return <p key={i}>{trimmed}</p>;
-              })}
+            <div className="space-y-0 text-xs text-muted-foreground leading-relaxed">
+              {(() => {
+                const blocks = get("metodologia").conteudo.split(/\n\n+/);
+                let headerCount = 0;
+                return blocks.map((block, i) => {
+                  const trimmed = block.trim();
+                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+                    headerCount++;
+                    return (
+                      <h3 key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${headerCount === 1 ? "mt-0" : "mt-6 pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
+                        {trimmed}
+                      </h3>
+                    );
+                  }
+                  return <p key={i} className="mt-4">{trimmed}</p>;
+                });
+              })()}
             </div>
           </div>
         </div>
