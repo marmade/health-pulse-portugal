@@ -100,7 +100,7 @@ const Sobre = () => {
       // Check if it's a section header (all uppercase, no dash prefix)
       if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
         return (
-          <p key={i} className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary/70 mt-6 mb-2 first:mt-0">
+          <p key={i} className="text-[9px] font-bold uppercase tracking-wider mt-6 mb-2 first:mt-0" style={{ color: "#0000FF" }}>
             {trimmed}
           </p>
         );
@@ -213,9 +213,9 @@ const Sobre = () => {
 
       {/* Fontes de dados + Metodologia side by side */}
       <section className="px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Coluna esquerda — Fontes de dados */}
-          <div>
+          <div className="border border-foreground/10 md:border-r-0 p-6">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("fontes-de-dados").titulo}</h2>
             <div className="flex flex-col">
               {renderFontesDeDados(get("fontes-de-dados").conteudo)}
@@ -223,14 +223,14 @@ const Sobre = () => {
           </div>
 
           {/* Coluna direita — Metodologia */}
-          <div>
+          <div className="border border-foreground/10 p-6">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("metodologia").titulo}</h2>
             <div className="space-y-4 text-xs text-muted-foreground leading-relaxed">
               {get("metodologia").conteudo.split(/\n\n+/).map((block, i) => {
                 const trimmed = block.trim();
                 if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
                   return (
-                    <h3 key={i} className="text-[10px] font-normal uppercase tracking-[0.15em] text-muted-foreground mt-4 mb-1">
+                    <h3 key={i} className="text-[9px] font-bold uppercase tracking-wider mt-4 mb-1" style={{ color: "#0000FF" }}>
                       {trimmed}
                     </h3>
                   );
