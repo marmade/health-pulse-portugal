@@ -190,13 +190,22 @@ const Sobre = () => {
           Os três eixos temáticos (Saúde Mental, Alimentação e Menopausa) foram definidos para identificar e monitorizar as narrativas sobre saúde de forma a estabelecer um plano em concordância com as datas comemorativas estabelecidas no calendário das ciências da saúde. Esta escolha permite pensar de forma cirúrgica na produção de conteúdos e campanhas de sensibilização, que criem uma amostra representativa de uma comunicação estratégica. O quarto eixo, Emergentes, serve um propósito distinto: monitorização contínua de sinais novos, alimentada pela curiosidade editorial e pela eventual necessidade de cruzar temas em surgimento com os eixos principais.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {axes.map((axis) => (
-            <div key={axis.title} className="border border-foreground/20 p-4">
-              <h3 className="text-xs font-bold uppercase tracking-[0.15em]">
-                {axis.title}
-              </h3>
-            </div>
-          ))}
+          {axes.map((axis) => {
+            const axisIdMap: Record<string, AxisId> = {
+              "SAÚDE MENTAL": "saude-mental",
+              "ALIMENTAÇÃO": "alimentacao",
+              "MENOPAUSA": "menopausa",
+              "EMERGENTES": "emergentes",
+            };
+            const colors = AXIS_COLORS[axisIdMap[axis.title] || "emergentes"];
+            return (
+              <div key={axis.title} className="p-4" style={{ backgroundColor: colors.bg }}>
+                <h3 className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: colors.text }}>
+                  {axis.title}
+                </h3>
+              </div>
+            );
+          })}
         </div>
       </section>
 
