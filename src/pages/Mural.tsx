@@ -196,7 +196,7 @@ const Mural = () => {
         )}
       </main>
 
-      <DashboardFooter />
+      <DashboardFooter hideExport />
     </div>
   );
 };
