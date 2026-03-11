@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
+import { fallbackSobreContent, SOBRE_BLOCKS } from "@/data/sobreContent";
 
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = [
@@ -152,15 +153,6 @@ export default function Admin() {
   const [popupForm, setPopupForm] = useState({ eyebrow: "", title: "", text: "" });
 
   // Sobre state
-  const SOBRE_BLOCKS = [
-    { id: "o-que-e", label: "O QUE É" },
-    { id: "para-que-serve", label: "PARA QUE SERVE" },
-    { id: "os-4-eixos", label: "OS 4 EIXOS" },
-    { id: "fontes-de-dados", label: "FONTES DE DADOS" },
-    { id: "metodologia", label: "METODOLOGIA" },
-    { id: "como-funciona", label: "COMO FUNCIONA" },
-    { id: "agradecimentos", label: "AGRADECIMENTOS" },
-  ];
   const [sobreItems, setSobreItems] = useState<SobreItem[]>([]);
   const [editingSobreId, setEditingSobreId] = useState<string | null>(null);
   const [sobreForm, setSobreForm] = useState({ titulo: "", conteudo: "" });
@@ -393,8 +385,12 @@ export default function Admin() {
 
   // Sobre CRUD
   const openSobreForm = (item: SobreItem) => {
+    const fallback = fallbackSobreContent[item.id] || { titulo: item.titulo, conteudo: item.conteudo };
     setEditingSobreId(item.id);
-    setSobreForm({ titulo: item.titulo, conteudo: item.conteudo });
+    setSobreForm({
+      titulo: item.titulo || fallback.titulo,
+      conteudo: item.conteudo || fallback.conteudo,
+    });
   };
 
   const saveSobre = async () => {
@@ -890,7 +886,19 @@ export default function Admin() {
                           {saved ? <span className="text-green-600 font-medium">Guardado</span> : <span className="text-muted-foreground">Fallback</span>}
                         </TableCell>
                         <TableCell>
-                          <Button size="sm" variant="ghost" onClick={() => openSobreForm(saved || { id: block.id, titulo: block.label, conteudo: "" })}>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() =>
+                              openSobreForm(
+                                saved || {
+                                  id: block.id,
+                                  titulo: fallbackSobreContent[block.id]?.titulo || block.label,
+                                  conteudo: fallbackSobreContent[block.id]?.conteudo || "",
+                                }
+                              )
+                            }
+                          >
                             <Pencil className="w-4 h-4" />
                           </Button>
                         </TableCell>
