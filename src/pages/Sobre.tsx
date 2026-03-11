@@ -100,7 +100,7 @@ const Sobre = () => {
       // Check if it's a section header (all uppercase, no dash prefix)
       if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
         return (
-          <p key={i} className="text-[10px] font-bold uppercase tracking-[0.15em] text-primary/70 mt-6 mb-2 first:mt-0">
+          <p key={i} className="text-[9px] font-bold uppercase tracking-wider mt-6 mb-2 first:mt-0" style={{ color: "#0000FF" }}>
             {trimmed}
           </p>
         );
