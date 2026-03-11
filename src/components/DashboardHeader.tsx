@@ -98,7 +98,7 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       <div className="section-divider" />
 
       {/* LINE 2 — OVERVIEW · EIXOS (dropdown) · MURAL · BRIEFING · GUIÕES */}
-      <nav className="px-6 py-3 flex items-center gap-2">
+      <nav className="px-6 py-2 flex items-center gap-2">
         {/* OVERVIEW */}
         <button
           onClick={() => handleAxisClick("all")}
