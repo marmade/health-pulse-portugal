@@ -154,10 +154,11 @@ const Mural = () => {
                 </span>
                 {/* Tooltip */}
                 <div
-                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 px-2 py-1"
+                  className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-10 whitespace-nowrap invisible group-hover:visible flex items-center gap-1.5 px-2 py-1"
                   style={{
-                    background: axisColors.bg,
+                    backgroundColor: axisColors.bg,
                     color: "#0000FF",
+                    isolation: "auto",
                   }}
                 >
                   <span className="text-[8px] font-bold uppercase tracking-wider">
