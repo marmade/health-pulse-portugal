@@ -86,11 +86,12 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
           <button
             key={t.id}
             onClick={() => setActiveTheme(t.id)}
-            className={`text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors ${
+            className="text-[7px] font-bold uppercase tracking-wider px-1 py-0.5 border transition-colors"
+            style={
               activeTheme === t.id
-                ? "border-foreground bg-foreground text-background"
-                : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
-            }`}
+                ? { background: getAxisFilterStyle(t.id).bg, borderColor: getAxisFilterStyle(t.id).border, color: getAxisFilterStyle(t.id).text }
+                : { background: "transparent", borderColor: "rgba(0,0,255,0.2)", color: "rgba(0,0,255,0.4)" }
+            }
           >
             {t.label}
           </button>
