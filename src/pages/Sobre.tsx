@@ -100,7 +100,7 @@ const Sobre = () => {
     let headerCount = 0;
     return blocks.map((block, i) => {
       const trimmed = block.trim();
-      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
         headerCount++;
         return (
           <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mt-6 mb-2 ${headerCount === 1 ? "mt-0" : "pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
@@ -219,22 +219,22 @@ const Sobre = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Coluna esquerda — Fontes de dados */}
           <div className="md:border-r md:border-foreground/10 md:pr-6">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("fontes-de-dados").titulo}</h2>
-            <div className="flex flex-col">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{get("fontes-de-dados").titulo}</h2>
+            <div className="border-t border-foreground/10 pt-4 flex flex-col">
               {renderFontesDeDados(get("fontes-de-dados").conteudo)}
             </div>
           </div>
 
           {/* Coluna direita — Metodologia */}
           <div className="md:pl-6">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("metodologia").titulo}</h2>
-            <div className="space-y-0 text-xs text-muted-foreground leading-relaxed">
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{get("metodologia").titulo}</h2>
+            <div className="border-t border-foreground/10 pt-4 space-y-0 text-xs text-muted-foreground leading-relaxed">
               {(() => {
                 const blocks = get("metodologia").conteudo.split(/\n\n+/);
                 let headerCount = 0;
                 return blocks.map((block, i) => {
                   const trimmed = block.trim();
-                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚ ]+$/.test(trimmed)) {
+                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
                     headerCount++;
                     return (
                       <h3 key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-1 ${headerCount === 1 ? "mt-0" : "mt-6 pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
