@@ -76,26 +76,8 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
           </div>
         </div>
       </div>
-      <div className="section-divider" />
 
-      {/* LINE 1 — Editorial links */}
-      <nav className="px-6 py-2 flex items-center justify-end">
-        <div className="flex items-center gap-4">
-          <Link to="/textos" className={`nav-link ${activePage === "textos" ? "nav-link-active" : ""}`}>
-            Textos
-          </Link>
-          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link to="/plataforma" className={`nav-link ${activePage === "plataforma" ? "nav-link-active" : ""}`}>
-            Plataforma
-          </Link>
-          <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-          <Link to="/sobre" className={`nav-link ${activePage === "sobre" ? "nav-link-active" : ""}`}>
-            Sobre
-          </Link>
-        </div>
-      </nav>
 
-      <div className="section-divider" />
 
       {/* LINE 2 — OVERVIEW · EIXOS (dropdown) · MURAL · BRIEFING · GUIÕES */}
       <nav className="px-6 py-2 flex items-center gap-2">
