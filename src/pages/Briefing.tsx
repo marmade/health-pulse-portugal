@@ -307,7 +307,7 @@ const Briefing = () => {
       {/* Header */}
       <section className="px-6 py-12 md:py-16">
         <p className="editorial-label mb-2">Briefing Semanal</p>
-        <h1 className="text-2xl md:text-4xl font-bold tracking-[0.04em] uppercase">
+        <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
           Briefing Semanal
         </h1>
         <p className="text-xs font-medium tracking-wide uppercase mt-2 opacity-60">
