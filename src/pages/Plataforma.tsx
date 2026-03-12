@@ -166,7 +166,7 @@ const Plataforma = () => {
         <Arrow opacity={0.3} />
 
         {/* 4 — Ecossistema Digital */}
-        <SectionLabel>Ecossistema Digital — Âmbito actual</SectionLabel>
+        <SectionLabel>Ecossistema Digital</SectionLabel>
         <div className="flex gap-3 justify-center flex-wrap">
           <DiagramBox label="Site" id="site" style={S.digital} onClick={open} />
           <DiagramBox label="APP" id="app" style={S.digital} onClick={open} />
