@@ -223,7 +223,7 @@ const Plataforma = () => {
       <div className="section-divider" />
 
         {/* Legend — inline, centered, below diagram */}
-        <div className="mt-10 flex justify-center gap-6 flex-wrap">
+        <div className="mt-10 mb-16 flex justify-center gap-6 flex-wrap">
           <div className="flex items-center gap-2">
             <div className="w-5 h-3" style={{ border: "2px solid #0000FF" }} />
             <span className="text-[10px] tracking-[0.1em]" style={{ color: "#0000FF" }}>Âmbito actual (2026)</span>
