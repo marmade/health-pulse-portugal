@@ -167,7 +167,7 @@ const Sobre = () => {
           {/* Coluna direita — Metodologia */}
           <div className="md:pl-6">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{get("metodologia").titulo}</h2>
-            <div className="border-t border-foreground/10 pt-4 text-xs text-muted-foreground leading-relaxed">
+            <div className="border-t border-foreground/10 pt-4 flex flex-col">
               {(() => {
                 const blocks = get("metodologia").conteudo.split(/\n\n+/);
                 let headerCount = 0;
