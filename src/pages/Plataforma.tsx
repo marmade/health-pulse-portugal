@@ -193,7 +193,7 @@ const Plataforma = () => {
             <div className="mt-2">
               <SectionLabel>Canais de Distribuição</SectionLabel>
             </div>
-            <div ref={channelsRef} className="flex gap-2 justify-center flex-wrap">
+            <div ref={channelsRef} className="flex gap-6 justify-center flex-wrap">
               <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} small />
               <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} small />
               <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} small />
