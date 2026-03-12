@@ -42,7 +42,7 @@ const Sobre = () => {
       if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
         headerCount++;
         return (
-          <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mt-6 mb-2 ${headerCount === 1 ? "mt-0" : "pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
+          <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-2 ${headerCount === 1 ? "mt-0" : "mt-6 pt-6 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
             {trimmed}
           </p>
         );
