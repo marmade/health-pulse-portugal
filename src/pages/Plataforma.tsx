@@ -204,23 +204,21 @@ const Plataforma = () => {
         <Arrow opacity={0.15} />
 
         {/* 5 — Ecossistema Público */}
-        <div className="w-full max-w-lg flex flex-col items-center">
-          <SectionLabel>Ecossistema Público</SectionLabel>
-          <div className="flex gap-3 justify-center flex-wrap w-full">
-            <DiagramBox label="Conversa em Dia" id="conversa" style={S.publico} onClick={open} />
-            <DiagramBox label="Academia" id="academia" style={S.publico} onClick={open} />
-            <DiagramBox label="Bairros" id="bairros" style={S.publico} onClick={open} />
-            <DiagramBox label="Centros de Saúde" id="centros" style={S.publico} onClick={open} />
-          </div>
+        <SectionLabel>Ecossistema Público</SectionLabel>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <DiagramBox label="Conversa em Dia" id="conversa" style={S.publico} onClick={open} />
+          <DiagramBox label="Academia" id="academia" style={S.publico} onClick={open} />
+          <DiagramBox label="Bairros" id="bairros" style={S.publico} onClick={open} />
+          <DiagramBox label="Centros de Saúde" id="centros" style={S.publico} onClick={open} />
+        </div>
 
-          <Arrow opacity={0.08} />
+        <Arrow opacity={0.08} />
 
-          {/* 6 — Extensões */}
-          <SectionLabel>Extensões</SectionLabel>
-          <div className="flex gap-3 justify-center flex-wrap w-full">
-            <DiagramBox label="Comunidade Científica Portuguesa" id="ccp" style={S.extensoes} onClick={open} />
-            <DiagramBox label="Assistente Virtual Voz" id="voz" style={S.extensoes} onClick={open} />
-          </div>
+        {/* 6 — Extensões */}
+        <SectionLabel>Extensões</SectionLabel>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <DiagramBox label="Comunidade Científica Portuguesa" id="ccp" style={S.extensoes} onClick={open} />
+          <DiagramBox label="Assistente Virtual Voz" id="voz" style={S.extensoes} onClick={open} />
         </div>
       </section>
 
