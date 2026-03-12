@@ -29,15 +29,17 @@ const DiagramBox = ({
   id,
   style,
   onClick,
+  small,
 }: {
   label: string;
   id: string;
   style: BoxStyle;
   onClick: (id: string) => void;
+  small?: boolean;
 }) => (
   <button
     onClick={() => onClick(id)}
-    className="px-4 py-2 text-[11px] uppercase tracking-[0.12em] transition-opacity hover:opacity-70 cursor-pointer bg-background"
+    className={`${small ? "px-3 py-1.5 text-[9px]" : "px-4 py-2 text-[11px]"} uppercase tracking-[0.12em] transition-opacity hover:opacity-70 cursor-pointer bg-background`}
     style={{
       border: style.border,
       color: style.color,
@@ -191,10 +193,10 @@ const Plataforma = () => {
             <div className="mt-2">
               <SectionLabel>Canais de Distribuição</SectionLabel>
             </div>
-            <div ref={channelsRef} className="flex gap-3 justify-center flex-wrap">
-              <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} />
-              <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} />
-              <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} />
+            <div ref={channelsRef} className="flex gap-2 justify-center flex-wrap">
+              <DiagramBox label="Instagram" id="instagram" style={S.canais} onClick={open} small />
+              <DiagramBox label="TikTok" id="tiktok" style={S.canais} onClick={open} small />
+              <DiagramBox label="YouTube" id="youtube" style={S.canais} onClick={open} small />
             </div>
           </div>
         </div>
