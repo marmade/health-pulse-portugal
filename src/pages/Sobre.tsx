@@ -117,7 +117,7 @@ const Sobre = () => {
         <div className="space-y-3 max-w-2xl">
           {paraQueServe.map((item) => (
             <p key={item} className="text-sm leading-relaxed">
-              — {item}
+              {item}
             </p>
           ))}
         </div>
