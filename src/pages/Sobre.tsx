@@ -181,7 +181,7 @@ const Sobre = () => {
                       </p>
                     );
                   }
-                  return <p key={i} className="opacity-80 mb-3 mt-3">{trimmed}</p>;
+                  return <p key={i} className="text-xs leading-relaxed opacity-80 mb-3">{trimmed}</p>;
                 });
               })()}
             </div>
