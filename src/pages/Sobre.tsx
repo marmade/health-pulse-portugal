@@ -195,10 +195,10 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Limitações</h2>
         <div className="space-y-3 max-w-2xl">
-          <p className="text-sm leading-relaxed">— O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.</p>
-          <p className="text-sm leading-relaxed">— A cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.</p>
-          <p className="text-sm leading-relaxed">— O debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.</p>
-          <p className="text-sm leading-relaxed">— O threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.</p>
+          <p className="text-sm leading-relaxed">O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.</p>
+          <p className="text-sm leading-relaxed">A cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.</p>
+          <p className="text-sm leading-relaxed">O debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.</p>
+          <p className="text-sm leading-relaxed">O threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.</p>
         </div>
       </section>
 
