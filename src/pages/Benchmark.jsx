@@ -384,7 +384,7 @@ function BenchmarkCard({ entry, accentColor }) {
 
   const bulletLines = (text) =>
     text.split("\n").filter(Boolean).map((line, i) => (
-      <div key={i} className="text-[10px] leading-relaxed mb-1" style={{ color: blue, opacity: 0.5 }}>
+      <div key={i} className="text-xs leading-relaxed mb-1" style={{ color: blue, opacity: 0.5 }}>
         {line}
       </div>
     ));
@@ -418,13 +418,13 @@ function BenchmarkCard({ entry, accentColor }) {
             )}
           </div>
           <h3
-            className="text-[13px] font-bold tracking-[0.04em] uppercase m-0"
+            className="text-sm font-bold tracking-[0.04em] uppercase m-0"
             style={{ color: blue }}
           >
             {entry.nome}
           </h3>
           {!open && (
-            <p className="text-[11px] mt-1.5 leading-snug" style={{ color: blue, opacity: 0.4 }}>
+            <p className="text-xs mt-1.5 leading-snug" style={{ color: blue, opacity: 0.4 }}>
               {entry.descricao.slice(0, 100)}{entry.descricao.length > 100 ? "…" : ""}
             </p>
           )}
@@ -577,7 +577,7 @@ export default function BenchmarkPage() {
 
       {/* Description line */}
       <div
-        className="text-[10px] tracking-[0.08em] leading-snug mb-9"
+        className="text-xs tracking-[0.08em] leading-snug mb-9"
         style={{ color: accentColor }}
       >
         {activeSinal === "+"
@@ -590,7 +590,7 @@ export default function BenchmarkPage() {
         <div className="mb-12">
           {activeAmbito === "ALL" && (
             <div
-              className="text-[10px] tracking-[0.18em] uppercase font-bold mb-6 pb-2"
+              className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
               style={{ color: blue, borderBottom: `2px solid ${blue}` }}
             >
               NACIONAL
@@ -606,7 +606,7 @@ export default function BenchmarkPage() {
         <div className="mb-12">
           {activeAmbito === "ALL" && (
             <div
-              className="text-[10px] tracking-[0.18em] uppercase font-bold mb-6 pb-2"
+              className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
               style={{ color: blue, borderBottom: `2px solid ${blue}` }}
             >
               INTERNACIONAL
