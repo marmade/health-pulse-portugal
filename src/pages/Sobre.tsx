@@ -119,7 +119,7 @@ const Sobre = () => {
             <div className="space-y-3">
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Integrar os cuidados de saúde primários na comunicação em saúde</p>
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Valorizar a comunicação em saúde nos cuidados de saúde primários</p>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
             </div>
           </div>
