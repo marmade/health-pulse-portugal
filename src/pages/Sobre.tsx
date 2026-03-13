@@ -63,7 +63,6 @@ const Sobre = () => {
     });
 
   const axes = parseAxes(get("os-4-eixos").conteudo);
-  const paraQueServe = parseList(get("para-que-serve").conteudo);
   const fluxoSteps = parseFluxo(get("como-funciona").conteudo);
   const agradecimentosText = get("agradecimentos").conteudo;
   const agradecimentosParts = agradecimentosText.split("\n\n");
