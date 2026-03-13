@@ -33,6 +33,11 @@ const Filters = ({ filters, onFilterChange, historicalCount }: Props) => {
           </button>
         ))}
       </div>
+      {historicalCount !== undefined && (
+        <span className="text-[7px] font-medium uppercase tracking-[0.15em] text-foreground/35">
+          {historicalCount} registos
+        </span>
+      )}
     </div>
   );
 };
