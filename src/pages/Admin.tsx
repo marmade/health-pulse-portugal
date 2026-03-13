@@ -104,7 +104,7 @@ type BookmarkItem = {
 
 const BOOKMARK_CATEGORIAS = [
   { value: "desinformacao", label: "Desinformação" },
-  { value: "igualdade_social", label: "Igualdade Social" },
+  { value: "igualdade_social", label: "Elevador Social" },
   { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
   { value: "dunning_kruger", label: "Dunning-Kruger" },
 ];
