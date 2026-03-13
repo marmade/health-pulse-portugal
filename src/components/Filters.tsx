@@ -10,7 +10,7 @@ const periods = [
   { id: "12m", label: "12 MESES" },
 ];
 
-const Filters = ({ filters, onFilterChange }: Props) => {
+const Filters = ({ filters, onFilterChange, historicalCount }: Props) => {
   const handlePeriod = (id: string) => {
     onFilterChange({ period: id });
   };
