@@ -964,6 +964,65 @@ export default function Admin() {
               </Table>
             </div>
           </TabsContent>
+
+          {/* Bookmarks Tab */}
+          <TabsContent value="bookmarks" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Bookmarks ({bookmarksList.length})</h2>
+              <Button onClick={() => openBookmarkForm()} className="bg-primary hover:bg-primary/90" size="sm">
+                <Plus className="w-4 h-4 mr-1" /> Adicionar bookmark
+              </Button>
+            </div>
+            {showBookmarkForm && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingBookmarkId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar bookmark</p>}
+                <Input placeholder="Título" value={bookmarkForm.titulo} onChange={(e) => setBookmarkForm({ ...bookmarkForm, titulo: e.target.value })} />
+                <Input placeholder="URL" value={bookmarkForm.url} onChange={(e) => setBookmarkForm({ ...bookmarkForm, url: e.target.value })} />
+                <Input placeholder="Fonte (ex: Pordata, Público)" value={bookmarkForm.fonte} onChange={(e) => setBookmarkForm({ ...bookmarkForm, fonte: e.target.value })} />
+                <Select value={bookmarkForm.categoria} onValueChange={(v) => setBookmarkForm({ ...bookmarkForm, categoria: v })}>
+                  <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
+                  <SelectContent>{BOOKMARK_CATEGORIAS.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}</SelectContent>
+                </Select>
+                <Textarea placeholder="Notas (opcional)" value={bookmarkForm.notas} onChange={(e) => setBookmarkForm({ ...bookmarkForm, notas: e.target.value })} rows={2} />
+                <Input placeholder="Ordem" type="number" value={bookmarkForm.ordem} onChange={(e) => setBookmarkForm({ ...bookmarkForm, ordem: parseInt(e.target.value) || 0 })} />
+                <div className="flex gap-2">
+                  <Button onClick={saveBookmark} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+            <div className="border border-foreground/20 max-h-[500px] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Categoria</TableHead><TableHead className="w-28"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {bookmarksList.map((bk) => (
+                    <TableRow key={bk.id} className="border-b border-foreground/10">
+                      <TableCell className="font-medium text-sm">{bk.titulo}</TableCell>
+                      <TableCell className="text-xs">{bk.fonte}</TableCell>
+                      <TableCell className="text-xs">{BOOKMARK_CATEGORIAS.find(c => c.value === bk.categoria)?.label || bk.categoria}</TableCell>
+                      <TableCell>
+                        {deleteConfirm?.type === "bookmark" && deleteConfirm.id === bk.id ? (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="destructive" onClick={() => deleteBookmark(bk.id)}>Sim</Button>
+                            <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openBookmarkForm(bk)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "bookmark", id: bk.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
         </Tabs>
       </main>
     </div>
