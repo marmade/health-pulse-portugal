@@ -1,6 +1,7 @@
 type Props = {
   filters: { period: string };
   onFilterChange: (filters: { period: string }) => void;
+  historicalCount?: number;
 };
 
 const periods = [
