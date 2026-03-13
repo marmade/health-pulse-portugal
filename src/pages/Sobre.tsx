@@ -136,9 +136,9 @@ const Sobre = () => {
       {/* Os 4 eixos */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("os-4-eixos").titulo}</h2>
-        <p className="text-sm leading-relaxed max-w-3xl mb-8">
+        <div className="columns-2 gap-12 text-sm leading-relaxed mb-8">
           {get("eixos-intro").conteudo}
-        </p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => {
             const axisIdMap: Record<string, AxisId> = {
@@ -341,7 +341,7 @@ const Sobre = () => {
       {/* Limitações */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("limitacoes").titulo}</h2>
-        <div className="space-y-3 max-w-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
           {parseList(get("limitacoes").conteudo).map((item) => (
             <p key={item} className="text-sm leading-relaxed">{item}</p>
           ))}
@@ -353,11 +353,13 @@ const Sobre = () => {
       {/* Agradecimentos */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("agradecimentos").titulo}</h2>
-        {agradecimentosParts.map((part, i) => (
-          <p key={i} className="text-sm max-w-2xl leading-relaxed mb-6 last:mb-0">
-            {part}
-          </p>
-        ))}
+        <div className="columns-2 gap-12 text-sm leading-relaxed">
+          {agradecimentosParts.map((part, i) => (
+            <p key={i} className="mb-6 last:mb-0">
+              {part}
+            </p>
+          ))}
+        </div>
       </section>
 
       <div className="section-divider" />
