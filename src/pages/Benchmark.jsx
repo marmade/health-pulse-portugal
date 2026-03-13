@@ -565,7 +565,6 @@ function Section({ title, entries, accentColor }) {
   return (
     <div className="mb-10">
       <div className="flex items-center gap-3 mb-5">
-        <div className="flex-1 h-px" style={{ background: "rgba(0,0,255,0.1)" }} />
         <span
           className="text-[9px] tracking-[0.18em] uppercase font-bold whitespace-nowrap"
           style={{ color: "#0000FF", opacity: 0.4 }}
