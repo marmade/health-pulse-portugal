@@ -470,7 +470,7 @@ function BenchmarkCard({ entry, accentColor }) {
     <div
       className="pt-5 pb-5 transition-colors mb-4 -mx-6 px-6"
       style={{
-        borderTop: `2px solid ${open ? accentColor : "rgba(0,0,255,0.1)"}`,
+        borderTop: `1px solid ${open ? accentColor : "rgba(0,0,255,0.15)"}`,
         background: open ? "rgba(0,0,255,0.03)" : "transparent",
       }}
     >
@@ -565,7 +565,6 @@ function Section({ title, entries, accentColor }) {
   return (
     <div className="mb-10">
       <div className="flex items-center gap-3 mb-5">
-        <div className="flex-1 h-px" style={{ background: "rgba(0,0,255,0.1)" }} />
         <span
           className="text-[9px] tracking-[0.18em] uppercase font-bold whitespace-nowrap"
           style={{ color: "#0000FF", opacity: 0.4 }}
