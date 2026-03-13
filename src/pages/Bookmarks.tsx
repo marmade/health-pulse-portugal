@@ -92,9 +92,9 @@ const Bookmarks = () => {
         ) : sortedCategories.length === 0 ? (
           <p className="text-sm opacity-50">Sem bookmarks registados.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="columns-1 md:columns-3 gap-8">
             {sortedCategories.map((cat) => (
-              <div key={cat}>
+              <div key={cat} className="break-inside-avoid mb-8">
                 <span
                   className="inline-block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-4 ml-4"
                   style={{ backgroundColor: "rgba(0,0,255,0.08)", color: "#0000FF" }}
