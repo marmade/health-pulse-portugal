@@ -384,7 +384,7 @@ function BenchmarkCard({ entry, accentColor }) {
 
   const bulletLines = (text) =>
     text.split("\n").filter(Boolean).map((line, i) => (
-      <div key={i} className="text-xs leading-relaxed mb-1" style={{ color: blue, opacity: 0.6 }}>
+      <div key={i} className="text-[10px] leading-relaxed mb-1" style={{ color: blue, opacity: 0.5 }}>
         {line}
       </div>
     ));
@@ -450,7 +450,7 @@ function BenchmarkCard({ entry, accentColor }) {
           <div className="grid grid-cols-2 gap-5">
             <div>
               <div
-                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-2.5"
+                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-4"
                 style={{
                   color: accentColor,
                   borderBottom: `1px solid ${accentColor}`,
@@ -462,7 +462,7 @@ function BenchmarkCard({ entry, accentColor }) {
             </div>
             <div>
               <div
-                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-2.5"
+                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-4"
                 style={{
                   color: blue,
                   opacity: 0.4,
