@@ -664,8 +664,8 @@ export default function BenchmarkPage() {
         {/* Description */}
         <div className="text-xs tracking-[0.08em] leading-snug mb-9" style={{ color }}>
           {sinal === "+"
-            ? "Referências positivas — portais e comunicadores que produzem informação de saúde credível, baseada em evidência."
-            : "Vectores de desinformação — portais e figuras que disseminam informação de saúde falsa ou enganosa."}
+            ? "Referências positivas que produzem informação de consenso científico"
+            : "Vectores de desinformação que disseminam informação de saúde/científica falsa ou enganosa."}
         </div>
 
         {/* Flat list */}
