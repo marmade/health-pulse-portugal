@@ -97,15 +97,15 @@ const Sobre = () => {
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("o-que-e").titulo}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-primary mb-3">Reportagem Viva</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-primary mb-3">{get("o-que-e-rv").titulo}</h3>
             <p className="text-sm leading-relaxed">
-              Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.
+              {get("o-que-e-rv").conteudo}
             </p>
           </div>
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: "#7B00FF" }}>Diz que Disse</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: "#7B00FF" }}>{get("o-que-e-dqd").titulo}</h3>
             <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>
-              Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.
+              {get("o-que-e-dqd").conteudo}
             </p>
           </div>
         </div>
