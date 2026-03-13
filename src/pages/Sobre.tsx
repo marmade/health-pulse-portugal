@@ -136,9 +136,9 @@ const Sobre = () => {
       {/* Os 4 eixos */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("os-4-eixos").titulo}</h2>
-        <p className="text-sm leading-relaxed max-w-3xl mb-8">
+        <div className="columns-2 gap-12 text-sm leading-relaxed mb-8">
           {get("eixos-intro").conteudo}
-        </p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => {
             const axisIdMap: Record<string, AxisId> = {
