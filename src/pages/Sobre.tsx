@@ -105,10 +105,10 @@ const Sobre = () => {
             </div>
             <div className="space-y-3">
               <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mt-6 mb-3">Para que serve</p>
-              <p className="text-sm leading-relaxed">Identificar os temas de saúde mais pesquisados em Portugal</p>
-              <p className="text-sm leading-relaxed">Detectar sinais emergentes antes de chegarem aos media</p>
-              <p className="text-sm leading-relaxed">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
-              <p className="text-sm leading-relaxed">Informar a escolha de temas para comunicação em saúde</p>
+              <p className="text-xs leading-relaxed opacity-80">Identificar os temas de saúde mais pesquisados em Portugal</p>
+              <p className="text-xs leading-relaxed opacity-80">Detectar sinais emergentes antes de chegarem aos media</p>
+              <p className="text-xs leading-relaxed opacity-80">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
+              <p className="text-xs leading-relaxed opacity-80">Informar a escolha de temas para comunicação em saúde</p>
             </div>
           </div>
           {/* Coluna B — Diz que Disse */}
