@@ -459,10 +459,12 @@ function BenchmarkCard({ entry, accentColor }) {
   const [open, setOpen] = useState(false);
   const blue = "#0000FF";
 
+  const bgOpen = entry.sinal === "+" ? "rgba(0,0,255,0.03)" : "rgba(255,0,255,0.03)";
+
   const bulletLines = (text) =>
     text.split("\n").filter(Boolean).map((line, i) => (
-      <div key={i} className="text-xs leading-relaxed mb-1" style={{ color: blue, opacity: 0.5 }}>
-        {line}
+      <div key={i} className="text-[10px] leading-relaxed mb-1" style={{ color: blue }}>
+        {line.replace(/^[•\-]\s*/, '')}
       </div>
     ));
 
@@ -471,7 +473,7 @@ function BenchmarkCard({ entry, accentColor }) {
       className="pt-5 pb-5 transition-colors mb-4 -mx-6 px-6"
       style={{
         borderTop: `1px solid ${open ? accentColor : "rgba(0,0,255,0.15)"}`,
-        background: open ? "rgba(0,0,255,0.03)" : "transparent",
+        background: open ? bgOpen : "transparent",
       }}
     >
       {/* Card header */}
