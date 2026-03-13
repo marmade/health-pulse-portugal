@@ -24,7 +24,7 @@ const Index = () => {
   const { data: dbDebunkingData } = useDebunkingData();
   const { data: dbNewsData, lastFetchTimestamp } = useNewsData();
   const lastRefreshed = useLastRefreshed();
-  const { data: historicalData } = useHistoricalData();
+  const { data: historicalData } = useHistoricalData(filters.period);
 
   // Use DB data or fallback to mock
   const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
