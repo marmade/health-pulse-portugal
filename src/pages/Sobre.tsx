@@ -105,10 +105,10 @@ const Sobre = () => {
             </div>
             <div className="space-y-3">
               <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mt-6 mb-3">Para que serve</p>
-              <p className="text-xs leading-relaxed opacity-80">Identificar os temas de saúde mais pesquisados em Portugal</p>
-              <p className="text-xs leading-relaxed opacity-80">Detectar sinais emergentes antes de chegarem aos media</p>
-              <p className="text-xs leading-relaxed opacity-80">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
-              <p className="text-xs leading-relaxed opacity-80">Informar a escolha de temas para comunicação em saúde</p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2"><span className="text-primary flex-shrink-0">·</span><span>Identificar os temas de saúde mais pesquisados em Portugal</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2"><span className="text-primary flex-shrink-0">·</span><span>Detectar sinais emergentes antes de chegarem aos media</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2"><span className="text-primary flex-shrink-0">·</span><span>Cruzar picos de pesquisa com desinformação e facto-verificação</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2"><span className="text-primary flex-shrink-0">·</span><span>Informar a escolha de temas para comunicação em saúde</span></p>
             </div>
           </div>
           {/* Coluna B — Diz que Disse */}
@@ -119,10 +119,10 @@ const Sobre = () => {
             </div>
             <div className="space-y-3">
               <p className="text-[9px] font-bold uppercase tracking-[0.12em] mt-6 mb-3" style={{ color: "#7B00FF" }}>Para que serve</p>
-              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
-              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
-              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Valorizar a comunicação em saúde nos cuidados de saúde primários</p>
-              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2" style={{ color: "#7B00FF" }}><span className="flex-shrink-0">·</span><span>Capacitar as pessoas com conhecimento crítico sobre saúde</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2" style={{ color: "#7B00FF" }}><span className="flex-shrink-0">·</span><span>Desenvolver o pensamento crítico face à informação recebida</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2" style={{ color: "#7B00FF" }}><span className="flex-shrink-0">·</span><span>Valorizar a comunicação em saúde nos cuidados de saúde primários</span></p>
+              <p className="text-xs leading-relaxed opacity-80 flex gap-2" style={{ color: "#7B00FF" }}><span className="flex-shrink-0">·</span><span>Reduzir desigualdades sociais no acesso à informação em saúde</span></p>
             </div>
           </div>
         </div>
