@@ -568,7 +568,7 @@ export default function BenchmarkPage() {
             {a === "ALL" ? "TODOS" : a.toUpperCase()}
           </button>
         ))}
-        <span className="text-[10px] self-center ml-2" style={{ color: blue, opacity: 0.3 }}>
+        <span className="text-[7px] font-medium uppercase tracking-[0.15em] self-center ml-2" style={{ color: blue, opacity: 0.35 }}>
           {totalFiltered === totalAll ? `${totalAll} entradas` : `${totalFiltered} / ${totalAll}`}
         </span>
       </div>
