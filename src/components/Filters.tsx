@@ -1,6 +1,7 @@
 type Props = {
   filters: { period: string };
   onFilterChange: (filters: { period: string }) => void;
+  historicalCount?: number;
 };
 
 const periods = [
@@ -9,7 +10,7 @@ const periods = [
   { id: "12m", label: "12 MESES" },
 ];
 
-const Filters = ({ filters, onFilterChange }: Props) => {
+const Filters = ({ filters, onFilterChange, historicalCount }: Props) => {
   const handlePeriod = (id: string) => {
     onFilterChange({ period: id });
   };
@@ -32,6 +33,11 @@ const Filters = ({ filters, onFilterChange }: Props) => {
           </button>
         ))}
       </div>
+      {historicalCount !== undefined && (
+        <span className="text-[7px] font-medium uppercase tracking-[0.15em] text-foreground/35">
+          {historicalCount} registos
+        </span>
+      )}
     </div>
   );
 };
