@@ -117,7 +117,7 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("para-que-serve").titulo}</h2>
         <div className="space-y-3 max-w-2xl">
-          {paraQueServe.map((item) => (
+          {parseList(get("para-que-serve").conteudo).map((item) => (
             <p key={item} className="text-sm leading-relaxed">
               {item}
             </p>
