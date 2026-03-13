@@ -9,7 +9,7 @@ type AxisData = {
 };
 
 export type ExportData = {
-  filters: { period: string; region: string };
+  filters: { period: string };
   axes: Record<string, AxisData>;
   debunkingData: DebunkItem[];
   newsData: NewsItem[];
