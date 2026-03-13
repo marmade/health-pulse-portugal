@@ -93,20 +93,18 @@ const kwPeriodMult: Record<string, Record<string, number>> = {
   "sarampo surto": { "7d": 1.8, "30d": 1.3, "12m": 1 },
 };
 
-export function getFilteredAxisData(period: string, region: string) {
+export function getFilteredAxisData(period: string, _region?: string) {
   const filtered: Record<string, { label: string; keywords: Keyword[]; allKeywords: Keyword[]; trend: TrendPoint[] }> = {};
 
   for (const [axisId, axis] of Object.entries(axisData)) {
     const keywords = axis.keywords.map((kw) => {
-      const rm = kwRegionMult[kw.term]?.[region] ?? 1;
       const pm = kwPeriodMult[kw.term]?.[period] ?? 1;
-      const m = rm * pm;
       return {
         ...kw,
-        currentVolume: Math.round(kw.currentVolume * m),
-        previousVolume: Math.round(kw.previousVolume * rm),
-        changePercent: +(((kw.currentVolume * m - kw.previousVolume * rm) / (kw.previousVolume * rm)) * 100).toFixed(1),
-        trend: (m > 1.2 ? "up" : m < 0.8 ? "down" : kw.trend) as "up" | "down" | "stable",
+        currentVolume: Math.round(kw.currentVolume * pm),
+        previousVolume: kw.previousVolume,
+        changePercent: +(((kw.currentVolume * pm - kw.previousVolume) / kw.previousVolume) * 100).toFixed(1),
+        trend: (pm > 1.2 ? "up" : pm < 0.8 ? "down" : kw.trend) as "up" | "down" | "stable",
       };
     });
 
