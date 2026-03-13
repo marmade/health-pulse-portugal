@@ -68,53 +68,6 @@ const generateTrend = (base: number, variance: number, period: string = "12m"): 
   });
 };
 
-// Per-keyword region multipliers — different keywords are more popular in different regions
-const kwRegionMult: Record<string, Record<string, number>> = {
-  // saude-mental
-  ansiedade: { pt: 1, norte: 0.8, centro: 0.7, lisboa: 1.3, sul: 0.6 },
-  depressão: { pt: 1, norte: 0.9, centro: 0.85, lisboa: 1.1, sul: 0.75 },
-  burnout: { pt: 1, norte: 0.6, centro: 0.5, lisboa: 1.4, sul: 0.55 },
-  insónia: { pt: 1, norte: 1.1, centro: 1.0, lisboa: 0.9, sul: 1.2 },
-  pânico: { pt: 1, norte: 0.7, centro: 0.65, lisboa: 1.2, sul: 0.6 },
-  "PTSD": { pt: 1, norte: 0.5, centro: 0.4, lisboa: 1.5, sul: 0.45 },
-  "automutilação": { pt: 1, norte: 1.1, centro: 0.9, lisboa: 1.0, sul: 0.8 },
-  "solidão": { pt: 1, norte: 1.2, centro: 1.3, lisboa: 0.7, sul: 1.4 },
-  "TDAH adulto": { pt: 1, norte: 0.6, centro: 0.5, lisboa: 1.6, sul: 0.4 },
-  "terapia online": { pt: 1, norte: 0.9, centro: 0.8, lisboa: 1.3, sul: 0.7 },
-  // alimentacao
-  "dieta mediterrânica": { pt: 1, norte: 0.9, centro: 1.0, lisboa: 0.85, sul: 1.3 },
-  "jejum intermitente": { pt: 1, norte: 0.7, centro: 0.6, lisboa: 1.4, sul: 0.65 },
-  "intolerância ao glúten": { pt: 1, norte: 0.8, centro: 0.9, lisboa: 1.1, sul: 0.85 },
-  "obesidade infantil": { pt: 1, norte: 1.1, centro: 1.0, lisboa: 0.9, sul: 1.05 },
-  "suplementos alimentares": { pt: 1, norte: 0.75, centro: 0.7, lisboa: 1.3, sul: 0.6 },
-  "alimentação plant-based": { pt: 1, norte: 0.5, centro: 0.45, lisboa: 1.6, sul: 0.5 },
-  "açúcar e saúde": { pt: 1, norte: 1.0, centro: 1.1, lisboa: 0.9, sul: 1.15 },
-  "alergias alimentares": { pt: 1, norte: 1.1, centro: 1.05, lisboa: 0.95, sul: 0.9 },
-  "ultraprocessados": { pt: 1, norte: 0.6, centro: 0.55, lisboa: 1.5, sul: 0.5 },
-  "dieta cetogénica": { pt: 1, norte: 0.65, centro: 0.6, lisboa: 1.4, sul: 0.55 },
-  // menopausa
-  "menopausa sintomas": { pt: 1, norte: 0.9, centro: 1.0, lisboa: 1.1, sul: 0.85 },
-  "terapia hormonal": { pt: 1, norte: 0.7, centro: 0.75, lisboa: 1.3, sul: 0.65 },
-  "osteoporose": { pt: 1, norte: 1.1, centro: 1.15, lisboa: 0.85, sul: 1.2 },
-  "menopausa precoce": { pt: 1, norte: 0.8, centro: 0.75, lisboa: 1.2, sul: 0.7 },
-  "fitoterapia menopausa": { pt: 1, norte: 1.2, centro: 1.1, lisboa: 0.7, sul: 1.3 },
-  "secura vaginal": { pt: 1, norte: 0.85, centro: 0.9, lisboa: 1.1, sul: 0.8 },
-  "peso na menopausa": { pt: 1, norte: 1.0, centro: 1.05, lisboa: 0.95, sul: 1.1 },
-  "libido menopausa": { pt: 1, norte: 0.6, centro: 0.55, lisboa: 1.5, sul: 0.5 },
-  "menopausa masculina": { pt: 1, norte: 0.5, centro: 0.45, lisboa: 1.4, sul: 0.4 },
-  "suores noturnos": { pt: 1, norte: 1.15, centro: 1.1, lisboa: 0.8, sul: 1.2 },
-  // emergentes
-  "mpox portugal": { pt: 1, norte: 0.6, centro: 0.5, lisboa: 1.5, sul: 0.4 },
-  "gripe aviária H5N1": { pt: 1, norte: 1.2, centro: 1.1, lisboa: 0.8, sul: 0.9 },
-  "resistência antibióticos": { pt: 1, norte: 0.9, centro: 0.85, lisboa: 1.1, sul: 0.8 },
-  "long covid": { pt: 1, norte: 1.0, centro: 1.05, lisboa: 0.95, sul: 1.1 },
-  "poluição e saúde": { pt: 1, norte: 0.7, centro: 0.65, lisboa: 1.4, sul: 0.6 },
-  "dengue europa": { pt: 1, norte: 0.3, centro: 0.35, lisboa: 1.3, sul: 1.5 },
-  "sarampo surto": { pt: 1, norte: 1.1, centro: 1.0, lisboa: 0.9, sul: 0.8 },
-  "microplásticos sangue": { pt: 1, norte: 0.8, centro: 0.75, lisboa: 1.2, sul: 0.7 },
-  "vírus nipah": { pt: 1, norte: 0.5, centro: 0.45, lisboa: 1.4, sul: 0.4 },
-  "bactérias carnívoras": { pt: 1, norte: 0.4, centro: 0.35, lisboa: 1.0, sul: 1.6 },
-};
 
 // Per-keyword period multipliers — some keywords spike in short term
 const kwPeriodMult: Record<string, Record<string, number>> = {
