@@ -18,6 +18,7 @@ const CATEGORIAS: Record<string, string> = {
   igualdade_social: "Elevador Social",
   cuidados_saude_primarios: "Cuidados de Saúde Primários",
   dunning_kruger: "Saber que não sabe",
+  comunicacao_cientifica: "Comunicação Científica",
 };
 
 const Bookmarks = () => {
@@ -44,7 +45,7 @@ const Bookmarks = () => {
   }, {});
 
   // Sort categories to maintain consistent order
-  const categoryOrder = ["desinformacao", "igualdade_social", "cuidados_saude_primarios", "dunning_kruger"];
+  const categoryOrder = ["desinformacao", "igualdade_social", "cuidados_saude_primarios", "dunning_kruger", "comunicacao_cientifica"];
   const sortedCategories = Object.keys(grouped).sort((a, b) => {
     const ia = categoryOrder.indexOf(a);
     const ib = categoryOrder.indexOf(b);
