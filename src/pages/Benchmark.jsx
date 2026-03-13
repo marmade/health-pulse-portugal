@@ -511,7 +511,7 @@ export default function BenchmarkPage() {
   const [activeAmbito, setActiveAmbito] = useState("ALL");
 
   const blue = "#0000FF";
-  const orange = "#CC0066";
+  const orange = "#FF00FF";
   const accentColor = activeSinal === "+" ? blue : orange;
 
   const filtered = entries.filter((e) => {
