@@ -1024,6 +1024,11 @@ export default function Admin() {
               </Table>
             </div>
           </TabsContent>
+
+          {/* Benchmark Tab */}
+          <TabsContent value="benchmark" className="mt-0">
+            <BenchmarkAdminTab />
+          </TabsContent>
         </Tabs>
       </main>
     </div>
