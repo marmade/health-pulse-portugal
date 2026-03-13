@@ -543,7 +543,7 @@ export default function BenchmarkPage() {
             style={{
               borderRight: value === "+" ? `1px solid ${blue}` : "none",
               fontWeight: activeSinal === value ? 700 : 400,
-              background: activeSinal === value ? (value === "+" ? blue : "#dc2626") : "transparent",
+              background: activeSinal === value ? (value === "+" ? blue : orange) : "transparent",
               color: activeSinal === value ? "#fff" : blue,
             }}
           >
