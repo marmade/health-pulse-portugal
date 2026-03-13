@@ -11,6 +11,7 @@ import Guioes from "./pages/Guioes";
 import Mural from "./pages/Mural";
 import Plataforma from "./pages/Plataforma";
 import Admin from "./pages/Admin";
+import Bookmarks from "./pages/Bookmarks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/guioes" element={<Guioes />} />
           <Route path="/mural" element={<Mural />} />
           <Route path="/plataforma" element={<Plataforma />} />
+          <Route path="/editorial/bookmarks" element={<Bookmarks />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

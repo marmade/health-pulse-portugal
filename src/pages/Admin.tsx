@@ -92,6 +92,23 @@ type SobreItem = {
   conteudo: string;
 };
 
+type BookmarkItem = {
+  id: string;
+  url: string;
+  titulo: string;
+  fonte: string;
+  categoria: string;
+  notas: string | null;
+  ordem: number;
+};
+
+const BOOKMARK_CATEGORIAS = [
+  { value: "desinformacao", label: "Desinformação" },
+  { value: "igualdade_social", label: "Igualdade Social" },
+  { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
+  { value: "dunning_kruger", label: "Dunning-Kruger" },
+];
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
@@ -157,6 +174,12 @@ export default function Admin() {
   const [editingSobreId, setEditingSobreId] = useState<string | null>(null);
   const [sobreForm, setSobreForm] = useState({ titulo: "", conteudo: "" });
 
+  // Bookmarks state
+  const [bookmarksList, setBookmarksList] = useState<BookmarkItem[]>([]);
+  const [showBookmarkForm, setShowBookmarkForm] = useState(false);
+  const [editingBookmarkId, setEditingBookmarkId] = useState<string | null>(null);
+  const [bookmarkForm, setBookmarkForm] = useState({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
 
@@ -186,7 +209,7 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx, gu, pp, sb] = await Promise.all([
+    const [kw, db, nw, tx, gu, pp, sb, bk] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
@@ -194,6 +217,7 @@ export default function Admin() {
       supabase.from("guioes").select("*").order("tema").order("ordem"),
       supabase.from("plataforma_popups").select("*"),
       supabase.from("sobre_conteudo").select("*"),
+      supabase.from("bookmarks").select("*").order("ordem"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
@@ -202,6 +226,36 @@ export default function Admin() {
     if (gu.data) setGuioes(gu.data as GuiaoRow[]);
     if (pp.data) setPopups(pp.data as PopupItem[]);
     if (sb.data) setSobreItems(sb.data as SobreItem[]);
+    if (bk.data) setBookmarksList(bk.data as BookmarkItem[]);
+  };
+
+  // Bookmarks CRUD
+  const openBookmarkForm = (item?: BookmarkItem) => {
+    if (item) {
+      setEditingBookmarkId(item.id);
+      setBookmarkForm({ url: item.url, titulo: item.titulo, fonte: item.fonte, categoria: item.categoria, notas: item.notas || "", ordem: item.ordem });
+    } else {
+      setEditingBookmarkId(null);
+      setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+    }
+    setShowBookmarkForm(true);
+  };
+
+  const saveBookmark = async () => {
+    if (!bookmarkForm.titulo || !bookmarkForm.url) return;
+    const payload = { url: bookmarkForm.url, titulo: bookmarkForm.titulo, fonte: bookmarkForm.fonte, categoria: bookmarkForm.categoria, notas: bookmarkForm.notas || null, ordem: bookmarkForm.ordem };
+    const { error } = editingBookmarkId
+      ? await supabase.from("bookmarks").update(payload).eq("id", editingBookmarkId)
+      : await supabase.from("bookmarks").insert(payload);
+    if (error) { toast({ title: "Erro ao guardar", variant: "destructive" }); }
+    else { toast({ title: "Guardado ✓" }); setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); fetchAll(); }
+  };
+
+  const deleteBookmark = async (id: string) => {
+    const { error } = await supabase.from("bookmarks").delete().eq("id", id);
+    if (error) toast({ title: "Erro ao apagar", variant: "destructive" });
+    else { toast({ title: "Apagado ✓" }); fetchAll(); }
+    setDeleteConfirm(null);
   };
 
   // Keywords CRUD
@@ -454,6 +508,7 @@ export default function Admin() {
             <TabsTrigger value="guioes" className={tabTriggerClass}>GUIÕES</TabsTrigger>
             <TabsTrigger value="popups" className={tabTriggerClass}>PLATAFORMA</TabsTrigger>
             <TabsTrigger value="sobre" className={tabTriggerClass}>SOBRE</TabsTrigger>
+            <TabsTrigger value="bookmarks" className={tabTriggerClass}>BOOKMARKS</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -905,6 +960,65 @@ export default function Admin() {
                       </TableRow>
                     );
                   })}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+
+          {/* Bookmarks Tab */}
+          <TabsContent value="bookmarks" className="mt-0">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Bookmarks ({bookmarksList.length})</h2>
+              <Button onClick={() => openBookmarkForm()} className="bg-primary hover:bg-primary/90" size="sm">
+                <Plus className="w-4 h-4 mr-1" /> Adicionar bookmark
+              </Button>
+            </div>
+            {showBookmarkForm && (
+              <div className="border border-foreground/20 p-4 mb-4 space-y-3">
+                {editingBookmarkId && <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">A editar bookmark</p>}
+                <Input placeholder="Título" value={bookmarkForm.titulo} onChange={(e) => setBookmarkForm({ ...bookmarkForm, titulo: e.target.value })} />
+                <Input placeholder="URL" value={bookmarkForm.url} onChange={(e) => setBookmarkForm({ ...bookmarkForm, url: e.target.value })} />
+                <Input placeholder="Fonte (ex: Pordata, Público)" value={bookmarkForm.fonte} onChange={(e) => setBookmarkForm({ ...bookmarkForm, fonte: e.target.value })} />
+                <Select value={bookmarkForm.categoria} onValueChange={(v) => setBookmarkForm({ ...bookmarkForm, categoria: v })}>
+                  <SelectTrigger><SelectValue placeholder="Categoria" /></SelectTrigger>
+                  <SelectContent>{BOOKMARK_CATEGORIAS.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}</SelectContent>
+                </Select>
+                <Textarea placeholder="Notas (opcional)" value={bookmarkForm.notas} onChange={(e) => setBookmarkForm({ ...bookmarkForm, notas: e.target.value })} rows={2} />
+                <Input placeholder="Ordem" type="number" value={bookmarkForm.ordem} onChange={(e) => setBookmarkForm({ ...bookmarkForm, ordem: parseInt(e.target.value) || 0 })} />
+                <div className="flex gap-2">
+                  <Button onClick={saveBookmark} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
+                  <Button onClick={() => { setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); }} variant="outline" size="sm">Cancelar</Button>
+                </div>
+              </div>
+            )}
+            <div className="border border-foreground/20 max-h-[500px] overflow-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-foreground/20">
+                    <TableHead>Título</TableHead><TableHead>Fonte</TableHead><TableHead>Categoria</TableHead><TableHead className="w-28"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {bookmarksList.map((bk) => (
+                    <TableRow key={bk.id} className="border-b border-foreground/10">
+                      <TableCell className="font-medium text-sm">{bk.titulo}</TableCell>
+                      <TableCell className="text-xs">{bk.fonte}</TableCell>
+                      <TableCell className="text-xs">{BOOKMARK_CATEGORIAS.find(c => c.value === bk.categoria)?.label || bk.categoria}</TableCell>
+                      <TableCell>
+                        {deleteConfirm?.type === "bookmark" && deleteConfirm.id === bk.id ? (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="destructive" onClick={() => deleteBookmark(bk.id)}>Sim</Button>
+                            <Button size="sm" variant="outline" onClick={() => setDeleteConfirm(null)}>Não</Button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="ghost" onClick={() => openBookmarkForm(bk)}><Pencil className="w-4 h-4" /></Button>
+                            <Button size="sm" variant="ghost" onClick={() => setDeleteConfirm({ type: "bookmark", id: bk.id })}><Trash2 className="w-4 h-4 text-red-500" /></Button>
+                          </div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </div>
