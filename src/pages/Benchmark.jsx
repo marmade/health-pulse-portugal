@@ -424,7 +424,7 @@ function BenchmarkCard({ entry, accentColor }) {
             {entry.nome}
           </h3>
           {!open && (
-            <p className="text-[11px] mt-1.5 leading-snug" style={{ color: blue, opacity: 0.4 }}>
+            <p className="text-xs mt-1.5 leading-snug" style={{ color: blue, opacity: 0.4 }}>
               {entry.descricao.slice(0, 100)}{entry.descricao.length > 100 ? "…" : ""}
             </p>
           )}
