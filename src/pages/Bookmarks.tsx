@@ -69,6 +69,8 @@ const Bookmarks = () => {
             <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
             <Link to="/plataforma" className="nav-link">Plataforma</Link>
             <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+            <Link to="/benchmark" className="nav-link">Benchmark</Link>
+            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
             <Link to="/sobre" className="nav-link">Sobre</Link>
           </div>
         </nav>
