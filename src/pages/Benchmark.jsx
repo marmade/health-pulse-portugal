@@ -391,7 +391,7 @@ function BenchmarkCard({ entry, accentColor }) {
 
   return (
     <div
-      className="pt-3.5 pb-3.5 transition-colors"
+      className="pt-5 pb-5 transition-colors mb-4"
       style={{
         borderTop: `2px solid ${open ? accentColor : "rgba(0,0,255,0.1)"}`,
         borderBottom: "1px solid rgba(0,0,255,0.06)",
@@ -404,15 +404,6 @@ function BenchmarkCard({ entry, accentColor }) {
       >
         <div className="flex-1">
           <div className="flex items-center gap-2.5 mb-1">
-            <span
-              className="text-[9px] tracking-[0.12em] uppercase font-bold px-1.5 py-0.5"
-              style={{
-                border: `1px solid ${accentColor}`,
-                color: accentColor,
-              }}
-            >
-              {entry.tipo}
-            </span>
             {entry.link && (
               <a
                 href={entry.link}
