@@ -63,7 +63,6 @@ const Sobre = () => {
     });
 
   const axes = parseAxes(get("os-4-eixos").conteudo);
-  const paraQueServe = parseList(get("para-que-serve").conteudo);
   const fluxoSteps = parseFluxo(get("como-funciona").conteudo);
   const agradecimentosText = get("agradecimentos").conteudo;
   const agradecimentosParts = agradecimentosText.split("\n\n");
@@ -97,15 +96,15 @@ const Sobre = () => {
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("o-que-e").titulo}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-primary mb-3">Reportagem Viva</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-primary mb-3">{get("o-que-e-rv").titulo}</h3>
             <p className="text-sm leading-relaxed">
-              Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.
+              {get("o-que-e-rv").conteudo}
             </p>
           </div>
           <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: "#7B00FF" }}>Diz que Disse</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: "#7B00FF" }}>{get("o-que-e-dqd").titulo}</h3>
             <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>
-              Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.
+              {get("o-que-e-dqd").conteudo}
             </p>
           </div>
         </div>
@@ -117,7 +116,7 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("para-que-serve").titulo}</h2>
         <div className="space-y-3 max-w-2xl">
-          {paraQueServe.map((item) => (
+          {parseList(get("para-que-serve").conteudo).map((item) => (
             <p key={item} className="text-sm leading-relaxed">
               {item}
             </p>
@@ -131,7 +130,7 @@ const Sobre = () => {
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("os-4-eixos").titulo}</h2>
         <p className="text-sm leading-relaxed max-w-3xl mb-8">
-          Os três eixos temáticos (Saúde Mental, Alimentação e Menopausa) foram definidos para identificar e monitorizar as narrativas sobre saúde de forma a estabelecer um plano em concordância com as datas comemorativas estabelecidas no calendário das ciências da saúde. Esta escolha permite pensar de forma cirúrgica na produção de conteúdos e campanhas de sensibilização, que criem uma amostra representativa de uma comunicação estratégica. O quarto eixo, Emergentes, serve um propósito distinto: monitorização contínua de sinais novos, alimentada pela curiosidade editorial e pela eventual necessidade de cruzar temas em surgimento com os eixos principais.
+          {get("eixos-intro").conteudo}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {axes.map((axis) => {
@@ -195,12 +194,11 @@ const Sobre = () => {
 
       {/* Limitações */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">Limitações</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("limitacoes").titulo}</h2>
         <div className="space-y-3 max-w-2xl">
-          <p className="text-sm leading-relaxed">O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.</p>
-          <p className="text-sm leading-relaxed">A cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.</p>
-          <p className="text-sm leading-relaxed">O debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.</p>
-          <p className="text-sm leading-relaxed">O threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.</p>
+          {parseList(get("limitacoes").conteudo).map((item) => (
+            <p key={item} className="text-sm leading-relaxed">{item}</p>
+          ))}
         </div>
       </section>
 

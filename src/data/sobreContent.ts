@@ -4,10 +4,25 @@ export const fallbackSobreContent: Record<string, { titulo: string; conteudo: st
     conteudo:
       "O Reportagem Viva é um dashboard pessoal de monitorização de tendências de saúde em Portugal. Cruza o comportamento de pesquisa online com cobertura mediática e sinais de desinformação — para informar a produção de conteúdos de comunicação científica.",
   },
+  "o-que-e-rv": {
+    titulo: "Reportagem Viva",
+    conteudo:
+      "Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.",
+  },
+  "o-que-e-dqd": {
+    titulo: "Diz que Disse",
+    conteudo:
+      "Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.",
+  },
   "para-que-serve": {
     titulo: "Para que serve",
     conteudo:
       "Identificar os temas de saúde mais pesquisados em Portugal\nDetectar sinais emergentes antes de chegarem aos media\nCruzar picos de pesquisa com desinformação e facto-verificação\nInformar a escolha de temas para comunicação em saúde",
+  },
+  "eixos-intro": {
+    titulo: "Os 4 eixos — introdução",
+    conteudo:
+      "Os três eixos temáticos (Saúde Mental, Alimentação e Menopausa) foram definidos para identificar e monitorizar as narrativas sobre saúde de forma a estabelecer um plano em concordância com as datas comemorativas estabelecidas no calendário das ciências da saúde. Esta escolha permite pensar de forma cirúrgica na produção de conteúdos e campanhas de sensibilização, que criem uma amostra representativa de uma comunicação estratégica. O quarto eixo, Emergentes, serve um propósito distinto: monitorização contínua de sinais novos, alimentada pela curiosidade editorial e pela eventual necessidade de cruzar temas em surgimento com os eixos principais.",
   },
   "os-4-eixos": {
     titulo: "Os 4 eixos",
@@ -55,6 +70,11 @@ Geração de guiões: os dados recolhidos pelo sistema alimentam um prompt estru
     conteudo:
       "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|15 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
   },
+  limitacoes: {
+    titulo: "Limitações",
+    conteudo:
+      "O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.\nA cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.\nO debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.\nO threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.",
+  },
   agradecimentos: {
     titulo: "Agradecimentos",
     conteudo: `Um agradecimento aos professores do primeiro ano do Mestrado em Comunicação de Ciência da FCSH-UNL, pelo seu papel fundamental na transmissão do pensamento crítico, científico e da ética colaborativa:
@@ -65,10 +85,14 @@ Ana Sanchez; António Gomes da Costa; António Granado; Joana Lobo Antunes; Luí
 
 export const SOBRE_BLOCKS = [
   { id: "o-que-e", label: "O QUE É" },
+  { id: "o-que-e-rv", label: "O QUE É — REPORTAGEM VIVA" },
+  { id: "o-que-e-dqd", label: "O QUE É — DIZ QUE DISSE" },
   { id: "para-que-serve", label: "PARA QUE SERVE" },
+  { id: "eixos-intro", label: "EIXOS — INTRODUÇÃO" },
   { id: "os-4-eixos", label: "OS 4 EIXOS" },
   { id: "fontes-de-dados", label: "FONTES DE DADOS" },
   { id: "metodologia", label: "METODOLOGIA" },
   { id: "como-funciona", label: "COMO FUNCIONA" },
+  { id: "limitacoes", label: "LIMITAÇÕES" },
   { id: "agradecimentos", label: "AGRADECIMENTOS" },
 ] as const;
