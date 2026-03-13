@@ -614,48 +614,62 @@ export default function BenchmarkPage() {
         </div>
 
         {/* Filters row */}
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-6">
-          {/* Âmbito filter */}
-          <div className="flex items-center gap-0.5">
-            {["ALL", "Nacional", "Internacional"].map((a) => (
-              <button
-                key={a}
-                onClick={() => setActiveAmbito(a)}
-                className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
-                style={{
-                  border: "1px solid",
-                  borderColor: activeAmbito === a ? color : "rgba(0,0,255,0.15)",
-                  background: activeAmbito === a ? color : "transparent",
-                  color: activeAmbito === a ? "#fff" : blue,
-                  fontWeight: activeAmbito === a ? 700 : 400,
-                }}
-              >
-                {a === "ALL" ? "TODOS" : a.toUpperCase()}
-              </button>
-            ))}
-          </div>
+        <div className="flex flex-wrap items-center gap-y-1.5 mb-6">
+          {/* TODOS (reset all) */}
+          <button
+            onClick={() => { setActiveAmbito("ALL"); setActiveTipo("ALL"); }}
+            className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
+            style={{
+              border: "1px solid",
+              borderColor: (activeAmbito === "ALL" && activeTipo === "ALL") ? color : "rgba(0,0,255,0.15)",
+              background: (activeAmbito === "ALL" && activeTipo === "ALL") ? color : "transparent",
+              color: (activeAmbito === "ALL" && activeTipo === "ALL") ? "#fff" : blue,
+              fontWeight: (activeAmbito === "ALL" && activeTipo === "ALL") ? 700 : 400,
+            }}
+          >
+            TODOS
+          </button>
 
-          {/* Tipo filter */}
-          <div className="flex items-center gap-0.5">
-            {["ALL", "Portal", "Persona"].map((t) => (
-              <button
-                key={t}
-                onClick={() => setActiveTipo(t)}
-                className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
-                style={{
-                  border: "1px solid",
-                  borderColor: activeTipo === t ? color : "rgba(0,0,255,0.15)",
-                  background: activeTipo === t ? color : "transparent",
-                  color: activeTipo === t ? "#fff" : blue,
-                  fontWeight: activeTipo === t ? 700 : 400,
-                }}
-              >
-                {t === "ALL" ? "TODOS" : t === "Portal" ? "PORTAIS" : "PERSONAS"}
-              </button>
-            ))}
-          </div>
+          {/* Âmbito buttons */}
+          {["Nacional", "Internacional"].map((a) => (
+            <button
+              key={a}
+              onClick={() => setActiveAmbito(a === activeAmbito ? "ALL" : a)}
+              className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
+              style={{
+                border: "1px solid",
+                borderColor: activeAmbito === a ? color : "rgba(0,0,255,0.15)",
+                background: activeAmbito === a ? color : "transparent",
+                color: activeAmbito === a ? "#fff" : blue,
+                fontWeight: activeAmbito === a ? 700 : 400,
+              }}
+            >
+              {a.toUpperCase()}
+            </button>
+          ))}
 
-          <span className="text-[7px] font-medium uppercase tracking-[0.15em] self-center" style={{ color, opacity: 0.35 }}>
+          {/* Separator */}
+          <span className="text-[7px] mx-1.5" style={{ color: blue, opacity: 0.2 }}>|</span>
+
+          {/* Tipo buttons */}
+          {["Portal", "Persona"].map((t) => (
+            <button
+              key={t}
+              onClick={() => setActiveTipo(t === activeTipo ? "ALL" : t)}
+              className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
+              style={{
+                border: "1px solid",
+                borderColor: activeTipo === t ? color : "rgba(0,0,255,0.15)",
+                background: activeTipo === t ? color : "transparent",
+                color: activeTipo === t ? "#fff" : blue,
+                fontWeight: activeTipo === t ? 700 : 400,
+              }}
+            >
+              {t === "Portal" ? "PORTAIS" : "PERSONAS"}
+            </button>
+          ))}
+
+          <span className="text-[7px] font-medium uppercase tracking-[0.15em] self-center ml-2" style={{ color, opacity: 0.35 }}>
             {filtered.length === totalAll ? `${totalAll} entradas` : `${filtered.length} / ${totalAll}`}
           </span>
         </div>
