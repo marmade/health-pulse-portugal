@@ -577,7 +577,7 @@ export default function BenchmarkPage() {
 
       {/* Description line */}
       <div
-        className="text-[10px] tracking-[0.08em] leading-snug mb-9"
+        className="text-xs tracking-[0.08em] leading-snug mb-9"
         style={{ color: accentColor }}
       >
         {activeSinal === "+"
