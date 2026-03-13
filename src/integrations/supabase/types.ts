@@ -38,6 +38,39 @@ export type Database = {
         }
         Relationships: []
       }
+      bookmarks: {
+        Row: {
+          categoria: string
+          created_at: string
+          fonte: string
+          id: string
+          notas: string | null
+          ordem: number
+          titulo: string
+          url: string
+        }
+        Insert: {
+          categoria?: string
+          created_at?: string
+          fonte?: string
+          id?: string
+          notas?: string | null
+          ordem?: number
+          titulo: string
+          url: string
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          fonte?: string
+          id?: string
+          notas?: string | null
+          ordem?: number
+          titulo?: string
+          url?: string
+        }
+        Relationships: []
+      }
       briefings_archive: {
         Row: {
           created_at: string
