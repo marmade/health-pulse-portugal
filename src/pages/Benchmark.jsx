@@ -584,121 +584,109 @@ function Section({ title, entries, accentColor }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function BenchmarkPage() {
   const [entries] = useState(loadEntries);
-  const [activeSinal, setActiveSinal] = useState("+");
-  const [activeAmbito, setActiveAmbito] = useState("ALL");
+  const [activeAmbitoPlus, setActiveAmbitoPlus] = useState("ALL");
+  const [activeAmbitoMinus, setActiveAmbitoMinus] = useState("ALL");
 
   const blue = "#0000FF";
-  const orange = "#FF00FF";
-  const accentColor = activeSinal === "+" ? blue : orange;
+  const magenta = "#FF00FF";
 
-  const filtered = entries.filter((e) => {
-    if (e.sinal !== activeSinal) return false;
-    if (activeAmbito !== "ALL" && e.ambito !== activeAmbito) return false;
-    return true;
-  });
+  function renderColumn(sinal, activeAmbito, setActiveAmbito, color) {
+    const all = entries.filter((e) => e.sinal === sinal);
+    const filtered = all.filter((e) => activeAmbito === "ALL" || e.ambito === activeAmbito);
 
-  const portaisNac = filtered.filter((e) => e.tipo === "Portal" && e.ambito === "Nacional");
-  const personasNac = filtered.filter((e) => e.tipo === "Persona" && e.ambito === "Nacional");
-  const portaisInt = filtered.filter((e) => e.tipo === "Portal" && e.ambito === "Internacional");
-  const personasInt = filtered.filter((e) => e.tipo === "Persona" && e.ambito === "Internacional");
+    const portaisNac = filtered.filter((e) => e.tipo === "Portal" && e.ambito === "Nacional");
+    const personasNac = filtered.filter((e) => e.tipo === "Persona" && e.ambito === "Nacional");
+    const portaisInt = filtered.filter((e) => e.tipo === "Portal" && e.ambito === "Internacional");
+    const personasInt = filtered.filter((e) => e.tipo === "Persona" && e.ambito === "Internacional");
 
-  const totalFiltered = filtered.length;
-  const totalAll = entries.filter((e) => e.sinal === activeSinal).length;
+    const totalFiltered = filtered.length;
+    const totalAll = all.length;
+
+    return (
+      <div>
+        {/* Column title */}
+        <div
+          className="text-sm font-bold tracking-[0.1em] uppercase mb-4"
+          style={{ color }}
+        >
+          BENCHMARK {sinal}
+        </div>
+
+        {/* Âmbito filter */}
+        <div className="flex items-center gap-0.5 mb-6">
+          {["ALL", "Nacional", "Internacional"].map((a) => (
+            <button
+              key={a}
+              onClick={() => setActiveAmbito(a)}
+              className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
+              style={{
+                border: "1px solid",
+                borderColor: activeAmbito === a ? color : "rgba(0,0,255,0.15)",
+                background: activeAmbito === a ? color : "transparent",
+                color: activeAmbito === a ? "#fff" : blue,
+                fontWeight: activeAmbito === a ? 700 : 400,
+              }}
+            >
+              {a === "ALL" ? "TODOS" : a.toUpperCase()}
+            </button>
+          ))}
+          <span className="text-[7px] font-medium uppercase tracking-[0.15em] self-center ml-2" style={{ color, opacity: 0.35 }}>
+            {totalFiltered === totalAll ? `${totalAll} entradas` : `${totalFiltered} / ${totalAll}`}
+          </span>
+        </div>
+
+        {/* Description */}
+        <div className="text-xs tracking-[0.08em] leading-snug mb-9" style={{ color }}>
+          {sinal === "+"
+            ? "Referências positivas — portais e comunicadores que produzem informação de saúde credível, baseada em evidência."
+            : "Vectores de desinformação — portais e figuras que disseminam informação de saúde falsa ou enganosa."}
+        </div>
+
+        {/* Sections: Nacional */}
+        {(activeAmbito === "ALL" || activeAmbito === "Nacional") && (
+          <div className="mb-12">
+            {activeAmbito === "ALL" && (
+              <div
+                className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
+                style={{ color, borderBottom: `2px solid ${color}` }}
+              >
+                NACIONAL
+              </div>
+            )}
+            <Section title="PORTAIS" entries={portaisNac} accentColor={color} />
+            <Section title="PERSONAS" entries={personasNac} accentColor={color} />
+          </div>
+        )}
+
+        {/* Sections: Internacional */}
+        {(activeAmbito === "ALL" || activeAmbito === "Internacional") && (
+          <div className="mb-12">
+            {activeAmbito === "ALL" && (
+              <div
+                className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
+                style={{ color, borderBottom: `2px solid ${color}` }}
+              >
+                INTERNACIONAL
+              </div>
+            )}
+            <Section title="PORTAIS" entries={portaisInt} accentColor={color} />
+            <Section title="PERSONAS" entries={personasInt} accentColor={color} />
+          </div>
+        )}
+
+        {filtered.length === 0 && (
+          <div className="text-[11px] text-center py-12 tracking-[0.08em]" style={{ color, opacity: 0.2 }}>
+            Nenhuma entrada para este filtro.
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {/* Toggle Benchmark + / − */}
-      <div className="flex mb-6 w-fit" style={{ border: `1px solid ${blue}` }}>
-        {[
-          { value: "+", label: "BENCHMARK +" },
-          { value: "-", label: "BENCHMARK −" },
-        ].map(({ value, label }) => (
-          <button
-            key={value}
-            onClick={() => setActiveSinal(value)}
-            className="text-[11px] tracking-[0.1em] uppercase py-2.5 px-6 border-none cursor-pointer transition-colors duration-150"
-            style={{
-              borderRight: value === "+" ? `1px solid ${blue}` : "none",
-              fontWeight: activeSinal === value ? 700 : 400,
-              background: activeSinal === value ? (value === "+" ? blue : orange) : "transparent",
-              color: activeSinal === value ? "#fff" : blue,
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* Âmbito filter */}
-      <div className="flex items-center gap-0.5 mb-8">
-        {["ALL", "Nacional", "Internacional"].map((a) => (
-          <button
-            key={a}
-            onClick={() => setActiveAmbito(a)}
-            className="text-[7px] font-bold tracking-wider uppercase px-1.5 py-0.5 cursor-pointer transition-colors duration-150"
-            style={{
-              border: "1px solid",
-              borderColor: activeAmbito === a ? accentColor : "rgba(0,0,255,0.15)",
-              background: activeAmbito === a ? accentColor : "transparent",
-              color: activeAmbito === a ? "#fff" : blue,
-              fontWeight: activeAmbito === a ? 700 : 400,
-            }}
-          >
-            {a === "ALL" ? "TODOS" : a.toUpperCase()}
-          </button>
-        ))}
-        <span className="text-[7px] font-medium uppercase tracking-[0.15em] self-center ml-2" style={{ color: blue, opacity: 0.35 }}>
-          {totalFiltered === totalAll ? `${totalAll} entradas` : `${totalFiltered} / ${totalAll}`}
-        </span>
-      </div>
-
-      {/* Description line */}
-      <div
-        className="text-xs tracking-[0.08em] leading-snug mb-9"
-        style={{ color: accentColor }}
-      >
-        {activeSinal === "+"
-          ? "Referências positivas — portais e comunicadores que produzem informação de saúde credível, baseada em evidência."
-          : "Vectores de desinformação — portais e figuras que disseminam informação de saúde falsa ou enganosa."}
-      </div>
-
-      {/* Sections: Nacional */}
-      {(activeAmbito === "ALL" || activeAmbito === "Nacional") && (
-        <div className="mb-12">
-          {activeAmbito === "ALL" && (
-            <div
-              className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
-              style={{ color: blue, borderBottom: `2px solid ${blue}` }}
-            >
-              NACIONAL
-            </div>
-          )}
-          <Section title="PORTAIS" entries={portaisNac} accentColor={accentColor} />
-          <Section title="PERSONAS" entries={personasNac} accentColor={accentColor} />
-        </div>
-      )}
-
-      {/* Sections: Internacional */}
-      {(activeAmbito === "ALL" || activeAmbito === "Internacional") && (
-        <div className="mb-12">
-          {activeAmbito === "ALL" && (
-            <div
-              className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
-              style={{ color: blue, borderBottom: `2px solid ${blue}` }}
-            >
-              INTERNACIONAL
-            </div>
-          )}
-          <Section title="PORTAIS" entries={portaisInt} accentColor={accentColor} />
-          <Section title="PERSONAS" entries={personasInt} accentColor={accentColor} />
-        </div>
-      )}
-
-      {filtered.length === 0 && (
-        <div className="text-[11px] text-center py-12 tracking-[0.08em]" style={{ color: blue, opacity: 0.2 }}>
-          Nenhuma entrada para este filtro.
-        </div>
-      )}
+    <div className="grid grid-cols-2 gap-12">
+      {renderColumn("+", activeAmbitoPlus, setActiveAmbitoPlus, blue)}
+      {renderColumn("-", activeAmbitoMinus, setActiveAmbitoMinus, magenta)}
     </div>
   );
 }
