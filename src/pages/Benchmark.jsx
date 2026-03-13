@@ -413,6 +413,28 @@ const SEED_DATA = [
     col3: "• Credenciais de cirurgião cardíaco de Columbia University usadas como escudo de credibilidade\n• Programa televisivo com audiências de milhões durante mais de uma década\n• Linguagem acessível e emocional que ressoa com públicos vulneráveis\n• Modelo de negócio baseado em parcerias com fabricantes de suplementos",
     col4: "• Define o modelo de celebrity medicine replicado por influenciadores de saúde em todo o mundo\n• Normaliza a promoção de produtos sem evidência por profissionais de saúde\n• Relevante para discutir conflitos de interesse e ética na comunicação médica\n• Para combater: regulação de comunicação médica em contextos comerciais",
   },
+  {
+    id: "bm-13",
+    sinal: "-",
+    tipo: "Persona",
+    ambito: "Internacional",
+    nome: "Gwyneth Paltrow",
+    link: "https://goop.com",
+    descricao: "Actriz norte-americana fundadora da Goop, empresa de wellness que se tornou referência global na comercialização de pseudo-ciência em saúde. Promoveu ovos de jade vaginais, vapores vaginais, suplementos sem evidência e terapias não validadas, sendo processada e condenada por publicidade enganosa. Figura fundadora da era moderna do celebrity wellness.",
+    col3: "• Marca Goop com receitas de centenas de milhões de dólares assente em produtos sem evidência\n• Linguagem de 'empoderamento feminino' e 'escuta do corpo' que legitima afirmações sem base científica\n• Produção de conteúdo editorial (newsletter, podcast, série Netflix) que confere aparência de credibilidade\n• Condenada pela FTC e paga multa por alegações enganosas sobre produtos",
+    col4: "• Define o modelo de celebrity wellness replicado globalmente por influenciadores de saúde\n• Normaliza a desconfiança na medicina convencional em nome da 'medicina integrativa'\n• Público-alvo são mulheres com elevado poder de compra e escolaridade — contradiz o mito de que a desinformação afecta apenas populações com menos literacia\n• Conteúdo traduzido e adaptado para contexto português e europeu",
+  },
+  {
+    id: "bm-14",
+    sinal: "-",
+    tipo: "Persona",
+    ambito: "Internacional",
+    nome: "Kim Kardashian",
+    link: "",
+    descricao: "Personalidade televisiva e empresária norte-americana identificada por investigadores como uma das figuras mais problemáticas em conselhos de saúde online. Promoveu detox teas com ingredientes laxantes como produto de emagrecimento, suplementos sem evidência e procedimentos estéticos não regulados. Caso paradigmático de como o alcance de redes sociais supera amplamente o da comunicação de saúde pública.",
+    col3: "• Mais de 300 milhões de seguidores no Instagram — a OMS tem 5 milhões no Twitter\n• Parceria comercial com empresas de detox teas e suplementos apresentadas como recomendações pessoais\n• Conteúdo de saúde integrado num ecossistema de marca pessoal onde incentivo financeiro e conselho são indistinguíveis\n• Alcance entre públicos jovens e adolescentes particularmente vulneráveis a mensagens sobre corpo e alimentação",
+    col4: "• Ilustra a assimetria de alcance entre desinformação celebrity e comunicação de saúde pública\n• Contribui para cultura de dietas restritivas e distúrbios alimentares em populações jovens\n• Caso de estudo central no debate sobre regulação de publicidade de saúde em redes sociais\n• Para combater: obrigatoriedade de etiquetagem de conteúdo patrocinado e regulação de alegações de saúde por influenciadores",
+  },
 ];
 
 const STORAGE_KEY = "benchmark_entries";
