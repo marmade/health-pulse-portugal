@@ -174,6 +174,12 @@ export default function Admin() {
   const [editingSobreId, setEditingSobreId] = useState<string | null>(null);
   const [sobreForm, setSobreForm] = useState({ titulo: "", conteudo: "" });
 
+  // Bookmarks state
+  const [bookmarksList, setBookmarksList] = useState<BookmarkItem[]>([]);
+  const [showBookmarkForm, setShowBookmarkForm] = useState(false);
+  const [editingBookmarkId, setEditingBookmarkId] = useState<string | null>(null);
+  const [bookmarkForm, setBookmarkForm] = useState({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
 
