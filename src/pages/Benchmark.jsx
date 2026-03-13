@@ -606,7 +606,7 @@ export default function BenchmarkPage() {
         <div className="mb-12">
           {activeAmbito === "ALL" && (
             <div
-              className="text-[10px] tracking-[0.18em] uppercase font-bold mb-6 pb-2"
+              className="text-xs tracking-[0.18em] uppercase font-bold mb-6 pb-2"
               style={{ color: blue, borderBottom: `2px solid ${blue}` }}
             >
               INTERNACIONAL
