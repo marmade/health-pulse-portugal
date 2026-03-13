@@ -24,6 +24,7 @@ const CATEGORIAS: Record<string, string> = {
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategoria, setActiveCategoria] = useState("todas");
 
   useEffect(() => {
     const fetch = async () => {
@@ -44,13 +45,16 @@ const Bookmarks = () => {
     return acc;
   }, {});
 
-  // Sort categories to maintain consistent order
   const categoryOrder = ["desinformacao", "igualdade_social", "cuidados_saude_primarios", "dunning_kruger", "comunicacao_cientifica"];
-  const sortedCategories = Object.keys(grouped).sort((a, b) => {
-    const ia = categoryOrder.indexOf(a);
-    const ib = categoryOrder.indexOf(b);
-    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-  });
+  const sortedCategories = Object.keys(grouped)
+    .filter((cat) => activeCategoria === "todas" || cat === activeCategoria)
+    .sort((a, b) => {
+      const ia = categoryOrder.indexOf(a);
+      const ib = categoryOrder.indexOf(b);
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+
+  const visibleCount = sortedCategories.reduce((sum, cat) => sum + (grouped[cat]?.length || 0), 0);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
