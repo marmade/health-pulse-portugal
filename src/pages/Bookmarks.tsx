@@ -111,15 +111,6 @@ const Bookmarks = () => {
                       {b.fonte && (
                         <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
                       )}
-                      <span
-                        className="inline-block mt-2 text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm"
-                        style={{
-                          backgroundColor: "rgba(0,0,255,0.08)",
-                          color: "#0000FF",
-                        }}
-                      >
-                        {CATEGORIAS[b.categoria] || b.categoria}
-                      </span>
                       {b.notas && (
                         <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
                       )}
