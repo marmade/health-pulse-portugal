@@ -129,6 +129,28 @@ const Bookmarks = () => {
           <p className="text-sm opacity-50">A carregar...</p>
         ) : sortedCategories.length === 0 ? (
           <p className="text-sm opacity-50">Sem bookmarks registados.</p>
+        ) : activeCategoria !== "todas" ? (
+          <div className="columns-1 md:columns-3 gap-8">
+            {sortedCategories.flatMap((cat) =>
+              grouped[cat].map((b) => (
+                <a
+                  key={b.id}
+                  href={b.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="break-inside-avoid mb-3 block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors"
+                >
+                  <p className="text-sm font-medium leading-snug">{b.titulo}</p>
+                  {b.fonte && (
+                    <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
+                  )}
+                  {b.notas && (
+                    <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
+                  )}
+                </a>
+              ))
+            )}
+          </div>
         ) : (
           <div className="columns-1 md:columns-3 gap-8">
             {sortedCategories.map((cat) => (
