@@ -119,10 +119,10 @@ const Sobre = () => {
             </div>
             <div className="space-y-3">
               <p className="text-[9px] font-bold uppercase tracking-[0.12em] mt-6 mb-3" style={{ color: "#7B00FF" }}>Para que serve</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Valorizar a comunicação em saúde nos cuidados de saúde primários</p>
-              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
+              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
+              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
+              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Valorizar a comunicação em saúde nos cuidados de saúde primários</p>
+              <p className="text-xs leading-relaxed opacity-80" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
             </div>
           </div>
         </div>
