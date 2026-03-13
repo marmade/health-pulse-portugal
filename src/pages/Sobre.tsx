@@ -341,7 +341,7 @@ const Sobre = () => {
       {/* Limitações */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("limitacoes").titulo}</h2>
-        <div className="space-y-3 max-w-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
           {parseList(get("limitacoes").conteudo).map((item) => (
             <p key={item} className="text-sm leading-relaxed">{item}</p>
           ))}
