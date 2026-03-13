@@ -24,6 +24,7 @@ const CATEGORIAS: Record<string, string> = {
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeCategoria, setActiveCategoria] = useState("todas");
 
   useEffect(() => {
     const fetch = async () => {
@@ -44,13 +45,16 @@ const Bookmarks = () => {
     return acc;
   }, {});
 
-  // Sort categories to maintain consistent order
   const categoryOrder = ["desinformacao", "igualdade_social", "cuidados_saude_primarios", "dunning_kruger", "comunicacao_cientifica"];
-  const sortedCategories = Object.keys(grouped).sort((a, b) => {
-    const ia = categoryOrder.indexOf(a);
-    const ib = categoryOrder.indexOf(b);
-    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
-  });
+  const sortedCategories = Object.keys(grouped)
+    .filter((cat) => activeCategoria === "todas" || cat === activeCategoria)
+    .sort((a, b) => {
+      const ia = categoryOrder.indexOf(a);
+      const ib = categoryOrder.indexOf(b);
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+
+  const visibleCount = sortedCategories.reduce((sum, cat) => sum + (grouped[cat]?.length || 0), 0);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -86,7 +90,41 @@ const Bookmarks = () => {
         </p>
       </section>
 
-      <section className="px-6 pb-16">
+      <section className="px-6 pb-2">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-0.5">
+            <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mr-1.5">Categoria</span>
+            <button
+              onClick={() => setActiveCategoria("todas")}
+              className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+                activeCategoria === "todas"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+              }`}
+            >
+              Todas
+            </button>
+            {categoryOrder.map((catKey) => (
+              <button
+                key={catKey}
+                onClick={() => setActiveCategoria(catKey)}
+                className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+                  activeCategoria === catKey
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+                }`}
+              >
+                {CATEGORIAS[catKey] || catKey}
+              </button>
+            ))}
+          </div>
+          <span className="text-[7px] font-medium uppercase tracking-[0.15em] text-foreground/35">
+            {visibleCount} bookmarks
+          </span>
+        </div>
+      </section>
+
+      <section className="px-6 pb-16 pt-4">
         {loading ? (
           <p className="text-sm opacity-50">A carregar...</p>
         ) : sortedCategories.length === 0 ? (
