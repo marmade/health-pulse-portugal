@@ -511,7 +511,8 @@ export default function BenchmarkPage() {
   const [activeAmbito, setActiveAmbito] = useState("ALL");
 
   const blue = "#0000FF";
-  const accentColor = activeSinal === "+" ? blue : "#dc2626";
+  const orange = "#E97A00";
+  const accentColor = activeSinal === "+" ? blue : orange;
 
   const filtered = entries.filter((e) => {
     if (e.sinal !== activeSinal) return false;
@@ -542,7 +543,7 @@ export default function BenchmarkPage() {
             style={{
               borderRight: value === "+" ? `1px solid ${blue}` : "none",
               fontWeight: activeSinal === value ? 700 : 400,
-              background: activeSinal === value ? (value === "+" ? blue : "#dc2626") : "transparent",
+              background: activeSinal === value ? (value === "+" ? blue : orange) : "transparent",
               color: activeSinal === value ? "#fff" : blue,
             }}
           >
