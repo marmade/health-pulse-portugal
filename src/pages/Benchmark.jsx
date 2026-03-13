@@ -556,7 +556,7 @@ export default function BenchmarkPage() {
           <button
             key={a}
             onClick={() => setActiveAmbito(a)}
-            className="text-[10px] tracking-[0.08em] uppercase py-1.5 px-3.5 cursor-pointer transition-all duration-150"
+            className="text-[10px] tracking-[0.08em] uppercase py-2.5 px-5 cursor-pointer transition-all duration-150"
             style={{
               border: "1px solid",
               borderColor: activeAmbito === a ? accentColor : "rgba(0,0,255,0.15)",
