@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 import { fallbackSobreContent, SOBRE_BLOCKS } from "@/data/sobreContent";
+import BenchmarkAdminTab from "@/components/BenchmarkAdminTab";
 
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = [
@@ -509,6 +510,7 @@ export default function Admin() {
             <TabsTrigger value="popups" className={tabTriggerClass}>PLATAFORMA</TabsTrigger>
             <TabsTrigger value="sobre" className={tabTriggerClass}>SOBRE</TabsTrigger>
             <TabsTrigger value="bookmarks" className={tabTriggerClass}>BOOKMARKS</TabsTrigger>
+            <TabsTrigger value="benchmark" className={tabTriggerClass}>BENCHMARK</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -1022,6 +1024,11 @@ export default function Admin() {
                 </TableBody>
               </Table>
             </div>
+          </TabsContent>
+
+          {/* Benchmark Tab */}
+          <TabsContent value="benchmark" className="mt-0">
+            <BenchmarkAdminTab />
           </TabsContent>
         </Tabs>
       </main>
