@@ -106,7 +106,7 @@ const BOOKMARK_CATEGORIAS = [
   { value: "desinformacao", label: "Desinformação" },
   { value: "igualdade_social", label: "Elevador Social" },
   { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
-  { value: "dunning_kruger", label: "Dunning-Kruger" },
+  { value: "dunning_kruger", label: "Saber que não sabe" },
 ];
 
 const emptyTexto = (): Omit<TextoItem, "id"> => ({

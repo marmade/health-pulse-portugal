@@ -17,7 +17,7 @@ const CATEGORIAS: Record<string, string> = {
   desinformacao: "Desinformação",
   igualdade_social: "Elevador Social",
   cuidados_saude_primarios: "Cuidados de Saúde Primários",
-  dunning_kruger: "Dunning-Kruger",
+  dunning_kruger: "Saber que não sabe",
 };
 
 const Bookmarks = () => {
