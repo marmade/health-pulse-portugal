@@ -104,6 +104,7 @@ const Sobre = () => {
               <p className="text-sm leading-relaxed">Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.</p>
             </div>
             <div className="space-y-3">
+              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mt-6 mb-3">Para que serve</p>
               <p className="text-sm leading-relaxed">Identificar os temas de saúde mais pesquisados em Portugal</p>
               <p className="text-sm leading-relaxed">Detectar sinais emergentes antes de chegarem aos media</p>
               <p className="text-sm leading-relaxed">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
