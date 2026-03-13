@@ -209,7 +209,7 @@ export default function Admin() {
   };
 
   const fetchAll = async () => {
-    const [kw, db, nw, tx, gu, pp, sb] = await Promise.all([
+    const [kw, db, nw, tx, gu, pp, sb, bk] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
       supabase.from("debunking").select("*").order("created_at", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
@@ -217,6 +217,7 @@ export default function Admin() {
       supabase.from("guioes").select("*").order("tema").order("ordem"),
       supabase.from("plataforma_popups").select("*"),
       supabase.from("sobre_conteudo").select("*"),
+      supabase.from("bookmarks").select("*").order("ordem"),
     ]);
     if (kw.data) setKeywords(kw.data);
     if (db.data) setDebunking(db.data);
@@ -225,6 +226,36 @@ export default function Admin() {
     if (gu.data) setGuioes(gu.data as GuiaoRow[]);
     if (pp.data) setPopups(pp.data as PopupItem[]);
     if (sb.data) setSobreItems(sb.data as SobreItem[]);
+    if (bk.data) setBookmarksList(bk.data as BookmarkItem[]);
+  };
+
+  // Bookmarks CRUD
+  const openBookmarkForm = (item?: BookmarkItem) => {
+    if (item) {
+      setEditingBookmarkId(item.id);
+      setBookmarkForm({ url: item.url, titulo: item.titulo, fonte: item.fonte, categoria: item.categoria, notas: item.notas || "", ordem: item.ordem });
+    } else {
+      setEditingBookmarkId(null);
+      setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+    }
+    setShowBookmarkForm(true);
+  };
+
+  const saveBookmark = async () => {
+    if (!bookmarkForm.titulo || !bookmarkForm.url) return;
+    const payload = { url: bookmarkForm.url, titulo: bookmarkForm.titulo, fonte: bookmarkForm.fonte, categoria: bookmarkForm.categoria, notas: bookmarkForm.notas || null, ordem: bookmarkForm.ordem };
+    const { error } = editingBookmarkId
+      ? await supabase.from("bookmarks").update(payload).eq("id", editingBookmarkId)
+      : await supabase.from("bookmarks").insert(payload);
+    if (error) { toast({ title: "Erro ao guardar", variant: "destructive" }); }
+    else { toast({ title: "Guardado ✓" }); setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); fetchAll(); }
+  };
+
+  const deleteBookmark = async (id: string) => {
+    const { error } = await supabase.from("bookmarks").delete().eq("id", id);
+    if (error) toast({ title: "Erro ao apagar", variant: "destructive" });
+    else { toast({ title: "Apagado ✓" }); fetchAll(); }
+    setDeleteConfirm(null);
   };
 
   // Keywords CRUD
