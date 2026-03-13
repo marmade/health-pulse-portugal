@@ -92,6 +92,23 @@ type SobreItem = {
   conteudo: string;
 };
 
+type BookmarkItem = {
+  id: string;
+  url: string;
+  titulo: string;
+  fonte: string;
+  categoria: string;
+  notas: string | null;
+  ordem: number;
+};
+
+const BOOKMARK_CATEGORIAS = [
+  { value: "desinformacao", label: "Desinformação" },
+  { value: "igualdade_social", label: "Igualdade Social" },
+  { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
+  { value: "dunning_kruger", label: "Dunning-Kruger" },
+];
+
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
   ordem: 0,
   categoria: "",
