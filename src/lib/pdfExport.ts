@@ -22,13 +22,6 @@ const periodLabels: Record<string, string> = {
   "12m": "Últimos 12 meses",
 };
 
-const regionLabels: Record<string, string> = {
-  pt: "Portugal",
-  norte: "Norte",
-  centro: "Centro",
-  lisboa: "Lisboa",
-  sul: "Sul",
-};
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
