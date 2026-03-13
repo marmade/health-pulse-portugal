@@ -95,40 +95,33 @@ const Sobre = () => {
 
       {/* O que é */}
       <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("o-que-e").titulo}</h2>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">O que é</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-primary mb-3">{get("o-que-e-rv").titulo}</h3>
-            <p className="text-sm leading-relaxed">
-              {get("o-que-e-rv").conteudo}
-            </p>
+          {/* Coluna A — Reportagem Viva */}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mb-3">Reportagem Viva</h3>
+              <p className="text-sm leading-relaxed">Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.</p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-sm leading-relaxed">Identificar os temas de saúde mais pesquisados em Portugal</p>
+              <p className="text-sm leading-relaxed">Detectar sinais emergentes antes de chegarem aos media</p>
+              <p className="text-sm leading-relaxed">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
+              <p className="text-sm leading-relaxed">Informar a escolha de temas para comunicação em saúde</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: "#7B00FF" }}>{get("o-que-e-dqd").titulo}</h3>
-            <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>
-              {get("o-que-e-dqd").conteudo}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Para que serve */}
-      <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("para-que-serve").titulo}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="space-y-3">
-            <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mb-4">Reportagem Viva</h3>
-            <p className="text-sm leading-relaxed">Identificar os temas de saúde mais pesquisados em Portugal</p>
-            <p className="text-sm leading-relaxed">Detectar sinais emergentes antes de chegarem aos media</p>
-            <p className="text-sm leading-relaxed">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
-            <p className="text-sm leading-relaxed">Informar a escolha de temas para comunicação em saúde</p>
-          </div>
-          <div className="space-y-3">
-            <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] mb-4" style={{ color: "#7B00FF" }}>Diz que Disse</h3>
-            <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
-            <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
-            <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Integrar os cuidados de saúde primários na comunicação em saúde</p>
-            <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
+          {/* Coluna B — Diz que Disse */}
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] mb-3" style={{ color: "#7B00FF" }}>Diz que Disse</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.</p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Integrar os cuidados de saúde primários na comunicação em saúde</p>
+              <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Reduzir desigualdades sociais no acesso à informação em saúde</p>
+            </div>
           </div>
         </div>
       </section>
