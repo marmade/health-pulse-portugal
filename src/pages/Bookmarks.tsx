@@ -92,7 +92,7 @@ const Bookmarks = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {sortedCategories.map((cat) => (
               <div key={cat}>
-                <p className="text-[9px] font-bold uppercase tracking-wider mb-4" style={{ color: "#0000FF" }}>
+                <p className="text-[9px] font-bold uppercase tracking-wider mb-4 pl-4" style={{ color: "#0000FF" }}>
                   {CATEGORIAS[cat] || cat}
                 </p>
                 <div className="flex flex-col gap-3">
