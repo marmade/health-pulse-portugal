@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 import { fallbackSobreContent, SOBRE_BLOCKS } from "@/data/sobreContent";
+import BenchmarkAdminTab from "@/components/BenchmarkAdminTab";
 
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = [
