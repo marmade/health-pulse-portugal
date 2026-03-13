@@ -575,11 +575,8 @@ export default function BenchmarkPage() {
 
       {/* Description line */}
       <div
-        className="text-[10px] tracking-[0.08em] leading-snug mb-9 pl-3"
-        style={{
-          color: accentColor,
-          borderLeft: `3px solid ${accentColor}`,
-        }}
+        className="text-[10px] tracking-[0.08em] leading-snug mb-9"
+        style={{ color: accentColor }}
       >
         {activeSinal === "+"
           ? "Referências positivas — portais e comunicadores que produzem informação de saúde credível, baseada em evidência."
