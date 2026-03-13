@@ -353,11 +353,13 @@ const Sobre = () => {
       {/* Agradecimentos */}
       <section className="px-6 py-12">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("agradecimentos").titulo}</h2>
-        {agradecimentosParts.map((part, i) => (
-          <p key={i} className="text-sm max-w-2xl leading-relaxed mb-6 last:mb-0">
-            {part}
-          </p>
-        ))}
+        <div className="columns-2 gap-12 text-sm leading-relaxed">
+          {agradecimentosParts.map((part, i) => (
+            <p key={i} className="mb-6 last:mb-0">
+              {part}
+            </p>
+          ))}
+        </div>
       </section>
 
       <div className="section-divider" />
