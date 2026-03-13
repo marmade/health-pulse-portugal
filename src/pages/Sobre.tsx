@@ -199,18 +199,6 @@ const Sobre = () => {
 
       <div className="section-divider" />
 
-      {/* Limitações */}
-      <section className="px-6 py-12">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("limitacoes").titulo}</h2>
-        <div className="space-y-3 max-w-2xl">
-          {parseList(get("limitacoes").conteudo).map((item) => (
-            <p key={item} className="text-sm leading-relaxed">{item}</p>
-          ))}
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
       {/* Como funciona — two-level diagram */}
       <section className="px-6 py-8">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">{get("como-funciona").titulo}</h2>
@@ -344,6 +332,18 @@ const Sobre = () => {
               </div>
               {idx < arr.length - 1 && <span className="text-primary text-[10px] font-bold select-none leading-none">↓</span>}
             </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* Limitações */}
+      <section className="px-6 py-12">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-8">{get("limitacoes").titulo}</h2>
+        <div className="space-y-3 max-w-2xl">
+          {parseList(get("limitacoes").conteudo).map((item) => (
+            <p key={item} className="text-sm leading-relaxed">{item}</p>
           ))}
         </div>
       </section>
