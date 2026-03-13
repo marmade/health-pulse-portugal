@@ -495,7 +495,7 @@ function BenchmarkCard({ entry, accentColor }) {
             )}
           </div>
           <h3
-            className="text-sm font-bold tracking-[0.04em] uppercase m-0"
+            className="text-sm font-semibold tracking-[0.04em] m-0"
             style={{ color: blue }}
           >
             {entry.nome}
