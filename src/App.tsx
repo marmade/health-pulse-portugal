@@ -12,7 +12,7 @@ import Mural from "./pages/Mural";
 import Plataforma from "./pages/Plataforma";
 import Admin from "./pages/Admin";
 import Bookmarks from "./pages/Bookmarks";
-import Benchmark from "./pages/Benchmark";
+import Benchmark from "./pages/BenchmarkWrapper";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
