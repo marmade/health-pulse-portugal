@@ -104,6 +104,7 @@ const Sobre = () => {
               <p className="text-sm leading-relaxed">Uma plataforma de monitorização de narrativas de saúde em Portugal. Agrega dados de pesquisa online, cobertura mediática e sinais de desinformação para gerar insights sobre o que preocupa, o que circula e o que distorce a informação de saúde, em tempo real.</p>
             </div>
             <div className="space-y-3">
+              <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary mt-6 mb-3">Para que serve</p>
               <p className="text-sm leading-relaxed">Identificar os temas de saúde mais pesquisados em Portugal</p>
               <p className="text-sm leading-relaxed">Detectar sinais emergentes antes de chegarem aos media</p>
               <p className="text-sm leading-relaxed">Cruzar picos de pesquisa com desinformação e facto-verificação</p>
@@ -117,6 +118,7 @@ const Sobre = () => {
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.</p>
             </div>
             <div className="space-y-3">
+              <p className="text-[9px] font-bold uppercase tracking-[0.12em] mt-6 mb-3" style={{ color: "#7B00FF" }}>Para que serve</p>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Capacitar as pessoas com conhecimento crítico sobre saúde</p>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Desenvolver o pensamento crítico face à informação recebida</p>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Valorizar a comunicação em saúde nos cuidados de saúde primários</p>
