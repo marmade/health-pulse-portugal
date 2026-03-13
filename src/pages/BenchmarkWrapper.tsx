@@ -31,7 +31,7 @@ const BenchmarkWrapper = () => (
         Benchmark
       </h1>
       <p className="mt-2 text-xs font-medium tracking-[0.15em] uppercase opacity-50">
-        Mapeamento do ecossistema
+        Práticas de Comunicação
       </p>
     </section>
 
