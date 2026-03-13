@@ -551,7 +551,7 @@ export default function BenchmarkPage() {
       </div>
 
       {/* Âmbito filter */}
-      <div className="flex gap-2 mb-8">
+      <div className="flex items-center gap-0.5 mb-8">
         {["ALL", "Nacional", "Internacional"].map((a) => (
           <button
             key={a}
