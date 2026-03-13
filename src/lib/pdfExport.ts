@@ -9,7 +9,7 @@ type AxisData = {
 };
 
 export type ExportData = {
-  filters: { period: string; region: string };
+  filters: { period: string };
   axes: Record<string, AxisData>;
   debunkingData: DebunkItem[];
   newsData: NewsItem[];
@@ -22,13 +22,6 @@ const periodLabels: Record<string, string> = {
   "12m": "Últimos 12 meses",
 };
 
-const regionLabels: Record<string, string> = {
-  pt: "Portugal",
-  norte: "Norte",
-  centro: "Centro",
-  lisboa: "Lisboa",
-  sul: "Sul",
-};
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -203,10 +196,9 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
 
   // Filters line
   const periodLabel = periodLabels[data.filters.period] || data.filters.period;
-  const regionLabel = regionLabels[data.filters.region] || data.filters.region;
   setFont("normal", 7);
   pdf.setTextColor(GREY);
-  pdf.text(`Período: ${periodLabel}  |  Região: ${regionLabel}`, MARGIN, yPos);
+  pdf.text(`Período: ${periodLabel}`, MARGIN, yPos);
   yPos += 10;
 
   // === TOP 5 PER AXIS ===

@@ -9,8 +9,7 @@ import type { Keyword } from "@/data/mockData";
  */
 export function detectAlerts(
   axisData: Record<string, { label: string; allKeywords: Keyword[] }>,
-  period: string,
-  region: string
+  period: string
 ): SearchAlert[] {
   const threshold = period === "7d" ? 150 : period === "30d" ? 250 : 150;
 
@@ -24,7 +23,6 @@ export function detectAlerts(
           growthPercent: kw.changePercent,
           peakDate: kw.lastPeak,
           axisLabel: axis.label,
-          region,
         });
       }
     }
