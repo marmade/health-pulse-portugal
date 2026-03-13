@@ -90,7 +90,41 @@ const Bookmarks = () => {
         </p>
       </section>
 
-      <section className="px-6 pb-16">
+      <section className="px-6 pb-2">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-0.5">
+            <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mr-1.5">Categoria</span>
+            <button
+              onClick={() => setActiveCategoria("todas")}
+              className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+                activeCategoria === "todas"
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+              }`}
+            >
+              Todas
+            </button>
+            {categoryOrder.map((catKey) => (
+              <button
+                key={catKey}
+                onClick={() => setActiveCategoria(catKey)}
+                className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
+                  activeCategoria === catKey
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
+                }`}
+              >
+                {CATEGORIAS[catKey] || catKey}
+              </button>
+            ))}
+          </div>
+          <span className="text-[7px] font-medium uppercase tracking-[0.15em] text-foreground/35">
+            {visibleCount} bookmarks
+          </span>
+        </div>
+      </section>
+
+      <section className="px-6 pb-16 pt-4">
         {loading ? (
           <p className="text-sm opacity-50">A carregar...</p>
         ) : sortedCategories.length === 0 ? (
