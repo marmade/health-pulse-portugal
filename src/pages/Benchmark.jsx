@@ -575,7 +575,7 @@ export default function BenchmarkPage() {
 
       {/* Description line */}
       <div
-        className="text-[10px] tracking-[0.08em] uppercase leading-snug mb-9 pl-3"
+        className="text-[10px] tracking-[0.08em] leading-snug mb-9 pl-3"
         style={{
           color: accentColor,
           borderLeft: `3px solid ${accentColor}`,
