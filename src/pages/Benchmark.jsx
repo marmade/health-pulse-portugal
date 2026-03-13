@@ -462,7 +462,7 @@ function BenchmarkCard({ entry, accentColor }) {
             </div>
             <div>
               <div
-                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-2.5"
+                className="text-[9px] tracking-[0.12em] uppercase font-bold pb-1 mb-4"
                 style={{
                   color: blue,
                   opacity: 0.4,
