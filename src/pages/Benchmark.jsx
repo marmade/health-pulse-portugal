@@ -384,7 +384,7 @@ function BenchmarkCard({ entry, accentColor }) {
 
   const bulletLines = (text) =>
     text.split("\n").filter(Boolean).map((line, i) => (
-      <div key={i} className="text-xs leading-relaxed mb-1" style={{ color: blue, opacity: 0.6 }}>
+      <div key={i} className="text-[10px] leading-relaxed mb-1" style={{ color: blue, opacity: 0.5 }}>
         {line}
       </div>
     ));
