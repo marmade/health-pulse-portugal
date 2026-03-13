@@ -11,25 +11,15 @@ type Props = {
   allKeywords: Keyword[];
   trendData: TrendPoint[];
   period: string;
-  region: string;
 };
 
-const regionLabels: Record<string, string> = {
-  pt: "Portugal",
-  norte: "Norte",
-  centro: "Centro",
-  lisboa: "Lisboa",
-  sul: "Sul",
-};
-
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData }: Props) => {
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
   const emergentCount = useMemo(
     () => allKeywords.filter((kw) => kw.isEmergent).length,
     [allKeywords]
   );
-  const regionLabel = regionLabels[region] || region;
 
   const top5 = useMemo(
     () => [...keywords].sort((a, b) => b.currentVolume - a.currentVolume).slice(0, 5),
@@ -41,11 +31,6 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, region }:
       <div>
         <h2 className="text-sm font-bold uppercase tracking-[0.15em]" style={{ color: "#0000FF" }}>
           {label}
-          {region !== "pt" && (
-            <span className="ml-2 text-[9px] font-medium normal-case opacity-50">
-              ({regionLabel})
-            </span>
-          )}
         </h2>
         <div className="flex items-center gap-4 mt-2">
           <TooltipProvider>

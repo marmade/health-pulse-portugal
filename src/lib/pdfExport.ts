@@ -196,10 +196,9 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
 
   // Filters line
   const periodLabel = periodLabels[data.filters.period] || data.filters.period;
-  const regionLabel = regionLabels[data.filters.region] || data.filters.region;
   setFont("normal", 7);
   pdf.setTextColor(GREY);
-  pdf.text(`Período: ${periodLabel}  |  Região: ${regionLabel}`, MARGIN, yPos);
+  pdf.text(`Período: ${periodLabel}`, MARGIN, yPos);
   yPos += 10;
 
   // === TOP 5 PER AXIS ===

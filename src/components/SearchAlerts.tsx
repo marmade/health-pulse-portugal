@@ -8,15 +8,6 @@ export type SearchAlert = {
   growthPercent: number;
   peakDate: string;
   axisLabel: string;
-  region: string;
-};
-
-const regionLabels: Record<string, string> = {
-  pt: "Portugal",
-  norte: "Norte",
-  centro: "Centro",
-  lisboa: "Lisboa",
-  sul: "Sul",
 };
 
 type Props = {
@@ -75,7 +66,7 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
                       <span className="tag-emergent">PICO</span>
                     </div>
                     <p className="text-[9px] text-foreground/40 mt-0.5">
-                      {alert.axisLabel} · {regionLabels[alert.region] || alert.region}
+                      {alert.axisLabel}
                     </p>
                   </div>
 

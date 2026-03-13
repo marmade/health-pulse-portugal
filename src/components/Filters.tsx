@@ -1,6 +1,6 @@
 type Props = {
-  filters: { period: string; region: string };
-  onFilterChange: (filters: { period: string; region: string }) => void;
+  filters: { period: string };
+  onFilterChange: (filters: { period: string }) => void;
 };
 
 const periods = [
@@ -9,21 +9,9 @@ const periods = [
   { id: "12m", label: "12 MESES" },
 ];
 
-const regions = [
-  { id: "pt", label: "PORTUGAL" },
-  { id: "norte", label: "NORTE" },
-  { id: "centro", label: "CENTRO" },
-  { id: "lisboa", label: "LISBOA" },
-  { id: "sul", label: "SUL" },
-];
-
 const Filters = ({ filters, onFilterChange }: Props) => {
   const handlePeriod = (id: string) => {
-    onFilterChange({ period: id, region: filters.region });
-  };
-
-  const handleRegion = (id: string) => {
-    onFilterChange({ period: filters.period, region: id });
+    onFilterChange({ period: id });
   };
 
   return (
@@ -41,22 +29,6 @@ const Filters = ({ filters, onFilterChange }: Props) => {
             }`}
           >
             {p.label}
-          </button>
-        ))}
-      </div>
-      <div className="flex items-center gap-0.5">
-        <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mr-1.5">Região</span>
-        {regions.map((r) => (
-          <button
-            key={r.id}
-            onClick={() => handleRegion(r.id)}
-            className={`text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 border transition-colors ${
-              filters.region === r.id
-                ? "border-foreground bg-foreground text-background"
-                : "border-foreground/20 text-foreground/40 hover:text-foreground hover:border-foreground"
-            }`}
-          >
-            {r.label}
           </button>
         ))}
       </div>

@@ -18,9 +18,9 @@ const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
-  const [filters, setFilters] = useState({ period: "12m", region: "pt" });
+  const [filters, setFilters] = useState({ period: "12m" });
 
-  const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period, filters.region);
+  const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period);
   const { data: dbDebunkingData } = useDebunkingData();
   const { data: dbNewsData, lastFetchTimestamp } = useNewsData();
   const lastRefreshed = useLastRefreshed();
@@ -31,8 +31,8 @@ const Index = () => {
   const newsData = dbNewsData.length > 0 ? dbNewsData : mockNewsData;
 
   const alerts = useMemo(
-    () => filteredData ? detectAlerts(filteredData, filters.period, filters.region) : [],
-    [filteredData, filters.period, filters.region]
+    () => filteredData ? detectAlerts(filteredData, filters.period) : [],
+    [filteredData, filters.period]
   );
 
   const visibleAxes =
@@ -94,14 +94,13 @@ const Index = () => {
               const axis = filteredData[axisId];
               return (
                 <AxisColumn
-                  key={`${axisId}-${filters.period}-${filters.region}`}
+                  key={`${axisId}-${filters.period}`}
                   axisId={axisId}
                   label={axis.label}
                   keywords={axis.keywords}
                   allKeywords={axis.allKeywords}
                   trendData={axis.trend}
                   period={filters.period}
-                  region={filters.region}
                 />
               );
             })}
@@ -119,14 +118,13 @@ const Index = () => {
               const axis = filteredData[axisId];
               return (
                 <AxisColumn
-                  key={`${axisId}-${filters.period}-${filters.region}`}
+                  key={`${axisId}-${filters.period}`}
                   axisId={axisId}
                   label={axis.label}
                   keywords={axis.keywords}
                   allKeywords={axis.allKeywords}
                   trendData={axis.trend}
                   period={filters.period}
-                  region={filters.region}
                 />
               );
             })}
