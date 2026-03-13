@@ -63,9 +63,9 @@ const Bookmarks = () => {
             Reportagem Viva
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/textos" className="nav-link">Textos</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
             <Link to="/editorial/bookmarks" className="nav-link nav-link-active">Bookmarks</Link>
+            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+            <Link to="/textos" className="nav-link">Textos</Link>
             <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
             <Link to="/plataforma" className="nav-link">Plataforma</Link>
             <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
