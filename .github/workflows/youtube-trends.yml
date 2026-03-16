@@ -1,17 +1,58 @@
-name: Actualizar YouTube Trends
+name: Actualização Semanal — Reportagem Viva
 
 on:
   schedule:
-    - cron: '0 6 * * 1'
-  workflow_dispatch:
+    - cron: '0 6 * * 1'   # Segundas-feiras, 06:00 UTC (07:00 Lisboa)
+  workflow_dispatch:        # Permite correr manualmente no GitHub
+
+env:
+  SUPABASE_URL: https://cyjwhmuakmiytypewwfw.supabase.co
+  SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5andobXVha21peXR5cGV3d2Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4Mjc2MjksImV4cCI6MjA4ODQwMzYyOX0.bcAKG2nQdYG7Qf8Mm1e_eJR9Fueqw20jkwlqrTWyH4Q
 
 jobs:
-  fetch-youtube:
+  actualizar:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - run: pip install google-api-python-client requests
-      - run: python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
+      - uses: actions/checkout@v4
+
+      # ── PASSO 1: Refresh das keywords (volumes + snapshots históricos) ──────
+      - name: 1 — Refresh trends (keywords)
+        run: |
+          echo "A invocar refresh-trends..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "$SUPABASE_URL/functions/v1/refresh-trends" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          BODY=$(echo "$RESP" | head -n -1)
+          CODE=$(echo "$RESP" | tail -n 1)
+          echo "HTTP $CODE — $BODY"
+          if [ "$CODE" != "200" ]; then
+            echo "::warning::refresh-trends devolveu HTTP $CODE"
+          fi
+
+      # ── PASSO 2: Fetch dos RSS feeds (notícias) ───────────────────────────
+      - name: 2 — Fetch RSS feeds (notícias)
+        run: |
+          echo "A invocar fetch-rss-feeds..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "$SUPABASE_URL/functions/v1/fetch-rss-feeds" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          BODY=$(echo "$RESP" | head -n -1)
+          CODE=$(echo "$RESP" | tail -n 1)
+          echo "HTTP $CODE — $BODY"
+          if [ "$CODE" != "200" ]; then
+            echo "::warning::fetch-rss-feeds devolveu HTTP $CODE"
+          fi
+
+      # ── PASSO 3: YouTube trends ───────────────────────────────────────────
+      - name: 3 — YouTube trends
+        run: |
+          pip install google-api-python-client requests --quiet
+          python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
+
+      - name: Resumo
+        run: |
+          echo "Actualização semanal concluída — $(date '+%d/%m/%Y %H:%M UTC')"
