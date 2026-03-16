@@ -20,7 +20,7 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependências Python
-        run: pip install pytrends google-api-python-client requests --quiet
+        run: pip install "pytrends==4.9.2" "urllib3<2.0" google-api-python-client requests --quiet
 
       # ── PASSO 1: Google Trends reais → volumes das keywords ──────────────
       - name: 1 — Google Trends PT (volumes reais)
