@@ -22,14 +22,20 @@ jobs:
       - name: Instalar dependências Python
         run: pip install pytrends google-api-python-client requests --quiet
 
-      # ── PASSO 1: Google Trends reais → actualiza volumes das keywords ────
+      # ── PASSO 1: Google Trends reais → volumes das keywords ──────────────
       - name: 1 — Google Trends PT (volumes reais)
         run: |
-          echo "A buscar dados reais do Google Trends PT..."
+          echo "A buscar volumes reais do Google Trends PT..."
           python scripts/5_fetch_google_trends.py
 
-      # ── PASSO 2: Refresh trends → snapshots históricos ───────────────────
-      - name: 2 — Refresh trends (snapshots históricos)
+      # ── PASSO 2: Perguntas de saúde em crescimento ────────────────────────
+      - name: 2 — Perguntas de saúde em crescimento
+        run: |
+          echo "A buscar perguntas reais em crescimento..."
+          python scripts/6_fetch_health_questions.py
+
+      # ── PASSO 3: Refresh trends → snapshots históricos ───────────────────
+      - name: 3 — Refresh trends (snapshots históricos)
         run: |
           echo "A invocar refresh-trends..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
@@ -44,8 +50,8 @@ jobs:
             echo "::warning::refresh-trends devolveu HTTP $CODE"
           fi
 
-      # ── PASSO 3: RSS feeds → notícias ────────────────────────────────────
-      - name: 3 — Fetch RSS feeds (notícias)
+      # ── PASSO 4: RSS feeds → notícias ────────────────────────────────────
+      - name: 4 — Fetch RSS feeds (notícias)
         run: |
           echo "A invocar fetch-rss-feeds..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
@@ -60,8 +66,8 @@ jobs:
             echo "::warning::fetch-rss-feeds devolveu HTTP $CODE"
           fi
 
-      # ── PASSO 4: YouTube trends ───────────────────────────────────────────
-      - name: 4 — YouTube trends
+      # ── PASSO 5: YouTube trends ───────────────────────────────────────────
+      - name: 5 — YouTube trends
         run: |
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
