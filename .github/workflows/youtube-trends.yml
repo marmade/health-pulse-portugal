@@ -15,8 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ── PASSO 1: Refresh das keywords (volumes + snapshots históricos) ──────
-      - name: 1 — Refresh trends (keywords)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências Python
+        run: pip install pytrends google-api-python-client requests --quiet
+
+      # ── PASSO 1: Google Trends reais → actualiza volumes das keywords ────
+      - name: 1 — Google Trends PT (volumes reais)
+        run: |
+          echo "A buscar dados reais do Google Trends PT..."
+          python scripts/5_fetch_google_trends.py
+
+      # ── PASSO 2: Refresh trends → snapshots históricos ───────────────────
+      - name: 2 — Refresh trends (snapshots históricos)
         run: |
           echo "A invocar refresh-trends..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
@@ -31,8 +44,8 @@ jobs:
             echo "::warning::refresh-trends devolveu HTTP $CODE"
           fi
 
-      # ── PASSO 2: Fetch dos RSS feeds (notícias) ───────────────────────────
-      - name: 2 — Fetch RSS feeds (notícias)
+      # ── PASSO 3: RSS feeds → notícias ────────────────────────────────────
+      - name: 3 — Fetch RSS feeds (notícias)
         run: |
           echo "A invocar fetch-rss-feeds..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
@@ -47,10 +60,9 @@ jobs:
             echo "::warning::fetch-rss-feeds devolveu HTTP $CODE"
           fi
 
-      # ── PASSO 3: YouTube trends ───────────────────────────────────────────
-      - name: 3 — YouTube trends
+      # ── PASSO 4: YouTube trends ───────────────────────────────────────────
+      - name: 4 — YouTube trends
         run: |
-          pip install google-api-python-client requests --quiet
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
       - name: Resumo
