@@ -203,6 +203,42 @@ export type Database = {
         }
         Relationships: []
       }
+      health_questions: {
+        Row: {
+          axis: string
+          axis_label: string
+          cluster: string
+          growth_percent: number
+          id: string
+          is_question: boolean
+          question: string
+          relative_volume: number
+          updated_at: string
+        }
+        Insert: {
+          axis: string
+          axis_label: string
+          cluster: string
+          growth_percent?: number
+          id?: string
+          is_question?: boolean
+          question: string
+          relative_volume?: number
+          updated_at?: string
+        }
+        Update: {
+          axis?: string
+          axis_label?: string
+          cluster?: string
+          growth_percent?: number
+          id?: string
+          is_question?: boolean
+          question?: string
+          relative_volume?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       historical_snapshots: {
         Row: {
           axis: string
