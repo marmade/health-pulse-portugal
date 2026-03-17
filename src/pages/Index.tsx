@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import AxisColumn from "@/components/AxisColumn";
@@ -14,10 +15,43 @@ import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData"
 import { useLastRefreshed } from "@/hooks/useLastRefreshed";
 import { useHistoricalData } from "@/hooks/useHistoricalData";
 
+// Helpers de semana (partilhados com Briefing)
+function getWeekRangeIdx() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  const fmt = (d: Date) => d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
+  return {
+    isoStart: monday.toISOString().split("T")[0],
+    isoEnd: sunday.toISOString().split("T")[0],
+    label: `${fmt(monday)} — ${fmt(sunday)} ${now.getFullYear()}`,
+  };
+}
+function getPrevWeekRangeIdx() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1) - 7);
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  const fmt = (d: Date) => d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
+  return {
+    isoStart: monday.toISOString().split("T")[0],
+    isoEnd: sunday.toISOString().split("T")[0],
+    label: `${fmt(monday)} — ${fmt(sunday)} ${monday.getFullYear()}`,
+  };
+}
+
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
+  const [eixosArchives, setEixosArchives] = useState<Record<string, any[]>>({});
   const [filters, setFilters] = useState({ period: "12m" });
 
   const { data: filteredData, isLoading, error, isFromDb } = useAxisData(filters.period);
@@ -46,6 +80,84 @@ const Index = () => {
     if (!axisTerms) return newsData;
     return newsData.filter((n: any) => axisTerms.has((n.related_term || "").toLowerCase()));
   }, [newsData, axisTerms]);
+
+  // Auto-arquivo por eixo — grava silenciosamente a semana anterior quando o eixo é aberto
+  const autoArchiveEixo = async (axis: string) => {
+    if (axis === "all") return;
+    const prev = getPrevWeekRangeIdx();
+    // Verificar se já existe
+    const { data: existing } = await supabase
+      .from("eixos_archive")
+      .select("id")
+      .eq("axis", axis)
+      .eq("week_start", prev.isoStart)
+      .maybeSingle();
+    if (existing) return;
+
+    const axisData = filteredData[axis];
+    if (!axisData) return;
+
+    const axisLabels: Record<string, string> = {
+      "saude-mental": "Saúde Mental",
+      alimentacao: "Alimentação",
+      menopausa: "Menopausa",
+      emergentes: "Emergentes",
+    };
+
+    const topKeywords = (axisData.keywords || [])
+      .sort((a: any, b: any) => b.changePercent - a.changePercent)
+      .slice(0, 5)
+      .map((k: any) => ({ term: k.term, change_percent: k.changePercent, current_volume: k.currentVolume }));
+
+    const topDebunking = filteredDebunkingData
+      .slice(0, 3)
+      .map((d: any) => ({ term: d.term, title: d.title, classification: d.classification }));
+
+    const topNews = filteredNewsData
+      .slice(0, 3)
+      .map((n: any) => ({ title: n.title, outlet: n.outlet, date: n.date, source_type: n.source_type }));
+
+    try {
+      const { data: inserted } = await supabase.from("eixos_archive").insert({
+        axis,
+        axis_label: axisLabels[axis] || axis,
+        week_start: prev.isoStart,
+        week_end: prev.isoEnd,
+        week_label: prev.label,
+        top_keywords: topKeywords,
+        top_questions: [],
+        top_debunking: topDebunking,
+        top_news: topNews,
+        top_youtube: [],
+      }).select("id").single();
+
+      // Refresh archives for this axis
+      const { data: archives } = await supabase
+        .from("eixos_archive")
+        .select("*")
+        .eq("axis", axis)
+        .order("week_start", { ascending: false });
+      if (archives) setEixosArchives(prev => ({ ...prev, [axis]: archives }));
+    } catch (e) {
+      console.error("autoArchiveEixo error:", e);
+    }
+  };
+
+  // Trigger auto-arquivo quando muda de eixo
+  useEffect(() => {
+    if (activeAxis !== "all" && Object.keys(filteredData).length > 0) {
+      autoArchiveEixo(activeAxis);
+      // Carregar arquivo existente para este eixo
+      supabase
+        .from("eixos_archive")
+        .select("*")
+        .eq("axis", activeAxis)
+        .order("week_start", { ascending: false })
+        .then(({ data }) => {
+          if (data) setEixosArchives(prev => ({ ...prev, [activeAxis]: data }));
+        });
+    }
+  }, [activeAxis, Object.keys(filteredData).length > 0]);
 
   const alerts = useMemo(
     () => filteredData ? detectAlerts(filteredData, filters.period) : [],
@@ -118,6 +230,7 @@ const Index = () => {
                   allKeywords={axis.allKeywords}
                   trendData={axis.trend}
                   period={filters.period}
+                  archive={eixosArchives[axisId] || []}
                 />
               );
             })}
