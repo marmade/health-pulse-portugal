@@ -14,6 +14,7 @@ import { detectAlerts } from "@/lib/detectAlerts";
 import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
 import { useLastRefreshed } from "@/hooks/useLastRefreshed";
 import { useHistoricalData } from "@/hooks/useHistoricalData";
+import { generateEixoPdf } from "@/lib/eixoPdfExport";
 
 // Helpers de semana (partilhados com Briefing)
 function getWeekRangeIdx() {
@@ -142,6 +143,12 @@ const Index = () => {
       console.error("autoArchiveEixo error:", e);
     }
   };
+
+  // Registar função de download PDF de eixo no window (chamada pelo AxisColumn)
+  useEffect(() => {
+    (window as any)._downloadEixoPdf = (entry: any) => generateEixoPdf(entry);
+    return () => { delete (window as any)._downloadEixoPdf; };
+  }, []);
 
   // Trigger auto-arquivo quando muda de eixo
   useEffect(() => {
