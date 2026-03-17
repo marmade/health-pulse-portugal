@@ -30,6 +30,23 @@ const Index = () => {
   const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
   const newsData = dbNewsData.length > 0 ? dbNewsData : mockNewsData;
 
+  // Filtrar debunking e notícias pelo eixo activo
+  const axisTerms = useMemo(() => {
+    if (activeAxis === "all") return null;
+    const kws = (filteredData[activeAxis]?.keywords || []).map((k: any) => k.term.toLowerCase());
+    return new Set(kws);
+  }, [filteredData, activeAxis]);
+
+  const filteredDebunkingData = useMemo(() => {
+    if (!axisTerms) return debunkingData;
+    return debunkingData.filter((d: any) => axisTerms.has((d.term || "").toLowerCase()));
+  }, [debunkingData, axisTerms]);
+
+  const filteredNewsData = useMemo(() => {
+    if (!axisTerms) return newsData;
+    return newsData.filter((n: any) => axisTerms.has((n.related_term || "").toLowerCase()));
+  }, [newsData, axisTerms]);
+
   const alerts = useMemo(
     () => filteredData ? detectAlerts(filteredData, filters.period) : [],
     [filteredData, filters.period]
@@ -155,8 +172,8 @@ const Index = () => {
         <div className="mt-10">
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
-            <DebunkingTable items={debunkingData} />
-            <MediaTable items={newsData} lastFetchTimestamp={lastFetchTimestamp} />
+            <DebunkingTable items={filteredDebunkingData} />
+            <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} />
           </div>
         </div>
       </main>
