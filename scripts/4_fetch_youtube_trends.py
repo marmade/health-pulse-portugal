@@ -36,8 +36,23 @@ VIDEOS_POR_KEYWORD = 8  # buscar mais para compensar os filtrados
 CANAIS_BR = {
     "Drauzio Varella", "Sempre Questione", "Dr. Dayan Siebra",
     "Dr. Victor Sorrentino", "Mundo da Saude", "Canal Saude",
-    "Saude em Dia", "CFM", "CFO", "Drauzio"
+    "Saude em Dia", "CFM", "CFO", "Drauzio",
+    "PodPeople", "Ana Beatriz Barbosa", "Dr. Samuel Dalle Laste",
+    "Dr. Renan Botelho", "Biologia Ilustrada", "Dr. Edmundo Antunes",
+    "Maria Farinha Filmes", "Nutri Vitta", "Dra. Ana Gabriela",
+    "Hospital Israelita Albert Einstein", "Globo Saude",
+    "Dr. Lair Ribeiro", "CanalSaude", "Saude Total",
 }
+
+# Indicadores lexicais de PT-BR — palavras nunca usadas em PT-PT
+PALAVRAS_BR = [
+    "precisam", "remédio", "você sabia", "tomar remédio",
+    "vem ver", "olha só", "esses sintomas", "esses alimentos",
+    "aprenda como", "descubra como", "veja como",
+    "não deixe de", "funciona mesmo", " né ", "hein",
+    "SUS ", "anvisa", " brasileiro", " brasileira",
+    "todo ano", "acredite",
+]
 
 
 def buscar_keywords():
@@ -60,8 +75,20 @@ def e_brasileiro(video):
     if audio_lang.startswith("pt-BR") or default_lang.startswith("pt-BR"):
         return True
 
-    # Excluir canais brasileiros conhecidos
+    titulo = video.get("titulo", "") or ""
+
+    # Excluir canais brasileiros conhecidos (exacto)
     if canal in CANAIS_BR:
+        return True
+
+    # Excluir por fragmento de nome de canal BR
+    canal_lower = canal.lower()
+    if any(br.lower() in canal_lower for br in CANAIS_BR if len(br) > 6):
+        return True
+
+    # Excluir por indicadores lexicais PT-BR no título
+    titulo_lower = titulo.lower()
+    if any(palavra.lower() in titulo_lower for palavra in PALAVRAS_BR):
         return True
 
     return False
