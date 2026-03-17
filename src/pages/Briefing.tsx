@@ -113,6 +113,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; current_volume: number; axis: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
@@ -126,17 +127,19 @@ const Briefing = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [kwRes, newsRes, debunkRes, archiveRes] = await Promise.all([
+      const [kwRes, newsRes, debunkRes, archiveRes, hqRes] = await Promise.all([
         supabase.from("keywords").select("*").eq("is_active", true),
         supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
         supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
+        supabase.from("health_questions").select("question, current_volume, axis").order("current_volume", { ascending: false }).limit(5),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; current_volume: number; axis: string}[]);
       setLoading(false);
 
       // Auto-archive previous week silently
@@ -240,12 +243,9 @@ const Briefing = () => {
 
   const emergent = keywords.filter((k) => k.is_emergent);
 
-  const topQuestions = getTopQuestionsPerAxis(2).slice(0, 5);
-
-  const topVolume = topQuestions.map((q) => ({
-    term: q.question,
-    current_volume: q.relativeVolume,
-  }));
+  const topVolume = healthQuestionsData.length > 0
+    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.current_volume }))
+    : getTopQuestionsPerAxis(2).slice(0, 5).map((q) => ({ term: q.question, current_volume: q.relativeVolume }));
 
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
