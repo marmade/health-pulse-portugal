@@ -18,7 +18,7 @@ serve(async (req) => {
     const PERPLEXITY_KEY = Deno.env.get("VITE_PERPLEXITY_API_KEY");
     if (!PERPLEXITY_KEY) throw new Error("VITE_PERPLEXITY_API_KEY is not configured");
 
-    const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
+    const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes sempre em português europeu de Portugal, nunca em português do Brasil — usa o vocabulário, ortografia e expressões de Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
     const userPrompt = `Com base no tema emergente '${keyword}' esta semana em Portugal, gera em JSON:
 
