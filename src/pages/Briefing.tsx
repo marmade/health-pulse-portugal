@@ -244,7 +244,7 @@ const Briefing = () => {
   const emergent = keywords.filter((k) => k.is_emergent);
 
   const topVolume = healthQuestionsData.length > 0
-    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.current_volume }))
+    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.relative_volume }))
     : getTopQuestionsPerAxis(2).slice(0, 5).map((q) => ({ term: q.question, current_volume: q.relativeVolume }));
 
   const topEmergent = emergent.length > 0
