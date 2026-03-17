@@ -531,10 +531,10 @@ const Briefing = () => {
               </div>
             ) : dizQueDisse ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                {/* Perguntas para a rua */}
+                {/* Perguntas VoxPop */}
                 <div>
                   <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
-                    Perguntas para a rua
+                    Perguntas VoxPop
                   </p>
                   <ol className="space-y-2">
                     {dizQueDisse.perguntas_voxpop.map((q, i) => (
