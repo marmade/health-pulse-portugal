@@ -132,7 +132,7 @@ const Briefing = () => {
         supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
         supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        supabase.from("health_questions").select("question, current_volume, axis").order("current_volume", { ascending: false }).limit(5),
+        supabase.from("health_questions").select("question, relative_volume, axis").order("relative_volume", { ascending: false }).limit(5),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
