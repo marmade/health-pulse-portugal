@@ -139,7 +139,7 @@ const Briefing = () => {
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
-      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; current_volume: number; axis: string}[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; relative_volume: number; axis: string}[]);
       setLoading(false);
 
       // Auto-archive previous week silently
