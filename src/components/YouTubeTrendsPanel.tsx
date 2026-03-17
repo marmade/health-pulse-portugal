@@ -26,22 +26,26 @@ const formatViews = (n: number): string => {
   return String(n);
 };
 
-const YouTubeTrendsPanel = () => {
+const YouTubeTrendsPanel = ({ axis }: { axis?: string }) => {
   const [trends, setTrends] = useState<YouTubeTrend[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await supabase
+      let query = supabase
         .from("youtube_trends")
         .select("*")
         .order("views", { ascending: false })
         .limit(15);
+      if (axis && axis !== "all") {
+        query = query.eq("eixo", axis);
+      }
+      const { data } = await query;
       if (data) setTrends(data as YouTubeTrend[]);
       setLoading(false);
     };
     fetch();
-  }, []);
+  }, [axis]);
 
   return (
     <div className="py-5 flex flex-col h-full min-h-0 max-h-[500px]">
