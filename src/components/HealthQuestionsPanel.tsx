@@ -76,7 +76,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
 
                       <div className="text-right shrink-0">
                         <p className="text-sm font-bold">
-                          +{q.growthPercent}%
+                          {q.growthPercent >= 9999 ? "NOVO ↑" : `+${q.growthPercent}%`}
                         </p>
                         <div className="flex items-center gap-1 justify-end mt-0.5">
                           <div className="w-12 h-1 bg-foreground/10 overflow-hidden">
