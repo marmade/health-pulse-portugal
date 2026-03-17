@@ -94,8 +94,35 @@ def e_brasileiro(video):
     return False
 
 
+# Cache de canais verificados para não repetir chamadas à API
+_canal_cache = {}
+
+def canal_e_portugues(youtube, channel_id):
+    """Verifica se um canal tem país definido como PT.
+    Aceita canais sem país definido (pode ser PT mas não declarou).
+    Rejeita apenas canais com país != PT."""
+    global _canal_cache
+    if channel_id in _canal_cache:
+        return _canal_cache[channel_id]
+    try:
+        resp = youtube.channels().list(
+            part="snippet",
+            id=channel_id,
+        ).execute()
+        items = resp.get("items", [])
+        if not items:
+            _canal_cache[channel_id] = True  # sem info, dar benefício da dúvida
+            return True
+        country = items[0].get("snippet", {}).get("country", "")
+        # Aceitar PT ou sem país definido; rejeitar BR e outros
+        result = country in ("PT", "")
+        _canal_cache[channel_id] = result
+        return result
+    except Exception:
+        return True  # em caso de erro, não excluir
+
 def pesquisar_videos(youtube, keyword, axis):
-    query = f"{keyword} saude portugal"
+    query = f"{keyword} saúde portugal"
     try:
         pesquisa = youtube.search().list(
             q=query,
@@ -112,7 +139,7 @@ def pesquisar_videos(youtube, keyword, axis):
             return []
 
         detalhes = youtube.videos().list(
-            part="snippet,statistics,localizations",
+            part="snippet,statistics,localizations,contentDetails",
             id=",".join(ids),
         ).execute()
 
@@ -121,18 +148,27 @@ def pesquisar_videos(youtube, keyword, axis):
             snippet = v.get("snippet", {})
             stats = v.get("statistics", {})
 
+            content_details = v.get("contentDetails", {})
+            channel_id = snippet.get("channelId", "")
+
             candidato = {
                 "video_id": v["id"],
                 "titulo": snippet.get("title", ""),
                 "canal": snippet.get("channelTitle", ""),
+                "channel_id": channel_id,
                 "views": int(stats.get("viewCount", 0)),
                 "url": f"https://www.youtube.com/watch?v={v['id']}",
                 "eixo": axis,
                 "data_publicacao": snippet.get("publishedAt", "")[:10],
                 "thumbnail_url": snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
-                "defaultAudioLanguage": snippet.get("defaultAudioLanguage", ""),
+                "defaultAudioLanguage": content_details.get("defaultAudioLanguage", "") or snippet.get("defaultAudioLanguage", ""),
                 "defaultLanguage": snippet.get("defaultLanguage", ""),
             }
+
+            # Verificar país do canal via API (filtragem mais fiável)
+            if channel_id and not canal_e_portugues(youtube, channel_id):
+                print(f"    [filtrado não-PT] {candidato['canal'][:40]}")
+                continue
 
             if e_brasileiro(candidato):
                 print(f"    [filtrado BR] {candidato['titulo'][:50]}")
