@@ -147,7 +147,7 @@ const Index = () => {
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
-            <YouTubeTrendsPanel />
+            <YouTubeTrendsPanel axis={activeAxis} />
           </div>
         </div>
 
