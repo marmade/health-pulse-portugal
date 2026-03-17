@@ -71,12 +71,13 @@ def buscar_volume_real(pytrends, keyword):
         print(f"    Erro ao buscar '{keyword}': {e}")
         return None, None
 
-def actualizar_keyword(kw_id, current_volume, previous_volume, change_percent, trend):
+def actualizar_keyword(kw_id, current_volume, previous_volume, change_percent, trend, is_emergent):
     payload = {
         "previous_volume": previous_volume,
         "current_volume": current_volume,
         "change_percent": change_percent,
         "trend": trend,
+        "is_emergent": is_emergent,
     }
     r = requests.patch(
         f"{SUPABASE_URL}/rest/v1/keywords?id=eq.{kw_id}",
@@ -126,7 +127,10 @@ def main():
 
             trend = "up" if change > 10 else "down" if change < -10 else "stable"
 
-            ok = actualizar_keyword(kw["id"], current, prev, change, trend)
+            # Actualizar is_emergent automaticamente com base no volume e variação
+            is_emergent = change >= 50 and current >= 10
+
+            ok = actualizar_keyword(kw["id"], current, prev, change, trend, is_emergent)
             status = "OK" if ok else "ERRO"
             seta = "↑" if trend == "up" else "↓" if trend == "down" else "→"
             print(f"    {status} — índice {current} (anterior {prev}) {seta} {change:+.1f}%")
