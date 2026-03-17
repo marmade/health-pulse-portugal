@@ -209,6 +209,75 @@ def main():
     print(f"Concluído — {inseridas} perguntas guardadas no Supabase")
     print("=" * 60)
 
+    # Expandir o Mural com novos termos descobertos
+    expandir_mural(unicas)
+
+
+
+
+def expandir_mural(todas_perguntas):
+    """
+    Verifica quais termos descobertos pelo script ainda não existem na tabela keywords
+    e insere os novos com is_active=True, para que o Mural cresça automaticamente.
+    Usa growth_percent >= 100 como critério mínimo de relevância.
+    Limita a 20 novos termos por run para não inflar o mural.
+    """
+    print("\nA expandir Mural com novos termos...")
+
+    # Buscar keywords existentes
+    r = requests.get(
+        f"{SUPABASE_URL}/rest/v1/keywords",
+        headers=HEADERS,
+        params={"select": "term", "is_active": "eq.true"}
+    )
+    if not r.ok:
+        print("  Erro ao buscar keywords existentes")
+        return
+
+    existentes = {row["term"].lower().strip() for row in r.json()}
+
+    # Filtrar termos novos com crescimento relevante
+    candidatos = [
+        p for p in todas_perguntas
+        if p["growth_percent"] >= 100
+        and p["question"].lower().strip() not in existentes
+        and not p["is_question"]  # só termos, não perguntas completas
+        and len(p["question"].split()) <= 4  # máx 4 palavras (termos concisos)
+    ]
+
+    # Ordenar por crescimento e limitar a 20
+    candidatos.sort(key=lambda x: x["growth_percent"], reverse=True)
+    novos = candidatos[:20]
+
+    if not novos:
+        print("  Nenhum termo novo relevante encontrado")
+        return
+
+    print(f"  {len(novos)} termos novos para o Mural:")
+    payload = []
+    for p in novos:
+        print(f"    + [{p['axis']}] {p['question']} ({p['growth_percent']}%)")
+        payload.append({
+            "term": p["question"],
+            "axis": p["axis"],
+            "category": p.get("cluster", ""),
+            "is_active": True,
+            "is_emergent": p["growth_percent"] >= 500,
+            "current_volume": p["relative_volume"],
+            "previous_volume": 0,
+            "change_percent": float(p["growth_percent"]),
+            "trend": "up",
+        })
+
+    r2 = requests.post(
+        f"{SUPABASE_URL}/rest/v1/keywords",
+        headers={**HEADERS, "Prefer": "resolution=ignore-duplicates,return=minimal"},
+        json=payload
+    )
+    if r2.status_code in (200, 201, 204):
+        print(f"  OK — {len(payload)} termos inseridos no Mural")
+    else:
+        print(f"  Erro ao inserir: {r2.status_code} {r2.text[:100]}")
 
 if __name__ == "__main__":
     main()
