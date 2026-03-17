@@ -113,7 +113,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
-  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; relative_volume: number; axis: string}[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; growth_percent: number; relative_volume: number; axis: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
@@ -132,14 +132,14 @@ const Briefing = () => {
         supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
         supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        supabase.from("health_questions").select("question, relative_volume, axis").order("relative_volume", { ascending: false }).limit(5),
+        supabase.from("health_questions").select("question, growth_percent, relative_volume, axis").order("growth_percent", { ascending: false }).limit(5),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
-      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; relative_volume: number; axis: string}[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number; relative_volume: number; axis: string}[]);
       setLoading(false);
 
       // Auto-archive previous week silently
@@ -244,7 +244,7 @@ const Briefing = () => {
   const emergent = keywords.filter((k) => k.is_emergent);
 
   const topVolume = healthQuestionsData.length > 0
-    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.relative_volume }))
+    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.growth_percent }))
     : getTopQuestionsPerAxis(2).slice(0, 5).map((q) => ({ term: q.question, current_volume: q.relativeVolume }));
 
   const topEmergent = emergent.length > 0
@@ -421,7 +421,7 @@ const Briefing = () => {
                 <span className="text-sm font-medium ml-3">{kw.term}</span>
               </div>
               <span className="text-xs font-bold tabular-nums">
-                {kw.current_volume}
+                +{kw.current_volume}%
               </span>
             </div>
           ))}
