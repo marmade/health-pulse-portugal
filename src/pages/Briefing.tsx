@@ -113,7 +113,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
-  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; current_volume: number; axis: string}[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; relative_volume: number; axis: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
@@ -132,14 +132,14 @@ const Briefing = () => {
         supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
         supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        supabase.from("health_questions").select("question, current_volume, axis").order("current_volume", { ascending: false }).limit(5),
+        supabase.from("health_questions").select("question, relative_volume, axis").order("relative_volume", { ascending: false }).limit(5),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
-      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; current_volume: number; axis: string}[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; relative_volume: number; axis: string}[]);
       setLoading(false);
 
       // Auto-archive previous week silently
@@ -244,7 +244,7 @@ const Briefing = () => {
   const emergent = keywords.filter((k) => k.is_emergent);
 
   const topVolume = healthQuestionsData.length > 0
-    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.current_volume }))
+    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.relative_volume }))
     : getTopQuestionsPerAxis(2).slice(0, 5).map((q) => ({ term: q.question, current_volume: q.relativeVolume }));
 
   const topEmergent = emergent.length > 0
@@ -531,10 +531,10 @@ const Briefing = () => {
               </div>
             ) : dizQueDisse ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                {/* Perguntas para a rua */}
+                {/* Perguntas VoxPop */}
                 <div>
                   <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
-                    Perguntas para a rua
+                    Perguntas VoxPop
                   </p>
                   <ol className="space-y-2">
                     {dizQueDisse.perguntas_voxpop.map((q, i) => (
@@ -546,10 +546,10 @@ const Briefing = () => {
                   </ol>
                 </div>
 
-                {/* Dupla Científica Sugerida */}
+                {/* Revisão de Pares */}
                 <div className="border-l pl-4 pr-4 pb-4" style={{ borderColor: "#0000FF" }}>
                   <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
-                    Dupla Científica Sugerida
+                    Revisão de Pares
                   </p>
                     <p className="text-sm font-medium text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
                     <p className="text-sm font-normal leading-relaxed text-primary mb-2">{dizQueDisse.justificacao}</p>
