@@ -18,19 +18,35 @@ export function useHealthQuestions(axis?: string) {
       setIsLoading(true);
 
       try {
-        let query = supabase
-          .from('health_questions')
-          .select('*')
-          .order('growth_percent', { ascending: false })
-          .limit(30);
-
-        if (axis && axis !== 'all') {
-          query = query.eq('axis', axis);
+        // Quando axis='all': 2 perguntas por eixo (balanceado)
+        // Quando axis específico: top 10 desse eixo
+        let rows: any[] = [];
+        if (!axis || axis === 'all') {
+          const axes = ['saude-mental', 'alimentacao', 'menopausa', 'emergentes'];
+          const results = await Promise.all(
+            axes.map(ax =>
+              supabase
+                .from('health_questions')
+                .select('*')
+                .eq('axis', ax)
+                .order('growth_percent', { ascending: false })
+                .limit(2)
+            )
+          );
+          for (const r of results) {
+            if (r.data) rows.push(...r.data);
+          }
+        } else {
+          const { data: axisData, error: axisError } = await supabase
+            .from('health_questions')
+            .select('*')
+            .eq('axis', axis)
+            .order('growth_percent', { ascending: false })
+            .limit(10);
+          if (axisError) throw axisError;
+          rows = axisData || [];
         }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
+        const data = rows;
 
         if (!cancelled) {
           if (data && data.length > 0) {
