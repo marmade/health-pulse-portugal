@@ -11,9 +11,10 @@ type Props = {
   allKeywords: Keyword[];
   trendData: TrendPoint[];
   period: string;
+  archive?: any[];
 };
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [] }: Props) => {
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
   const emergentCount = useMemo(
@@ -74,6 +75,31 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData }: Props) 
       <div className="border-t border-foreground/10" />
 
       <Top5Table keywords={top5} />
+
+      {/* Arquivo semanal */}
+      {archive.length > 0 && (
+        <div className="mt-6 pt-4 border-t border-foreground/10">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3 opacity-60">
+            Arquivo
+          </p>
+          <div className="space-y-0">
+            {archive.map((entry: any) => (
+              <div key={entry.id} className="flex items-center justify-between py-2 border-b border-foreground/10 last:border-0">
+                <span className="text-xs font-medium">{entry.week_label}</span>
+                <button
+                  onClick={() => (window as any)._downloadEixoPdf && (window as any)._downloadEixoPdf(entry)}
+                  className="text-[9px] font-bold uppercase tracking-[0.15em] border px-2 py-1 transition-colors"
+                  style={{ borderColor: "#0000FF", color: "#0000FF" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#0000FF"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#0000FF"; }}
+                >
+                  PDF
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
