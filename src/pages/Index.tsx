@@ -164,7 +164,7 @@ const Index = () => {
           if (data) setEixosArchives(prev => ({ ...prev, [activeAxis]: data }));
         });
     }
-  }, [activeAxis, Object.keys(filteredData).length > 0]);
+  }, [activeAxis, isLoading]);
 
   const alerts = useMemo(
     () => filteredData ? detectAlerts(filteredData, filters.period) : [],
