@@ -113,7 +113,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
-  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; current_volume: number; axis: string}[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; relative_volume: number; axis: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
