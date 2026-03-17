@@ -152,37 +152,48 @@ const Bookmarks = () => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            {sortedCategories.map((cat) => (
-              <div key={cat}>
-                <span
-                  className="block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-4"
-                  style={{ backgroundColor: "rgba(0,0,255,0.08)", color: "#0000FF" }}
-                >
-                  {CATEGORIAS[cat] || cat}
-                </span>
-                <div className="flex flex-col gap-3">
-                  {grouped[cat].map((b) => (
-                    <a
-                      key={b.id}
-                      href={b.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors"
-                    >
-                      <p className="text-sm font-medium leading-snug">{b.titulo}</p>
-                      {b.fonte && (
-                        <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
-                      )}
-                      {b.notas && (
-                        <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
-                      )}
-                    </a>
-                  ))}
-                </div>
+          (() => {
+            // Distribute categories across 3 columns for balanced layout
+            const cols: string[][] = [[], [], []];
+            sortedCategories.forEach((cat, i) => cols[i % 3].push(cat));
+            return (
+              <div className="flex flex-col md:flex-row gap-8">
+                {cols.map((colCats, colIdx) => (
+                  <div key={colIdx} className="flex-1 flex flex-col gap-8 min-w-0">
+                    {colCats.map((cat) => (
+                      <div key={cat}>
+                        <span
+                          className="block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-4"
+                          style={{ backgroundColor: "rgba(0,0,255,0.08)", color: "#0000FF" }}
+                        >
+                          {CATEGORIAS[cat] || cat}
+                        </span>
+                        <div className="flex flex-col gap-3">
+                          {grouped[cat].map((b) => (
+                            <a
+                              key={b.id}
+                              href={b.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors"
+                            >
+                              <p className="text-sm font-medium leading-snug">{b.titulo}</p>
+                              {b.fonte && (
+                                <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
+                              )}
+                              {b.notas && (
+                                <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
+                              )}
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()
         )}
       </section>
     </div>
