@@ -5,10 +5,10 @@ import DashboardFooter from "@/components/DashboardFooter";
 import EditorialSubNav from "@/components/EditorialSubNav";
 
 const AXIS_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  "saude-mental": { bg: "#EEF2FF", text: "#0000FF", border: "#0000FF" },
-  alimentacao:    { bg: "#F0FDF4", text: "#16A34A", border: "#16A34A" },
-  menopausa:      { bg: "#FDF4FF", text: "#A21CAF", border: "#A21CAF" },
-  emergentes:     { bg: "#FFF7ED", text: "#EA580C", border: "#EA580C" },
+  "saude-mental": { bg: "rgba(0,255,200,0.12)",  text: "#0000FF", border: "#0000FF" },
+  alimentacao:    { bg: "rgba(255,230,0,0.2)",    text: "#0000FF", border: "#0000FF" },
+  menopausa:      { bg: "rgba(255,0,150,0.12)",   text: "#0000FF", border: "#0000FF" },
+  emergentes:     { bg: "rgba(0,0,255,0.08)",     text: "#0000FF", border: "#0000FF" },
 };
 
 type Perfil = {
