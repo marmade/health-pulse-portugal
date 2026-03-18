@@ -129,6 +129,102 @@ const emptyGuiao = (): Omit<GuiaoRow, "id"> => ({
   ordem: 0,
 });
 
+// ── Revisão de Pares Admin ────────────────────────────────────────────
+const EIXOS_RP = [
+  { axis: 'saude-mental', label: 'Saude Mental', color: '#0000FF' },
+  { axis: 'alimentacao',  label: 'Alimentacao',  color: '#16A34A' },
+  { axis: 'menopausa',    label: 'Menopausa',    color: '#A21CAF' },
+  { axis: 'emergentes',   label: 'Emergentes',   color: '#EA580C' },
+];
+
+type RPEntry = {
+  id?: string; axis: string; axis_label: string;
+  nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string;
+  nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string;
+  sumario: string;
+};
+
+const emptyRP = (axis: string, label: string): RPEntry => ({
+  axis, axis_label: label,
+  nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '',
+  nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '',
+  sumario: '',
+});
+
+const RevisaoPareAdmin = () => {
+  const [dados, setDados] = useState<Record<string, RPEntry>>({});
+  const [saving, setSaving] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.from('revisao_pares').select('*').then(({ data }) => {
+      if (!data) return;
+      const map: Record<string, RPEntry> = {};
+      data.forEach((d: any) => { map[d.axis] = d; });
+      setDados(map);
+    });
+  }, []);
+
+  const update = (axis: string, field: string, value: string) =>
+    setDados(prev => ({ ...prev, [axis]: { ...(prev[axis] || emptyRP(axis, axis)), [field]: value } }));
+
+  const save = async (axis: string) => {
+    setSaving(axis);
+    const entry = dados[axis] || emptyRP(axis, EIXOS_RP.find(e => e.axis === axis)?.label || axis);
+    const { error } = entry?.id
+      ? await supabase.from('revisao_pares').update({ ...entry, updated_at: new Date().toISOString() }).eq('id', entry.id)
+      : await supabase.from('revisao_pares').insert(entry);
+    setSaving(null);
+    if (error) toast({ title: 'Erro ao guardar', description: error.message, variant: 'destructive' });
+    else toast({ title: 'Guardado', description: axis + ' actualizado' });
+  };
+
+  const rpField = (axis: string, key: keyof RPEntry, placeholder: string, multiline = false) => {
+    const val = String((dados[axis] || emptyRP(axis, axis))[key] || '');
+    return multiline ? (
+      <textarea rows={3} className="w-full text-xs border border-foreground/20 px-2 py-1.5 bg-background resize-none" placeholder={placeholder} value={val} onChange={e => update(axis, key, e.target.value)} />
+    ) : (
+      <input className="w-full text-xs border border-foreground/20 px-2 py-1.5 bg-background" placeholder={placeholder} value={val} onChange={e => update(axis, key, e.target.value)} />
+    );
+  };
+
+  return (
+    <div className="space-y-8 py-4">
+      {EIXOS_RP.map(({ axis, label, color }) => (
+        <div key={axis} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3 }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color }}>{label}</p>
+            <button onClick={() => save(axis)} disabled={saving === axis} className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1.5 transition-colors" style={{ borderColor: color, color: saving === axis ? '#999' : color }}>
+              {saving === axis ? 'A guardar...' : 'Guardar'}
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-foreground/10">
+            <div className="p-4 space-y-2">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color }}>Perfil A</p>
+              {rpField(axis, 'nome_a', 'Nome completo')}
+              {rpField(axis, 'especialidade_a', 'Especialidade / Cargo')}
+              {rpField(axis, 'telefone_a', 'Telefone')}
+              {rpField(axis, 'email_a', 'Email')}
+              {rpField(axis, 'link_a', 'Link profissional (URL)')}
+            </div>
+            <div className="p-4 space-y-2">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color }}>Perfil B</p>
+              {rpField(axis, 'nome_b', 'Nome completo')}
+              {rpField(axis, 'especialidade_b', 'Especialidade / Cargo')}
+              {rpField(axis, 'telefone_b', 'Telefone')}
+              {rpField(axis, 'email_b', 'Email')}
+              {rpField(axis, 'link_b', 'Link profissional (URL)')}
+            </div>
+          </div>
+          <div className="px-4 py-3 border-t border-foreground/10">
+            <p className="text-[9px] font-bold uppercase tracking-[0.15em] mb-2 opacity-50">Sumario do Eixo</p>
+            {rpField(axis, 'sumario', 'Texto de sumario...', true)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -511,6 +607,7 @@ export default function Admin() {
             <TabsTrigger value="sobre" className={tabTriggerClass}>SOBRE</TabsTrigger>
             <TabsTrigger value="bookmarks" className={tabTriggerClass}>BOOKMARKS</TabsTrigger>
             <TabsTrigger value="benchmark" className={tabTriggerClass}>BENCHMARK</TabsTrigger>
+              <TabsTrigger value="revisao-pares" className={tabTriggerClass}>REVISAO PARES</TabsTrigger>
           </TabsList>
 
           {/* Keywords Tab */}
@@ -1029,6 +1126,9 @@ export default function Admin() {
           {/* Benchmark Tab */}
           <TabsContent value="benchmark" className="mt-0">
             <BenchmarkAdminTab />
+          </TabsContent>
+          <TabsContent value="revisao-pares" className="mt-0">
+            <RevisaoPareAdmin />
           </TabsContent>
         </Tabs>
       </main>
