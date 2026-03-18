@@ -131,10 +131,10 @@ const emptyGuiao = (): Omit<GuiaoRow, "id"> => ({
 
 // ── Revisão de Pares Admin ────────────────────────────────────────────
 const EIXOS_RP = [
-  { axis: 'saude-mental', label: 'Saude Mental', color: '#0000FF' },
-  { axis: 'alimentacao',  label: 'Alimentacao',  color: '#16A34A' },
-  { axis: 'menopausa',    label: 'Menopausa',    color: '#A21CAF' },
-  { axis: 'emergentes',   label: 'Emergentes',   color: '#EA580C' },
+  { axis: 'saude-mental', label: 'Saude Mental', color: '#0000FF', bg: 'rgba(0,255,200,0.12)' },
+  { axis: 'alimentacao',  label: 'Alimentacao',  color: '#0000FF', bg: 'rgba(255,230,0,0.2)' },
+  { axis: 'menopausa',    label: 'Menopausa',    color: '#0000FF', bg: 'rgba(255,0,150,0.12)' },
+  { axis: 'emergentes',   label: 'Emergentes',   color: '#0000FF', bg: 'rgba(0,0,255,0.08)' },
 ];
 
 type RPEntry = {
@@ -190,7 +190,7 @@ const RevisaoPareAdmin = () => {
   return (
     <div className="space-y-8 py-4">
       {EIXOS_RP.map(({ axis, label, color }) => (
-        <div key={axis} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3 }}>
+        <div key={axis} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color }}>{label}</p>
             <button onClick={() => save(axis)} disabled={saving === axis} className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1.5 transition-colors" style={{ borderColor: color, color: saving === axis ? '#999' : color }}>
