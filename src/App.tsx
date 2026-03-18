@@ -8,6 +8,7 @@ import Sobre from "./pages/Sobre";
 import Textos from "./pages/Textos";
 import Briefing from "./pages/Briefing";
 import Guioes from "./pages/Guioes";
+import RevisaoPares from "./pages/RevisaoPares";
 import Mural from "./pages/Mural";
 import Plataforma from "./pages/Plataforma";
 import Admin from "./pages/Admin";
@@ -29,6 +30,8 @@ const App = () => (
           <Route path="/textos" element={<Textos />} />
           <Route path="/briefing" element={<Briefing />} />
           <Route path="/guioes" element={<Guioes />} />
+          <Route path="/editorial/guioes" element={<Guioes />} />
+          <Route path="/editorial/revisao-pares" element={<RevisaoPares />} />
           <Route path="/mural" element={<Mural />} />
           <Route path="/plataforma" element={<Plataforma />} />
           <Route path="/editorial/bookmarks" element={<Bookmarks />} />
