@@ -91,7 +91,7 @@ const Sobre = () => {
             </div>
           </div>
           {/* Coluna B — Diz que Disse */}
-          <div className="space-y-6 p-6 -m-2" style={{ backgroundColor: "#F5F5FF" }}>
+          <div className="space-y-6 p-6 -m-2" style={{ backgroundColor: "#F2FCFA" }}>
             <div>
               <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] mb-3" style={{ color: "#7B00FF" }}>Diz que Disse</h3>
               <p className="text-sm leading-relaxed" style={{ color: "#7B00FF" }}>Um projecto de comunicação estratégica de ciências da saúde. Os seus temas, formatos e prioridades editoriais são informados pelo que o Reportagem Viva detecta, transformando dados de monitorização em conteúdo útil para o público.</p>

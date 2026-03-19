@@ -3,7 +3,7 @@ import BenchmarkPage from "./Benchmark";
 import EditorialHeader from "@/components/EditorialHeader";
 
 const BenchmarkWrapper = () => (
-  <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
+  <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F2FCFA" }}>
     <EditorialHeader />
 
     <section className="px-6 pt-12 pb-6">

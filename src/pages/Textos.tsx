@@ -32,7 +32,7 @@ const Textos = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
+    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F2FCFA" }}>
       <EditorialHeader />
 
       {/* Page Title */}
