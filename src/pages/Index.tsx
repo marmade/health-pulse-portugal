@@ -132,8 +132,7 @@ const Index = () => {
       }).select("id").single();
 
       // Refresh archives for this axis
-      const { data: archives } = await supabase
-        .from("eixos_archive")
+      const { data: archives } = await (supabase.from as any)("eixos_archive")
         .select("*")
         .eq("axis", axis)
         .order("week_start", { ascending: false });
