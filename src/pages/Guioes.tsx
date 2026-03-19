@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "@/components/DashboardHeader";
-import EditorialSubNav from "@/components/EditorialSubNav";
+import EditorialHeader from "@/components/EditorialHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -482,8 +481,7 @@ const Guioes = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <DashboardHeader activePage="guioes" />
-      <EditorialSubNav activePage="guioes" />
+      <EditorialHeader />
 
       <main className="px-6 py-8 max-w-6xl mx-auto">
         {/* ── Header ───────────────────────────────────── */}
