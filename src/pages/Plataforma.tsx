@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import EditorialHeader from "@/components/EditorialHeader";
 import { supabase } from "@/integrations/supabase/client";
 
 /* ── Fallback modal data ── */
