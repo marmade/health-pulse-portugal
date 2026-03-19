@@ -112,29 +112,7 @@ const Plataforma = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
-      <header className="w-full">
-        <div className="px-6 py-5">
-          <p className="text-lg font-bold tracking-[0.05em] uppercase">Diz que Disse</p>
-          <p className="editorial-label mt-1" style={{ opacity: 0.5 }}>Serviço Nacional de Literacia em Saúde</p>
-        </div>
-        <nav className="px-6 py-2 flex items-center justify-between" style={{ borderTop: "1px solid rgba(0,0,255,0.15)", borderBottom: "1px solid rgba(0,0,255,0.15)" }}>
-          <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link to="/editorial/bookmarks" className="nav-link">Bookmarks</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/editorial/benchmark" className="nav-link">Benchmark</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/textos" className="nav-link">Textos</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/plataforma" className="nav-link nav-link-active">Plataforma</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/sobre" className="nav-link">Sobre</Link>
-          </div>
-        </nav>
-      </header>
+      <EditorialHeader />
 
       {/* Intro */}
       <section className="px-6 py-12 md:py-16 max-w-3xl">

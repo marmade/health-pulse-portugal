@@ -1,7 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import EditorialSubNav from "@/components/EditorialSubNav";
+import EditorialHeader from "@/components/EditorialHeader";
 
 const EIXOS = [
   { id: "saude-mental", label: "Saúde Mental", color: "rgba(0,255,200,0.12)" },
@@ -36,32 +35,8 @@ const RevisaoPares = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header editorial */}
-      <header className="w-full">
-        <div className="px-6 py-5">
-          <p className="text-lg font-bold tracking-[0.05em] uppercase">Diz que Disse</p>
-          <p className="editorial-label mt-1" style={{ opacity: 0.5 }}>Serviço Nacional de Literacia em Saúde</p>
-        </div>
-        <nav className="px-6 py-2 flex items-center justify-between" style={{ borderTop: "1px solid rgba(0,0,255,0.15)", borderBottom: "1px solid rgba(0,0,255,0.15)" }}>
-          <Link to="/" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-            Reportagem Viva
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link to="/editorial/bookmarks" className="nav-link">Bookmarks</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/editorial/benchmark" className="nav-link">Benchmark</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/textos" className="nav-link">Textos</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/plataforma" className="nav-link">Plataforma</Link>
-            <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
-            <Link to="/sobre" className="nav-link">Sobre</Link>
-          </div>
-        </nav>
-        <EditorialSubNav activePage="revisao-pares" />
-      </header>
+      <EditorialHeader />
 
-      {/* Page content */}
       <section className="px-6 pt-12 pb-6">
         <h1 className="text-2xl md:text-4xl font-bold tracking-[0.03em] leading-tight">
           Revisão de Pares
@@ -90,7 +65,6 @@ const RevisaoPares = () => {
                       {label}
                     </p>
                   </div>
-
                   <div className="px-5 py-5 space-y-4">
                     {entries.length > 0 ? (
                       entries.map((entry) => (
