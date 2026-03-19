@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DashboardHeader from "@/components/DashboardHeader";
-import EditorialSubNav from "@/components/EditorialSubNav";
+import EditorialHeader from "@/components/EditorialHeader";
 import DashboardFooter from "@/components/DashboardFooter";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
