@@ -156,7 +156,7 @@ const RevisaoPareAdmin = () => {
   const [saving, setSaving] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from('revisao_pares').select('*').then(({ data }) => {
+    (supabase.from as any)('revisao_pares').select('*').then(({ data }: any) => {
       if (!data) return;
       const map: Record<string, RPEntry> = {};
       data.forEach((d: any) => { map[d.axis] = d; });
