@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import EditorialSubNav from "@/components/EditorialSubNav";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -55,6 +56,7 @@ const Textos = () => {
             <Link to="/sobre" className="nav-link">Sobre</Link>
           </div>
         </nav>
+        <EditorialSubNav activePage="textos" />
       </header>
 
       {/* Page Title */}
