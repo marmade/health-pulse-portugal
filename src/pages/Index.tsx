@@ -87,8 +87,7 @@ const Index = () => {
     if (axis === "all") return;
     const prev = getPrevWeekRangeIdx();
     // Verificar se já existe
-    const { data: existing } = await supabase
-      .from("eixos_archive")
+    const { data: existing } = await (supabase.from as any)("eixos_archive")
       .select("id")
       .eq("axis", axis)
       .eq("week_start", prev.isoStart)
