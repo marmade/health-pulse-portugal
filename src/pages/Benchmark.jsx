@@ -459,7 +459,7 @@ function BenchmarkCard({ entry, accentColor }) {
   const [open, setOpen] = useState(false);
   const blue = "#0000FF";
 
-  const bgOpen = entry.sinal === "+" ? "rgba(0,0,255,0.03)" : "rgba(255,0,255,0.03)";
+  const bgOpen = "#FFFFFF";
 
   const bulletLines = (text) =>
     text.split("\n").filter(Boolean).map((line, i) => (
