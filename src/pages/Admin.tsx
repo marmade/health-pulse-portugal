@@ -171,8 +171,8 @@ const RevisaoPareAdmin = () => {
     setSaving(axis);
     const entry = dados[axis] || emptyRP(axis, EIXOS_RP.find(e => e.axis === axis)?.label || axis);
     const { error } = entry?.id
-      ? await supabase.from('revisao_pares').update({ ...entry, updated_at: new Date().toISOString() }).eq('id', entry.id)
-      : await supabase.from('revisao_pares').insert(entry);
+      ? await (supabase.from as any)('revisao_pares').update({ ...entry, updated_at: new Date().toISOString() }).eq('id', entry.id)
+      : await (supabase.from as any)('revisao_pares').insert(entry);
     setSaving(null);
     if (error) toast({ title: 'Erro ao guardar', description: error.message, variant: 'destructive' });
     else toast({ title: 'Guardado', description: axis + ' actualizado' });
