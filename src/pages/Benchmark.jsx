@@ -470,7 +470,7 @@ function BenchmarkCard({ entry, accentColor }) {
 
   return (
     <div
-      className="pt-5 pb-5 transition-colors mb-4 -mx-6 px-6"
+      className="pt-5 pb-6 transition-colors mb-4 -mx-6 px-6"
       style={{
         borderTop: `1px solid ${open ? accentColor : "rgba(0,0,255,0.15)"}`,
         background: open ? bgOpen : "transparent",
