@@ -156,7 +156,7 @@ const RevisaoPareAdmin = () => {
   const [saving, setSaving] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from('revisao_pares').select('*').then(({ data }) => {
+    (supabase.from as any)('revisao_pares').select('*').then(({ data }: any) => {
       if (!data) return;
       const map: Record<string, RPEntry> = {};
       data.forEach((d: any) => { map[d.axis] = d; });
@@ -171,8 +171,8 @@ const RevisaoPareAdmin = () => {
     setSaving(axis);
     const entry = dados[axis] || emptyRP(axis, EIXOS_RP.find(e => e.axis === axis)?.label || axis);
     const { error } = entry?.id
-      ? await supabase.from('revisao_pares').update({ ...entry, updated_at: new Date().toISOString() }).eq('id', entry.id)
-      : await supabase.from('revisao_pares').insert(entry);
+      ? await (supabase.from as any)('revisao_pares').update({ ...entry, updated_at: new Date().toISOString() }).eq('id', entry.id)
+      : await (supabase.from as any)('revisao_pares').insert(entry);
     setSaving(null);
     if (error) toast({ title: 'Erro ao guardar', description: error.message, variant: 'destructive' });
     else toast({ title: 'Guardado', description: axis + ' actualizado' });
@@ -189,7 +189,7 @@ const RevisaoPareAdmin = () => {
 
   return (
     <div className="space-y-8 py-4">
-      {EIXOS_RP.map(({ axis, label, color }) => (
+      {EIXOS_RP.map(({ axis, label, color, bg }) => (
         <div key={axis} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color }}>{label}</p>

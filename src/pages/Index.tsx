@@ -87,8 +87,7 @@ const Index = () => {
     if (axis === "all") return;
     const prev = getPrevWeekRangeIdx();
     // Verificar se já existe
-    const { data: existing } = await supabase
-      .from("eixos_archive")
+    const { data: existing } = await (supabase.from as any)("eixos_archive")
       .select("id")
       .eq("axis", axis)
       .eq("week_start", prev.isoStart)
@@ -119,7 +118,7 @@ const Index = () => {
       .map((n: any) => ({ title: n.title, outlet: n.outlet, date: n.date, source_type: n.source_type }));
 
     try {
-      const { data: inserted } = await supabase.from("eixos_archive").insert({
+      const { data: inserted } = await (supabase.from as any)("eixos_archive").insert({
         axis,
         axis_label: axisLabels[axis] || axis,
         week_start: prev.isoStart,
@@ -133,8 +132,7 @@ const Index = () => {
       }).select("id").single();
 
       // Refresh archives for this axis
-      const { data: archives } = await supabase
-        .from("eixos_archive")
+      const { data: archives } = await (supabase.from as any)("eixos_archive")
         .select("*")
         .eq("axis", axis)
         .order("week_start", { ascending: false });
@@ -155,8 +153,7 @@ const Index = () => {
     if (activeAxis !== "all" && Object.keys(filteredData).length > 0) {
       autoArchiveEixo(activeAxis);
       // Carregar arquivo existente para este eixo
-      supabase
-        .from("eixos_archive")
+      (supabase.from as any)("eixos_archive")
         .select("*")
         .eq("axis", activeAxis)
         .order("week_start", { ascending: false })
