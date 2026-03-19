@@ -68,7 +68,7 @@ const EditorialHeader = () => {
         {SUB_NAV_ITEMS.map((item, i) => (
           <span key={item.path} className="flex items-center gap-4">
             {i > 0 && (
-              <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>|</span>
+              <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>/</span>
             )}
             <Link
               to={item.path}
