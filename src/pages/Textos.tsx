@@ -56,6 +56,7 @@ const Textos = () => {
             <Link to="/sobre" className="nav-link">Sobre</Link>
           </div>
         </nav>
+        <EditorialSubNav activePage="textos" />
       </header>
 
       {/* Page Title */}
