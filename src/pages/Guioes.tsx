@@ -481,8 +481,7 @@ const Guioes = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <DashboardHeader activePage="guioes" />
-      <EditorialSubNav activePage="guioes" />
+      <EditorialHeader />
 
       <main className="px-6 py-8 max-w-6xl mx-auto">
         {/* ── Header ───────────────────────────────────── */}
