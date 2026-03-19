@@ -34,7 +34,7 @@ const RevisaoPares = () => {
   const getByEixo = (eixo: string) => dados.filter((d) => d.eixo === eixo);
 
   return (
-    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
+    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F2FCFA" }}>
       <EditorialHeader />
 
       <section className="px-6 pt-12 pb-6">
