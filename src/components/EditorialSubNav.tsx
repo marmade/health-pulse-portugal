@@ -12,7 +12,7 @@ type Props = { activePage?: string };
 const EditorialSubNav = ({ activePage }: Props) => {
   const location = useLocation();
   return (
-    <nav className="px-6 py-2 flex items-center gap-4 border-b border-foreground/10">
+    <nav className="px-6 py-2 flex items-center justify-end gap-4 border-b border-foreground/10">
       {EDITORIAL_TABS.map((tab) => {
         const isActive = activePage === tab.id || location.pathname === tab.path;
         return (
