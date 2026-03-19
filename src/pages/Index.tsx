@@ -118,7 +118,7 @@ const Index = () => {
       .map((n: any) => ({ title: n.title, outlet: n.outlet, date: n.date, source_type: n.source_type }));
 
     try {
-      const { data: inserted } = await supabase.from("eixos_archive").insert({
+      const { data: inserted } = await (supabase.from as any)("eixos_archive").insert({
         axis,
         axis_label: axisLabels[axis] || axis,
         week_start: prev.isoStart,
