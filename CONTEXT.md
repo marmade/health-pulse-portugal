@@ -1,33 +1,26 @@
-## Sessão — Março 2026: YouTube Trends + Automação GitHub Actions
+## Última actualização: 19/03/2026
 
-### O que foi construído
+### Novas tabelas
+- `eixos_archive` — arquivo semanal por eixo (auto-gerado quando se abre um eixo no dashboard)
+- `revisao_pares` — dupla científica por eixo, editável no admin
 
-**Coluna "Tendências YouTube"** — nova secção no dashboard, coluna direita da área "Perguntas de Saúde em Crescimento":
-- Componente `YouTubeTrendsPanel` criado via Lovable
-- Tabela `youtube_trends` criada automaticamente pelo Lovable no Supabase (`cyjwhmuakmiytypewwfw`)
-- Estrutura da tabela: `id, titulo, canal, views, url, eixo, data_publicacao, thumbnail_url, created_at`
-- O dashboard lê: `youtube_trends?select=*&order=views.desc&limit=15`
-- Visual final: thumbnail + título clicável + canal + eixo temático + views formatadas
-- [DECISÃO] Thumbnails mantidas — ficam mais ricas visualmente
+### Estrutura Editorial (Lado B)
+- Menu principal: REPORTAGEM VIVA | BOOKMARKS | BENCHMARK | TEXTOS | PLATAFORMA | SOBRE
+- Segunda linha (EditorialSubNav): GUIÕES | REVISÃO DE PARES | TEXTOS | BOOKMARKS
+- Páginas com SubNav: Guioes, Bookmarks, Benchmark, RevisaoPares
+- GUIÕES removido do menu principal do Lado A
 
-**Script Python** — `scripts/4_fetch_youtube_trends.py` (na raiz do repositório, pasta `scripts/`):
-- Lê as 73 keywords activas do Supabase
-- Faz pesquisa na YouTube Data API v3
-- Escreve top vídeos em `youtube_trends`
-- Execução manual: `python3 4_fetch_youtube_trends.py A_CHAVE_YOUTUBE`
+### Scripts Python
+- `4_fetch_youtube_trends.py` — verifica país do canal via API (só PT ou sem país); cache em memória
+- `5_fetch_google_trends.py` — is_emergent calculado automaticamente (change >= 50 e current >= 10)
+- `6_fetch_health_questions.py` — expandir_mural() adiciona termos novos automaticamente
 
-**GitHub Actions** — automação semanal:
-- Ficheiro: `.github/workflows/youtube-trends.yml`
-- Corre todas as segundas-feiras às 06:00 UTC (cron: `0 6 * * 1`)
-- Também pode ser disparado manualmente (workflow_dispatch)
-- YouTube API key guardada como secret no repositório: `YOUTUBE_API_KEY`
-- Testado e confirmado: **Status Success** (51s) ✅
-
-### Problema encontrado e resolvido
-O ficheiro `.github/workflows/youtube-trends.yml` foi inicialmente criado dentro de `scripts/` em vez da raiz — o GitHub não reconhecia o workflow. Corrigido criando o ficheiro no caminho correcto via URL directa do GitHub.
-
-### Aviso menor
-O workflow mostra 1 warning: `actions/checkout@v3` e `actions/setup-python@v4` usam Node.js 20 que está deprecated. Não afecta funcionamento actual mas convém actualizar para `@v4` / `@v5` numa próxima sessão.
+### Componentes chave
+- `EditorialSubNav.tsx` — segunda linha de menu do Editorial
+- `eixoPdfExport.ts` — exporta PDF por eixo/semana
+- `RevisaoPares.tsx` — página de revisão de pares com cards por eixo
+- `AxisColumn.tsx` — mostra arquivo semanal com botão PDF
+-
 
 # CONTEXT.md — Reportagem Viva
 > Ficheiro de memória do projeto para continuidade entre sessões de trabalho com IA.
@@ -40,15 +33,13 @@ O workflow mostra 1 warning: `actions/checkout@v3` e `actions/setup-python@v4` u
 - **Nome:** Reportagem Viva
 - **Repositório:** github.com/marmade/health-pulse-portugal
 - **Autora:** Marta (mestranda em Comunicação de Ciência, FCSH-UNL, nº 2024110168)
-- **Orientador:** Alexandre Duarte
-- **Lançamento previsto:** Outubro 2026 — Mês da Saúde Mental
 - **Contexto académico:** Projeto de tese de mestrado sobre monitorização de desinformação em saúde
 
 ---
 
 ## Missão
 
-Plataforma de monitorização de desinformação em saúde, com camadas editoriais e arquivísticas. Combina investigação, comunicação de ciência e ferramentas digitais para combater a desinformação.
+Plataforma de monitorização de desinformação em saúde, com camadas editoriais de arquivo. Combina investigação, comunicação de ciência e ferramentas digitais para desenvolver conteúdos de combate à desinformação relacionada com a saúde.
 
 ---
 
@@ -79,13 +70,13 @@ Painel interno com 4 eixos temáticos:
   - 3 tabs CRUD: Keywords / Debunking / Notícias
   - Ligado ao Supabase com RLS atualizado
 
-### 2. Diz que Disse
+### 2. Diz que Disse — Conteúdo Editorial
 - Formato vídeo estilo Vox Pop
 - Handle: `@roevbros`
-- Duo científico em frente à câmara
+- Duo científico em frente à câmara (revisão de pares)
 - Distribuição: Instagram / TikTok / YouTube
 
-### 3. Bom Saber! *(futuro)*
+### 3. *(futuro)*
 - App arquivo consultável pelo público
 - Em desenvolvimento/planeamento
 
