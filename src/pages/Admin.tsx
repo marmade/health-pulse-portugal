@@ -189,7 +189,7 @@ const RevisaoPareAdmin = () => {
 
   return (
     <div className="space-y-8 py-4">
-      {EIXOS_RP.map(({ axis, label, color }) => (
+      {EIXOS_RP.map(({ axis, label, color, bg }) => (
         <div key={axis} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color }}>{label}</p>

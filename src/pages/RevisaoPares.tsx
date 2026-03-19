@@ -73,11 +73,10 @@ const RevisaoPares = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("revisao_pares")
+    (supabase.from as any)("revisao_pares")
       .select("*")
       .order("axis")
-      .then(({ data }) => {
+      .then(({ data }: any) => {
         if (data) setDados(data as EntradaPares[]);
         setLoading(false);
       });

@@ -153,8 +153,7 @@ const Index = () => {
     if (activeAxis !== "all" && Object.keys(filteredData).length > 0) {
       autoArchiveEixo(activeAxis);
       // Carregar arquivo existente para este eixo
-      supabase
-        .from("eixos_archive")
+      (supabase.from as any)("eixos_archive")
         .select("*")
         .eq("axis", activeAxis)
         .order("week_start", { ascending: false })
