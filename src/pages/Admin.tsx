@@ -162,9 +162,33 @@ const emptyRP = (eixo: string, label: string): RPEntry => ({
   nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '', bio_b: '',
   sumario: '',
 });
+// ── Contactos Projecto types ──────────────────────────────────────────
+type ContactoEntry = {
+  id?: string;
+  tipo: string;
+  nome: string;
+  especialidade: string;
+  email: string;
+  telefone: string;
+  link: string;
+  bio: string;
+};
+
+const emptyContacto = (tipo: string): ContactoEntry => ({
+  tipo, nome: '', especialidade: '', email: '', telefone: '', link: '', bio: '',
+});
+
+const CONTACTO_SECTIONS = [
+  { tipo: 'comunidade_cientifica', label: 'Comunidade Científica', color: '#0000FF', bg: '#f2fcfa' },
+  { tipo: 'agentes_trabalho', label: 'Agentes de Trabalho', color: '#0000FF', bg: '#ede8ff' },
+];
+
 const RevisaoPareAdmin = () => {
   const [dados, setDados] = useState<Record<string, RPEntry>>({});
   const [saving, setSaving] = useState<string | null>(null);
+  const [contactos, setContactos] = useState<ContactoEntry[]>([]);
+  const [savingContacto, setSavingContacto] = useState<string | null>(null);
+  const [newContactos, setNewContactos] = useState<Record<string, ContactoEntry>>({});
 
   useEffect(() => {
     (supabase.from as any)('revisao_pares').select('*').then(({ data }: any) => {
@@ -172,6 +196,9 @@ const RevisaoPareAdmin = () => {
       const map: Record<string, RPEntry> = {};
       data.forEach((d: any) => { map[d.eixo] = d; });
       setDados(map);
+    });
+    (supabase.from as any)('contactos_projecto').select('*').order('created_at').then(({ data }: any) => {
+      if (data) setContactos(data);
     });
   }, []);
 
@@ -198,8 +225,53 @@ const RevisaoPareAdmin = () => {
     );
   };
 
+  // Contacto CRUD
+  const updateNewContacto = (tipo: string, field: string, value: string) =>
+    setNewContactos(prev => ({ ...prev, [tipo]: { ...(prev[tipo] || emptyContacto(tipo)), [field]: value } }));
+
+  const addContacto = async (tipo: string) => {
+    const entry = newContactos[tipo];
+    if (!entry || !entry.nome.trim()) { toast({ title: 'Preenche pelo menos o nome', variant: 'destructive' }); return; }
+    setSavingContacto(tipo);
+    const { data, error } = await (supabase.from as any)('contactos_projecto').insert({ ...entry, tipo }).select().single();
+    setSavingContacto(null);
+    if (error) { toast({ title: 'Erro', description: error.message, variant: 'destructive' }); return; }
+    setContactos(prev => [...prev, data]);
+    setNewContactos(prev => ({ ...prev, [tipo]: emptyContacto(tipo) }));
+    toast({ title: 'Contacto adicionado' });
+  };
+
+  const removeContacto = async (id: string) => {
+    const { error } = await (supabase.from as any)('contactos_projecto').delete().eq('id', id);
+    if (error) { toast({ title: 'Erro ao remover', description: error.message, variant: 'destructive' }); return; }
+    setContactos(prev => prev.filter(c => c.id !== id));
+    toast({ title: 'Contacto removido' });
+  };
+
+  const updateContacto = async (id: string, field: string, value: string) => {
+    setContactos(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c));
+  };
+
+  const saveContacto = async (c: ContactoEntry) => {
+    if (!c.id) return;
+    setSavingContacto(c.id);
+    const { id, ...rest } = c;
+    const { error } = await (supabase.from as any)('contactos_projecto').update(rest).eq('id', id);
+    setSavingContacto(null);
+    if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+    else toast({ title: 'Contacto guardado' });
+  };
+
+  const contactoField = (value: string, onChange: (v: string) => void, placeholder: string, multiline = false) =>
+    multiline ? (
+      <textarea rows={2} className="w-full text-xs border border-foreground/20 px-2 py-1.5 bg-background resize-none" placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)} />
+    ) : (
+      <input className="w-full text-xs border border-foreground/20 px-2 py-1.5 bg-background" placeholder={placeholder} value={value} onChange={e => onChange(e.target.value)} />
+    );
+
   return (
     <div className="space-y-8 py-4">
+      {/* Eixos existentes */}
       {EIXOS_RP.map(({ eixo, label, color, bg }) => (
         <div key={eixo} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
           <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
@@ -234,6 +306,60 @@ const RevisaoPareAdmin = () => {
           </div>
         </div>
       ))}
+
+      {/* Secções de contactos */}
+      {CONTACTO_SECTIONS.map(({ tipo, label, color, bg }) => {
+        const sectionContactos = contactos.filter(c => c.tipo === tipo);
+        const newC = newContactos[tipo] || emptyContacto(tipo);
+        return (
+          <div key={tipo} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color }}>{label}</p>
+              <p className="text-[9px] opacity-40">{sectionContactos.length} contacto(s)</p>
+            </div>
+
+            {/* Existing contacts */}
+            {sectionContactos.map((c) => (
+              <div key={c.id} className="px-4 py-3 border-b border-foreground/10 space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {contactoField(c.nome, v => updateContacto(c.id!, 'nome', v), 'Nome completo')}
+                  {contactoField(c.especialidade, v => updateContacto(c.id!, 'especialidade', v), 'Especialidade / Cargo')}
+                  {contactoField(c.email, v => updateContacto(c.id!, 'email', v), 'Email')}
+                  {contactoField(c.telefone, v => updateContacto(c.id!, 'telefone', v), 'Telefone')}
+                  {contactoField(c.link, v => updateContacto(c.id!, 'link', v), 'Link profissional (URL)')}
+                </div>
+                {contactoField(c.bio, v => updateContacto(c.id!, 'bio', v), 'Resumo / Bio...', true)}
+                <div className="flex gap-2 justify-end">
+                  <button onClick={() => saveContacto(c)} disabled={savingContacto === c.id} className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1 transition-colors" style={{ borderColor: color, color: savingContacto === c.id ? '#999' : color }}>
+                    {savingContacto === c.id ? 'A guardar...' : 'Guardar'}
+                  </button>
+                  <button onClick={() => removeContacto(c.id!)} className="text-[9px] font-bold uppercase tracking-[0.15em] border border-red-400 text-red-500 px-3 py-1 hover:bg-red-50 transition-colors">
+                    Remover
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* New contact form */}
+            <div className="px-4 py-3 space-y-2 bg-white/50">
+              <p className="text-[9px] font-bold uppercase tracking-[0.15em] opacity-50 mb-2">Adicionar contacto</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {contactoField(newC.nome, v => updateNewContacto(tipo, 'nome', v), 'Nome completo')}
+                {contactoField(newC.especialidade, v => updateNewContacto(tipo, 'especialidade', v), 'Especialidade / Cargo')}
+                {contactoField(newC.email, v => updateNewContacto(tipo, 'email', v), 'Email')}
+                {contactoField(newC.telefone, v => updateNewContacto(tipo, 'telefone', v), 'Telefone')}
+                {contactoField(newC.link, v => updateNewContacto(tipo, 'link', v), 'Link profissional (URL)')}
+              </div>
+              {contactoField(newC.bio, v => updateNewContacto(tipo, 'bio', v), 'Resumo / Bio...', true)}
+              <div className="flex justify-end">
+                <button onClick={() => addContacto(tipo)} disabled={savingContacto === tipo} className="text-[9px] font-bold uppercase tracking-[0.15em] border px-3 py-1.5 transition-colors" style={{ borderColor: color, color: savingContacto === tipo ? '#999' : color }}>
+                  {savingContacto === tipo ? 'A adicionar...' : '+ Adicionar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

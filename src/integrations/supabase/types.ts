@@ -107,6 +107,42 @@ export type Database = {
         }
         Relationships: []
       }
+      contactos_projecto: {
+        Row: {
+          bio: string | null
+          created_at: string
+          email: string | null
+          especialidade: string | null
+          id: string
+          link: string | null
+          nome: string
+          telefone: string | null
+          tipo: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          especialidade?: string | null
+          id?: string
+          link?: string | null
+          nome?: string
+          telefone?: string | null
+          tipo: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          especialidade?: string | null
+          id?: string
+          link?: string | null
+          nome?: string
+          telefone?: string | null
+          tipo?: string
+        }
+        Relationships: []
+      }
       debunking: {
         Row: {
           classification: string
