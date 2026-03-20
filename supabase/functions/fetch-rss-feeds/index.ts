@@ -12,11 +12,11 @@ interface FeedSource {
   type: 'media' | 'institucional' | 'factcheck';
 }
 
-// Estratégia de fallback: tenta URL principal; se 404, tenta /feed/ e /rss/ automaticamente.
-// Adicionar novos outlets: basta adicionar à lista — o sistema tenta variantes sozinho.
+// Estratégia de fallback: tenta URL principal; se 404/403, tenta fallbackUrls em sequência.
+// Para adicionar novos outlets: basta acrescentar à lista.
 const FEEDS: FeedSource[] = [
-  // MEDIA
-  { url: 'https://feeds.feedburner.com/PublicoRSS', outlet: 'Público', type: 'media' },
+  // MEDIA GERAL
+  { url: 'https://feeds.feedburner.com/PublicoRSS', fallbackUrls: ['https://www.publico.pt/rss'], outlet: 'Público', type: 'media' },
   { url: 'https://observador.pt/feed/', outlet: 'Observador', type: 'media' },
   { url: 'https://www.jn.pt/feed/', fallbackUrls: ['https://www.jn.pt/rss/'], outlet: 'Jornal de Notícias', type: 'media' },
   { url: 'https://www.dn.pt/stories.rss', fallbackUrls: ['https://www.dn.pt/feed/'], outlet: 'Diário de Notícias', type: 'media' },
@@ -27,9 +27,19 @@ const FEEDS: FeedSource[] = [
   { url: 'https://sicnoticias.pt/feed/', fallbackUrls: ['https://sicnoticias.pt/rss'], outlet: 'SIC Notícias', type: 'media' },
   { url: 'https://rr.sapo.pt/feed/', outlet: 'Renascença', type: 'media' },
   { url: 'https://www.noticiasaominuto.com/feed', outlet: 'Notícias ao Minuto', type: 'media' },
+  // MEDIA — SECÇÕES SAÚDE
+  { url: 'https://www.publico.pt/rss/ciencia', outlet: 'Público — Ciência', type: 'media' },
+  { url: 'https://observador.pt/tag/saude/feed/', outlet: 'Observador — Saúde', type: 'media' },
+  { url: 'https://visao.pt/saude/feed/', fallbackUrls: ['https://visao.sapo.pt/saude/feed/'], outlet: 'Visão — Saúde', type: 'media' },
+  { url: 'https://www.eco.pt/tag/saude/feed/', outlet: 'ECO — Saúde', type: 'media' },
   // INSTITUCIONAL
   { url: 'https://www.dgs.pt/paginas-de-sistema/rss.aspx', outlet: 'DGS', type: 'institucional' },
+  { url: 'https://www.insa.min-saude.pt/feed/', fallbackUrls: ['https://www.insa.min-saude.pt/rss/'], outlet: 'INSA', type: 'institucional' },
+  { url: 'https://www.sns.gov.pt/feed/', fallbackUrls: ['https://www.sns.gov.pt/rss/'], outlet: 'SNS', type: 'institucional' },
   { url: 'https://ordemdosmedicos.pt/feed/', outlet: 'Ordem dos Médicos', type: 'institucional' },
+  { url: 'https://www.ordemenfermeiros.pt/feed/', outlet: 'Ordem dos Enfermeiros', type: 'institucional' },
+  { url: 'https://www.spms.min-saude.pt/feed/', outlet: 'SPMS', type: 'institucional' },
+  { url: 'https://www.ers.pt/feed/', outlet: 'ERS', type: 'institucional' },
   // FACT-CHECKING
   { url: 'https://poligrafo.sapo.pt/feed/', fallbackUrls: ['https://poligrafo.sapo.pt/feed'], outlet: 'Polígrafo', type: 'factcheck' },
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
@@ -42,33 +52,38 @@ function getSupabaseAdmin() {
   );
 }
 
-// Tenta fetch com fallback automático de URLs
+// Tenta fetch com fallback automático de URLs.
+// Usa vários User-Agent strings para contornar bloqueios de servidores institucionais.
 async function fetchFeedWithFallback(feed: FeedSource): Promise<{ xml: string; usedUrl: string } | null> {
   const urlsToTry = [feed.url, ...(feed.fallbackUrls || [])];
-  // Adicionar variantes automáticas se não já incluídas
-  const baseUrl = feed.url.replace(/\/+$/, '');
-  const autoVariants = [baseUrl + '/feed/', baseUrl + '/rss/'];
-  for (const v of autoVariants) {
-    if (!urlsToTry.includes(v)) urlsToTry.push(v);
-  }
+
+  const userAgents = [
+    'Mozilla/5.0 (compatible; HealthPulse/1.0; +https://github.com/marmade/health-pulse-portugal)',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Feedfetcher-Google; (+http://www.google.com/feedfetcher.html)',
+  ];
 
   for (const url of urlsToTry) {
-    try {
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; HealthPulse/1.0)',
-          'Accept': 'application/rss+xml, application/xml, text/xml, */*',
-        },
-        signal: AbortSignal.timeout(10000),
-      });
-      if (res.ok) {
-        const xml = await res.text();
-        if (xml.includes('<item') || xml.includes('<entry')) {
-          return { xml, usedUrl: url };
+    for (const ua of userAgents) {
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'User-Agent': ua,
+            'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+          },
+          signal: AbortSignal.timeout(10000),
+        });
+        if (res.ok) {
+          const xml = await res.text();
+          if (xml.includes('<item') || xml.includes('<entry')) {
+            return { xml, usedUrl: url };
+          }
         }
+        // Se 200 mas sem conteúdo válido, não tenta outros UA para este URL
+        if (res.status !== 403 && res.status !== 405) break;
+      } catch (_) {
+        break; // timeout ou erro de rede — passar ao próximo URL
       }
-    } catch (_) {
-      // continuar para próximo URL
     }
   }
   return null;
@@ -129,7 +144,7 @@ Deno.serve(async (req) => {
     let totalInserted = 0;
     let totalProcessed = 0;
     const errors: string[] = [];
-    const feedLog: string[] = [];
+    const fallbacksUsed: string[] = [];
 
     for (const feed of FEEDS) {
       try {
@@ -139,7 +154,7 @@ Deno.serve(async (req) => {
           continue;
         }
         const { xml, usedUrl } = result;
-        if (usedUrl !== feed.url) feedLog.push(`${feed.outlet}: usou fallback ${usedUrl}`);
+        if (usedUrl !== feed.url) fallbacksUsed.push(`${feed.outlet}: usou ${usedUrl}`);
 
         const items = extractItems(xml);
         totalProcessed += items.length;
@@ -194,7 +209,7 @@ Deno.serve(async (req) => {
       processed: totalProcessed,
       inserted: totalInserted,
       feeds: FEEDS.length,
-      fallbacks_used: feedLog,
+      fallbacks_used: fallbacksUsed.length > 0 ? fallbacksUsed : undefined,
       errors: errors.length > 0 ? errors : undefined,
     };
 
