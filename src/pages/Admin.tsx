@@ -760,10 +760,13 @@ export default function Admin() {
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
                   <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
+                {editingNewsId && editingNewsOriginalTerm && !["saude-mental","alimentacao","menopausa","emergentes"].includes(editingNewsOriginalTerm) && (
+                  <p className="text-[10px] text-muted-foreground">Termo original: <span className="font-mono">{editingNewsOriginalTerm}</span></p>
+                )}
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
