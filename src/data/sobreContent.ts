@@ -35,13 +35,13 @@ export const fallbackSobreContent: Record<string, { titulo: string; conteudo: st
 
 Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytrends), com actualização do dashboard às segundas-feiras. Inclui volume de pesquisa por keyword e Related Queries — as perguntas reais dos portugueses em crescimento. Valores reflectem o índice de interesse relativo em Portugal no período de 12 meses.
 
-RSS Feeds: 15 fontes portuguesas com recolha contínua em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS) e fact-check (Polígrafo, Observador Fact-Check).
+RSS Feeds: 16 fontes portuguesas com recolha contínua em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS, Coord. Nacional Saúde Mental — saudemental.min-saude.pt) e fact-check (Polígrafo, Observador Fact-Check).
 
-YouTube: vídeos de saúde recolhidos semanalmente via script Python. Inclui título, canal, número de visualizações e URL. Dados organizados por eixo temático e usados para calcular o score de tendência do Mural de Keywords.
+YouTube: vídeos de saúde recolhidos semanalmente via script Python a partir de 36 canais portugueses curados por categoria: media generalista (RTP, SIC, TVI, Público, Observador, JN, DN, Euronews PT), saúde institucional (DGS, INSA, INFARMED, ERS, República Portuguesa, CNPS Mental), ordens e sociedades científicas (Ordem dos Médicos, Ordem dos Psicólogos, SPG, SPPSM), hospitais e seguros (CUF, Lusíadas, Trofa Saúde, Unilabs, Médis), ciência e academia (Gulbenkian, FCT, Faculdade de Medicina ULisboa, ITQB NOVA, 90 Segundos de Ciência) e fact-check (Despolariza, News Farma). Dados organizados por eixo temático, com deduplicação por URL e selecção dos top 15 por número de visualizações.
 
 DETECÇÃO ASSISTIDA
 
-Keywords e sinais emergentes identificados automaticamente pelo sistema. Crescimento superior a 200% ou termos sem histórico no ano anterior são sinalizados como emergentes.
+Keywords e sinais emergentes identificados automaticamente pelo sistema. Crescimento superior a 50% com volume mínimo de 10 pontos no índice Google Trends, ou termos sem histórico no ano anterior, são sinalizados como emergentes.
 
 CURADORIA EDITORIAL
 
@@ -53,7 +53,7 @@ Cobertura mediática: curadoria editorial dos artigos recolhidos via RSS com bas
     titulo: "Metodologia",
     conteudo: `SINAIS EMERGENTES
 
-Crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+Crescimento semanal superior a 50% com volume mínimo de 10 pontos no índice Google Trends.
 
 Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
 
@@ -68,12 +68,12 @@ Geração de guiões: os dados recolhidos pelo sistema alimentam um prompt estru
   "como-funciona": {
     titulo: "Como funciona",
     conteudo:
-      "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|15 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
+      "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|16 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
   },
   limitacoes: {
     titulo: "Limitações",
     conteudo:
-      "O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.\nA cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.\nO debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.\nO threshold de detecção de sinais emergentes (crescimento superior a 200%) é um valor operacional, não um critério cientificamente validado.",
+      "O índice Google Trends não representa volumes absolutos de pesquisa, apenas interesse relativo. Não é possível comparar valores entre temas diferentes.\nA cobertura RSS está limitada a 15 fontes seleccionadas por critério editorial. Não representa a totalidade da produção mediática portuguesa.\nO debunking é um processo de curadoria manual, sujeito à leitura e julgamento da autora, com validação por fontes científicas.\nO threshold de detecção de sinais emergentes (crescimento superior a 50% com volume mínimo de 10 pontos) é um valor operacional, não um critério cientificamente validado.",
   },
   agradecimentos: {
     titulo: "Agradecimentos",
