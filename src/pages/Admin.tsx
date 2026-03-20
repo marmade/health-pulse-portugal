@@ -56,6 +56,10 @@ type DebunkingItem = {
   source: string;
   classification: string;
   url: string;
+  keyword_id?: string | null;
+  eixo?: string | null;
+  explicacao?: string | null;
+  data_publicacao?: string | null;
 };
 
 type NewsItem = {
@@ -400,7 +404,7 @@ export default function Admin() {
   const [debunking, setDebunking] = useState<DebunkingItem[]>([]);
   const [showDebunkForm, setShowDebunkForm] = useState(false);
   const [editingDebunkId, setEditingDebunkId] = useState<string | null>(null);
-  const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+  const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "", keyword_id: "", eixo: "", explicacao: "", data_publicacao: "" });
 
   // News state
   const [news, setNews] = useState<NewsItem[]>([]);
@@ -545,25 +549,35 @@ export default function Admin() {
   };
 
   // Debunking CRUD
+  const emptyDebunk = { title: "", term: "", source: "", classification: "FALSO", url: "", keyword_id: "", eixo: "", explicacao: "", data_publicacao: "" };
+
   const openDebunkForm = (item?: DebunkingItem) => {
     if (item) {
       setEditingDebunkId(item.id);
-      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url });
+      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url, keyword_id: item.keyword_id || "", eixo: item.eixo || "", explicacao: item.explicacao || "", data_publicacao: item.data_publicacao || "" });
     } else {
       setEditingDebunkId(null);
-      setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+      setNewDebunk(emptyDebunk);
     }
     setShowDebunkForm(true);
   };
 
   const saveDebunk = async () => {
     if (!newDebunk.title || !newDebunk.term) return;
-    const payload = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    const payload: any = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    if (newDebunk.keyword_id) payload.keyword_id = newDebunk.keyword_id;
+    else payload.keyword_id = null;
+    if (newDebunk.eixo) payload.eixo = newDebunk.eixo;
+    else payload.eixo = null;
+    if (newDebunk.explicacao) payload.explicacao = newDebunk.explicacao;
+    else payload.explicacao = null;
+    if (newDebunk.data_publicacao) payload.data_publicacao = newDebunk.data_publicacao;
+    else payload.data_publicacao = null;
     const { error } = editingDebunkId
       ? await supabase.from("debunking").update(payload).eq("id", editingDebunkId)
       : await supabase.from("debunking").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewDebunk(emptyDebunk); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
   };
 
   const deleteDebunk = async (id: string) => {
@@ -848,9 +862,28 @@ export default function Admin() {
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
                 <Input placeholder="Termo relacionado" value={newDebunk.term} onChange={(e) => setNewDebunk({ ...newDebunk, term: e.target.value })} />
+                <Select value={newDebunk.keyword_id || "__none__"} onValueChange={(v) => {
+                  if (v === "__none__") {
+                    setNewDebunk({ ...newDebunk, keyword_id: "", eixo: "" });
+                  } else {
+                    const kw = keywords.find(k => k.id === v);
+                    setNewDebunk({ ...newDebunk, keyword_id: v, eixo: kw?.axis || "" });
+                  }
+                }}>
+                  <SelectTrigger><SelectValue placeholder="Keyword associada" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Nenhuma —</SelectItem>
+                    {[...keywords].sort((a, b) => a.term.localeCompare(b.term)).filter(k => k.is_active !== false).map(k => (
+                      <SelectItem key={k.id} value={k.id}>{k.term} ({k.axis})</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {newDebunk.eixo && <p className="text-xs text-muted-foreground">Eixo: <span className="font-semibold">{newDebunk.eixo}</span></p>}
+                <Textarea placeholder="Explicação curta do porquê é falso/enganoso..." value={newDebunk.explicacao} onChange={(e) => setNewDebunk({ ...newDebunk, explicacao: e.target.value })} />
+                <Input type="date" value={newDebunk.data_publicacao} onChange={(e) => setNewDebunk({ ...newDebunk, data_publicacao: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk(emptyDebunk); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}

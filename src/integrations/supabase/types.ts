@@ -147,7 +147,11 @@ export type Database = {
         Row: {
           classification: string
           created_at: string
+          data_publicacao: string | null
+          eixo: string | null
+          explicacao: string | null
           id: string
+          keyword_id: string | null
           source: string
           term: string
           title: string
@@ -156,7 +160,11 @@ export type Database = {
         Insert: {
           classification: string
           created_at?: string
+          data_publicacao?: string | null
+          eixo?: string | null
+          explicacao?: string | null
           id?: string
+          keyword_id?: string | null
           source: string
           term: string
           title: string
@@ -165,13 +173,25 @@ export type Database = {
         Update: {
           classification?: string
           created_at?: string
+          data_publicacao?: string | null
+          eixo?: string | null
+          explicacao?: string | null
           id?: string
+          keyword_id?: string | null
           source?: string
           term?: string
           title?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "debunking_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       guioes: {
         Row: {
@@ -247,6 +267,7 @@ export type Database = {
           growth_percent: number
           id: string
           is_question: boolean
+          keyword_id: string | null
           question: string
           relative_volume: number
           updated_at: string
@@ -258,6 +279,7 @@ export type Database = {
           growth_percent?: number
           id?: string
           is_question?: boolean
+          keyword_id?: string | null
           question: string
           relative_volume?: number
           updated_at?: string
@@ -269,11 +291,20 @@ export type Database = {
           growth_percent?: number
           id?: string
           is_question?: boolean
+          keyword_id?: string | null
           question?: string
           relative_volume?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "health_questions_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       historical_snapshots: {
         Row: {
@@ -364,6 +395,7 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          keyword_id: string | null
           outlet: string
           related_term: string
           source_type: string
@@ -374,6 +406,7 @@ export type Database = {
           created_at?: string
           date: string
           id?: string
+          keyword_id?: string | null
           outlet: string
           related_term: string
           source_type?: string
@@ -384,13 +417,22 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          keyword_id?: string | null
           outlet?: string
           related_term?: string
           source_type?: string
           title?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "news_items_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       plataforma_popups: {
         Row: {
@@ -609,6 +651,7 @@ export type Database = {
           data_publicacao: string
           eixo: string
           id: string
+          keyword_id: string | null
           thumbnail_url: string | null
           titulo: string
           url: string
@@ -621,6 +664,7 @@ export type Database = {
           data_publicacao?: string
           eixo?: string
           id?: string
+          keyword_id?: string | null
           thumbnail_url?: string | null
           titulo?: string
           url?: string
@@ -633,12 +677,21 @@ export type Database = {
           data_publicacao?: string
           eixo?: string
           id?: string
+          keyword_id?: string | null
           thumbnail_url?: string | null
           titulo?: string
           url?: string
           views?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "youtube_trends_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
