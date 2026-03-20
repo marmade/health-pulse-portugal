@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import EditorialHeader from "@/components/EditorialHeader";
+import { Mail } from "lucide-react";
 
 const EIXOS = [
   { id: "saude-mental", label: "Saúde Mental", color: "rgba(0,255,200,0.12)" },
@@ -49,7 +50,11 @@ const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string;
     <div className="space-y-1">
       <p className="text-sm font-semibold">{nome || "—"}</p>
       <p className="text-xs opacity-70">{especialidade || "—"}</p>
-      {email && <p className="text-xs opacity-50">{email}</p>}
+      {email && (
+        <a href={`mailto:${email}`} title={email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
+          <Mail className="h-3 w-3" />
+        </a>
+      )}
       {link && (
         <a href={link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
           Perfil profissional ↗
@@ -164,7 +169,11 @@ const RevisaoPares = () => {
                             <div key={c.id} className="space-y-1">
                               <p className="text-sm font-semibold">{c.nome}</p>
                               {c.especialidade && <p className="text-xs opacity-70">{c.especialidade}</p>}
-                              {c.email && <p className="text-xs opacity-50">{c.email}</p>}
+                              {c.email && (
+                                <a href={`mailto:${c.email}`} title={c.email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
+                                  <Mail className="h-3 w-3" />
+                                </a>
+                              )}
                               {c.telefone && <p className="text-xs opacity-50">{c.telefone}</p>}
                               {c.link && (
                                 <a href={c.link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
