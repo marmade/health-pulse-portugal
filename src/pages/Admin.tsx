@@ -445,7 +445,7 @@ export default function Admin() {
       ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
       : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
