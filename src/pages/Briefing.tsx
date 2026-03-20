@@ -499,7 +499,7 @@ const Briefing = () => {
             </a>
           </div>
         ) : (
-          <p className="text-sm opacity-60">Sem verificações esta semana.</p>
+          <p className="text-sm opacity-60">Sem mito registado esta semana.</p>
         )}
       </section>
 
