@@ -267,6 +267,7 @@ export type Database = {
           growth_percent: number
           id: string
           is_question: boolean
+          keyword_id: string | null
           question: string
           relative_volume: number
           updated_at: string
@@ -278,6 +279,7 @@ export type Database = {
           growth_percent?: number
           id?: string
           is_question?: boolean
+          keyword_id?: string | null
           question: string
           relative_volume?: number
           updated_at?: string
@@ -289,11 +291,20 @@ export type Database = {
           growth_percent?: number
           id?: string
           is_question?: boolean
+          keyword_id?: string | null
           question?: string
           relative_volume?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "health_questions_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       historical_snapshots: {
         Row: {
@@ -384,6 +395,7 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          keyword_id: string | null
           outlet: string
           related_term: string
           source_type: string
@@ -394,6 +406,7 @@ export type Database = {
           created_at?: string
           date: string
           id?: string
+          keyword_id?: string | null
           outlet: string
           related_term: string
           source_type?: string
@@ -404,13 +417,22 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          keyword_id?: string | null
           outlet?: string
           related_term?: string
           source_type?: string
           title?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "news_items_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       plataforma_popups: {
         Row: {
