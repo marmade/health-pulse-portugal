@@ -36,20 +36,30 @@
 | `menopausa` | Menopausa |
 | `emergentes` | Emergentes |
 
-Amostra editorial (lado B): Saúde Mental, Alimentação, Menopausa.
-
 ---
 
-## Tabelas Supabase (instância Lovable)
+## Modelo de Dados — Lado A (Reportagem Viva)
 
+**`keywords` é o elemento central** — todas as tabelas de monitorização ligam a ela via `keyword_id` (FK, nullable).
+
+```
+keywords (central)
+    ↓ keyword_id (FK, nullable)
+├── debunking        + eixo, explicacao, data_publicacao
+├── news_items
+├── youtube_trends
+└── health_questions
+```
+
+### Tabelas completas
 `keywords`, `health_questions`, `news_items`, `debunking`, `youtube_trends`, `historical_snapshots`, `app_settings`, `trends_cache`
 
-### Keywords por eixo (contagem actual)
-- `saude-mental`: **33** (era 23; +10 inseridas a 2026-03-20, baseadas no PNSM)
-- `alimentacao`: —
-- `menopausa`: —
-- `emergentes`: —
-- **Total activas:** 73 (aprox.)
+### Tabelas — Lado B
+`revisao_pares`, `contactos_projecto`
+
+### Keywords por eixo
+- `saude-mental`: **33** (+10 inseridas a 2026-03-20, baseadas no PNSM)
+- Total activas: **83**
 
 ---
 
@@ -58,62 +68,78 @@ Amostra editorial (lado B): Saúde Mental, Alimentação, Menopausa.
 **Workflow:** `youtube-trends.yml` — "Actualização Semanal — Reportagem Viva"
 **Schedule:** Segundas-feiras 06:00 UTC (07:00 Lisboa) | Também disparo manual
 
-### 5 passos em sequência:
-1. **Google Trends PT** (`scripts/5_fetch_google_trends.py`) — 73 keywords → `current_volume`, `change_percent`, `trend` na tabela `keywords`. Demora ~15 min.
-2. **Perguntas de saúde** (`scripts/6_fetch_health_questions.py`) — `pytrends.related_queries()` → tabela `health_questions`
-3. **Refresh trends** (Edge Function `refresh-trends`) — snapshots históricos
-4. **RSS feeds** (Edge Function `fetch-rss-feeds`) — 15 feeds portugueses (Público, RTP, Observador, DGS, Polígrafo, etc.)
-5. **YouTube** (`scripts/4_fetch_youtube_trends.py`) — 4 queries compostas por eixo (~400 unidades quota/run); secret `YOUTUBE_API_KEY` no GitHub
+### 5 passos:
+1. Google Trends PT (`scripts/5_fetch_google_trends.py`) — 83 keywords → `current_volume`, `change_percent`, `trend`
+2. Perguntas de saúde (`scripts/6_fetch_health_questions.py`) → `health_questions`
+3. Refresh trends (Edge Function `refresh-trends`) — snapshots históricos
+4. RSS feeds (Edge Function `fetch-rss-feeds`) — 15 feeds portugueses
+5. YouTube (`scripts/4_fetch_youtube_trends.py`) — 4 queries compostas por eixo
 
-**Run #6:** disparado manualmente a 16/03/2026.
-
-**Como verificar:** https://github.com/marmade/health-pulse-portugal/actions — confirmar ✅ verde nos 5 passos.
+**Verificar:** https://github.com/marmade/health-pulse-portugal/actions
 
 ---
 
-## Estado do Admin (auditoria completa)
+## Estado do Admin
 
-### Tabs confirmadas
 | Tab | Estado |
 |---|---|
-| KEYWORDS | ✅ OK |
-| DEBUNKING | ✅ OK |
+| KEYWORDS | ✅ 83 keywords |
+| DEBUNKING | ✅ 35 registos; Select `keyword_id` + auto-fill `eixo` + `explicacao` + `data_publicacao` |
+| NOTÍCIAS | ✅ Bug Select eixo corrigido; Select `keyword_id` adicionado |
 | TEXTOS | ✅ OK |
 | GUIÕES | ✅ OK |
 | PLATAFORMA | ✅ OK |
-| SOBRE | ✅ OK — 11 blocos todos "Guardado" no Supabase (zero Fallback) |
-| BOOKMARKS | ✅ Auditado — `comunicacao_cientifica` adicionado ao `BOOKMARK_CATEGORIAS`; 30 registos corrigidos |
-| NOTÍCIAS | ✅ Bug Select corrigido — `normalizeToAxis()` mapeia termos para eixos + mostra termo original |
+| SOBRE | ✅ 11 blocos todos "Guardado" (zero Fallback) |
+| BOOKMARKS | ✅ `comunicacao_cientifica` adicionado; 30 registos corrigidos |
+| BENCHMARK | ✅ OK |
+| REVISAO PARES | ✅ Tabela criada; formulário funcional; toggle "Modo Apresentação" |
 
 ---
 
-## Benchmark Page
+## Páginas — Lado B (Diz que Disse)
 
-- Dois componentes: *Benchmark +* (referências positivas) e *Benchmark −* (contra-exemplos)
-- Layout: duas colunas (+ esquerda, − direita)
-- Cor de fundo dos cards condicional: azul para +, magenta para −
-- Filtros: TODOS (reset global) → NACIONAL/INTERNACIONAL (1.º nível) → PORTAIS/PERSONAS (sub-filtros aditivos)
-- Tipografia: sem uppercase nos nomes, `font-semibold`, sem bullet points em col3/col4, tamanho reduzido
+### `/editorial/bookmarks`
+- Cards com `bg-white`
+
+### `/revisao-pares`
+- 4 cards de eixo: fundo branco, sem linha azul grossa à esquerda
+- Perfil A + Perfil B: Nome, Especialidade/Cargo, Email (ícone `mailto:` na mesma linha do cargo), Telefone, Link, Bio
+- Sumário do Eixo
+- **Comunidade Científica** — cor `#f2fcfa`
+- **Agentes de Trabalho** — cor `#ede8ff`
+- Tabela `contactos_projecto`: `tipo`, `nome`, `especialidade`, `email`, `telefone`, `link`, `bio`
+- Toggle "Modo Apresentação" no admin — oculta email e telefone em toda a página
+
+### `/briefing`
+- Mito da semana: carrega dinamicamente da `debunking` (mais recente); fallback "Sem mito registado esta semana"
+- Badges de eixo — aguardam fix: `font-bold text-[8px] px-1.5 py-0.5 rounded-sm` sem `opacity-50`
+- "SINAIS EMERGENTES" (era "SINAL DE ALERTA") — aguarda deploy
 
 ---
 
 ## Pendentes
 
-### Opcional / baixa prioridade
+### Enviados ao Lovable, aguardam confirmação
+- 🔲 `/briefing` — voxpop 3→5 perguntas, layout coluna única, `text-xs`, PDF completo
+- 🔲 `/briefing` — badges de eixo corrigidos
+- 🔲 `/briefing` — "SINAIS EMERGENTES" + remover badge EMERGENTE por linha
+
+### A implementar
+- 🔲 Mito da semana automático — match por `keyword_id` com top keywords trending (prompt pronto)
+- 🔲 Admin — formulários `youtube_trends` e `health_questions` (quando criados, adicionar Select `keyword_id`)
+- 🔲 Preencher `keyword_id` nos 35 registos existentes do `debunking`
+- 🔲 Confirmar segunda-feira (06:00 UTC) — 83 keywords com volumes no workflow
+
+### Opcional
 - 🔲 Limpar `news_items` com matches espúrios anteriores a 2026-03-20
 - 🔲 Feeds RSS institucionais curados com eixo directo
-
-### A confirmar na próxima segunda-feira (06:00 UTC)
-- 🔲 Confirmar que as 10 novas keywords de saúde mental (inseridas 2026-03-20) aparecem com volumes no próximo run do workflow
 
 ---
 
 ## Padrões estabelecidos
 
-- **Lovable:** Marta envia sempre os prompts ela própria — Claude prepara o texto mas nunca digita nem clica enviar
-- **Supabase via browser:** POST/PATCH via `fetch` no console do browser; aba admin deve estar activa
-- **GitHub commits:** Via Contents API (`PUT .../contents/<path>`) com PAT — buscar SHA actual primeiro; PAT deve ser revogado imediatamente após uso
-- **shadcn/Radix:** `[role="combobox"]` é o selector correcto para Selects; opções só estão no DOM quando o dropdown está aberto
-- **Google Docs:** `fetch()` para `/export?format=txt` via console, retrieval em chunks via `window._chunks[]`
-- **Troca de sessão:** Claude avisa sempre e envia briefing resumido para copiar
-- **Sessões:** Quando Marta dá briefing, Claude actualiza CONTEXT.md (estado actual) e cria `docs/sessoes/YYYY-MM-DD.md` (log histórico imutável)
+- **Lovable:** Marta envia sempre os prompts ela própria
+- **Supabase via browser:** POST/PATCH via `fetch` no console; aba admin deve estar activa
+- **GitHub commits:** `api.github.com` fora da allowlist do proxy — usar Claude in Chrome ou commit manual; PAT a revogar imediatamente após uso
+- **Badges de eixo (design system):** `inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm`
+- **Troca de sessão:** Claude avisa sempre e envia briefing; actualiza CONTEXT.md + cria `docs/sessoes/YYYY-MM-DD.md`
