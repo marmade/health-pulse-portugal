@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import EditorialHeader from "@/components/EditorialHeader";
+import { Mail } from "lucide-react";
 
 const EIXOS = [
   { id: "saude-mental", label: "Saúde Mental", color: "rgba(0,255,200,0.12)" },
