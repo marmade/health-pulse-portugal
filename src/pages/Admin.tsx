@@ -428,9 +428,11 @@ export default function Admin() {
   const openNewsForm = (item?: NewsItem) => {
     if (item) {
       setEditingNewsId(item.id);
-      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: item.related_term, date: item.date });
+      setEditingNewsOriginalTerm(item.related_term);
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date });
     } else {
       setEditingNewsId(null);
+      setEditingNewsOriginalTerm("");
       setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
     }
     setShowNewsForm(true);
