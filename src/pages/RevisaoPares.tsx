@@ -17,11 +17,13 @@ type RPRow = {
   telefone_a: string;
   email_a: string;
   link_a: string;
+  bio_a: string;
   nome_b: string;
   especialidade_b: string;
   telefone_b: string;
   email_b: string;
   link_b: string;
+  bio_b: string;
   sumario: string;
 };
 
