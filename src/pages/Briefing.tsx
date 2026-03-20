@@ -392,7 +392,7 @@ const Briefing = () => {
                 <span className="tag-emergent">Emergente</span>
                 <span className="text-sm font-semibold">{kw.term}</span>
                 <span
-                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
                   style={{ backgroundColor: c.bg, color: c.text }}
                 >
                   {axisLabels[kw.axis] || kw.axis}
