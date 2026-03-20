@@ -41,7 +41,7 @@ YouTube: vídeos de saúde recolhidos semanalmente via script Python a partir de
 
 DETECÇÃO ASSISTIDA
 
-Keywords e sinais emergentes identificados automaticamente pelo sistema. Crescimento superior a 200% ou termos sem histórico no ano anterior são sinalizados como emergentes.
+Keywords e sinais emergentes identificados automaticamente pelo sistema. Crescimento superior a 50% com volume mínimo de 10 pontos no índice Google Trends, ou termos sem histórico no ano anterior, são sinalizados como emergentes.
 
 CURADORIA EDITORIAL
 
