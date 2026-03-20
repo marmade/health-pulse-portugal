@@ -70,6 +70,7 @@ type NewsItem = {
   related_term: string;
   source_type: string;
   url: string;
+  keyword_id?: string | null;
 };
 
 type Referencia = { label: string; url: string };
