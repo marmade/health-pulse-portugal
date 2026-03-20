@@ -257,6 +257,7 @@ export default function Admin() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [showNewsForm, setShowNewsForm] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
+  const [editingNewsOriginalTerm, setEditingNewsOriginalTerm] = useState<string>("");
   const [newNews, setNewNews] = useState({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
 
   // Textos state
