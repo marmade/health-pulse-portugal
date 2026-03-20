@@ -70,6 +70,7 @@ const RevisaoPares = () => {
   const [dados, setDados] = useState<Record<string, RPRow>>({});
   const [contactos, setContactos] = useState<ContactoRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hideContact, setHideContact] = useState(false);
 
   useEffect(() => {
     Promise.all([
