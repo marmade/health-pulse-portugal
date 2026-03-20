@@ -14,6 +14,7 @@ type BriefingPdfData = {
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string; source: string }[];
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
+  dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
 };
 
 const axisLabels: Record<string, string> = {
