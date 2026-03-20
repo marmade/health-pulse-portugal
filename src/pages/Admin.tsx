@@ -143,26 +143,25 @@ const emptyGuiao = (): Omit<GuiaoRow, "id"> => ({
 
 // ── Revisão de Pares Admin ────────────────────────────────────────────
 const EIXOS_RP = [
-  { axis: 'saude-mental', label: 'Saude Mental', color: '#0000FF', bg: 'rgba(0,255,200,0.12)' },
-  { axis: 'alimentacao',  label: 'Alimentacao',  color: '#0000FF', bg: 'rgba(255,230,0,0.2)' },
-  { axis: 'menopausa',    label: 'Menopausa',    color: '#0000FF', bg: 'rgba(255,0,150,0.12)' },
-  { axis: 'emergentes',   label: 'Emergentes',   color: '#0000FF', bg: 'rgba(0,0,255,0.08)' },
+  { eixo: 'saude-mental', label: 'Saude Mental', color: '#0000FF', bg: 'rgba(0,255,200,0.12)' },
+  { eixo: 'alimentacao',  label: 'Alimentacao',  color: '#0000FF', bg: 'rgba(255,230,0,0.2)' },
+  { eixo: 'menopausa',    label: 'Menopausa',    color: '#0000FF', bg: 'rgba(255,0,150,0.12)' },
+  { eixo: 'emergentes',   label: 'Emergentes',   color: '#0000FF', bg: 'rgba(0,0,255,0.08)' },
 ];
 
 type RPEntry = {
-  id?: string; axis: string; axis_label: string;
+  id?: string; eixo: string;
   nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string;
   nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string;
   sumario: string;
 };
 
-const emptyRP = (axis: string, label: string): RPEntry => ({
-  axis, axis_label: label,
+const emptyRP = (eixo: string, label: string): RPEntry => ({
+  eixo,
   nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '',
   nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '',
   sumario: '',
 });
-
 const RevisaoPareAdmin = () => {
   const [dados, setDados] = useState<Record<string, RPEntry>>({});
   const [saving, setSaving] = useState<string | null>(null);
