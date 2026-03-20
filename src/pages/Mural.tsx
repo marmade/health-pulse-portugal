@@ -53,24 +53,6 @@ const Mural = () => {
     },
   });
 
-  // Fetch latest change_percent per keyword from historical_snapshots
-  const { data: changeMap } = useQuery({
-    queryKey: ["mural-change-percent"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("historical_snapshots")
-        .select("keyword, change_percent, snapshot_date")
-        .order("snapshot_date", { ascending: false });
-      if (!data) return {};
-      const map: Record<string, number> = {};
-      for (const row of data) {
-        if (!(row.keyword in map)) {
-          map[row.keyword] = Number(row.change_percent);
-        }
-      }
-      return map;
-    },
-  });
 
   const hasScores = ytScores !== null && ytScores !== undefined;
 
