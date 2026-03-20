@@ -59,7 +59,7 @@ const RevisaoPares = () => {
             {EIXOS.map(({ id, label, color }) => {
               const entries = getByEixo(id);
               return (
-                <div key={id} className="border border-foreground/10" style={{ borderLeftColor: "#0000FF", borderLeftWidth: 3 }}>
+                <div key={id} className="border border-foreground/10" style={{ backgroundColor: "white" }}>
                   <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: color }}>
                     <p className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "#0000FF" }}>
                       {label}
