@@ -14,6 +14,7 @@ type BriefingPdfData = {
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string; source: string }[];
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
+  dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
 };
 
 const axisLabels: Record<string, string> = {
@@ -262,6 +263,45 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     const lines = pdf.splitTextToSize(suggestion, pageWidth - 2 * MARGIN);
     pdf.text(lines, MARGIN, y);
     y += lines.length * 4 + 4;
+  }
+
+  // SECTION 7 — Perguntas VoxPop
+  if (data.dizQueDisse?.perguntas_voxpop?.length) {
+    sectionTitle("Perguntas VoxPop");
+    data.dizQueDisse.perguntas_voxpop.forEach((q, i) => {
+      checkPage(8);
+      setFont("normal", 8);
+      pdf.setTextColor(GREY);
+      pdf.text(`${i + 1}.`, MARGIN, y);
+      setFont("normal", 9);
+      pdf.setTextColor(BLACK);
+      const qLines = pdf.splitTextToSize(q, pageWidth - 2 * MARGIN - 10);
+      pdf.text(qLines, MARGIN + 8, y);
+      y += qLines.length * 4 + 3;
+    });
+    y += 4;
+  }
+
+  // SECTION 8 — Revisão de Pares
+  if (data.dizQueDisse?.especialista_sugerido) {
+    sectionTitle("Revisão de Pares");
+    checkPage(20);
+    setFont("bold", 9);
+    pdf.setTextColor(BLACK);
+    pdf.text(data.dizQueDisse.especialista_sugerido, MARGIN, y);
+    y += 5;
+    setFont("normal", 9);
+    pdf.setTextColor(BLACK);
+    const justLines = pdf.splitTextToSize(data.dizQueDisse.justificacao, pageWidth - 2 * MARGIN);
+    pdf.text(justLines, MARGIN, y);
+    y += justLines.length * 4 + 3;
+    if (data.dizQueDisse.fonte_cientifica) {
+      setFont("normal", 8);
+      pdf.setTextColor(GREY);
+      pdf.text(`Fonte: ${data.dizQueDisse.fonte_cientifica}`, MARGIN, y);
+      y += 6;
+    }
+    y += 4;
   }
 
   addFooter();

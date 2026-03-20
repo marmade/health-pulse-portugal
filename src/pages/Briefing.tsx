@@ -264,6 +264,7 @@ const Briefing = () => {
         news,
         debunking,
         topEmergent,
+        dizQueDisse,
       });
       toast.success("PDF exportado com sucesso");
     } catch {
@@ -511,10 +512,10 @@ const Briefing = () => {
           Sugestão de conteúdo
         </h2>
         {topEmergent ? (
-          <div className="max-w-2xl space-y-8">
+          <div className="max-w-2xl space-y-10">
             {/* Intro line */}
             <div className="border border-foreground/20 p-6">
-              <p className="text-sm leading-relaxed">
+              <p className="text-xs leading-relaxed">
                 Esta semana vale a pena falar sobre{" "}
                 <span className="font-bold">{topEmergent.term}</span> —{" "}
                 {topEmergent.is_emergent
@@ -523,23 +524,23 @@ const Briefing = () => {
               </p>
             </div>
 
-            {/* Perplexity-powered content */}
+            {/* Perplexity-powered content — stacked layout */}
             {dizQueDisseLoading ? (
               <div className="flex items-center gap-3">
                 <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
                 <p className="text-xs opacity-60">A gerar sugestão...</p>
               </div>
             ) : dizQueDisse ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+              <div className="space-y-10">
                 {/* Perguntas VoxPop */}
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/60 pb-2 border-b border-primary/20 mb-4">
                     Perguntas VoxPop
                   </p>
                   <ol className="space-y-2">
                     {dizQueDisse.perguntas_voxpop.map((q, i) => (
-                      <li key={i} className="text-sm leading-relaxed text-primary">
-                        <span className="text-xs font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
+                      <li key={i} className="text-xs leading-relaxed text-primary">
+                        <span className="text-[10px] font-bold tabular-nums opacity-40 mr-2">{i + 1}.</span>
                         {q}
                       </li>
                     ))}
@@ -547,14 +548,15 @@ const Briefing = () => {
                 </div>
 
                 {/* Revisão de Pares */}
-                <div className="border-l pl-4 pr-4 pb-4" style={{ borderColor: "#0000FF" }}>
-                  <p className="text-xs font-medium uppercase tracking-widest text-primary/60 pb-2 border-b border-primary/20 mb-4">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/60 pb-2 border-b border-primary/20 mb-4">
                     Revisão de Pares
                   </p>
-                    <p className="text-sm font-medium text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
-                    <p className="text-sm font-normal leading-relaxed text-primary mb-2">{dizQueDisse.justificacao}</p>
+                  <div className="border-l-2 pl-4" style={{ borderColor: "#0000FF" }}>
+                    <p className="text-xs font-medium text-primary mb-2">{dizQueDisse.especialista_sugerido}</p>
+                    <p className="text-xs font-normal leading-relaxed text-primary mb-2">{dizQueDisse.justificacao}</p>
                     {dizQueDisse.fonte_cientifica && (
-                      <p className="text-xs text-primary/50">
+                      <p className="text-[10px] text-primary/50">
                         Fonte:{" "}
                         {dizQueDisse.fonte_url ? (
                           <a
@@ -570,12 +572,13 @@ const Briefing = () => {
                         )}
                       </p>
                     )}
+                  </div>
                 </div>
               </div>
             ) : null}
           </div>
         ) : (
-          <p className="text-sm opacity-60">Sem sugestões esta semana.</p>
+          <p className="text-xs opacity-60">Sem sugestões esta semana.</p>
         )}
       </section>
 
