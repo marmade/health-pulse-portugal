@@ -151,15 +151,15 @@ const EIXOS_RP = [
 
 type RPEntry = {
   id?: string; eixo: string;
-  nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string;
-  nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string;
+  nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string; bio_a: string;
+  nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string; bio_b: string;
   sumario: string;
 };
 
 const emptyRP = (eixo: string, label: string): RPEntry => ({
   eixo,
-  nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '',
-  nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '',
+  nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '', bio_a: '',
+  nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '', bio_b: '',
   sumario: '',
 });
 const RevisaoPareAdmin = () => {
