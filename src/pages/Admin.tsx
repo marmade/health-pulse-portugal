@@ -287,6 +287,11 @@ const RevisaoPareAdmin = () => {
 
   return (
     <div className="space-y-8 py-4">
+      {/* Toggle modo apresentação */}
+      <div className="flex items-center gap-3 px-4 py-3 border border-foreground/10 bg-background">
+        <Switch checked={modoApresentacao} onCheckedChange={toggleModoApresentacao} />
+        <label className="text-xs font-medium">Modo Apresentação — ocultar email e telefone</label>
+      </div>
       {/* Eixos existentes */}
       {EIXOS_RP.map(({ eixo, label, color, bg }) => (
         <div key={eixo} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>
