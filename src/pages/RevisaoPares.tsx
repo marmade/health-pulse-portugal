@@ -44,13 +44,13 @@ type ContactoRow = {
   bio: string;
 };
 
-const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string; especialidade: string; email: string; link: string; bio: string }) => {
+const ProfileBlock = ({ nome, especialidade, email, link, bio, hideContact }: { nome: string; especialidade: string; email: string; link: string; bio: string; hideContact?: boolean }) => {
   const hasData = nome || especialidade;
   return (
     <div className="space-y-1">
       <p className="text-sm font-semibold">{nome || "—"}</p>
       <p className="text-xs opacity-70">{especialidade || "—"}</p>
-      {email && (
+      {!hideContact && email && (
         <a href={`mailto:${email}`} title={email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
           <Mail className="h-3 w-3" />
         </a>
