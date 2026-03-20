@@ -377,6 +377,36 @@ export type Database = {
         }
         Relationships: []
       }
+      revisao_pares: {
+        Row: {
+          afiliacao: string | null
+          created_at: string | null
+          eixo: string
+          id: string
+          nome: string | null
+          nota: string | null
+          titulo: string | null
+        }
+        Insert: {
+          afiliacao?: string | null
+          created_at?: string | null
+          eixo: string
+          id?: string
+          nome?: string | null
+          nota?: string | null
+          titulo?: string | null
+        }
+        Update: {
+          afiliacao?: string | null
+          created_at?: string | null
+          eixo?: string
+          id?: string
+          nome?: string | null
+          nota?: string | null
+          titulo?: string | null
+        }
+        Relationships: []
+      }
       sobre_conteudo: {
         Row: {
           conteudo: string
