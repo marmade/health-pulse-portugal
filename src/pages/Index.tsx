@@ -79,7 +79,7 @@ const Index = () => {
 
   const filteredNewsData = useMemo(() => {
     if (!axisTerms) return newsData;
-    return newsData.filter((n: any) => axisTerms.has((n.related_term || "").toLowerCase()));
+    return newsData.filter((n: any) => axisTerms.has((n.relatedTerm || "").toLowerCase()));
   }, [newsData, axisTerms]);
 
   // Auto-arquivo por eixo — grava silenciosamente a semana anterior quando o eixo é aberto
