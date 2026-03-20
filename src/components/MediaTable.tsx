@@ -15,12 +15,6 @@ const themes = [
   { id: "emergentes", label: "EMERGENTES", terms: ["gripe aviária", "long covid", "resistência antibióticos", "H5N1"] },
 ];
 
-const sourceTypes = [
-  { id: "todos", label: "TODOS" },
-  { id: "media", label: "MEDIA" },
-  { id: "institucional", label: "INSTITUCIONAL" },
-  { id: "factcheck", label: "FACT-CHECK" },
-];
 
 const sourceTypeBadge = (type?: string) => {
   switch (type) {
