@@ -189,6 +189,7 @@ const RevisaoPareAdmin = () => {
   const [contactos, setContactos] = useState<ContactoEntry[]>([]);
   const [savingContacto, setSavingContacto] = useState<string | null>(null);
   const [newContactos, setNewContactos] = useState<Record<string, ContactoEntry>>({});
+  const [modoApresentacao, setModoApresentacao] = useState(false);
 
   useEffect(() => {
     (supabase.from as any)('revisao_pares').select('*').then(({ data }: any) => {
@@ -200,7 +201,22 @@ const RevisaoPareAdmin = () => {
     (supabase.from as any)('contactos_projecto').select('*').order('created_at').then(({ data }: any) => {
       if (data) setContactos(data);
     });
+    supabase.from('app_settings').select('value').eq('key', 'modo_apresentacao').maybeSingle().then(({ data }: any) => {
+      if (data) setModoApresentacao(data.value === 'true');
+    });
   }, []);
+
+  const toggleModoApresentacao = async (checked: boolean) => {
+    setModoApresentacao(checked);
+    const value = checked ? 'true' : 'false';
+    const { data: existing } = await supabase.from('app_settings').select('id').eq('key', 'modo_apresentacao').maybeSingle();
+    if (existing) {
+      await supabase.from('app_settings').update({ value, updated_at: new Date().toISOString() }).eq('key', 'modo_apresentacao');
+    } else {
+      await supabase.from('app_settings').insert({ key: 'modo_apresentacao', value });
+    }
+    toast({ title: checked ? 'Modo apresentação activado' : 'Modo apresentação desactivado' });
+  };
 
   const update = (eixo: string, field: string, value: string) =>
     setDados(prev => ({ ...prev, [eixo]: { ...(prev[eixo] || emptyRP(eixo, eixo)), [field]: value } }));
@@ -271,6 +287,11 @@ const RevisaoPareAdmin = () => {
 
   return (
     <div className="space-y-8 py-4">
+      {/* Toggle modo apresentação */}
+      <div className="flex items-center gap-3 px-4 py-3 border border-foreground/10 bg-background">
+        <Switch checked={modoApresentacao} onCheckedChange={toggleModoApresentacao} />
+        <label className="text-xs font-medium">Modo Apresentação — ocultar email e telefone</label>
+      </div>
       {/* Eixos existentes */}
       {EIXOS_RP.map(({ eixo, label, color, bg }) => (
         <div key={eixo} className="border border-foreground/10" style={{ borderLeftColor: color, borderLeftWidth: 3, backgroundColor: bg }}>

@@ -44,13 +44,13 @@ type ContactoRow = {
   bio: string;
 };
 
-const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string; especialidade: string; email: string; link: string; bio: string }) => {
+const ProfileBlock = ({ nome, especialidade, email, link, bio, hideContact }: { nome: string; especialidade: string; email: string; link: string; bio: string; hideContact?: boolean }) => {
   const hasData = nome || especialidade;
   return (
     <div className="space-y-1">
       <p className="text-sm font-semibold">{nome || "—"}</p>
       <p className="text-xs opacity-70">{especialidade || "—"}</p>
-      {email && (
+      {!hideContact && email && (
         <a href={`mailto:${email}`} title={email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
           <Mail className="h-3 w-3" />
         </a>
@@ -70,18 +70,21 @@ const RevisaoPares = () => {
   const [dados, setDados] = useState<Record<string, RPRow>>({});
   const [contactos, setContactos] = useState<ContactoRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hideContact, setHideContact] = useState(false);
 
   useEffect(() => {
     Promise.all([
       (supabase.from as any)("revisao_pares").select("*"),
       (supabase.from as any)("contactos_projecto").select("*").order("created_at"),
-    ]).then(([rpRes, ctRes]: any[]) => {
+      supabase.from("app_settings").select("value").eq("key", "modo_apresentacao").maybeSingle(),
+    ]).then(([rpRes, ctRes, modoRes]: any[]) => {
       if (rpRes.data) {
         const map: Record<string, RPRow> = {};
         rpRes.data.forEach((d: any) => { map[d.eixo] = d; });
         setDados(map);
       }
       if (ctRes.data) setContactos(ctRes.data);
+      if (modoRes.data?.value === 'true') setHideContact(true);
       setLoading(false);
     });
   }, []);
@@ -123,8 +126,8 @@ const RevisaoPares = () => {
                     <div className="px-5 py-5 grid grid-cols-2 gap-6">
                       {row ? (
                         <>
-                          <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} />
-                          <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} />
+                          <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} hideContact={hideContact} />
+                          <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} hideContact={hideContact} />
                         </>
                       ) : (
                         <>
@@ -169,12 +172,12 @@ const RevisaoPares = () => {
                             <div key={c.id} className="space-y-1">
                               <p className="text-sm font-semibold">{c.nome}</p>
                               {c.especialidade && <p className="text-xs opacity-70">{c.especialidade}</p>}
-                              {c.email && (
+                              {!hideContact && c.email && (
                                 <a href={`mailto:${c.email}`} title={c.email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
                                   <Mail className="h-3 w-3" />
                                 </a>
                               )}
-                              {c.telefone && <p className="text-xs opacity-50">{c.telefone}</p>}
+                              {!hideContact && c.telefone && <p className="text-xs opacity-50">{c.telefone}</p>}
                               {c.link && (
                                 <a href={c.link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
                                   Perfil profissional ↗
