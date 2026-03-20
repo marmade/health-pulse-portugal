@@ -651,6 +651,7 @@ export type Database = {
           data_publicacao: string
           eixo: string
           id: string
+          keyword_id: string | null
           thumbnail_url: string | null
           titulo: string
           url: string
@@ -663,6 +664,7 @@ export type Database = {
           data_publicacao?: string
           eixo?: string
           id?: string
+          keyword_id?: string | null
           thumbnail_url?: string | null
           titulo?: string
           url?: string
@@ -675,12 +677,21 @@ export type Database = {
           data_publicacao?: string
           eixo?: string
           id?: string
+          keyword_id?: string | null
           thumbnail_url?: string | null
           titulo?: string
           url?: string
           views?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "youtube_trends_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
