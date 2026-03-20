@@ -594,23 +594,24 @@ export default function Admin() {
     if (item) {
       setEditingNewsId(item.id);
       setEditingNewsOriginalTerm(item.related_term);
-      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date });
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date, keyword_id: item.keyword_id || "" });
     } else {
       setEditingNewsId(null);
       setEditingNewsOriginalTerm("");
-      setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
+      setNewNews(emptyNews);
     }
     setShowNewsForm(true);
   };
 
   const saveNews = async () => {
     if (!newNews.title || !newNews.outlet || !newNews.date) return;
-    const payload = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    const payload: any = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    payload.keyword_id = newNews.keyword_id || null;
     const { error } = editingNewsId
       ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
       : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews(emptyNews); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
