@@ -1,126 +1,135 @@
-## Última actualização: 19/03/2026
-
-### Novas tabelas
-- `eixos_archive` — arquivo semanal por eixo (auto-gerado quando se abre um eixo no dashboard)
-- `revisao_pares` — dupla científica por eixo, editável no admin
-
-### Estrutura Editorial (Lado B)
-- Menu principal: REPORTAGEM VIVA | BOOKMARKS | BENCHMARK | TEXTOS | PLATAFORMA | SOBRE
-- Segunda linha (EditorialSubNav): GUIÕES | REVISÃO DE PARES | TEXTOS | BOOKMARKS
-- Páginas com SubNav: Guioes, Bookmarks, Benchmark, RevisaoPares
-- GUIÕES removido do menu principal do Lado A
-
-### Scripts Python
-- `4_fetch_youtube_trends.py` — verifica país do canal via API (só PT ou sem país); cache em memória
-- `5_fetch_google_trends.py` — is_emergent calculado automaticamente (change >= 50 e current >= 10)
-- `6_fetch_health_questions.py` — expandir_mural() adiciona termos novos automaticamente
-
-### Componentes chave
-- `EditorialSubNav.tsx` — segunda linha de menu do Editorial
-- `eixoPdfExport.ts` — exporta PDF por eixo/semana
-- `RevisaoPares.tsx` — página de revisão de pares com cards por eixo
-- `AxisColumn.tsx` — mostra arquivo semanal com botão PDF
--
-
-# CONTEXT.md — Reportagem Viva
-> Ficheiro de memória do projeto para continuidade entre sessões de trabalho com IA.
-> Atualizar no final de cada sessão relevante.
+# CONTEXT.md — Reportagem Viva / Diz que Disse
+> Ficheiro de memória vivo do projecto. Actualizado no início/fim de cada sessão de trabalho com IA.
+> Log histórico por sessão: docs/sessoes/YYYY-MM-DD.md
 
 ---
 
-## Identidade do Projeto
+## Última actualização: 20/03/2026
 
-- **Nome:** Reportagem Viva
+---
+
+## Estado actual
+
+### Workflow de automatização
+- GitHub Actions: `youtube-trends.yml` — corre segundas 06:00 UTC, trigger manual disponível
+- 5 passos em sequência:
+  1. Google Trends PT (`scripts/5_fetch_google_trends.py`) — volumes reais 73 keywords → Supabase
+  2. Perguntas em crescimento (`scripts/6_fetch_health_questions.py`) → tabela `health_questions`
+  3. Refresh trends — Edge Function `refresh-trends` → snapshots históricos
+  4. RSS feeds — Edge Function `fetch-rss-feeds` → 15 feeds portugueses
+  5. YouTube (`scripts/4_fetch_youtube_trends.py`) — v4, 36 canais PT curados, 4 queries por eixo
+- Run #9 disparado 20/03/2026 — passo 1 ✅ passo 2 🔄 passos 3-5 ⏳
+
+### Dashboard (Lado A — Reportagem Viva)
+- Preview: https://preview--health-pulse-pt.lovable.app/
+- Admin: /admin (password: healthpulse2026)
+- Eixos: Saúde Mental, Alimentação, Menopausa, Emergentes
+- Vista eixo individual: bloco Health Questions + YouTube escondido quando `activeAxis !== 'all'` (Opção B aplicada)
+
+### Pendentes Lovable (prompts preparados, ainda não enviados)
+- **PROMPT 1** — Layout 2×2 na vista de eixo individual:
+  - Linha 1: TrendChart (esq.) | Keywords/Top5 (dir.)
+  - Linha 2: Perguntas de Saúde (esq.) | Alertas de Pesquisa (dir.)
+  - Ficheiros: `src/components/AxisColumn.tsx` (props `hideChart`/`hideKeywords`) + `src/pages/Index.tsx`
+- **PROMPT 2** — Filtrar SearchAlerts pelo eixo activo:
+  - `axisAlerts` filtra por `a.axisLabel === filteredData[activeAxis]?.label`
+
+### Pendentes gerais
+- Audit admin tab BOOKMARKS (não feito)
+- Bug: NOTÍCIAS eixo temático Select não pré-preenche no edit
+- 5 blocos SOBRE ainda como "Fallback" (guardar no Supabase antes do launch)
+
+---
+
+## Identidade do Projecto
+
+- **Nome:** Reportagem Viva / Diz que Disse
 - **Repositório:** github.com/marmade/health-pulse-portugal
+- **Lovable project ID:** 69209c37-6f9e-4a84-bea9-8e56d0eace5a
 - **Autora:** Marta (mestranda em Comunicação de Ciência, FCSH-UNL, nº 2024110168)
-- **Contexto académico:** Projeto de tese de mestrado sobre monitorização de desinformação em saúde
 
 ---
 
 ## Missão
-
-Plataforma de monitorização de desinformação em saúde, com camadas editoriais de arquivo. Combina investigação, comunicação de ciência e ferramentas digitais para desenvolver conteúdos de combate à desinformação relacionada com a saúde.
+Plataforma de monitorização de narrativas de saúde em Portugal. Os dados do Lado A (Reportagem Viva) informam os outputs do Lado B (Diz que Disse — editorial de comunicação científica). Amostra editorial em 3 eixos: Saúde Mental, Alimentação, Menopausa.
 
 ---
 
-## Arquitetura — 3 Camadas
+## Arquitectura
 
-### 1. Dashboard Privado de Monitorização
-Painel interno com 4 eixos temáticos:
-- **Saúde Mental**
-- **Alimentação**
-- **Menopausa**
-- **Emergentes**
+### Lado A — Dashboard
+4 eixos: Saúde Mental | Alimentação | Menopausa | Emergentes
 
-**Backend:** Supabase
-- Tabelas: keywords, debunking entries, news items, snapshots
-- 2 Edge Functions:
-  - `refresh-trends` 
-  - `fetch-rss-feeds` (cobre 13 feeds portugueses)
+- Supabase Lovable: `cyjwhmuakmiytypewwfw.supabase.co`
+- Supabase manual (Marta): `ijpxjpbjudaddfatibfl.supabase.co` (não tem tabelas dos scripts)
+- Tabelas: keywords, health_questions, news_items, debunking, youtube_trends, historical_snapshots, app_settings, trends_cache, eixos_archive, revisao_pares
+- Edge Functions: `refresh-trends`, `fetch-rss-feeds`
 
-**Navegação do dashboard (2 linhas de menu):**
-- Linha 1 — editorial (topo direito): `TEXTOS` | `SOBRE`
-- Linha 2 — dashboard: `OVERVIEW` / `SAÚDE MENTAL` / `ALIMENTAÇÃO` / `MENOPAUSA` / `EMERGENTES` / `BRIEFING`
-
-**Páginas existentes:**
-- `/textos` — placeholder criado
-- `/sobre` — inclui agradecimentos a: António Granado, Matilde Gonçalves, Luís Veríssimo, Ana Sanchez, Joana Lobo Antunes, António Gomes da Costa
-- `/admin` — painel completo, fora do menu principal, acessível diretamente por URL
-  - Autenticação por password: `healthpulse2026`
-  - 3 tabs CRUD: Keywords / Debunking / Notícias
-  - Ligado ao Supabase com RLS atualizado
-
-### 2. Diz que Disse — Conteúdo Editorial
-- Formato vídeo estilo Vox Pop
-- Handle: `@roevbros`
+### Lado B — Editorial Diz que Disse
+- Formato vídeo estilo Vox Pop, handle @roevbros
 - Duo científico em frente à câmara (revisão de pares)
 - Distribuição: Instagram / TikTok / YouTube
-
-### 3. *(futuro)*
-- App arquivo consultável pelo público
-- Em desenvolvimento/planeamento
 
 ---
 
 ## Stack Técnico
-
-| Camada | Tecnologia |
-|--------|-----------|
-| Frontend | Vite + React + TypeScript |
-| UI Components | shadcn/ui |
-| Backend/DB | Supabase |
-| Edge Functions | Supabase Edge Functions |
+- Frontend: Vite + React + TypeScript + Tailwind + shadcn/ui (Lovable)
+- Backend: Supabase
+- Automatização: GitHub Actions + Python scripts
+- YouTube API v3: quota 10.000/dia, ~400 unidades/run (v4)
 
 ---
 
 ## Design Language
-
-- **Cor principal:** Azul `#0000FF` sobre fundo branco
-- **Tipografia:** Space Grotesk
-- **Estilo:** Minimalista editorial
-- **Regras:** Sem sombras, sem gradientes
+- Cores: Azul `#0000FF` + Magenta `#FF00FF` sobre fundo branco
+- Tipografia: Space Grotesk (monospace para dados)
+- Sem sombras, sem gradientes
 
 ---
 
-## Decisões & Histórico Relevante
-
-| Data aprox. | Decisão / Evento |
-|-------------|-----------------|
-| — | Nome "Passa-Palavra" rejeitado — conflito com Festival Passa a Palavra |
-| — | Nome final: Reportagem Viva |
-| — | Admin panel implementado fora do menu principal, acesso direto por URL |
-| — | RLS do Supabase atualizado para suportar as operações CRUD do admin |
-| — | 13 feeds RSS portugueses integrados na Edge Function fetch-rss-feeds |
+## Estrutura Editorial (Lado B)
+- Menu principal: REPORTAGEM VIVA | BOOKMARKS | BENCHMARK | TEXTOS | PLATAFORMA | SOBRE
+- EditorialSubNav: GUIÕES | REVISÃO DE PARES | TEXTOS | BOOKMARKS
+- Páginas com SubNav: Guioes, Bookmarks, Benchmark, RevisaoPares
 
 ---
 
-## Para Atualizar Aqui
-
-No final de cada sessão de trabalho relevante, pedir ao Claude:
-> *"Faz um resumo desta conversa para adicionar ao CONTEXT.md — decisões tomadas, raciocínios importantes, estado atual."*
-
-Copiar o output para este ficheiro e fazer commit.
+## Scripts Python
+- `4_fetch_youtube_trends.py` — v4, 36 canais PT, 1 query por eixo (4 total)
+- `5_fetch_google_trends.py` — is_emergent auto (change >= 50 e current >= 10)
+- `6_fetch_health_questions.py` — expandir_mural() adiciona termos novos
 
 ---
 
-*Última atualização: Março 2026 — gerado a partir de memória de sessões anteriores*
+## Componentes chave
+- `EditorialSubNav.tsx` — segunda linha de menu Editorial
+- `eixoPdfExport.ts` — exporta PDF por eixo/semana
+- `RevisaoPares.tsx` — revisão de pares com cards por eixo
+- `AxisColumn.tsx` — receberá props `hideChart`/`hideKeywords`
+- `SearchAlerts.tsx` — será filtrado por eixo activo
+
+---
+
+## Notas técnicas
+- Commits via GitHub web editor ou Contents API (PAT clássico, scope `repo`)
+- Lovable: descrever problema visual, não código; DOM inspection com `querySelectorAll` antes de escrever prompts
+- Selects shadcn/Radix: selector `[role="combobox"]`; opções só no DOM quando dropdown aberto
+- Google Docs: fetch via `/export?format=txt`
+- Resumos: `docs/sessoes/YYYY-MM-DD.md` (histórico); `CONTEXT.md` (estado vivo)
+
+---
+
+## Histórico de decisões
+
+| Data | Decisão |
+|------|---------|
+| — | Nome "Passa-Palavra" rejeitado |
+| — | Nome final: Reportagem Viva / Diz que Disse |
+| — | Admin fora do menu, acesso por URL directo |
+| — | RLS Supabase actualizado para CRUD |
+| Mar 2026 | YouTube v4: 36 canais PT, 4 queries (~95% redução quota) |
+| 20/03/2026 | Estrutura `docs/sessoes/` criada para logs históricos |
+
+---
+
+*Actualizado pelo Claude no fim de cada sessão*
