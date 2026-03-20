@@ -23,14 +23,14 @@ serve(async (req) => {
     const userPrompt = `Com base no tema emergente '${keyword}' esta semana em Portugal, gera em JSON:
 
 {
-  "perguntas_voxpop": [string, string, string],
+  "perguntas_voxpop": [string, string, string, string, string],
   "especialista_sugerido": string,
   "justificacao": string,
   "fonte_cientifica": string,
   "fonte_url": string
 }
 
-As perguntas devem ser coloquiais e directas, estilo vox pop de rua, cada uma tocando num mito ou crença comum associada ao tema. O especialista deve ser um perfil de dupla (dois tipos de especialistas complementares). A justificação deve explicar porque esta dupla é indicada e citar uma fonte científica real (DGS, OMS, INSA, PubMed ou revista indexada).`;
+As perguntas devem ser 5, coloquiais e directas, estilo vox pop de rua, cada uma tocando num mito ou crença comum associada ao tema. O especialista deve ser um perfil de dupla (dois tipos de especialistas complementares). A justificação deve explicar porque esta dupla é indicada e citar uma fonte científica real (DGS, OMS, INSA, PubMed ou revista indexada).`;
 
     const response = await fetch("https://api.perplexity.ai/chat/completions", {
       method: "POST",
