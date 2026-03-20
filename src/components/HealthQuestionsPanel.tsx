@@ -77,9 +77,7 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                       <div className="text-right shrink-0">
                         {q.growthPercent != null && (
                           <p className="text-sm font-bold">
-                            {q.growthPercent >= 5000
-                              ? "BREAKOUT"
-                              : `+${q.growthPercent}%`}{q.growthPercent < 5000 ? " ↑" : ""}
+                            +{q.growthPercent}% ↑
                           </p>
                         )}
                         <div className="flex items-center gap-1 justify-end mt-0.5">
