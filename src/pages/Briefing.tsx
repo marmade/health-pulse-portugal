@@ -264,6 +264,7 @@ const Briefing = () => {
         news,
         debunking,
         topEmergent,
+        dizQueDisse,
       });
       toast.success("PDF exportado com sucesso");
     } catch {
