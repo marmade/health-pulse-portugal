@@ -380,6 +380,8 @@ export type Database = {
       revisao_pares: {
         Row: {
           afiliacao: string | null
+          bio_a: string | null
+          bio_b: string | null
           created_at: string | null
           eixo: string
           email_a: string | null
@@ -401,6 +403,8 @@ export type Database = {
         }
         Insert: {
           afiliacao?: string | null
+          bio_a?: string | null
+          bio_b?: string | null
           created_at?: string | null
           eixo: string
           email_a?: string | null
@@ -422,6 +426,8 @@ export type Database = {
         }
         Update: {
           afiliacao?: string | null
+          bio_a?: string | null
+          bio_b?: string | null
           created_at?: string | null
           eixo?: string
           email_a?: string | null
