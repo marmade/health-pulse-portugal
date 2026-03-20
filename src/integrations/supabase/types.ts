@@ -382,28 +382,64 @@ export type Database = {
           afiliacao: string | null
           created_at: string | null
           eixo: string
+          email_a: string | null
+          email_b: string | null
+          especialidade_a: string | null
+          especialidade_b: string | null
           id: string
+          link_a: string | null
+          link_b: string | null
           nome: string | null
+          nome_a: string | null
+          nome_b: string | null
           nota: string | null
+          sumario: string | null
+          telefone_a: string | null
+          telefone_b: string | null
           titulo: string | null
+          updated_at: string | null
         }
         Insert: {
           afiliacao?: string | null
           created_at?: string | null
           eixo: string
+          email_a?: string | null
+          email_b?: string | null
+          especialidade_a?: string | null
+          especialidade_b?: string | null
           id?: string
+          link_a?: string | null
+          link_b?: string | null
           nome?: string | null
+          nome_a?: string | null
+          nome_b?: string | null
           nota?: string | null
+          sumario?: string | null
+          telefone_a?: string | null
+          telefone_b?: string | null
           titulo?: string | null
+          updated_at?: string | null
         }
         Update: {
           afiliacao?: string | null
           created_at?: string | null
           eixo?: string
+          email_a?: string | null
+          email_b?: string | null
+          especialidade_a?: string | null
+          especialidade_b?: string | null
           id?: string
+          link_a?: string | null
+          link_b?: string | null
           nome?: string | null
+          nome_a?: string | null
+          nome_b?: string | null
           nota?: string | null
+          sumario?: string | null
+          telefone_a?: string | null
+          telefone_b?: string | null
           titulo?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
