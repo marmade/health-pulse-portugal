@@ -4,7 +4,7 @@
 
 ---
 
-## Última actualização: 20/03/2026
+## Última actualização: 20/03/2026 (sessão 2)
 
 ---
 
@@ -26,18 +26,14 @@
 - Eixos: Saúde Mental, Alimentação, Menopausa, Emergentes
 - Vista eixo individual: bloco Health Questions + YouTube escondido quando `activeAxis !== 'all'` (Opção B aplicada)
 
-### Pendentes Lovable (prompts preparados, ainda não enviados)
-- **PROMPT 1** — Layout 2×2 na vista de eixo individual:
-  - Linha 1: TrendChart (esq.) | Keywords/Top5 (dir.)
-  - Linha 2: Perguntas de Saúde (esq.) | Alertas de Pesquisa (dir.)
-  - Ficheiros: `src/components/AxisColumn.tsx` (props `hideChart`/`hideKeywords`) + `src/pages/Index.tsx`
-- **PROMPT 2** — Filtrar SearchAlerts pelo eixo activo:
-  - `axisAlerts` filtra por `a.axisLabel === filteredData[activeAxis]?.label`
+### Implementados
+- ✅ **PROMPT 1** — Layout 2×2 na vista de eixo individual (já estava no código)
+- ✅ **PROMPT 2** — Filtrar SearchAlerts pelo eixo activo (já estava no código)
+- ✅ **Bug NOTÍCIAS** — Select de eixo temático pré-preenche correctamente no edit
+- ✅ **Blocos SOBRE** — 11/11 blocos migrados para tabela `sobre_conteudo` no Supabase
 
 ### Pendentes gerais
 - Audit admin tab BOOKMARKS (não feito)
-- Bug: NOTÍCIAS eixo temático Select não pré-preenche no edit
-- 5 blocos SOBRE ainda como "Fallback" (guardar no Supabase antes do launch)
 
 ---
 
