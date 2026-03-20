@@ -49,12 +49,14 @@ const ProfileBlock = ({ nome, especialidade, email, link, bio, hideContact }: { 
   return (
     <div className="space-y-1">
       <p className="text-sm font-semibold">{nome || "—"}</p>
-      <p className="text-xs opacity-70">{especialidade || "—"}</p>
-      {!hideContact && email && (
-        <a href={`mailto:${email}`} title={email} className="inline-block opacity-50 hover:opacity-70 transition-opacity">
-          <Mail className="h-3 w-3" />
-        </a>
-      )}
+      <div className="flex items-center gap-2">
+        <p className="text-xs opacity-70">{especialidade || "—"}</p>
+        {!hideContact && email && (
+          <a href={`mailto:${email}`} title={email} className="opacity-50 hover:opacity-70 transition-opacity">
+            <Mail className="h-3 w-3" />
+          </a>
+        )}
+      </div>
       {link && (
         <a href={link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
           Perfil profissional ↗
