@@ -25,7 +25,7 @@ const DebunkingTable = ({ items }: Props) => {
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5 flex-shrink-0">Debunking & Desinformação</p>
+      <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5 flex-shrink-0">Fact-Check & Desinformação</p>
       
       {/* Classification filter */}
       <div className="flex flex-wrap gap-0.5 mb-2 flex-shrink-0">

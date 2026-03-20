@@ -88,23 +88,6 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
         ))}
       </div>
 
-      {/* Source type filter */}
-      <div className="flex flex-wrap gap-0.5 mb-2 flex-shrink-0">
-        {sourceTypes.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setActiveSourceType(t.id)}
-            className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
-            style={
-              activeSourceType === t.id
-                ? { background: getAxisFilterStyle(t.id).bg, color: getAxisFilterStyle(t.id).text }
-                : { background: "transparent", color: "rgba(0,0,255,0.3)" }
-            }
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
 
       <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
         {filteredItems.length === 0 ? (
