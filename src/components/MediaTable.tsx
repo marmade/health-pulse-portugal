@@ -5,6 +5,7 @@ import { getAxisFilterStyle } from "@/lib/axisColors";
 type Props = {
   items: NewsItem[];
   lastFetchTimestamp?: string | null;
+  activeTheme?: string;
 };
 
 const themes = [
@@ -39,8 +40,9 @@ const sourceTypeBadge = (type?: string) => {
   }
 };
 
-const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
-  const [activeTheme, setActiveTheme] = useState("todos");
+const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: Props) => {
+  const [internalTheme, setInternalTheme] = useState("todos");
+  const activeTheme = externalTheme ?? internalTheme;
   
 
   const filteredItems = useMemo(() => {
@@ -75,7 +77,7 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
         {themes.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActiveTheme(t.id)}
+            onClick={() => setInternalTheme(t.id)}
             className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
             style={
               activeTheme === t.id
