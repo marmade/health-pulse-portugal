@@ -4,7 +4,7 @@
 
 ---
 
-## Última actualização: 20/03/2026
+## Última actualização: 20/03/2026 (sessão 2)
 
 ---
 
