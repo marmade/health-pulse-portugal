@@ -65,10 +65,10 @@ const Mural = () => {
         axis: kw.axis,
         axisLabel: AXIS_LABELS[kw.axis] || kw.axis.toUpperCase(),
         score: hasScores ? (ytScores[kw.axis] ?? 0) : 0,
-        changePercent: changeMap?.[kw.term] ?? null,
+        changePercent: kw.change_percent != null ? Number(kw.change_percent) : null,
       }))
       .sort((a, b) => b.score - a.score);
-  }, [keywords, ytScores, hasScores, changeMap]);
+  }, [keywords, ytScores, hasScores]);
 
   const filtered = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.axis === filter)),
