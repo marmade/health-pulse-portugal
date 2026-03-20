@@ -216,6 +216,7 @@ const RevisaoPareAdmin = () => {
               {rpField(eixo, 'telefone_a', 'Telefone')}
               {rpField(eixo, 'email_a', 'Email')}
               {rpField(eixo, 'link_a', 'Link profissional (URL)')}
+              {rpField(eixo, 'bio_a', 'Resumo / Bio...', true)}
             </div>
             <div className="p-4 space-y-2">
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color }}>Perfil B</p>
@@ -224,6 +225,7 @@ const RevisaoPareAdmin = () => {
               {rpField(eixo, 'telefone_b', 'Telefone')}
               {rpField(eixo, 'email_b', 'Email')}
               {rpField(eixo, 'link_b', 'Link profissional (URL)')}
+              {rpField(eixo, 'bio_b', 'Resumo / Bio...', true)}
             </div>
           </div>
           <div className="px-4 py-3 border-t border-foreground/10">
