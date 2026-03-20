@@ -76,13 +76,15 @@ const RevisaoPares = () => {
     Promise.all([
       (supabase.from as any)("revisao_pares").select("*"),
       (supabase.from as any)("contactos_projecto").select("*").order("created_at"),
-    ]).then(([rpRes, ctRes]: any[]) => {
+      supabase.from("app_settings").select("value").eq("key", "modo_apresentacao").maybeSingle(),
+    ]).then(([rpRes, ctRes, modoRes]: any[]) => {
       if (rpRes.data) {
         const map: Record<string, RPRow> = {};
         rpRes.data.forEach((d: any) => { map[d.eixo] = d; });
         setDados(map);
       }
       if (ctRes.data) setContactos(ctRes.data);
+      if (modoRes.data?.value === 'true') setHideContact(true);
       setLoading(false);
     });
   }, []);
