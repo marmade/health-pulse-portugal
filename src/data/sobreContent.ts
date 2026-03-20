@@ -68,7 +68,7 @@ Geração de guiões: os dados recolhidos pelo sistema alimentam um prompt estru
   "como-funciona": {
     titulo: "Como funciona",
     conteudo:
-      "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|15 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
+      "GOOGLE TRENDS|pesquisas em tempo real\nRSS FEEDS|16 feeds portugueses\nSUPABASE|base de dados + keywords\nEDGE FUNCTIONS|automação diária\nPERPLEXITY SONAR|geração com citações\nGUIÃO|10 perguntas por tema",
   },
   limitacoes: {
     titulo: "Limitações",
