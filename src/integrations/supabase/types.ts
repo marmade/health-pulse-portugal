@@ -496,6 +496,7 @@ export type Database = {
       youtube_trends: {
         Row: {
           canal: string
+          channel_id: string | null
           created_at: string
           data_publicacao: string
           eixo: string
@@ -507,6 +508,7 @@ export type Database = {
         }
         Insert: {
           canal?: string
+          channel_id?: string | null
           created_at?: string
           data_publicacao?: string
           eixo?: string
@@ -518,6 +520,7 @@ export type Database = {
         }
         Update: {
           canal?: string
+          channel_id?: string | null
           created_at?: string
           data_publicacao?: string
           eixo?: string
