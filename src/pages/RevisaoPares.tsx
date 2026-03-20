@@ -126,8 +126,8 @@ const RevisaoPares = () => {
                     <div className="px-5 py-5 grid grid-cols-2 gap-6">
                       {row ? (
                         <>
-                          <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} />
-                          <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} />
+                          <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} hideContact={hideContact} />
+                          <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} hideContact={hideContact} />
                         </>
                       ) : (
                         <>
