@@ -12,6 +12,17 @@ import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 import { fallbackSobreContent, SOBRE_BLOCKS } from "@/data/sobreContent";
 import BenchmarkAdminTab from "@/components/BenchmarkAdminTab";
 
+const normalizeToAxis = (term: string): string => {
+  const valid = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
+  if (valid.includes(term)) return term;
+  const t = term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (t.includes("saude") || t.includes("mental") || t.includes("ansied") || t.includes("depres") || t.includes("psic") || t.includes("stress") || t.includes("burnout") || t.includes("suicid") || t.includes("insoni") || t.includes("automutil") || t.includes("tdah") || t.includes("terapia")) return "saude-mental";
+  if (t.includes("aliment") || t.includes("dieta") || t.includes("nutri") || t.includes("obesid") || t.includes("peso") || t.includes("ultraprocess") || t.includes("jejum")) return "alimentacao";
+  if (t.includes("menopaus") || t.includes("climater") || t.includes("hormon")) return "menopausa";
+  if (t.includes("emergent")) return "emergentes";
+  return "";
+};
+
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = [
   { value: "saude-mental", label: "Saúde Mental" },
