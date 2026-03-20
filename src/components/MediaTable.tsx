@@ -5,6 +5,7 @@ import { getAxisFilterStyle } from "@/lib/axisColors";
 type Props = {
   items: NewsItem[];
   lastFetchTimestamp?: string | null;
+  activeTheme?: string;
 };
 
 const themes = [
