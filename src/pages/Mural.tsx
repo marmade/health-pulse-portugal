@@ -32,7 +32,7 @@ const Mural = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("keywords")
-        .select("id, term, axis")
+        .select("id, term, axis, current_volume, change_percent")
         .eq("is_active", true);
       return data ?? [];
     },
