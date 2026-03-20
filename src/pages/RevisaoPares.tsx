@@ -27,7 +27,7 @@ type RPRow = {
   sumario: string;
 };
 
-const ProfileBlock = ({ nome, especialidade, email, link }: { nome: string; especialidade: string; email: string; link: string }) => {
+const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string; especialidade: string; email: string; link: string; bio: string }) => {
   const hasData = nome || especialidade;
   return (
     <div className="space-y-1">
@@ -39,6 +39,7 @@ const ProfileBlock = ({ nome, especialidade, email, link }: { nome: string; espe
           Perfil profissional ↗
         </a>
       )}
+      {bio && <p className="text-[11px] opacity-40 italic mt-2">{bio}</p>}
       {!hasData && <p className="text-xs opacity-50">—</p>}
     </div>
   );
