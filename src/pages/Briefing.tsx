@@ -354,7 +354,10 @@ const Briefing = () => {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-sm font-semibold ml-3">{kw.term}</span>
-                <span className="text-[10px] uppercase tracking-wider opacity-50 ml-3">
+                <span
+                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm ml-3"
+                  style={{ backgroundColor: getAxisColors(kw.axis).bg, color: getAxisColors(kw.axis).text }}
+                >
                   {axisLabels[kw.axis] || kw.axis}
                 </span>
               </div>
