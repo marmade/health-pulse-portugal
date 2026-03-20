@@ -75,10 +75,7 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
       <div className="flex items-center gap-1.5 mb-1.5 flex-shrink-0">
         <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50">Cobertura Mediática</p>
         <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
-          RSS — Tempo Real
-        </span>
-        <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
-          Trends + YouTube — Semanal
+          Cobertura Recente
         </span>
       </div>
       
