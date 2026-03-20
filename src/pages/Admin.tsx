@@ -70,6 +70,7 @@ type NewsItem = {
   related_term: string;
   source_type: string;
   url: string;
+  keyword_id?: string | null;
 };
 
 type Referencia = { label: string; url: string };
@@ -411,7 +412,8 @@ export default function Admin() {
   const [showNewsForm, setShowNewsForm] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
   const [editingNewsOriginalTerm, setEditingNewsOriginalTerm] = useState<string>("");
-  const [newNews, setNewNews] = useState({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
+  const emptyNews = { title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "", keyword_id: "" };
+  const [newNews, setNewNews] = useState(emptyNews);
 
   // Textos state
   const [textos, setTextos] = useState<TextoItem[]>([]);
@@ -592,23 +594,24 @@ export default function Admin() {
     if (item) {
       setEditingNewsId(item.id);
       setEditingNewsOriginalTerm(item.related_term);
-      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date });
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date, keyword_id: item.keyword_id || "" });
     } else {
       setEditingNewsId(null);
       setEditingNewsOriginalTerm("");
-      setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
+      setNewNews(emptyNews);
     }
     setShowNewsForm(true);
   };
 
   const saveNews = async () => {
     if (!newNews.title || !newNews.outlet || !newNews.date) return;
-    const payload = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    const payload: any = { title: newNews.title, url: newNews.url, outlet: newNews.outlet, source_type: newNews.source_type, related_term: newNews.related_term || "geral", date: newNews.date };
+    payload.keyword_id = newNews.keyword_id || null;
     const { error } = editingNewsId
       ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
       : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews(emptyNews); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
@@ -942,13 +945,24 @@ export default function Admin() {
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
                   <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
+                <Select value={newNews.keyword_id || "__none__"} onValueChange={(v) => {
+                  setNewNews({ ...newNews, keyword_id: v === "__none__" ? "" : v });
+                }}>
+                  <SelectTrigger><SelectValue placeholder="Keyword associada" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Nenhuma —</SelectItem>
+                    {[...keywords].sort((a, b) => a.term.localeCompare(b.term)).filter(k => k.is_active !== false).map(k => (
+                      <SelectItem key={k.id} value={k.id}>{k.term} ({k.axis})</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {editingNewsId && editingNewsOriginalTerm && !["saude-mental","alimentacao","menopausa","emergentes"].includes(editingNewsOriginalTerm) && (
                   <p className="text-[10px] text-muted-foreground">Termo original: <span className="font-mono">{editingNewsOriginalTerm}</span></p>
                 )}
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); setNewNews(emptyNews); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
