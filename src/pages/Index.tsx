@@ -168,6 +168,11 @@ const Index = () => {
     [filteredData, filters.period]
   );
 
+  const axisAlerts = useMemo(
+    () => activeAxis === "all" ? alerts : alerts.filter((a) => a.keyword.axis === activeAxis),
+    [alerts, activeAxis]
+  );
+
   const visibleAxes =
     activeAxis === "all"
       ? axisOrder
