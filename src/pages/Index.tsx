@@ -68,7 +68,7 @@ const Index = () => {
   // Filtrar debunking e notícias pelo eixo activo
   const axisTerms = useMemo(() => {
     if (activeAxis === "all") return null;
-    const kws = (filteredData[activeAxis]?.keywords || []).map((k: any) => k.term.toLowerCase());
+    const kws = (filteredData[activeAxis]?.allKeywords || filteredData[activeAxis]?.keywords || []).map((k: any) => k.term.toLowerCase());
     return new Set(kws);
   }, [filteredData, activeAxis]);
 
