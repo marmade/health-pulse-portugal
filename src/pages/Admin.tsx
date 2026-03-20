@@ -404,7 +404,7 @@ export default function Admin() {
   const [debunking, setDebunking] = useState<DebunkingItem[]>([]);
   const [showDebunkForm, setShowDebunkForm] = useState(false);
   const [editingDebunkId, setEditingDebunkId] = useState<string | null>(null);
-  const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+  const [newDebunk, setNewDebunk] = useState({ title: "", term: "", source: "", classification: "FALSO", url: "", keyword_id: "", eixo: "", explicacao: "", data_publicacao: "" });
 
   // News state
   const [news, setNews] = useState<NewsItem[]>([]);
