@@ -59,7 +59,7 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
 
 
     return result;
-  }, [items, activeTheme, activeSourceType]);
+  }, [items, activeTheme]);
 
   return (
     <div className="flex flex-col h-full min-h-0">
