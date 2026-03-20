@@ -70,13 +70,19 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive =
         </div>
       </div>
 
-      <div className="border-t border-foreground/10" />
+      {!hideChart && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <TrendChart data={trendData} label={label} />
+        </>
+      )}
 
-      <TrendChart data={trendData} label={label} />
-
-      <div className="border-t border-foreground/10" />
-
-      <Top5Table keywords={top5} />
+      {!hideKeywords && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <Top5Table keywords={top5} />
+        </>
+      )}
 
       {/* Arquivo semanal */}
       {archive.length > 0 && (
