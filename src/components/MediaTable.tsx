@@ -40,8 +40,9 @@ const sourceTypeBadge = (type?: string) => {
   }
 };
 
-const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
-  const [activeTheme, setActiveTheme] = useState("todos");
+const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: Props) => {
+  const [internalTheme, setInternalTheme] = useState("todos");
+  const activeTheme = externalTheme ?? internalTheme;
   
 
   const filteredItems = useMemo(() => {
