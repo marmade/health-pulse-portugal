@@ -873,7 +873,7 @@ export default function Admin() {
                   <SelectTrigger><SelectValue placeholder="Keyword associada" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="__none__">— Nenhuma —</SelectItem>
-                    {[...keywords].sort((a, b) => a.term.localeCompare(b.term)).filter(k => k.isActive !== false).map(k => (
+                    {[...keywords].sort((a, b) => a.term.localeCompare(b.term)).filter(k => k.is_active !== false).map(k => (
                       <SelectItem key={k.id} value={k.id}>{k.term} ({k.axis})</SelectItem>
                     ))}
                   </SelectContent>
