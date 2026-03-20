@@ -549,25 +549,35 @@ export default function Admin() {
   };
 
   // Debunking CRUD
+  const emptyDebunk = { title: "", term: "", source: "", classification: "FALSO", url: "", keyword_id: "", eixo: "", explicacao: "", data_publicacao: "" };
+
   const openDebunkForm = (item?: DebunkingItem) => {
     if (item) {
       setEditingDebunkId(item.id);
-      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url });
+      setNewDebunk({ title: item.title, term: item.term, source: item.source, classification: item.classification, url: item.url, keyword_id: item.keyword_id || "", eixo: item.eixo || "", explicacao: item.explicacao || "", data_publicacao: item.data_publicacao || "" });
     } else {
       setEditingDebunkId(null);
-      setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" });
+      setNewDebunk(emptyDebunk);
     }
     setShowDebunkForm(true);
   };
 
   const saveDebunk = async () => {
     if (!newDebunk.title || !newDebunk.term) return;
-    const payload = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    const payload: any = { title: newDebunk.title, term: newDebunk.term, source: newDebunk.source, classification: newDebunk.classification, url: newDebunk.url };
+    if (newDebunk.keyword_id) payload.keyword_id = newDebunk.keyword_id;
+    else payload.keyword_id = null;
+    if (newDebunk.eixo) payload.eixo = newDebunk.eixo;
+    else payload.eixo = null;
+    if (newDebunk.explicacao) payload.explicacao = newDebunk.explicacao;
+    else payload.explicacao = null;
+    if (newDebunk.data_publicacao) payload.data_publicacao = newDebunk.data_publicacao;
+    else payload.data_publicacao = null;
     const { error } = editingDebunkId
       ? await supabase.from("debunking").update(payload).eq("id", editingDebunkId)
       : await supabase.from("debunking").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewDebunk(emptyDebunk); setShowDebunkForm(false); setEditingDebunkId(null); fetchAll(); }
   };
 
   const deleteDebunk = async (id: string) => {
