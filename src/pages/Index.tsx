@@ -169,8 +169,11 @@ const Index = () => {
   );
 
   const axisAlerts = useMemo(
-    () => activeAxis === "all" ? alerts : alerts.filter((a) => a.keyword.axis === activeAxis),
-    [alerts, activeAxis]
+    () =>
+      activeAxis === 'all'
+        ? alerts
+        : alerts.filter((a) => a.axisLabel === filteredData[activeAxis]?.label),
+    [alerts, activeAxis, filteredData]
   );
 
   const visibleAxes =
