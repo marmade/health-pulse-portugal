@@ -119,6 +119,7 @@ const BOOKMARK_CATEGORIAS = [
   { value: "igualdade_social", label: "Elevador Social" },
   { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
   { value: "dunning_kruger", label: "Saber que não sabe" },
+  { value: "comunicacao_cientifica", label: "Comunicação Científica" },
 ];
 
 const emptyTexto = (): Omit<TextoItem, "id"> => ({
