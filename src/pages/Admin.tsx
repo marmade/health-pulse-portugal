@@ -12,6 +12,17 @@ import { Trash2, Plus, Check, X, LogOut, Pencil } from "lucide-react";
 import { fallbackSobreContent, SOBRE_BLOCKS } from "@/data/sobreContent";
 import BenchmarkAdminTab from "@/components/BenchmarkAdminTab";
 
+const normalizeToAxis = (term: string): string => {
+  const valid = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
+  if (valid.includes(term)) return term;
+  const t = term.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (t.includes("saude") || t.includes("mental") || t.includes("ansied") || t.includes("depres") || t.includes("psic") || t.includes("stress") || t.includes("burnout") || t.includes("suicid") || t.includes("insoni") || t.includes("automutil") || t.includes("tdah") || t.includes("terapia")) return "saude-mental";
+  if (t.includes("aliment") || t.includes("dieta") || t.includes("nutri") || t.includes("obesid") || t.includes("peso") || t.includes("ultraprocess") || t.includes("jejum")) return "alimentacao";
+  if (t.includes("menopaus") || t.includes("climater") || t.includes("hormon")) return "menopausa";
+  if (t.includes("emergent")) return "emergentes";
+  return "";
+};
+
 const ADMIN_PASSWORD = "healthpulse2026";
 const AXES = [
   { value: "saude-mental", label: "Saúde Mental" },
@@ -246,6 +257,7 @@ export default function Admin() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [showNewsForm, setShowNewsForm] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
+  const [editingNewsOriginalTerm, setEditingNewsOriginalTerm] = useState<string>("");
   const [newNews, setNewNews] = useState({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
 
   // Textos state
@@ -416,9 +428,11 @@ export default function Admin() {
   const openNewsForm = (item?: NewsItem) => {
     if (item) {
       setEditingNewsId(item.id);
-      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: item.related_term, date: item.date });
+      setEditingNewsOriginalTerm(item.related_term);
+      setNewNews({ title: item.title, url: item.url, outlet: item.outlet, source_type: item.source_type, related_term: normalizeToAxis(item.related_term), date: item.date });
     } else {
       setEditingNewsId(null);
+      setEditingNewsOriginalTerm("");
       setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" });
     }
     setShowNewsForm(true);
@@ -431,7 +445,7 @@ export default function Admin() {
       ? await supabase.from("news_items").update(payload).eq("id", editingNewsId)
       : await supabase.from("news_items").insert(payload);
     if (error) toast({ title: "Erro ao guardar", variant: "destructive" });
-    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); fetchAll(); }
   };
 
   const deleteNews = async (id: string) => {
@@ -746,10 +760,13 @@ export default function Admin() {
                   <SelectTrigger><SelectValue placeholder="Tema" /></SelectTrigger>
                   <SelectContent>{AXES.map((a) => <SelectItem key={a.value} value={a.value}>{a.label}</SelectItem>)}</SelectContent>
                 </Select>
+                {editingNewsId && editingNewsOriginalTerm && !["saude-mental","alimentacao","menopausa","emergentes"].includes(editingNewsOriginalTerm) && (
+                  <p className="text-[10px] text-muted-foreground">Termo original: <span className="font-mono">{editingNewsOriginalTerm}</span></p>
+                )}
                 <Input type="date" value={newNews.date} onChange={(e) => setNewNews({ ...newNews, date: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveNews} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowNewsForm(false); setEditingNewsId(null); setEditingNewsOriginalTerm(""); setNewNews({ title: "", url: "", outlet: "", source_type: "media", related_term: "", date: "" }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
