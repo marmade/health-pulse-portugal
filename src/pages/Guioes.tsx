@@ -480,7 +480,7 @@ const Guioes = () => {
   };
 
   return (
-    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F2FCFA" }}>
+    <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
       <EditorialHeader />
 
       <main className="px-6 py-8 max-w-6xl mx-auto">
