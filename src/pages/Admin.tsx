@@ -151,15 +151,15 @@ const EIXOS_RP = [
 
 type RPEntry = {
   id?: string; eixo: string;
-  nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string;
-  nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string;
+  nome_a: string; especialidade_a: string; telefone_a: string; email_a: string; link_a: string; bio_a: string;
+  nome_b: string; especialidade_b: string; telefone_b: string; email_b: string; link_b: string; bio_b: string;
   sumario: string;
 };
 
 const emptyRP = (eixo: string, label: string): RPEntry => ({
   eixo,
-  nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '',
-  nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '',
+  nome_a: '', especialidade_a: '', telefone_a: '', email_a: '', link_a: '', bio_a: '',
+  nome_b: '', especialidade_b: '', telefone_b: '', email_b: '', link_b: '', bio_b: '',
   sumario: '',
 });
 const RevisaoPareAdmin = () => {
@@ -216,6 +216,7 @@ const RevisaoPareAdmin = () => {
               {rpField(eixo, 'telefone_a', 'Telefone')}
               {rpField(eixo, 'email_a', 'Email')}
               {rpField(eixo, 'link_a', 'Link profissional (URL)')}
+              {rpField(eixo, 'bio_a', 'Resumo / Bio...', true)}
             </div>
             <div className="p-4 space-y-2">
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color }}>Perfil B</p>
@@ -224,6 +225,7 @@ const RevisaoPareAdmin = () => {
               {rpField(eixo, 'telefone_b', 'Telefone')}
               {rpField(eixo, 'email_b', 'Email')}
               {rpField(eixo, 'link_b', 'Link profissional (URL)')}
+              {rpField(eixo, 'bio_b', 'Resumo / Bio...', true)}
             </div>
           </div>
           <div className="px-4 py-3 border-t border-foreground/10">

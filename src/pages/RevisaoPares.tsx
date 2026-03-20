@@ -17,15 +17,17 @@ type RPRow = {
   telefone_a: string;
   email_a: string;
   link_a: string;
+  bio_a: string;
   nome_b: string;
   especialidade_b: string;
   telefone_b: string;
   email_b: string;
   link_b: string;
+  bio_b: string;
   sumario: string;
 };
 
-const ProfileBlock = ({ nome, especialidade, email, link }: { nome: string; especialidade: string; email: string; link: string }) => {
+const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string; especialidade: string; email: string; link: string; bio: string }) => {
   const hasData = nome || especialidade;
   return (
     <div className="space-y-1">
@@ -37,6 +39,7 @@ const ProfileBlock = ({ nome, especialidade, email, link }: { nome: string; espe
           Perfil profissional ↗
         </a>
       )}
+      {bio && <p className="text-[11px] opacity-40 italic mt-2">{bio}</p>}
       {!hasData && <p className="text-xs opacity-50">—</p>}
     </div>
   );
@@ -94,8 +97,8 @@ const RevisaoPares = () => {
                   <div className="px-5 py-5 grid grid-cols-2 gap-6">
                     {row ? (
                       <>
-                        <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} />
-                        <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} />
+                        <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} />
+                        <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} />
                       </>
                     ) : (
                       <>
