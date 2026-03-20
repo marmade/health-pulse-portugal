@@ -9,6 +9,11 @@ const EIXOS = [
   { id: "emergentes",   label: "Emergentes",   color: "rgba(0,0,255,0.08)" },
 ];
 
+const CONTACTO_SECTIONS = [
+  { tipo: "comunidade_cientifica", label: "Comunidade Científica", headerBg: "#f2fcfa" },
+  { tipo: "agentes_trabalho", label: "Agentes de Trabalho", headerBg: "#ede8ff" },
+];
+
 type RPRow = {
   id: string;
   eixo: string;
@@ -25,6 +30,17 @@ type RPRow = {
   link_b: string;
   bio_b: string;
   sumario: string;
+};
+
+type ContactoRow = {
+  id: string;
+  tipo: string;
+  nome: string;
+  especialidade: string;
+  email: string;
+  telefone: string;
+  link: string;
+  bio: string;
 };
 
 const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string; especialidade: string; email: string; link: string; bio: string }) => {
@@ -47,19 +63,22 @@ const ProfileBlock = ({ nome, especialidade, email, link, bio }: { nome: string;
 
 const RevisaoPares = () => {
   const [dados, setDados] = useState<Record<string, RPRow>>({});
+  const [contactos, setContactos] = useState<ContactoRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (supabase.from as any)("revisao_pares")
-      .select("*")
-      .then(({ data }: any) => {
-        if (data) {
-          const map: Record<string, RPRow> = {};
-          data.forEach((d: any) => { map[d.eixo] = d; });
-          setDados(map);
-        }
-        setLoading(false);
-      });
+    Promise.all([
+      (supabase.from as any)("revisao_pares").select("*"),
+      (supabase.from as any)("contactos_projecto").select("*").order("created_at"),
+    ]).then(([rpRes, ctRes]: any[]) => {
+      if (rpRes.data) {
+        const map: Record<string, RPRow> = {};
+        rpRes.data.forEach((d: any) => { map[d.eixo] = d; });
+        setDados(map);
+      }
+      if (ctRes.data) setContactos(ctRes.data);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -84,44 +103,85 @@ const RevisaoPares = () => {
             <p className="text-xs opacity-50">A carregar...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {EIXOS.map(({ id, label, color }) => {
-              const row = dados[id];
-              return (
-                <div key={id} className="border border-foreground/10" style={{ backgroundColor: "white" }}>
-                  <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: color }}>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "#0000FF" }}>
-                      {label}
-                    </p>
-                  </div>
-                  <div className="px-5 py-5 grid grid-cols-2 gap-6">
-                    {row ? (
-                      <>
-                        <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} />
-                        <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} />
-                      </>
-                    ) : (
-                      <>
-                        <div className="space-y-1">
-                          <p className="text-sm font-semibold">—</p>
-                          <p className="text-xs opacity-70">—</p>
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-sm font-semibold">—</p>
-                          <p className="text-xs opacity-70">—</p>
-                        </div>
-                      </>
+          <>
+            {/* Eixos grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {EIXOS.map(({ id, label, color }) => {
+                const row = dados[id];
+                return (
+                  <div key={id} className="border border-foreground/10" style={{ backgroundColor: "white" }}>
+                    <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: color }}>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "#0000FF" }}>
+                        {label}
+                      </p>
+                    </div>
+                    <div className="px-5 py-5 grid grid-cols-2 gap-6">
+                      {row ? (
+                        <>
+                          <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} bio={row.bio_a} />
+                          <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} bio={row.bio_b} />
+                        </>
+                      ) : (
+                        <>
+                          <div className="space-y-1">
+                            <p className="text-sm font-semibold">—</p>
+                            <p className="text-xs opacity-70">—</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm font-semibold">—</p>
+                            <p className="text-xs opacity-70">—</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    {row?.sumario && (
+                      <div className="px-5 pb-4 border-t border-foreground/5 pt-3">
+                        <p className="text-[11px] opacity-40 italic">{row.sumario}</p>
+                      </div>
                     )}
                   </div>
-                  {row?.sumario && (
-                    <div className="px-5 pb-4 border-t border-foreground/5 pt-3">
-                      <p className="text-[11px] opacity-40 italic">{row.sumario}</p>
+                );
+              })}
+            </div>
+
+            {/* Contactos sections */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              {CONTACTO_SECTIONS.map(({ tipo, label, headerBg }) => {
+                const sectionContactos = contactos.filter(c => c.tipo === tipo);
+                return (
+                  <div key={tipo} className="border border-foreground/10" style={{ backgroundColor: "white" }}>
+                    <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: headerBg }}>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "#0000FF" }}>
+                        {label}
+                      </p>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                    <div className="px-5 py-5">
+                      {sectionContactos.length === 0 ? (
+                        <p className="text-xs opacity-50">Sem contactos registados</p>
+                      ) : (
+                        <div className="space-y-5">
+                          {sectionContactos.map(c => (
+                            <div key={c.id} className="space-y-1">
+                              <p className="text-sm font-semibold">{c.nome}</p>
+                              {c.especialidade && <p className="text-xs opacity-70">{c.especialidade}</p>}
+                              {c.email && <p className="text-xs opacity-50">{c.email}</p>}
+                              {c.telefone && <p className="text-xs opacity-50">{c.telefone}</p>}
+                              {c.link && (
+                                <a href={c.link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
+                                  Perfil profissional ↗
+                                </a>
+                              )}
+                              {c.bio && <p className="text-[11px] opacity-40 italic mt-2">{c.bio}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </main>
     </div>
