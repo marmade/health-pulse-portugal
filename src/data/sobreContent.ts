@@ -53,7 +53,7 @@ Cobertura mediática: curadoria editorial dos artigos recolhidos via RSS com bas
     titulo: "Metodologia",
     conteudo: `SINAIS EMERGENTES
 
-Crescimento semanal superior a 200% ou termos sem histórico no ano anterior.
+Crescimento semanal superior a 50% com volume mínimo de 10 pontos no índice Google Trends.
 
 Debunking categorizado em: FALSO / ENGANADOR / SEM EVIDÊNCIA / IMPRECISO
 
