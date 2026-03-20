@@ -57,9 +57,6 @@ const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
       }
     }
 
-    if (activeSourceType !== "todos") {
-      result = result.filter((item) => (item as any).sourceType === activeSourceType);
-    }
 
     return result;
   }, [items, activeTheme, activeSourceType]);
