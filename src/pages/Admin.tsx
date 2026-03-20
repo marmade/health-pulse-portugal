@@ -862,9 +862,28 @@ export default function Admin() {
                 <Input placeholder="Fonte (ex: DGS, 2024)" value={newDebunk.source} onChange={(e) => setNewDebunk({ ...newDebunk, source: e.target.value })} />
                 <Input placeholder="URL da fonte" value={newDebunk.url} onChange={(e) => setNewDebunk({ ...newDebunk, url: e.target.value })} />
                 <Input placeholder="Termo relacionado" value={newDebunk.term} onChange={(e) => setNewDebunk({ ...newDebunk, term: e.target.value })} />
+                <Select value={newDebunk.keyword_id || "__none__"} onValueChange={(v) => {
+                  if (v === "__none__") {
+                    setNewDebunk({ ...newDebunk, keyword_id: "", eixo: "" });
+                  } else {
+                    const kw = keywords.find(k => k.id === v);
+                    setNewDebunk({ ...newDebunk, keyword_id: v, eixo: kw?.axis || "" });
+                  }
+                }}>
+                  <SelectTrigger><SelectValue placeholder="Keyword associada" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">— Nenhuma —</SelectItem>
+                    {[...keywords].sort((a, b) => a.term.localeCompare(b.term)).filter(k => k.isActive !== false).map(k => (
+                      <SelectItem key={k.id} value={k.id}>{k.term} ({k.axis})</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {newDebunk.eixo && <p className="text-xs text-muted-foreground">Eixo: <span className="font-semibold">{newDebunk.eixo}</span></p>}
+                <Textarea placeholder="Explicação curta do porquê é falso/enganoso..." value={newDebunk.explicacao} onChange={(e) => setNewDebunk({ ...newDebunk, explicacao: e.target.value })} />
+                <Input type="date" value={newDebunk.data_publicacao} onChange={(e) => setNewDebunk({ ...newDebunk, data_publicacao: e.target.value })} />
                 <div className="flex gap-2">
                   <Button onClick={saveDebunk} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk({ title: "", term: "", source: "", classification: "FALSO", url: "" }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowDebunkForm(false); setEditingDebunkId(null); setNewDebunk(emptyDebunk); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
