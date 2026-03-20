@@ -46,6 +46,9 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
   
 
   const filteredItems = useMemo(() => {
+    // When external theme is set, items are already pre-filtered by parent
+    if (externalTheme) return items;
+
     let result = items;
 
     if (activeTheme !== "todos") {
@@ -59,9 +62,8 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
       }
     }
 
-
     return result;
-  }, [items, activeTheme]);
+  }, [items, activeTheme, externalTheme]);
 
   return (
     <div className="flex flex-col h-full min-h-0">
