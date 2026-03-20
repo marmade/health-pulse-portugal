@@ -77,7 +77,7 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
         {themes.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActiveTheme(t.id)}
+            onClick={() => setInternalTheme(t.id)}
             className="text-[7px] font-bold uppercase tracking-wider px-1.5 py-0.5 transition-colors border-none"
             style={
               activeTheme === t.id

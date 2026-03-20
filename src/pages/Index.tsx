@@ -317,7 +317,7 @@ const Index = () => {
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
             <DebunkingTable items={filteredDebunkingData} />
-            <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} />
+            <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} activeTheme={activeAxis !== "all" ? activeAxis : undefined} />
           </div>
         </div>
       </main>
