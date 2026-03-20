@@ -56,6 +56,10 @@ type DebunkingItem = {
   source: string;
   classification: string;
   url: string;
+  keyword_id?: string | null;
+  eixo?: string | null;
+  explicacao?: string | null;
+  data_publicacao?: string | null;
 };
 
 type NewsItem = {
