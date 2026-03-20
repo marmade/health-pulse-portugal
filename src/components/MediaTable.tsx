@@ -41,7 +41,7 @@ const sourceTypeBadge = (type?: string) => {
 
 const MediaTable = ({ items, lastFetchTimestamp }: Props) => {
   const [activeTheme, setActiveTheme] = useState("todos");
-  const [activeSourceType, setActiveSourceType] = useState("todos");
+  
 
   const filteredItems = useMemo(() => {
     let result = items;
