@@ -12,6 +12,8 @@ type Props = {
   trendData: TrendPoint[];
   period: string;
   archive?: any[];
+  hideChart?: boolean;
+  hideKeywords?: boolean;
 };
 
 const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [] }: Props) => {
