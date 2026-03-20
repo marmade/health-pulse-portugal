@@ -354,7 +354,10 @@ const Briefing = () => {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-sm font-semibold ml-3">{kw.term}</span>
-                <span className="text-[10px] uppercase tracking-wider opacity-50 ml-3">
+                <span
+                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm ml-3"
+                  style={{ backgroundColor: getAxisColors(kw.axis).bg, color: getAxisColors(kw.axis).text }}
+                >
                   {axisLabels[kw.axis] || kw.axis}
                 </span>
               </div>
@@ -389,7 +392,7 @@ const Briefing = () => {
                 <span className="tag-emergent">Emergente</span>
                 <span className="text-sm font-semibold">{kw.term}</span>
                 <span
-                  className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
                   style={{ backgroundColor: c.bg, color: c.text }}
                 >
                   {axisLabels[kw.axis] || kw.axis}
@@ -629,7 +632,10 @@ const Briefing = () => {
                             <div key={i} className="flex items-center gap-3 mb-2">
                               <span className="tag-emergent">Emergente</span>
                               <span className="text-sm font-semibold">{e.term}</span>
-                              <span className="text-[10px] uppercase tracking-wider opacity-50">
+                              <span
+                                className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                                style={{ backgroundColor: getAxisColors(e.axis).bg, color: getAxisColors(e.axis).text }}
+                              >
                                 {axisLabels[e.axis] || e.axis}
                               </span>
                               <span className="text-xs font-bold ml-auto">
