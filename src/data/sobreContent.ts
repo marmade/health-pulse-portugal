@@ -37,7 +37,7 @@ Google Trends: dados de pesquisa recolhidos semanalmente via script Python (pytr
 
 RSS Feeds: 16 fontes portuguesas com recolha contínua em tempo real via Edge Function automatizada. Inclui media (RTP, Público, Observador, JN, DN, Expresso, CM Jornal, TSF, SIC Notícias), institucional (DGS, Ordem dos Médicos, INSA, SNS, Coord. Nacional Saúde Mental — saudemental.min-saude.pt) e fact-check (Polígrafo, Observador Fact-Check).
 
-YouTube: vídeos de saúde recolhidos semanalmente via script Python. Inclui título, canal, número de visualizações e URL. Dados organizados por eixo temático e usados para calcular o score de tendência do Mural de Keywords.
+YouTube: vídeos de saúde recolhidos semanalmente via script Python a partir de 36 canais portugueses curados por categoria: media generalista (RTP, SIC, TVI, Público, Observador, JN, DN, Euronews PT), saúde institucional (DGS, INSA, INFARMED, ERS, República Portuguesa, CNPS Mental), ordens e sociedades científicas (Ordem dos Médicos, Ordem dos Psicólogos, SPG, SPPSM), hospitais e seguros (CUF, Lusíadas, Trofa Saúde, Unilabs, Médis), ciência e academia (Gulbenkian, FCT, Faculdade de Medicina ULisboa, ITQB NOVA, 90 Segundos de Ciência) e fact-check (Despolariza, News Farma). Dados organizados por eixo temático, com deduplicação por URL e selecção dos top 15 por número de visualizações.
 
 DETECÇÃO ASSISTIDA
 
