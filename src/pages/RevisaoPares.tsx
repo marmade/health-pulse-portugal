@@ -9,29 +9,55 @@ const EIXOS = [
   { id: "emergentes",   label: "Emergentes",   color: "rgba(0,0,255,0.08)" },
 ];
 
-type ParEntry = {
+type RPRow = {
   id: string;
   eixo: string;
-  nome: string;
-  titulo: string;
-  afiliacao: string;
-  nota: string | null;
+  nome_a: string;
+  especialidade_a: string;
+  telefone_a: string;
+  email_a: string;
+  link_a: string;
+  nome_b: string;
+  especialidade_b: string;
+  telefone_b: string;
+  email_b: string;
+  link_b: string;
+  sumario: string;
+};
+
+const ProfileBlock = ({ nome, especialidade, email, link }: { nome: string; especialidade: string; email: string; link: string }) => {
+  const hasData = nome || especialidade;
+  return (
+    <div className="space-y-1">
+      <p className="text-sm font-semibold">{nome || "—"}</p>
+      <p className="text-xs opacity-70">{especialidade || "—"}</p>
+      {email && <p className="text-xs opacity-50">{email}</p>}
+      {link && (
+        <a href={link} target="_blank" rel="noopener noreferrer" className="text-[11px] opacity-40 underline hover:opacity-60 transition-opacity">
+          Perfil profissional ↗
+        </a>
+      )}
+      {!hasData && <p className="text-xs opacity-50">—</p>}
+    </div>
+  );
 };
 
 const RevisaoPares = () => {
-  const [dados, setDados] = useState<ParEntry[]>([]);
+  const [dados, setDados] = useState<Record<string, RPRow>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (supabase.from as any)("revisao_pares")
       .select("*")
       .then(({ data }: any) => {
-        if (data) setDados(data as ParEntry[]);
+        if (data) {
+          const map: Record<string, RPRow> = {};
+          data.forEach((d: any) => { map[d.eixo] = d; });
+          setDados(map);
+        }
         setLoading(false);
       });
   }, []);
-
-  const getByEixo = (eixo: string) => dados.filter((d) => d.eixo === eixo);
 
   return (
     <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
@@ -57,7 +83,7 @@ const RevisaoPares = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {EIXOS.map(({ id, label, color }) => {
-              const entries = getByEixo(id);
+              const row = dados[id];
               return (
                 <div key={id} className="border border-foreground/10" style={{ backgroundColor: "white" }}>
                   <div className="px-5 py-4 flex items-center gap-3" style={{ backgroundColor: color }}>
@@ -65,26 +91,30 @@ const RevisaoPares = () => {
                       {label}
                     </p>
                   </div>
-                  <div className="px-5 py-5 space-y-4">
-                    {entries.length > 0 ? (
-                      entries.map((entry) => (
-                        <div key={entry.id} className="space-y-1">
-                          <p className="text-sm font-semibold">{entry.nome || "—"}</p>
-                          <p className="text-xs opacity-70">{entry.titulo || "—"}</p>
-                          <p className="text-xs opacity-50">{entry.afiliacao || "—"}</p>
-                          {entry.nota && (
-                            <p className="text-[11px] opacity-40 pt-1 italic">{entry.nota}</p>
-                          )}
-                        </div>
-                      ))
+                  <div className="px-5 py-5 grid grid-cols-2 gap-6">
+                    {row ? (
+                      <>
+                        <ProfileBlock nome={row.nome_a} especialidade={row.especialidade_a} email={row.email_a} link={row.link_a} />
+                        <ProfileBlock nome={row.nome_b} especialidade={row.especialidade_b} email={row.email_b} link={row.link_b} />
+                      </>
                     ) : (
-                      <div className="space-y-1">
-                        <p className="text-sm font-semibold">—</p>
-                        <p className="text-xs opacity-70">—</p>
-                        <p className="text-xs opacity-50">—</p>
-                      </div>
+                      <>
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold">—</p>
+                          <p className="text-xs opacity-70">—</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-sm font-semibold">—</p>
+                          <p className="text-xs opacity-70">—</p>
+                        </div>
+                      </>
                     )}
                   </div>
+                  {row?.sumario && (
+                    <div className="px-5 pb-4 border-t border-foreground/5 pt-3">
+                      <p className="text-[11px] opacity-40 italic">{row.sumario}</p>
+                    </div>
+                  )}
                 </div>
               );
             })}
