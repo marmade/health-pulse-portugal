@@ -32,7 +32,7 @@ const Mural = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("keywords")
-        .select("id, term, axis")
+        .select("id, term, axis, current_volume, change_percent")
         .eq("is_active", true);
       return data ?? [];
     },
@@ -53,24 +53,6 @@ const Mural = () => {
     },
   });
 
-  // Fetch latest change_percent per keyword from historical_snapshots
-  const { data: changeMap } = useQuery({
-    queryKey: ["mural-change-percent"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("historical_snapshots")
-        .select("keyword, change_percent, snapshot_date")
-        .order("snapshot_date", { ascending: false });
-      if (!data) return {};
-      const map: Record<string, number> = {};
-      for (const row of data) {
-        if (!(row.keyword in map)) {
-          map[row.keyword] = Number(row.change_percent);
-        }
-      }
-      return map;
-    },
-  });
 
   const hasScores = ytScores !== null && ytScores !== undefined;
 
@@ -83,10 +65,10 @@ const Mural = () => {
         axis: kw.axis,
         axisLabel: AXIS_LABELS[kw.axis] || kw.axis.toUpperCase(),
         score: hasScores ? (ytScores[kw.axis] ?? 0) : 0,
-        changePercent: changeMap?.[kw.term] ?? null,
+        changePercent: kw.change_percent != null ? Number(kw.change_percent) : null,
       }))
       .sort((a, b) => b.score - a.score);
-  }, [keywords, ytScores, hasScores, changeMap]);
+  }, [keywords, ytScores, hasScores]);
 
   const filtered = useMemo(
     () => (filter === "all" ? items : items.filter((i) => i.axis === filter)),
