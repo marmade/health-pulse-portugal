@@ -16,7 +16,7 @@ type Props = {
   hideKeywords?: boolean;
 };
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [] }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
   const emergentCount = useMemo(
