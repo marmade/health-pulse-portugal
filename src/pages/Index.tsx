@@ -168,6 +168,11 @@ const Index = () => {
     [filteredData, filters.period]
   );
 
+  const axisAlerts = useMemo(
+    () => activeAxis === "all" ? alerts : alerts.filter((a) => a.keyword.axis === activeAxis),
+    [alerts, activeAxis]
+  );
+
   const visibleAxes =
     activeAxis === "all"
       ? axisOrder
@@ -221,29 +226,57 @@ const Index = () => {
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
         {activeAxis !== "all" ? (
-          /* Single axis + contextual questions column */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {visibleAxes.map((axisId) => {
-              const axis = filteredData[axisId];
-              return (
-                <AxisColumn
-                  key={`${axisId}-${filters.period}`}
-                  axisId={axisId}
-                  label={axis.label}
-                  keywords={axis.keywords}
-                  allKeywords={axis.allKeywords}
-                  trendData={axis.trend}
-                  period={filters.period}
-                  archive={eixosArchives[axisId] || []}
-                />
-              );
-            })}
-            <HealthQuestionsPanel
-              debunkingData={debunkingData}
-              newsData={newsData}
-              axis={activeAxis}
-              axisLabel={filteredData[activeAxis]?.label}
-            />
+          <div className="flex flex-col gap-8">
+            {/* Linha 1: gráfico esquerda, keywords direita */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              {visibleAxes.map((axisId) => {
+                const axis = filteredData[axisId];
+                return (
+                  <AxisColumn
+                    key={`${axisId}-${filters.period}-chart`}
+                    axisId={axisId}
+                    label={axis.label}
+                    keywords={axis.keywords}
+                    allKeywords={axis.allKeywords}
+                    trendData={axis.trend}
+                    period={filters.period}
+                    archive={eixosArchives[axisId] || []}
+                    hideKeywords
+                  />
+                );
+              })}
+              {visibleAxes.map((axisId) => {
+                const axis = filteredData[axisId];
+                return (
+                  <AxisColumn
+                    key={`${axisId}-${filters.period}-keywords`}
+                    axisId={axisId}
+                    label={axis.label}
+                    keywords={axis.keywords}
+                    allKeywords={axis.allKeywords}
+                    trendData={axis.trend}
+                    period={filters.period}
+                    hideChart
+                  />
+                );
+              })}
+            </div>
+
+            {/* Linha 2: perguntas esquerda, alertas direita */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              <HealthQuestionsPanel
+                debunkingData={debunkingData}
+                newsData={newsData}
+                axis={activeAxis}
+                axisLabel={filteredData[activeAxis]?.label}
+              />
+              <SearchAlerts
+                alerts={axisAlerts}
+                period={filters.period}
+                debunkingData={filteredDebunkingData}
+                newsData={filteredNewsData}
+              />
+            </div>
           </div>
         ) : (
           /* Overview: 4 axis columns */
@@ -264,17 +297,6 @@ const Index = () => {
             })}
           </div>
         )}
-
-        {/* Alerts */}
-        <div className="mt-10">
-          <div className="section-divider mb-6" />
-          <SearchAlerts
-            alerts={alerts}
-            period={filters.period}
-            debunkingData={debunkingData}
-            newsData={newsData}
-          />
-        </div>
 
         {/* Health Questions + YouTube Trends side by side */}
         {activeAxis === 'all' && (

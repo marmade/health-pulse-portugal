@@ -12,9 +12,11 @@ type Props = {
   trendData: TrendPoint[];
   period: string;
   archive?: any[];
+  hideChart?: boolean;
+  hideKeywords?: boolean;
 };
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [] }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange =
     keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
   const emergentCount = useMemo(
@@ -68,13 +70,19 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive =
         </div>
       </div>
 
-      <div className="border-t border-foreground/10" />
+      {!hideChart && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <TrendChart data={trendData} label={label} />
+        </>
+      )}
 
-      <TrendChart data={trendData} label={label} />
-
-      <div className="border-t border-foreground/10" />
-
-      <Top5Table keywords={top5} />
+      {!hideKeywords && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <Top5Table keywords={top5} />
+        </>
+      )}
 
       {/* Arquivo semanal */}
       {archive.length > 0 && (
