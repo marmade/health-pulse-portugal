@@ -40,6 +40,7 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.ordemenfermeiros.pt/feed/', outlet: 'Ordem dos Enfermeiros', type: 'institucional' },
   { url: 'https://www.spms.min-saude.pt/feed/', outlet: 'SPMS', type: 'institucional' },
   { url: 'https://www.ers.pt/feed/', outlet: 'ERS', type: 'institucional' },
+  { url: 'https://saudemental.min-saude.pt/feed/', outlet: 'Coord. Nacional Saúde Mental', type: 'institucional' },
   // FACT-CHECKING
   { url: 'https://poligrafo.sapo.pt/feed/', fallbackUrls: ['https://poligrafo.sapo.pt/feed'], outlet: 'Polígrafo', type: 'factcheck' },
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
