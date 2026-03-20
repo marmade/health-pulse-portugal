@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
 
         for (const item of items) {
           if (!item.link || existingUrls.has(item.link)) continue;
-          const searchText = `${item.title} ${item.description}`;
+          const searchText = `${item.title} ${(item.description || '').substring(0, 200)}`;
           const matchedTerm = matchesKeyword(searchText, allTerms);
           if (!matchedTerm) continue;
 
