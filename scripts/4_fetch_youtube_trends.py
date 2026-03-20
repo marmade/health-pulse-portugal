@@ -1,16 +1,17 @@
-"""
-4_fetch_youtube_trends.py
+""" 4_fetch_youtube_trends.py
 =========================
-Reportagem Viva - busca os top videos YouTube para as keywords activas.
-v3: filtra videos brasileiros (pt-BR), mantém apenas pt-PT e sem linguagem definida
+Reportagem Viva — busca os top vídeos YouTube de canais portugueses curados.
+v4: lógica de canais curados (channel IDs fixos) em vez de pesquisa por keyword.
+    Para cada canal, busca os vídeos mais recentes e filtra por keywords dos eixos.
+    Guarda o top 15 por views no Supabase (tabela youtube_trends).
 
 Como correr:
-  python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
+    python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
 """
 
 import sys
 import requests
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from googleapiclient.discovery import build
 
 if len(sys.argv) < 2:
@@ -21,7 +22,6 @@ YOUTUBE_API_KEY = sys.argv[1]
 
 SUPABASE_URL = "https://cyjwhmuakmiytypewwfw.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5andobXVha21peXR5cGV3d2Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4Mjc2MjksImV4cCI6MjA4ODQwMzYyOX0.bcAKG2nQdYG7Qf8Mm1e_eJR9Fueqw20jkwlqrTWyH4Q"
-
 HEADERS = {
     "apikey": SUPABASE_KEY,
     "Authorization": f"Bearer {SUPABASE_KEY}",
@@ -29,216 +29,205 @@ HEADERS = {
     "Prefer": "return=minimal",
 }
 
-TOP_GLOBAL = 10
-VIDEOS_POR_KEYWORD = 8  # buscar mais para compensar os filtrados
+TOP_GLOBAL = 15
+VIDEOS_POR_CANAL = 20      # vídeos a buscar por canal (para ter margem de filtragem)
+JANELA_DIAS = 365          # janela temporal máxima (1 ano)
 
-# Canais brasileiros conhecidos a excluir
-CANAIS_BR = {
-    "Drauzio Varella", "Sempre Questione", "Dr. Dayan Siebra",
-    "Dr. Victor Sorrentino", "Mundo da Saude", "Canal Saude",
-    "Saude em Dia", "CFM", "CFO", "Drauzio",
-    "PodPeople", "Ana Beatriz Barbosa", "Dr. Samuel Dalle Laste",
-    "Dr. Renan Botelho", "Biologia Ilustrada", "Dr. Edmundo Antunes",
-    "Maria Farinha Filmes", "Nutri Vitta", "Dra. Ana Gabriela",
-    "Hospital Israelita Albert Einstein", "Globo Saude",
-    "Dr. Lair Ribeiro", "CanalSaude", "Saude Total",
-}
-
-# Indicadores lexicais de PT-BR — palavras nunca usadas em PT-PT
-PALAVRAS_BR = [
-    "precisam", "remédio", "você sabia", "tomar remédio",
-    "vem ver", "olha só", "esses sintomas", "esses alimentos",
-    "aprenda como", "descubra como", "veja como",
-    "não deixe de", "funciona mesmo", " né ", "hein",
-    "SUS ", "anvisa", " brasileiro", " brasileira",
-    "todo ano", "acredite",
+# ---------------------------------------------------------------------------
+# Canais portugueses curados
+# ---------------------------------------------------------------------------
+CANAIS_PT = [
+    # Informação / media
+    {"id": "UCWPpeeDOykyH5ducPITCDPw", "nome": "RTP"},
+    {"id": "UCimBp0frQrASSsIFERs8vsw",  "nome": "SIC Notícias"},
+    {"id": "UC5lg8zKcnJ1rnxR6lPgD1ug",  "nome": "TVI"},
+    {"id": "UCtXui6Q6zCvzJyKG341u4lg",  "nome": "PÚBLICO"},
+    {"id": "UC35F6ktZodINwjQZjuwLcjg",  "nome": "Observador"},
+    {"id": "UCWh_syTK8TIpGK14yCOXeOw",  "nome": "Diário de Notícias"},
+    {"id": "UCC2GLQomQYmICHdIRxOK5hQ",  "nome": "Jornal de Notícias"},
+    {"id": "UCUmEPYxmnyQDeRUcFkslmQw",  "nome": "Euronews PT"},
+    # Saúde — autoridades e regulação
+    {"id": "UCNmv_2YqryuyhB79ehzOsmQ",  "nome": "DGS"},
+    {"id": "UCD__Q9Uk6TOfF0GWmzlWvTw",  "nome": "Alimentação Saudável PNPAS-DGS"},
+    {"id": "UCEDsw4V8sNapYKeu3uXaeUg",  "nome": "INSA"},
+    {"id": "UChU2dZjHIJnUou6w3JJ16Aw",  "nome": "INFARMED"},
+    {"id": "UC43Xmu6eMxUc4e5LITcKESw",  "nome": "ERS"},
+    {"id": "UCOE-JsBcVf4__OlrsiW59EQ",  "nome": "República Portuguesa"},
+    {"id": "UCDThSH2sV00KyNekSODyg_g",  "nome": "CNPS Mental"},
+    # Saúde — ordens e sociedades científicas
+    {"id": "UCayuHV0f3y1-qHSzh07UhFg",  "nome": "Ordem dos Médicos"},
+    {"id": "UCCBlYMv3F6VkTsU57ZFUNyg",  "nome": "Ordem dos Psicólogos"},
+    {"id": "UCMhhHdT1z26KmamNK1Ppwcw",  "nome": "Sociedade Portuguesa de Ginecologia"},
+    {"id": "UC35wTBunWWqWL-7g3M8Vqrw",  "nome": "Sociedade Portuguesa de Psiquiatria"},
+    # Saúde — hospitais e seguros
+    {"id": "UCaX52_iMXdddasXv1zPuzzQ",  "nome": "Trofa Saúde"},
+    {"id": "UCa_iuEjOzgc2ZKo0-ZzNrKA",  "nome": "CUF"},
+    {"id": "UCHUSE3bPV9kDza-sGYk_pvQ",  "nome": "Lusíadas Saúde"},
+    {"id": "UCGsIPe5hjisPH17GHDus2eg",  "nome": "Unilabs Portugal"},
+    {"id": "UC0PZ_M__MEPDjzl1ru6Abtg",  "nome": "Médis"},
+    {"id": "UC8j8qlWxOV4VjlQIz5CHKnQ",  "nome": "Lundbeck Portugal"},
+    # Ciência e academia
+    {"id": "UCrDDWtZnSHtv5eAn3RCX0RA",  "nome": "Academia das Ciências de Lisboa"},
+    {"id": "UC6yVe4JNXUdKFxZizE_ldsA",  "nome": "Fundação Francisco Manuel dos Santos"},
+    {"id": "UClcsJ_vqBPrgj4epDtAVcUg",  "nome": "Faculdade de Medicina ULisboa"},
+    {"id": "UCqHLLAAW2Gxwm_RpiEGGi-w",  "nome": "FCNAUP"},
+    {"id": "UCwImg1IJ7tAgct-MxPXxR2A",  "nome": "FCT"},
+    {"id": "UC4pCHexxGBCueJwqkAcjqWw",  "nome": "90 Segundos de Ciência"},
+    {"id": "UCewkJz8USMSLc_VGiiFt8gA",  "nome": "ITQB NOVA"},
+    {"id": "UCl5jVoRkK1PJUaiprinpzdA",  "nome": "GIMM Gulbenkian"},
+    # Fact-check e literacia
+    {"id": "UCjMzepu7e36usUEWU2wfHvg",  "nome": "Despolariza"},
+    {"id": "UCiYGrdT8KPon4QsLsOfdu8A",  "nome": "News Farma"},
+    # Autarquias
+    {"id": "UCSG2vPu_YmDVfoSbo7oItwQ",  "nome": "Câmara Municipal de Lisboa"},
 ]
 
+# ---------------------------------------------------------------------------
+# Keywords por eixo temático (para classificar e filtrar vídeos)
+# ---------------------------------------------------------------------------
+EIXOS = {
+    "saude_mental": [
+        "saúde mental", "ansiedade", "depressão", "burnout", "stress", "psicologia",
+        "psiquiatria", "bem-estar", "mental", "emoções", "autoestima", "luto",
+        "mindfulness", "terapia", "perturbação", "suicídio", "solidão",
+    ],
+    "alimentacao": [
+        "alimentação", "nutrição", "dieta", "obesidade", "peso", "nutricionista",
+        "alimentos", "comida", "comer", "saudável", "mediterrânica", "açúcar",
+        "ultraprocessados", "microbioma", "intestino", "vitaminas",
+    ],
+    "menopausa": [
+        "menopausa", "climatério", "hormonal", "menopausal", "perimenopausa",
+        "terapia hormonal", "osteoporose", "afrontamentos", "ginecologia",
+        "mulher madura", "fertilidade", "menopausal",
+    ],
+    "emergentes": [
+        "covid", "vacina", "vacinação", "pandemia", "gripe", "vírus",
+        "cancro", "oncologia", "diabetes", "hipertensão", "colesterol",
+        "alzheimer", "demência", "resistência antibióticos", "saúde digital",
+        "inteligência artificial saúde", "genética", "doenças raras",
+    ],
+}
 
-def buscar_keywords():
-    r = requests.get(
-        f"{SUPABASE_URL}/rest/v1/keywords",
-        headers=HEADERS,
-        params={"select": "term,axis", "is_active": "eq.true"}
-    )
-    r.raise_for_status()
-    return r.json()
-
-
-def e_brasileiro(video):
-    """Devolve True se o video parecer brasileiro."""
-    audio_lang = video.get("defaultAudioLanguage", "") or ""
-    default_lang = video.get("defaultLanguage", "") or ""
-    canal = video.get("canal", "") or ""
-
-    # Excluir pt-BR explícito
-    if audio_lang.startswith("pt-BR") or default_lang.startswith("pt-BR"):
-        return True
-
-    titulo = video.get("titulo", "") or ""
-
-    # Excluir canais brasileiros conhecidos (exacto)
-    if canal in CANAIS_BR:
-        return True
-
-    # Excluir por fragmento de nome de canal BR
-    canal_lower = canal.lower()
-    if any(br.lower() in canal_lower for br in CANAIS_BR if len(br) > 6):
-        return True
-
-    # Excluir por indicadores lexicais PT-BR no título
-    titulo_lower = titulo.lower()
-    if any(palavra.lower() in titulo_lower for palavra in PALAVRAS_BR):
-        return True
-
-    return False
+# Mapa inverso: keyword → eixo
+KW_TO_EIXO = {}
+for eixo, kws in EIXOS.items():
+    for kw in kws:
+        KW_TO_EIXO[kw.lower()] = eixo
 
 
-# Cache de canais verificados para não repetir chamadas à API
-_canal_cache = {}
+def classificar_eixo(titulo: str) -> str | None:
+    """Devolve o eixo temático se o título contiver uma keyword, None caso contrário."""
+    t = titulo.lower()
+    for kw, eixo in KW_TO_EIXO.items():
+        if kw in t:
+            return eixo
+    return None
 
-def canal_e_portugues(youtube, channel_id):
-    """Verifica se um canal tem país definido como PT.
-    Aceita canais sem país definido (pode ser PT mas não declarou).
-    Rejeita apenas canais com país != PT."""
-    global _canal_cache
-    if channel_id in _canal_cache:
-        return _canal_cache[channel_id]
+
+def buscar_videos_canal(youtube, canal_id: str, canal_nome: str) -> list:
+    """Busca os vídeos mais recentes de um canal e filtra por eixo temático."""
+    data_limite = (datetime.now(timezone.utc) - timedelta(days=JANELA_DIAS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
-        resp = youtube.channels().list(
-            part="snippet",
-            id=channel_id,
-        ).execute()
-        items = resp.get("items", [])
-        if not items:
-            _canal_cache[channel_id] = True  # sem info, dar benefício da dúvida
-            return True
-        country = items[0].get("snippet", {}).get("country", "")
-        # Aceitar PT ou sem país definido; rejeitar BR e outros
-        result = country in ("PT", "")
-        _canal_cache[channel_id] = result
-        return result
-    except Exception:
-        return True  # em caso de erro, não excluir
-
-def pesquisar_videos(youtube, keyword, axis):
-    query = f"{keyword} saúde portugal"
-    try:
+        # Passo 1: search por vídeos recentes do canal
         pesquisa = youtube.search().list(
-            q=query,
+            channelId=canal_id,
             part="id",
             type="video",
-            regionCode="PT",
-            relevanceLanguage="pt",
-            order="relevance",
-            maxResults=VIDEOS_POR_KEYWORD,
+            order="viewCount",
+            publishedAfter=data_limite,
+            maxResults=VIDEOS_POR_CANAL,
         ).execute()
 
         ids = [item["id"]["videoId"] for item in pesquisa.get("items", [])]
         if not ids:
             return []
 
+        # Passo 2: detalhes e estatísticas
         detalhes = youtube.videos().list(
-            part="snippet,statistics,localizations,contentDetails",
+            part="snippet,statistics",
             id=",".join(ids),
         ).execute()
 
         resultados = []
         for v in detalhes.get("items", []):
             snippet = v.get("snippet", {})
-            stats = v.get("statistics", {})
+            stats   = v.get("statistics", {})
+            titulo  = snippet.get("title", "")
+            eixo    = classificar_eixo(titulo)
+            if not eixo:
+                continue  # não relevante para os eixos temáticos
 
-            content_details = v.get("contentDetails", {})
-            channel_id = snippet.get("channelId", "")
-
-            candidato = {
-                "video_id": v["id"],
-                "titulo": snippet.get("title", ""),
-                "canal": snippet.get("channelTitle", ""),
-                "channel_id": channel_id,
-                "views": int(stats.get("viewCount", 0)),
-                "url": f"https://www.youtube.com/watch?v={v['id']}",
-                "eixo": axis,
+            resultados.append({
+                "titulo":          titulo,
+                "canal":           canal_nome,
+                "channel_id":      canal_id,
+                "views":           int(stats.get("viewCount", 0)),
+                "url":             f"https://www.youtube.com/watch?v={v['id']}",
+                "eixo":            eixo,
                 "data_publicacao": snippet.get("publishedAt", "")[:10],
-                "thumbnail_url": snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
-                "defaultAudioLanguage": content_details.get("defaultAudioLanguage", "") or snippet.get("defaultAudioLanguage", ""),
-                "defaultLanguage": snippet.get("defaultLanguage", ""),
-            }
-
-            # Verificar país do canal via API (filtragem mais fiável)
-            if channel_id and not canal_e_portugues(youtube, channel_id):
-                print(f"    [filtrado não-PT] {candidato['canal'][:40]}")
-                continue
-
-            if e_brasileiro(candidato):
-                print(f"    [filtrado BR] {candidato['titulo'][:50]}")
-                continue
-
-            # Remover campos internos antes de guardar
-            resultados.append({k: v for k, v in candidato.items()
-                               if k not in ("defaultAudioLanguage", "defaultLanguage")})
+                "thumbnail_url":   snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
+            })
 
         return resultados
 
     except Exception as e:
-        print(f"  Erro para '{keyword}': {e}")
+        print(f"  Erro canal {canal_nome}: {e}")
         return []
 
 
 def main():
-    print("Reportagem Viva - YouTube Trends v3 (filtro PT)")
+    print("Reportagem Viva — YouTube Trends v4 (canais PT curados)")
     print(f"{datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
     youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
-    print("A carregar keywords do Supabase...")
-    keywords = buscar_keywords()
-    print(f"  {len(keywords)} keywords activas")
-
     todos = []
-    for entrada in keywords:
-        kw, axis = entrada["term"], entrada["axis"]
-        print(f"[{axis}] {kw}")
-        videos = pesquisar_videos(youtube, kw, axis)
-        if videos:
-            todos.extend(videos)
-            print(f"  {len(videos)} videos (apos filtro PT)")
-        else:
-            print(f"  Sem resultados")
+    for canal in CANAIS_PT:
+        print(f"[{canal['nome']}]")
+        videos = buscar_videos_canal(youtube, canal["id"], canal["nome"])
+        print(f"  {len(videos)} vídeos relevantes")
+        todos.extend(videos)
 
-    print(f"Total recolhido: {len(todos)} videos (antes de de-duplicar)")
+    print(f"\nTotal recolhido: {len(todos)} vídeos (antes de deduplicar)")
 
+    # De-duplicar por URL, ordenar por views
     vistos, top = set(), []
     todos.sort(key=lambda v: v["views"], reverse=True)
     for v in todos:
-        if v["video_id"] not in vistos:
-            vistos.add(v["video_id"])
+        if v["url"] not in vistos:
+            vistos.add(v["url"])
             top.append(v)
             if len(top) == TOP_GLOBAL:
                 break
 
-    print(f"Apos de-duplicacao: {len(top)} videos unicos")
+    print(f"Top {len(top)} vídeos únicos seleccionados")
 
-    print("A limpar registos anteriores...")
+    # Limpar tabela anterior
+    print("\nA limpar registos anteriores...")
     r = requests.delete(
         f"{SUPABASE_URL}/rest/v1/youtube_trends",
         headers=HEADERS,
-        params={"id": "not.is.null"}
+        params={"id": "not.is.null"},
     )
-    print("  Tabela limpa" if r.status_code in (200, 204) else f"  Delete {r.status_code}")
+    print("  OK" if r.status_code in (200, 204) else f"  Delete {r.status_code}")
 
-    print(f"A inserir top {len(top)} videos...")
+    # Inserir novos
+    print(f"A inserir {len(top)} vídeos...")
     for v in top:
-        payload = {k: val for k, val in v.items() if k != "video_id"}
-        r = requests.post(f"{SUPABASE_URL}/rest/v1/youtube_trends", headers=HEADERS, json=payload)
+        r = requests.post(
+            f"{SUPABASE_URL}/rest/v1/youtube_trends",
+            headers=HEADERS,
+            json=v,
+        )
         views_fmt = f"{v['views']:,}".replace(",", ".")
         status = "OK" if r.status_code in (200, 201) else f"ERRO {r.status_code}"
-        print(f"  {status} {v['titulo'][:55]}")
-        print(f"      {views_fmt} views - {v['canal']} - [{v['eixo']}]")
+        print(f"  {status} [{v['eixo']}] {v['titulo'][:55]}")
+        print(f"       {views_fmt} views — {v['canal']}")
 
     print("=" * 60)
-    print(f"Concluido - {len(top)} videos guardados no Supabase")
+    print(f"Concluído — {len(top)} vídeos guardados no Supabase")
     print("=" * 60)
 
 
