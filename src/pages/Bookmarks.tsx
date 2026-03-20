@@ -154,7 +154,7 @@ const Bookmarks = () => {
                               href={b.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors"
+                              className="block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors bg-white"
                             >
                               <p className="text-sm font-medium leading-snug">{b.titulo}</p>
                               {b.fonte && (
