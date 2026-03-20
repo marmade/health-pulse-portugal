@@ -147,7 +147,11 @@ export type Database = {
         Row: {
           classification: string
           created_at: string
+          data_publicacao: string | null
+          eixo: string | null
+          explicacao: string | null
           id: string
+          keyword_id: string | null
           source: string
           term: string
           title: string
@@ -156,7 +160,11 @@ export type Database = {
         Insert: {
           classification: string
           created_at?: string
+          data_publicacao?: string | null
+          eixo?: string | null
+          explicacao?: string | null
           id?: string
+          keyword_id?: string | null
           source: string
           term: string
           title: string
@@ -165,13 +173,25 @@ export type Database = {
         Update: {
           classification?: string
           created_at?: string
+          data_publicacao?: string | null
+          eixo?: string | null
+          explicacao?: string | null
           id?: string
+          keyword_id?: string | null
           source?: string
           term?: string
           title?: string
           url?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "debunking_keyword_id_fkey"
+            columns: ["keyword_id"]
+            isOneToOne: false
+            referencedRelation: "keywords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       guioes: {
         Row: {
