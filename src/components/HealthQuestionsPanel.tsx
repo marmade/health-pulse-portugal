@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { HealthQuestion } from "@/data/healthQuestions";
 import { getAxisColors } from "@/lib/axisColors";
 import { useHealthQuestions } from "@/hooks/useHealthQuestions";
+import { supabase } from "@/integrations/supabase/client";
 
 type Props = {
   axis?: string;
