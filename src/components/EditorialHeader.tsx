@@ -43,9 +43,9 @@ const EditorialHeader = () => {
         >
           Reportagem Viva
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           {NAV_ITEMS.map((item, i) => (
-            <span key={item.path} className="flex items-center gap-4">
+            <span key={item.path} className="flex items-center gap-2">
               {i > 0 && (
                 <span className="text-[10px]" style={{ color: "#0000FF", opacity: 0.2 }}>/</span>
               )}
