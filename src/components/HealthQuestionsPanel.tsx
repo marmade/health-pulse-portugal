@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { HealthQuestion } from "@/data/healthQuestions";
 import { getAxisColors } from "@/lib/axisColors";
 import { useHealthQuestions } from "@/hooks/useHealthQuestions";
+import { supabase } from "@/integrations/supabase/client";
 
 type Props = {
   axis?: string;
@@ -10,6 +11,7 @@ type Props = {
 
 const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [relatedMap, setRelatedMap] = useState<Record<string, HealthQuestion[]>>({});
   const isOverview = !axis || axis === "all";
   const { questions, isLoading } = useHealthQuestions(axis);
   const top15 = isOverview ? questions : questions.slice(0, 15);
@@ -17,7 +19,35 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
     ? `Perguntas sobre ${axisLabel}`
     : "Perguntas de Saúde em Crescimento";
 
-  const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
+  const toggle = async (question: string, cluster: string) => {
+    const isClosing = expanded === question;
+    setExpanded(isClosing ? null : question);
+    if (!isClosing && !relatedMap[question]) {
+      const { data } = await supabase
+        .from('health_questions')
+        .select('*')
+        .eq('cluster', cluster)
+        .neq('question', question)
+        .order('relative_volume', { ascending: false })
+        .limit(5);
+      if (data && data.length > 0) {
+        setRelatedMap(prev => ({
+          ...prev,
+          [question]: data.map(row => ({
+            question: row.question,
+            growthPercent: row.growth_percent,
+            relativeVolume: row.relative_volume,
+            axis: row.axis,
+            axisLabel: row.axis_label,
+            cluster: row.cluster,
+            relatedTerms: [],
+          })),
+        }));
+      } else {
+        setRelatedMap(prev => ({ ...prev, [question]: [] }));
+      }
+    }
+  };
 
   return (
     <div className="py-5 flex flex-col h-full min-h-0 max-h-[500px]">
@@ -44,7 +74,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               return (
                 <div key={q.question}>
                   <button
-                    onClick={() => toggle(q.question)}
+                    onClick={() => toggle(q.question, q.cluster)}
                     className="w-full text-left py-2.5 group"
                   >
                     <div className="flex items-start gap-4">
@@ -86,16 +116,12 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
                   </button>
 
                   {isExpanded && (() => {
-                    const relatedQuestions = questions
-                      .filter((rq) => rq.cluster === q.cluster && rq.question !== q.question)
-                      .sort((a, b) => b.relativeVolume - a.relativeVolume)
-                      .slice(0, 5);
-
-                    return relatedQuestions.length > 0 ? (
+                    const related = relatedMap[q.question] || [];
+                    return related.length > 0 ? (
                       <div className="pb-4 pl-0">
                         <div className="border border-foreground/10 p-4">
                           <p className="editorial-label mb-2">Pesquisas relacionadas</p>
-                          {relatedQuestions.map((rq) => (
+                          {related.map((rq) => (
                             <p
                               key={rq.question}
                               className="text-[10px] text-foreground/50 leading-relaxed mb-1"
