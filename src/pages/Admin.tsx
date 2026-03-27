@@ -500,7 +500,7 @@ export default function Admin() {
   const openBookmarkForm = (item?: BookmarkItem) => {
     if (item) {
       setEditingBookmarkId(item.id);
-      setBookmarkForm({ url: item.url, titulo: item.titulo, fonte: item.fonte, categoria: item.categoria, notas: item.notas || "", ordem: item.ordem });
+      setBookmarkForm({ url: item.url, titulo: item.titulo, fonte: item.fonte, categoria: item.categoria, subcategoria: (item as any).subcategoria || "", eixo: (item as any).eixo || "", notas: item.notas || "", ordem: item.ordem });
     } else {
       setEditingBookmarkId(null);
       setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", subcategoria: "", eixo: "", notas: "", ordem: 0 });
@@ -1302,7 +1302,7 @@ export default function Admin() {
                 <Input placeholder="Ordem" type="number" value={bookmarkForm.ordem} onChange={(e) => setBookmarkForm({ ...bookmarkForm, ordem: parseInt(e.target.value) || 0 })} />
                 <div className="flex gap-2">
                   <Button onClick={saveBookmark} className="bg-primary hover:bg-primary/90" size="sm">Guardar</Button>
-                  <Button onClick={() => { setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); }} variant="outline" size="sm">Cancelar</Button>
+                  <Button onClick={() => { setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", subcategoria: "", eixo: "", notas: "", ordem: 0 }); }} variant="outline" size="sm">Cancelar</Button>
                 </div>
               </div>
             )}
