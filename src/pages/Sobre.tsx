@@ -225,10 +225,11 @@ const Sobre = () => {
             <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground mb-3">Nível 2 — Produção Editorial</p>
             <div className="flex items-center gap-2">
               {[
-                { title: "Dashboard", subtitle: "dados agregados", human: false },
-                { title: "Curadoria Editorial", subtitle: "selecção humana", human: true },
-                { title: "Perplexity Sonar", subtitle: "geração com citações", human: false },
-                { title: "Guião", subtitle: "10 perguntas por tema", human: false },
+                { title: "Dashboard", subtitle: "keywords + alertas", human: false },
+                { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false },
+                { title: "Guião", subtitle: "5 banco + 5 IA", human: false },
+                { title: "Curadoria Editorial", subtitle: "revisão humana", human: true },
+                { title: "Briefing", subtitle: "prioridades da semana", human: false },
                 { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
               ].map((step, idx, arr) => (
                 <div key={step.title} className="flex items-center gap-2">
@@ -289,10 +290,11 @@ const Sobre = () => {
 
           <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 2 — Produção Editorial</p>
           {[
-            { title: "Dashboard", subtitle: "dados agregados", human: false, terminal: false },
-            { title: "Curadoria Editorial", subtitle: "selecção humana", human: true, terminal: false },
-            { title: "Perplexity Sonar", subtitle: "geração com citações", human: false, terminal: false },
-            { title: "Guião", subtitle: "10 perguntas por tema", human: false, terminal: false },
+            { title: "Dashboard", subtitle: "keywords + alertas", human: false, terminal: false },
+            { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false, terminal: false },
+            { title: "Guião", subtitle: "5 banco + 5 IA", human: false, terminal: false },
+            { title: "Curadoria Editorial", subtitle: "revisão humana", human: true, terminal: false },
+            { title: "Briefing", subtitle: "prioridades da semana", human: false, terminal: false },
             { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
           ].map((step, idx, arr) => (
             <div key={step.title} className="flex flex-col items-center gap-2">
