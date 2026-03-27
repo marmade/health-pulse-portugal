@@ -605,7 +605,7 @@ export default function BenchmarkPage() {
     const isNegative = sinal === "-";
 
     return (
-      <div style={isNegative ? { backgroundColor: "#FFF0F3", borderRadius: 4, padding: "1.5rem" } : undefined}>
+      <div style={isNegative ? { backgroundColor: "rgba(255, 0, 255, 0.04)", borderRadius: 4, padding: "1.5rem" } : undefined}>
         {/* Column title */}
         <div
           className="text-sm font-bold tracking-[0.1em] uppercase mb-4"
