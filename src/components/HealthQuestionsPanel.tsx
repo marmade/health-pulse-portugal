@@ -40,8 +40,6 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
           <div className="space-y-0">
             {top15.map((q, i) => {
               const isExpanded = expanded === q.question;
-              const relatedNews = getRelatedNews(q, newsData);
-              const relatedDebunks = getRelatedDebunks(q, debunkingData);
 
               return (
                 <div key={q.question}>
