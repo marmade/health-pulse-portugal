@@ -9,6 +9,8 @@ type Bookmark = {
   titulo: string;
   fonte: string;
   categoria: string;
+  subcategoria?: string | null;
+  eixo?: string | null;
   notas: string | null;
   ordem: number;
 };
@@ -22,13 +24,85 @@ const CATEGORIAS: Record<string, string> = {
   fontes_referencia: "Fontes de Referência",
 };
 
+const SUBCATEGORIAS: Record<string, string> = {
+  institucional: "Institucional",
+  sociedades_cientificas: "Sociedades Científicas",
+  ong_associacoes: "ONG e Associações",
+  farmaceutica: "Farmacêutica",
+  academia: "Academia e Investigação",
+  referencia_clinica: "Referência Clínica",
+  outros: "Outros",
+};
+
+const AXIS_LABELS: Record<string, string> = {
+  "saude-mental": "Saúde Mental",
+  alimentacao: "Alimentação",
+  menopausa: "Menopausa",
+  emergentes: "Emergentes",
+};
+
+const categoryOrder = [
+  "desinformacao",
+  "igualdade_social",
+  "cuidados_saude_primarios",
+  "dunning_kruger",
+  "comunicacao_cientifica",
+  "fontes_referencia",
+];
+
+const subcategoryOrder = [
+  "institucional",
+  "sociedades_cientificas",
+  "ong_associacoes",
+  "farmaceutica",
+  "academia",
+  "referencia_clinica",
+  "outros",
+];
+
+const BookmarkCard = ({ b }: { b: Bookmark }) => {
+  const axisColors = b.eixo ? getAxisColors(b.eixo) : null;
+
+  return (
+    <a
+      key={b.id}
+      href={b.url || undefined}
+      target={b.url ? "_blank" : undefined}
+      rel="noopener noreferrer"
+      className={`block border border-foreground/10 p-4 transition-colors bg-white ${b.url ? "hover:border-foreground/25" : "opacity-70"}`}
+    >
+      <div className="flex items-start gap-2">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium leading-snug">{b.titulo}</p>
+          <div className="flex items-center gap-2 mt-1.5">
+            {b.fonte && (
+              <span className="text-[9px] uppercase tracking-wider opacity-50">{b.fonte}</span>
+            )}
+            {axisColors && (
+              <span
+                className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                style={{ backgroundColor: axisColors.bg, color: axisColors.text }}
+              >
+                {AXIS_LABELS[b.eixo!] || b.eixo}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      {b.notas && (
+        <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
+      )}
+    </a>
+  );
+};
+
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategoria, setActiveCategoria] = useState("todas");
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
       const { data } = await supabase
         .from("bookmarks")
         .select("*")
@@ -36,7 +110,7 @@ const Bookmarks = () => {
       if (data) setBookmarks(data as Bookmark[]);
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, []);
 
   const grouped = bookmarks.reduce<Record<string, Bookmark[]>>((acc, b) => {
@@ -46,7 +120,6 @@ const Bookmarks = () => {
     return acc;
   }, {});
 
-  const categoryOrder = ["desinformacao", "igualdade_social", "cuidados_saude_primarios", "dunning_kruger", "comunicacao_cientifica"];
   const sortedCategories = Object.keys(grouped)
     .filter((cat) => activeCategoria === "todas" || cat === activeCategoria)
     .sort((a, b) => {
@@ -56,6 +129,43 @@ const Bookmarks = () => {
     });
 
   const visibleCount = sortedCategories.reduce((sum, cat) => sum + (grouped[cat]?.length || 0), 0);
+
+  // Group fontes_referencia by subcategoria
+  const renderFontesReferencia = (items: Bookmark[]) => {
+    const bySubcat: Record<string, Bookmark[]> = {};
+    for (const b of items) {
+      const sub = b.subcategoria || "outros";
+      if (!bySubcat[sub]) bySubcat[sub] = [];
+      bySubcat[sub].push(b);
+    }
+    const sortedSubs = Object.keys(bySubcat).sort((a, b) => {
+      const ia = subcategoryOrder.indexOf(a);
+      const ib = subcategoryOrder.indexOf(b);
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+
+    return (
+      <div className="space-y-8">
+        {sortedSubs.map((sub) => (
+          <div key={sub}>
+            <span
+              className="block text-[8px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-3 w-fit"
+              style={{ backgroundColor: "rgba(123,0,255,0.08)", color: "#7B00FF" }}
+            >
+              {SUBCATEGORIAS[sub] || sub}
+            </span>
+            <div className="columns-1 md:columns-2 xl:columns-3 gap-3">
+              {bySubcat[sub].map((b) => (
+                <div key={b.id} className="break-inside-avoid mb-3">
+                  <BookmarkCard b={b} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen text-foreground" style={{ backgroundColor: "#F5F5FF" }}>
@@ -71,8 +181,8 @@ const Bookmarks = () => {
       </section>
 
       <section className="px-6 pb-2">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-0.5 flex-wrap">
             <span className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mr-1.5">Categoria</span>
             <button
               onClick={() => setActiveCategoria("todas")}
@@ -109,71 +219,34 @@ const Bookmarks = () => {
           <p className="text-sm opacity-50">A carregar...</p>
         ) : sortedCategories.length === 0 ? (
           <p className="text-sm opacity-50">Sem bookmarks registados.</p>
-        ) : activeCategoria !== "todas" ? (
-          <div className="columns-1 md:columns-3 gap-8">
-            {sortedCategories.flatMap((cat) =>
-              grouped[cat].map((b) => (
-                <a
-                  key={b.id}
-                  href={b.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="break-inside-avoid mb-3 block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors bg-white"
-                >
-                  <p className="text-sm font-medium leading-snug">{b.titulo}</p>
-                  {b.fonte && (
-                    <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
-                  )}
-                  {b.notas && (
-                    <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
-                  )}
-                </a>
-              ))
-            )}
-          </div>
         ) : (
-          (() => {
-            // Distribute categories across 3 columns for balanced layout
-            const cols: string[][] = [[], [], []];
-            sortedCategories.forEach((cat, i) => cols[i % 3].push(cat));
-            return (
-              <div className="flex flex-col md:flex-row gap-8">
-                {cols.map((colCats, colIdx) => (
-                  <div key={colIdx} className="flex-1 flex flex-col gap-8 min-w-0">
-                    {colCats.map((cat) => (
-                      <div key={cat}>
-                        <span
-                          className="block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-4"
-                          style={{ backgroundColor: "rgba(0,0,255,0.08)", color: "#0000FF" }}
-                        >
-                          {CATEGORIAS[cat] || cat}
-                        </span>
-                        <div className="flex flex-col gap-3">
-                          {grouped[cat].map((b) => (
-                            <a
-                              key={b.id}
-                              href={b.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block border border-foreground/10 p-4 hover:border-foreground/25 transition-colors bg-white"
-                            >
-                              <p className="text-sm font-medium leading-snug">{b.titulo}</p>
-                              {b.fonte && (
-                                <p className="text-[9px] uppercase tracking-wider opacity-50 mt-1.5">{b.fonte}</p>
-                              )}
-                              {b.notas && (
-                                <p className="text-xs opacity-60 italic mt-2">{b.notas}</p>
-                              )}
-                            </a>
-                          ))}
-                        </div>
+          <div className="space-y-12">
+            {sortedCategories.map((cat) => (
+              <div key={cat}>
+                {/* Category header */}
+                {(activeCategoria === "todas" || cat !== "fontes_referencia") && (
+                  <span
+                    className="block text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-sm mb-4 w-fit"
+                    style={{ backgroundColor: "rgba(0,0,255,0.08)", color: "#0000FF" }}
+                  >
+                    {CATEGORIAS[cat] || cat}
+                  </span>
+                )}
+
+                {cat === "fontes_referencia" ? (
+                  renderFontesReferencia(grouped[cat])
+                ) : (
+                  <div className="columns-1 md:columns-2 xl:columns-3 gap-3">
+                    {grouped[cat].map((b) => (
+                      <div key={b.id} className="break-inside-avoid mb-3">
+                        <BookmarkCard b={b} />
                       </div>
                     ))}
                   </div>
-                ))}
+                )}
               </div>
-            );
-          })()
+            ))}
+          </div>
         )}
       </section>
     </div>

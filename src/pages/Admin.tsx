@@ -115,6 +115,8 @@ type BookmarkItem = {
   titulo: string;
   fonte: string;
   categoria: string;
+  subcategoria?: string | null;
+  eixo?: string | null;
   notas: string | null;
   ordem: number;
 };
@@ -443,7 +445,7 @@ export default function Admin() {
   const [bookmarksList, setBookmarksList] = useState<BookmarkItem[]>([]);
   const [showBookmarkForm, setShowBookmarkForm] = useState(false);
   const [editingBookmarkId, setEditingBookmarkId] = useState<string | null>(null);
-  const [bookmarkForm, setBookmarkForm] = useState({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+  const [bookmarkForm, setBookmarkForm] = useState({ url: "", titulo: "", fonte: "", categoria: "", subcategoria: "", eixo: "", notas: "", ordem: 0 });
 
   // Delete confirmation
   const [deleteConfirm, setDeleteConfirm] = useState<{ type: string; id: string } | null>(null);
@@ -501,19 +503,19 @@ export default function Admin() {
       setBookmarkForm({ url: item.url, titulo: item.titulo, fonte: item.fonte, categoria: item.categoria, notas: item.notas || "", ordem: item.ordem });
     } else {
       setEditingBookmarkId(null);
-      setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 });
+      setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", subcategoria: "", eixo: "", notas: "", ordem: 0 });
     }
     setShowBookmarkForm(true);
   };
 
   const saveBookmark = async () => {
     if (!bookmarkForm.titulo || !bookmarkForm.url) return;
-    const payload = { url: bookmarkForm.url, titulo: bookmarkForm.titulo, fonte: bookmarkForm.fonte, categoria: bookmarkForm.categoria, notas: bookmarkForm.notas || null, ordem: bookmarkForm.ordem };
+    const payload = { url: bookmarkForm.url, titulo: bookmarkForm.titulo, fonte: bookmarkForm.fonte, categoria: bookmarkForm.categoria, subcategoria: bookmarkForm.subcategoria || null, eixo: bookmarkForm.eixo || null, notas: bookmarkForm.notas || null, ordem: bookmarkForm.ordem };
     const { error } = editingBookmarkId
       ? await supabase.from("bookmarks").update(payload).eq("id", editingBookmarkId)
       : await supabase.from("bookmarks").insert(payload);
     if (error) { toast({ title: "Erro ao guardar", variant: "destructive" }); }
-    else { toast({ title: "Guardado ✓" }); setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", notas: "", ordem: 0 }); fetchAll(); }
+    else { toast({ title: "Guardado ✓" }); setShowBookmarkForm(false); setEditingBookmarkId(null); setBookmarkForm({ url: "", titulo: "", fonte: "", categoria: "", subcategoria: "", eixo: "", notas: "", ordem: 0 }); fetchAll(); }
   };
 
   const deleteBookmark = async (id: string) => {
