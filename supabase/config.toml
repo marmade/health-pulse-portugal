@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.archive-weekly]
 verify_jwt = false
+
+[functions.generate-guioes-weekly]
+verify_jwt = false

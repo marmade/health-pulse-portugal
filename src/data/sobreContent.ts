@@ -83,7 +83,7 @@ Os gráficos de eixo utilizam média ponderada pelo volume — keywords com maio
 
 GERAÇÃO DE GUIÕES
 
-Os dados recolhidos pelo sistema alimentam um prompt estruturado enviado ao Perplexity Sonar, um modelo de linguagem com acesso a fontes verificadas em tempo real. O output é um guião com 10 perguntas por tema, com citações a fontes científicas e jornalísticas. Esta etapa é assistida por IA e sujeita a revisão editorial. Periodicidade: semanal, às segundas-feiras.`,
+Todas as segundas-feiras, o sistema gera automaticamente guiões de perguntas para cada eixo temático. Cada guião combina 5 perguntas curadas do banco base com 5 perguntas geradas por IA a partir das keywords em alta da semana. A geração por IA utiliza o Perplexity Sonar, um modelo de linguagem com acesso a fontes verificadas em tempo real. O prompt é estruturado para priorizar fontes peer-reviewed (MSD Manuals em português), institucionais (DGS, SNS24, OMS) e sociedades científicas portuguesas. Para cada pergunta, o sistema gera uma resposta simples (para o cidadão) e um contexto científico mais desenvolvido (para o comunicador preparar a entrevista). Todas as respostas incluem citações verificáveis. Esta etapa é assistida por IA e sujeita a revisão editorial antes de publicação.`,
   },
   "como-funciona": {
     titulo: "Como funciona",

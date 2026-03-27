@@ -77,8 +77,24 @@ jobs:
         run: |
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
-      # ── PASSO 6: Arquivo semanal (dashboard + briefing) ─────────────────
-      - name: 6 — Arquivo semanal
+      # ── PASSO 6: Guiões semanais (4 eixos) ──────────────────────────────
+      - name: 6 — Guiões semanais
+        run: |
+          echo "A gerar guiões da semana..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "$SUPABASE_URL/functions/v1/generate-guioes-weekly" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          BODY=$(echo "$RESP" | head -n -1)
+          CODE=$(echo "$RESP" | tail -n 1)
+          echo "HTTP $CODE — $BODY"
+          if [ "$CODE" != "200" ]; then
+            echo "::warning::generate-guioes-weekly devolveu HTTP $CODE"
+          fi
+
+      # ── PASSO 7: Arquivo semanal (dashboard + briefing) ─────────────────
+      - name: 7 — Arquivo semanal
         run: |
           echo "A arquivar dados da semana anterior..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \

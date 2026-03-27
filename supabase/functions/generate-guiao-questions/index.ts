@@ -22,18 +22,30 @@ serve(async (req) => {
 
     const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
-    const userPrompt = `Gera exactamente 5 perguntas de vox pop sobre ${tema} para o programa Diz que Disse — vamos para as ruas perguntar a cidadãos comuns em Portugal. As perguntas testam literacia em saúde, são directas e concretas, em português europeu. TODAS devem ter resposta_simples preenchida (nunca vazio). As keywords mais pesquisadas esta semana em Portugal para este tema são: ${keywordList}. Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
+    const userPrompt = `Gera exactamente 5 perguntas de vox pop sobre ${tema} para o programa Diz que Disse — vamos para as ruas perguntar a cidadãos comuns em Portugal. As perguntas testam literacia em saúde, são directas e concretas, em português europeu. TODAS devem ter resposta_simples e contexto_cientifico preenchidos (nunca vazios). As keywords mais pesquisadas esta semana em Portugal para este tema são: ${keywordList}. Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
+
+Para cada pergunta inclui:
+- resposta_simples: 1-2 frases directas para o cidadão (linguagem acessível)
+- contexto_cientifico: 3-5 frases com base científica para o comunicador preparar a entrevista (pode incluir dados, mecanismos, prevalência)
 
 Usa APENAS estas fontes científicas e institucionais para referencia_nome e referencia_url, por ordem de prioridade:
-Para SAÚDE MENTAL: 1. DGS (dgs.pt/saude-mental.aspx) 2. OMS (who.int) 3. SNS24 (sns24.gov.pt/tema/saude-mental/) 4. Saúde Mental PT (saudementalpt.com) 5. CUF (cuf.pt/saude-a-z) 6. Ordem dos Psicólogos (ordemdospsicologos.pt)
-Para ALIMENTAÇÃO: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · CUF (cuf.pt) · INSA (insa.min-saude.pt) · INFARMED (infarmed.pt) · Luz Saúde (luzsaude.pt)
-Para MENOPAUSA: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · CUF (cuf.pt) · Luz Saúde (luzsaude.pt)
-Para EMERGENTES: DGS (dgs.pt) · ECDC (ecdc.europa.eu) · OMS (who.int) · INSA (insa.min-saude.pt) · SNS24 (sns24.gov.pt)
+
+MSD MANUALS (fonte prioritária — peer-reviewed, em português):
+- Saúde Mental: https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-de-sa%C3%BAde-mental
+- Alimentação: https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-nutricionais
+- Menopausa: https://www.msdmanuals.com/pt/casa/problemas-de-sa%C3%BAde-feminina/menopausa
+- Emergentes: https://www.msdmanuals.com/pt/casa/infec%C3%A7%C3%B5es
+
+Fontes institucionais portuguesas:
+Para SAÚDE MENTAL: DGS (dgs.pt) · SNS24 (sns24.gov.pt/tema/saude-mental/) · OMS (who.int) · Ordem dos Psicólogos (ordemdospsicologos.pt)
+Para ALIMENTAÇÃO: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · INSA (insa.min-saude.pt) · Nutrimento (nutrimento.pt)
+Para MENOPAUSA: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · SPG (spginecologia.pt)
+Para EMERGENTES: DGS (dgs.pt) · ECDC (ecdc.europa.eu) · OMS (who.int) · INSA (insa.min-saude.pt)
 
 Se não encontrares uma fonte destas para uma pergunta, deixa referencia_url vazio — não inventes outras fontes.
 
 Responde APENAS com este JSON:
-[{"pergunta": "texto", "resposta_simples": "1-2 frases", "referencia_nome": "ex: DGS, OMS, SNS24, INSA", "referencia_url": "URL real da fonte ou vazio"}]`;
+[{"pergunta": "texto", "resposta_simples": "1-2 frases", "contexto_cientifico": "3-5 frases com base científica", "referencia_nome": "ex: MSD Manuals, DGS, OMS", "referencia_url": "URL real da fonte ou vazio"}]`;
 
     console.log("Calling Perplexity Sonar for tema:", tema);
 
@@ -90,8 +102,8 @@ Responde APENAS com este JSON:
       .map((p: any, i: number) => ({
         pergunta: String(p.pergunta || ""),
         resposta_simples: String(p.resposta_simples || "Consulte a fonte indicada para mais informações."),
+        contexto_cientifico: String(p.contexto_cientifico || ""),
         referencia_nome: String(p.referencia_nome || ""),
-        // Use real Perplexity citation URL at index i; fallback to AI-provided URL or empty
         referencia_url: citations[i] || String(p.referencia_url || ""),
       }));
 

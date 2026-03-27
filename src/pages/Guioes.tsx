@@ -22,6 +22,7 @@ import jsPDF from "jspdf";
 type Pergunta = {
   pergunta: string;
   resposta_simples: string;
+  contexto_cientifico?: string;
   referencia_nome: string;
   referencia_url: string;
   source: "banco" | "ia";
@@ -56,6 +57,8 @@ const TEMAS = [
 // Curated URL map per tema + fonte (approved sources get precise URLs)
 const URL_MAP: Record<string, Record<string, string>> = {
   "saude-mental": {
+    "MSD": "https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-de-sa%C3%BAde-mental",
+    "MSD MANUALS": "https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-de-sa%C3%BAde-mental",
     "DGS": "https://www.dgs.pt/saude-mental.aspx",
     "SNS24": "https://www.sns24.gov.pt/tema/saude-mental/",
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/mental-disorders",
@@ -65,22 +68,28 @@ const URL_MAP: Record<string, Record<string, string>> = {
     "SAÚDE MENTAL PT": "https://saudementalpt.com/saude-mental/",
   },
   "alimentacao": {
+    "MSD": "https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-nutricionais",
+    "MSD MANUALS": "https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-nutricionais",
     "DGS": "https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx",
     "SNS24": "https://www.sns24.gov.pt/tema/alimentacao/",
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet",
     "CUF": "https://www.cuf.pt/saude-a-z",
     "INSA": "https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/",
+    "NUTRIMENTO": "https://nutrimento.pt/",
     "INFARMED": "https://www.infarmed.pt",
-    "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
   },
   "menopausa": {
+    "MSD": "https://www.msdmanuals.com/pt/casa/problemas-de-sa%C3%BAde-feminina/menopausa",
+    "MSD MANUALS": "https://www.msdmanuals.com/pt/casa/problemas-de-sa%C3%BAde-feminina/menopausa",
     "DGS": "https://www.dgs.pt/saude-a-ao-z/menopausa.aspx",
     "SNS24": "https://www.sns24.gov.pt/tema/saude-da-mulher/menopausa/",
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/menopause",
     "CUF": "https://www.cuf.pt/saude-a-z/menopausa",
-    "LUZ SAÚDE": "https://www.luzsaude.pt/pt/hospital-da-luz/",
+    "SPG": "https://spginecologia.pt/",
   },
   "emergentes": {
+    "MSD": "https://www.msdmanuals.com/pt/casa/infec%C3%A7%C3%B5es",
+    "MSD MANUALS": "https://www.msdmanuals.com/pt/casa/infec%C3%A7%C3%B5es",
     "DGS": "https://www.dgs.pt/doencas-infecciosas.aspx",
     "ECDC": "https://www.ecdc.europa.eu/en/threats-and-outbreaks",
     "OMS": "https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance",
@@ -341,12 +350,12 @@ const Guioes = () => {
 
       const aiPerguntas: Pergunta[] = (data.perguntas || []).slice(0, 5).map((p: any) => {
         const refNome = p.referencia_nome || "";
-        // Use Perplexity citation URL directly; if missing, fallback to URL_MAP by reference name
         const citationUrl = p.referencia_url || "";
         const fallback = citationUrl ? { url: citationUrl, approved: true } : resolveReference(temaValue, refNome, "");
         return {
           pergunta: p.pergunta || "",
           resposta_simples: p.resposta_simples || "",
+          contexto_cientifico: p.contexto_cientifico || "",
           referencia_nome: refNome,
           referencia_url: fallback.url,
           source: "ia" as const,
@@ -636,6 +645,16 @@ const Guioes = () => {
                       <TableCell className="text-xs">{renderCell(i, "pergunta", p.pergunta)}</TableCell>
                       <TableCell className="text-xs text-muted-foreground">
                         {renderCell(i, "resposta_simples", p.resposta_simples)}
+                        {p.contexto_cientifico && (
+                          <details className="mt-2">
+                            <summary className="text-[9px] font-bold uppercase tracking-wider cursor-pointer" style={{ color: "#0000FF" }}>
+                              Contexto científico
+                            </summary>
+                            <p className="text-[11px] leading-relaxed mt-1.5 text-foreground/70 border-l-2 pl-2" style={{ borderColor: "#0000FF" }}>
+                              {p.contexto_cientifico}
+                            </p>
+                          </details>
+                        )}
                       </TableCell>
                       <TableCell className="text-xs">
                         {!isAI ? (
