@@ -182,6 +182,19 @@ const Briefing = () => {
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
     : topGrowing[0];
 
+  // Urgency ranking — same logic as dashboard overview
+  const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
+  const urgencyRanking = axisOrder.map((axisId) => {
+    const axisKw = keywords.filter((k) => k.axis === axisId);
+    const avgChange = axisKw.length > 0
+      ? axisKw.reduce((s, k) => s + k.change_percent, 0) / axisKw.length
+      : 0;
+    const emergentCount = axisKw.filter((k) => k.is_emergent).length;
+    const alertCount = axisKw.filter((k) => k.change_percent >= 30).length;
+    const score = avgChange + (emergentCount * 30) + (alertCount * 20);
+    return { axisId, label: axisLabels[axisId], avgChange, emergentCount, alertCount, score };
+  }).sort((a, b) => b.score - a.score);
+
   // PDF export
   const handleExportPdf = async () => {
     setExporting(true);
@@ -268,6 +281,49 @@ const Briefing = () => {
           >
             {exporting ? "A exportar..." : "Exportar PDF"}
           </button>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* SECTION 0 — Prioridade de comunicação */}
+      <section className="px-6 py-10">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
+          Prioridade de comunicação esta semana
+        </h2>
+        <p className="text-xs opacity-50 mb-6">Eixos ordenados por urgência combinada (variação + sinais emergentes + alertas)</p>
+        <div className="flex flex-wrap gap-3 max-w-2xl">
+          {urgencyRanking.map((axis, i) => (
+            <div
+              key={axis.axisId}
+              className="flex items-center gap-2 px-3 py-2 border"
+              style={{
+                borderColor: i === 0 ? "#0000FF" : "rgba(0,0,255,0.15)",
+                borderWidth: i === 0 ? 2 : 1,
+              }}
+            >
+              <span className="text-[9px] font-bold text-foreground/30">
+                {i + 1}.
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: i === 0 ? "#0000FF" : undefined }}>
+                {axis.label}
+              </span>
+              <span className={`text-[10px] font-semibold ${axis.avgChange > 0 ? "" : "opacity-40"}`}>
+                {axis.avgChange > 0 ? "+" : ""}{axis.avgChange.toFixed(0)}%
+              </span>
+              {axis.alertCount > 0 && (
+                <span className="inline-flex items-center gap-0.5">
+                  <span className="w-1.5 h-1.5 bg-destructive rounded-full animate-pulse" />
+                  <span className="text-[8px] font-bold">{axis.alertCount}</span>
+                </span>
+              )}
+              {axis.emergentCount > 0 && (
+                <span className="text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 bg-foreground text-background">
+                  {axis.emergentCount} sinal{axis.emergentCount > 1 ? "is" : ""}
+                </span>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
