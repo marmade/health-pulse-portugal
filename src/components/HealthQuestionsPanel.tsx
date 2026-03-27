@@ -1,21 +1,14 @@
 import { useState } from "react";
-import type { DebunkItem, NewsItem } from "@/data/mockData";
-import {
-  type HealthQuestion,
-  getRelatedNews,
-  getRelatedDebunks,
-} from "@/data/healthQuestions";
+import type { HealthQuestion } from "@/data/healthQuestions";
 import { getAxisColors } from "@/lib/axisColors";
 import { useHealthQuestions } from "@/hooks/useHealthQuestions";
 
 type Props = {
-  debunkingData: DebunkItem[];
-  newsData: NewsItem[];
   axis?: string;
   axisLabel?: string;
 };
 
-const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Props) => {
+const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const isOverview = !axis || axis === "all";
   const { questions, isLoading } = useHealthQuestions(axis);
