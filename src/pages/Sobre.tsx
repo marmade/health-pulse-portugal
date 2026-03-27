@@ -185,35 +185,43 @@ const Sobre = () => {
           <div>
             <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground mb-3">Nível 1 — Recolha Automática</p>
             <div className="flex items-center gap-2">
-              {/* Three sources converging */}
+              {/* Four sources converging */}
               <div className="flex flex-col items-end gap-1">
                 <div className="flex items-center gap-2">
-                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                  <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Google Trends</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal · pytrends</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↘</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                  <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Autocomplete</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal · perguntas</p>
+                  </div>
+                  <span className="text-primary text-[10px] font-bold select-none">↘</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">tempo real</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">26 fontes</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">→</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
+                  <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">YouTube</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">37 canais</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↗</span>
                 </div>
               </div>
-              {/* Supabase → Edge Functions → Dashboard */}
+              {/* Supabase → Edge Functions → Dashboard → Arquivo */}
               {[
                 { title: "Supabase", subtitle: "base de dados" },
                 { title: "Edge Functions", subtitle: "automação" },
                 { title: "Dashboard", subtitle: "visualização" },
+                { title: "Arquivo", subtitle: "semanal · PDF" },
               ].map((step, idx, arr) => (
                 <div key={step.title} className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[120px] flex-shrink-0">
@@ -275,12 +283,14 @@ const Sobre = () => {
         <div className="flex md:hidden flex-col gap-4">
           <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 1 — Recolha Automática</p>
           {[
-            { title: "Google Trends", subtitle: "semanal" },
-            { title: "RSS Feeds", subtitle: "tempo real" },
-            { title: "YouTube", subtitle: "semanal" },
+            { title: "Google Trends", subtitle: "semanal · pytrends" },
+            { title: "Google Autocomplete", subtitle: "semanal · perguntas" },
+            { title: "RSS Feeds", subtitle: "26 fontes" },
+            { title: "YouTube", subtitle: "37 canais" },
             { title: "Supabase", subtitle: "base de dados" },
             { title: "Edge Functions", subtitle: "automação" },
             { title: "Dashboard", subtitle: "visualização" },
+            { title: "Arquivo", subtitle: "semanal · PDF" },
           ].map((step, idx, arr) => (
             <div key={step.title} className="flex flex-col items-center gap-2">
               <div className="border border-primary px-3 py-2 w-full">
