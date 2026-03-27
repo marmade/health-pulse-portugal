@@ -54,10 +54,6 @@ AXIS_LABELS = {
     "emergentes": "Emergentes",
 }
 
-# ---------------------------------------------------------------------------
-# FILTRO DE RUÍDO — 5 camadas
-# ---------------------------------------------------------------------------
-
 BLOCKLIST_MARCAS = {
     "lidl", "walmart", "continente", "pingo doce", "aldi", "mercadona",
     "ikea", "amazon", "fnac", "worten", "minipreço", "intermarché",
@@ -119,10 +115,6 @@ def e_pergunta(texto: str) -> bool:
     return any(t.startswith(p) for p in PREFIXOS_PERGUNTA)
 
 
-# ---------------------------------------------------------------------------
-# SUPABASE
-# ---------------------------------------------------------------------------
-
 def buscar_keywords() -> list[dict]:
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/keywords",
@@ -137,7 +129,7 @@ def upsert_perguntas(perguntas: list[dict]) -> bool:
     if not perguntas:
         return True
     r = requests.post(
-        f"{SUPABASE_URL}/rest/v1/health_questions",
+        f"{SUPABASE_URL}/rest/v1/health_questions?on_conflict=question,axis,source",
         headers=HEADERS_UPSERT,
         json=perguntas,
     )
@@ -146,10 +138,6 @@ def upsert_perguntas(perguntas: list[dict]) -> bool:
         return False
     return True
 
-
-# ---------------------------------------------------------------------------
-# PYTRENDS
-# ---------------------------------------------------------------------------
 
 def buscar_queries_crescimento(pytrends: TrendReq, keyword: str, axis: str) -> list[dict]:
     try:
@@ -208,10 +196,6 @@ def buscar_queries_crescimento(pytrends: TrendReq, keyword: str, axis: str) -> l
         return []
 
 
-# ---------------------------------------------------------------------------
-# MAIN
-# ---------------------------------------------------------------------------
-
 def main():
     print("Reportagem Viva — Queries em Crescimento (pytrends)")
     print(f"{datetime.now().strftime('%d/%m/%Y %H:%M')}")
@@ -242,7 +226,6 @@ def main():
 
     print(f"\nTotal recolhido: {len(todas)} queries")
 
-    # De-duplicar por (question.lower(), axis, source)
     vistas: set[tuple] = set()
     unicas: list[dict] = []
     todas.sort(key=lambda x: x["growth_percent"], reverse=True)
@@ -297,7 +280,6 @@ def expandir_mural(todas_perguntas: list[dict]):
         print("  Nenhum termo novo relevante encontrado")
         return
 
-    agora = datetime.now(timezone.utc).isoformat()
     print(f"  {len(novos)} termos novos para o Mural:")
     payload = []
     for p in novos:
