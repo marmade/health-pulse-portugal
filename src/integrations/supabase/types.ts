@@ -268,8 +268,10 @@ export type Database = {
           id: string
           is_question: boolean
           keyword_id: string | null
+          last_seen_at: string | null
           question: string
           relative_volume: number
+          source: string
           updated_at: string
         }
         Insert: {
@@ -280,8 +282,10 @@ export type Database = {
           id?: string
           is_question?: boolean
           keyword_id?: string | null
+          last_seen_at?: string | null
           question: string
           relative_volume?: number
+          source?: string
           updated_at?: string
         }
         Update: {
@@ -292,8 +296,10 @@ export type Database = {
           id?: string
           is_question?: boolean
           keyword_id?: string | null
+          last_seen_at?: string | null
           question?: string
           relative_volume?: number
+          source?: string
           updated_at?: string
         }
         Relationships: [
