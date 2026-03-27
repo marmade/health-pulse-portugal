@@ -56,7 +56,7 @@ const YouTubeTrendsPanel = ({ axis }: { axis?: string }) => {
         </p>
       </div>
       <p className="text-[9px] text-foreground/40 mb-4 ml-[18px] flex-shrink-0">
-        Vídeos em destaque sobre saúde em Portugal
+        Selecção curada de canais portugueses de jornalismo e saúde
       </p>
 
       <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow">
