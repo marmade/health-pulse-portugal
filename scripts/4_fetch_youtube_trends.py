@@ -59,6 +59,12 @@ CANAIS_PT = [
     {"id": "UCCBlYMv3F6VkTsU57ZFUNyg",  "nome": "Ordem dos Psicólogos"},
     {"id": "UCMhhHdT1z26KmamNK1Ppwcw",  "nome": "Sociedade Portuguesa de Ginecologia"},
     {"id": "UC35wTBunWWqWL-7g3M8Vqrw",  "nome": "Sociedade Portuguesa de Psiquiatria"},
+    {"id": "UC2cLsvuBCQifCJHP8SQHBdg",  "nome": "Sociedade Portuguesa de Reumatologia"},
+    {"id": "UCchQ0gnRspaN-vPk7LIMUzQ",  "nome": "Sociedade Portuguesa de Cuidados Intensivos"},
+    {"id": "UC4WRANLBsyeg91VyVU1kakw",  "nome": "SPPneumologia"},
+    {"id": "UCeIsY_mR0FoDRX2nWKcO12g",  "nome": "Sociedade Portuguesa de Literacia em Saúde"},
+    {"id": "UCpLfK1hrhHxhk7vhXrrNsiA",  "nome": "Sociedade Portuguesa Patologia Coluna Vertebral"},
+    {"id": "UCYRJph6b7Vt_NvT9uNetEJg",  "nome": "Sociedade Portuguesa de Esclerose Múltipla"},
     # Saúde — hospitais e seguros
     {"id": "UCaX52_iMXdddasXv1zPuzzQ",  "nome": "Trofa Saúde"},
     {"id": "UCa_iuEjOzgc2ZKo0-ZzNrKA",  "nome": "CUF"},
@@ -75,6 +81,9 @@ CANAIS_PT = [
     {"id": "UC4pCHexxGBCueJwqkAcjqWw",  "nome": "90 Segundos de Ciência"},
     {"id": "UCewkJz8USMSLc_VGiiFt8gA",  "nome": "ITQB NOVA"},
     {"id": "UCl5jVoRkK1PJUaiprinpzdA",  "nome": "GIMM Gulbenkian"},
+    {"id": "UCjspnOYGdzo5Ll58fooY9Zw",  "nome": "Fundação Calouste Gulbenkian"},
+    {"id": "UC0zfnw1q686zD4F335AYoTg",  "nome": "Centro de Neurociências e Biologia Celular"},
+    {"id": "UCR8d63kMXqsGaDV9IOHi99Q",  "nome": "Portal Top Saúde"},
     # Fact-check e literacia
     {"id": "UCjMzepu7e36usUEWU2wfHvg",  "nome": "Despolariza"},
     {"id": "UCiYGrdT8KPon4QsLsOfdu8A",  "nome": "News Farma"},

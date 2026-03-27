@@ -41,6 +41,15 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.spms.min-saude.pt/feed/', outlet: 'SPMS', type: 'institucional' },
   { url: 'https://www.ers.pt/feed/', outlet: 'ERS', type: 'institucional' },
   { url: 'https://saudemental.min-saude.pt/feed/', outlet: 'Coord. Nacional Saúde Mental', type: 'institucional' },
+  // SOCIEDADES CIENTÍFICAS
+  { url: 'https://spreumatologia.pt/feed/', outlet: 'Sociedade Portuguesa de Reumatologia', type: 'institucional' },
+  { url: 'https://spginecologia.pt/feed/', outlet: 'Sociedade Portuguesa de Ginecologia', type: 'institucional' },
+  { url: 'https://sppneumologia.pt/feed/', outlet: 'SPPneumologia', type: 'institucional' },
+  { url: 'https://splsportugal.pt/feed/', outlet: 'Sociedade Portuguesa de Literacia em Saúde', type: 'institucional' },
+  { url: 'https://sppcv.org/feed/', outlet: 'Sociedade Portuguesa Patologia Coluna Vertebral', type: 'institucional' },
+  { url: 'https://www.cnc.uc.pt/pt/feed/', outlet: 'Centro de Neurociências e Biologia Celular', type: 'institucional' },
+  { url: 'https://spem.pt/feed/', outlet: 'Sociedade Portuguesa de Esclerose Múltipla', type: 'institucional' },
+  { url: 'https://gimm.pt/feed/', outlet: 'GIMM Gulbenkian', type: 'institucional' },
   // FACT-CHECKING
   { url: 'https://poligrafo.sapo.pt/feed/', fallbackUrls: ['https://poligrafo.sapo.pt/feed'], outlet: 'Polígrafo', type: 'factcheck' },
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
