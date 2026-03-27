@@ -94,10 +94,10 @@ const SEED_DATA = [
     tipo: "Persona",
     ambito: "Nacional",
     nome: "David Marçal",
-    link: "",
+    link: "https://ffms.pt/pt-pt/autores/david-marcal-0",
     descricao:
-      "Investigador e comunicador científico, autor de Isto Não É Ciência. Principal referência nacional no debate sobre pseudociência e pensamento crítico.",
-    col3: "• Reconhecido como voz credível no combate à pseudociência\n• Autor de livros de divulgação científica de referência\n• Presença regular em media (rádio, televisão, imprensa)",
+      "Doutorado em Bioquímica pela NOVA. Comunicador de ciência, investigador e escritor com 27 anos de experiência. Ex-director da Ciência Viva (2015–2019). Colunista de ciência no Público. Autor de Pseudociência e Cientistas Portugueses (FFMS).",
+    col3: "• Referência nacional no combate à pseudociência\n• Autor de livros de divulgação (FFMS) e produções teatrais e televisivas sobre ciência\n• Colunista regular no Público e presença em media\n• Ex-director da Ciência Viva — experiência institucional em comunicação de ciência",
     col4: "• Abordagem por vezes académica, menos acessível a públicos menos informados\n• Pouca presença em plataformas digitais de grande alcance (TikTok, YouTube)\n• Foco mais em pseudociência geral do que especificamente em saúde",
   },
   {
@@ -106,11 +106,11 @@ const SEED_DATA = [
     tipo: "Persona",
     ambito: "Nacional",
     nome: "Carlos Fiolhais",
-    link: "",
+    link: "https://ffms.pt/pt-pt/autores/carlos-fiolhais",
     descricao:
-      "Físico e divulgador científico, antigo director do Centro de Física da UC. Defensor do ensino científico e do pensamento crítico.",
-    col3: "• Grande reconhecimento público e institucional\n• Autor prolífico de livros de divulgação científica\n• Voz respeitada em debates públicos sobre ciência e educação",
-    col4: "• Comunicação maioritariamente em formatos tradicionais (livros, conferências)\n• Menor presença em redes sociais e formatos digitais\n• Foco generalista, menos centrado em saúde",
+      "Doutorado em Física Teórica (Goethe University). Professor catedrático emérito da UC. Fundador do Centro de Computação da UC. Director da Gazeta de Física e da Biblioteca Geral da UC. Membro correspondente da Academia das Ciências de Lisboa (2024). Autor de mais de 70 livros de divulgação e 200+ artigos científicos. Condecorado com a Ordem do Infante D. Henrique.",
+    col3: "• Um dos comunicadores de ciência mais reconhecidos em Portugal\n• Mais de 70 livros pedagógicos e de divulgação\n• Reconhecimento institucional: Academia das Ciências, Ordem do Infante D. Henrique, Prémio José Mariano Gago\n• Voz respeitada em debates sobre ciência, educação e cultura",
+    col4: "• Comunicação maioritariamente em formatos tradicionais (livros, conferências)\n• Menor presença em redes sociais e formatos digitais\n• Foco generalista — menos centrado especificamente em saúde",
   },
   {
     id: "bn-10",
@@ -118,11 +118,11 @@ const SEED_DATA = [
     tipo: "Persona",
     ambito: "Nacional",
     nome: "Margarida Graça Santos",
-    link: "",
+    link: "https://ffms.pt/pt-pt/autores/margarida-graca-santos",
     descricao:
-      "Jornalista especializada em saúde e ciência. Responsável por reportagens aprofundadas e verificadas na área da saúde pública.",
-    col3: "• Jornalismo de saúde rigoroso e aprofundado\n• Capacidade de traduzir temas complexos para linguagem acessível\n• Experiência em investigação jornalística na área da saúde",
-    col4: "• Alcance limitado ao público leitor de imprensa\n• Pouca presença em redes sociais ou formatos digitais\n• Produção condicionada pelo meio onde publica",
+      "Médica de família no SNS. Apresentadora do podcast Consulta Aberta na SIC Notícias. Fundadora da página @margarida.dgsantos no Instagram. Formação especializada em obesidade e nutrição clínica, medicina do viajante e apoio ao aleitamento materno.",
+    col3: "• Combina prática clínica no SNS com comunicação de saúde\n• Podcast na SIC Notícias — alcance televisivo e digital\n• Presença forte no Instagram com conteúdo de saúde acessível\n• Formação em nutrição clínica e obesidade — relevante para o eixo Alimentação",
+    col4: "• Foco em cuidados primários — não cobre todas as áreas de saúde\n• Formato de podcast pode não atingir públicos com baixa literacia digital\n• Alcance limitado comparado com influenciadores generalistas",
   },
   {
     id: "bn-11",
@@ -141,12 +141,12 @@ const SEED_DATA = [
     sinal: "+",
     tipo: "Persona",
     ambito: "Nacional",
-    nome: "Joana Gonçalves-Sá",
-    link: "",
+    nome: "Joana Gonçalves de Sá",
+    link: "https://ffms.pt/pt-pt/autores/joana-goncalves-de-sa",
     descricao:
-      "Investigadora do Instituto Gulbenkian de Ciência. Especialista em ciência de dados, comportamento humano e desinformação. Autora de Sociedade Demente e de artigos de alto impacto (PLOS Biology, Nature Human Behaviour).",
-    col3: "• Investigação de referência internacional sobre desinformação\n• Capacidade de comunicação pública excepcional\n• Presença regular em media e debates públicos",
-    col4: "• Output primário em formato académico\n• Menor presença em redes sociais de grande alcance\n• Foco mais em análise sistémica do que em resposta directa a mitos",
+      "Investigadora no LIP (Laboratório de Instrumentação e Física Experimental de Partículas), onde coordena o grupo SPAC — Social Physics & Complexity. Doutorada em Biologia de Sistemas, com pós-doutoramento em Harvard. Ex-investigadora principal no Instituto Gulbenkian de Ciência. Autora de Uma Ideia de Ciência (FFMS). Especialista em desinformação, epidemiologia digital e ética de dados.",
+    col3: "• Investigação de referência internacional em desinformação e complexidade social\n• Capacidade de comunicação pública excepcional — colunista regular em media\n• Grupo SPAC aplica física e ciência de dados a problemas sociais de saúde\n• Experiência em Harvard, Gulbenkian e Nova SBE",
+    col4: "• Output primariamente académico\n• Menor presença em redes sociais de grande alcance\n• Foco mais em análise sistémica do que em resposta directa a mitos",
   },
   // ── BENCHMARK + ── Portais Internacionais ─────────────────────────────────
   {
