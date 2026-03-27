@@ -188,14 +188,14 @@ const Sobre = () => {
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">36 fontes</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">37 fontes</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">→</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">YouTube</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">45 canais</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">46 canais</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↗</span>
                 </div>
@@ -269,8 +269,8 @@ const Sobre = () => {
           {[
             { title: "Google Trends", subtitle: "semanal · pytrends" },
             { title: "Google Autocomplete", subtitle: "semanal · perguntas" },
-            { title: "RSS Feeds", subtitle: "36 fontes" },
-            { title: "YouTube", subtitle: "45 canais" },
+            { title: "RSS Feeds", subtitle: "37 fontes" },
+            { title: "YouTube", subtitle: "46 canais" },
             { title: "Supabase", subtitle: "base de dados" },
             { title: "Edge Functions", subtitle: "automação" },
             { title: "Dashboard", subtitle: "visualização" },

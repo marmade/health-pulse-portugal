@@ -44,6 +44,7 @@ const FEEDS: FeedSource[] = [
   // NUTRIÇÃO E ALIMENTAÇÃO
   { url: 'https://nutrimento.pt/feed/', outlet: 'Nutrimento (PNPAS)', type: 'institucional' },
   { url: 'https://alimentacaosaudavel.dgs.pt/feed/', outlet: 'Alimentação Saudável (DGS)', type: 'institucional' },
+  { url: 'https://eipas.pt/feed/', outlet: 'EIPAS — Promoção da Alimentação Saudável', type: 'institucional' },
   // SOCIEDADES CIENTÍFICAS
   { url: 'https://spreumatologia.pt/feed/', outlet: 'Sociedade Portuguesa de Reumatologia', type: 'institucional' },
   { url: 'https://spginecologia.pt/feed/', outlet: 'Sociedade Portuguesa de Ginecologia', type: 'institucional' },

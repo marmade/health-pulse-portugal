@@ -49,6 +49,7 @@ CANAIS_PT = [
     # Saúde — autoridades e regulação
     {"id": "UCNmv_2YqryuyhB79ehzOsmQ",  "nome": "DGS"},
     {"id": "UCD__Q9Uk6TOfF0GWmzlWvTw",  "nome": "Alimentação Saudável PNPAS-DGS"},
+    {"id": "UCXvYESuIxyaC5q0Nz8t5pVg",  "nome": "Ativa Saúde ENPAF-DGS"},
     {"id": "UCEDsw4V8sNapYKeu3uXaeUg",  "nome": "INSA"},
     {"id": "UChU2dZjHIJnUou6w3JJ16Aw",  "nome": "INFARMED"},
     {"id": "UC43Xmu6eMxUc4e5LITcKESw",  "nome": "ERS"},
