@@ -1,12 +1,29 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { AXIS_COLORS, type AxisId } from "@/lib/axisColors";
 import { fallbackSobreContent } from "@/data/sobreContent";
 import EditorialHeader from "@/components/EditorialHeader";
 
 const Sobre = () => {
-  const content = fallbackSobreContent;
+  const [dbContent, setDbContent] = useState<Record<string, { titulo: string; conteudo: string }>>({});
 
-  const get = (id: string) => content[id];
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await supabase.from("sobre_conteudo").select("*");
+      if (data && data.length > 0) {
+        const map: Record<string, { titulo: string; conteudo: string }> = {};
+        data.forEach((row: any) => {
+          map[row.id] = { titulo: row.titulo, conteudo: row.conteudo };
+        });
+        setDbContent(map);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  // DB wins when it has content for a block; otherwise fallback to file
+  const get = (id: string) => dbContent[id] || fallbackSobreContent[id];
 
   /* Parse axes from pipe-delimited format */
   const parseAxes = (text: string) =>
