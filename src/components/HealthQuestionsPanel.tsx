@@ -86,14 +86,6 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                             {q.relativeVolume}
                           </span>
                         </div>
-                        {q.growthPercent != null && (
-                          <span
-                            className="inline-block text-[7px] font-medium uppercase tracking-wider px-1 py-0.5 rounded-sm mt-1"
-                            style={{ backgroundColor: 'rgba(139, 0, 255, 0.12)', color: '#8B00FF' }}
-                          >
-                            {q.growthPercent >= 9999 ? 'NOVO ↑' : `+${q.growthPercent}%`}
-                          </span>
-                        )}
                       </div>
 
                       <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
