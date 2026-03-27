@@ -76,9 +76,15 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
 
                       <div className="text-right shrink-0">
                         {q.growthPercent != null && (
-                          <p className="text-sm font-bold">
-                            +{q.growthPercent}% ↑
-                          </p>
+                          q.growthPercent >= 9999 ? (
+                            <span className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm bg-destructive text-destructive-foreground">
+                              EM ALTA ↑
+                            </span>
+                          ) : (
+                            <p className="text-sm font-bold">
+                              +{q.growthPercent}% ↑
+                            </p>
+                          )
                         )}
                         <div className="flex items-center gap-1 justify-end mt-0.5">
                           <div className="w-12 h-1 bg-foreground/10 overflow-hidden">
