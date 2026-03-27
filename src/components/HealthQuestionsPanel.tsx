@@ -75,28 +75,25 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                       </div>
 
                       <div className="text-right shrink-0">
-                        {q.growthPercent != null && (
-                          q.growthPercent >= 9999 ? (
-                            <span className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm bg-destructive text-destructive-foreground">
-                              EM ALTA ↑
-                            </span>
-                          ) : (
-                            <p className="text-sm font-bold">
-                              +{q.growthPercent}% ↑
-                            </p>
-                          )
-                        )}
-                        <div className="flex items-center gap-1 justify-end mt-0.5">
-                          <div className="w-12 h-1 bg-foreground/10 overflow-hidden">
+                        <div className="flex items-center gap-1 justify-end">
+                          <div className="w-14 h-1.5 bg-foreground/10 overflow-hidden rounded-sm">
                             <div
-                              className="h-full bg-foreground/60 transition-all"
-                              style={{ width: `${q.relativeVolume}%` }}
+                              className="h-full transition-all rounded-sm"
+                              style={{ width: `${q.relativeVolume}%`, backgroundColor: 'hsl(var(--foreground) / 0.6)' }}
                             />
                           </div>
-                          <span className="text-[8px] text-foreground/40">
+                          <span className="text-[10px] font-bold text-foreground/70">
                             {q.relativeVolume}
                           </span>
                         </div>
+                        {q.growthPercent != null && (
+                          <span
+                            className="inline-block text-[7px] font-medium uppercase tracking-wider px-1 py-0.5 rounded-sm mt-1"
+                            style={{ backgroundColor: 'rgba(139, 0, 255, 0.12)', color: '#8B00FF' }}
+                          >
+                            {q.growthPercent >= 9999 ? 'NOVO ↑' : `+${q.growthPercent}%`}
+                          </span>
+                        )}
                       </div>
 
                       <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
