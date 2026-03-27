@@ -89,7 +89,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
                     const relatedQuestions = questions
                       .filter((rq) => rq.cluster === q.cluster && rq.question !== q.question)
                       .sort((a, b) => b.relativeVolume - a.relativeVolume)
-                      .slice(0, 3);
+                      .slice(0, 5);
 
                     return relatedQuestions.length > 0 ? (
                       <div className="pb-4 pl-0">
