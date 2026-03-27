@@ -16,7 +16,7 @@ type Props = {
   hideKeywords?: boolean;
 };
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [], hideChart, hideKeywords }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
