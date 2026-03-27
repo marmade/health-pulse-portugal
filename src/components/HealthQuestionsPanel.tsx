@@ -12,13 +12,42 @@ type Props = {
 const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [relatedMap, setRelatedMap] = useState<Record<string, HealthQuestion[]>>({});
+  const isOverview = !axis || axis === "all";
   const { questions, isLoading } = useHealthQuestions(axis);
   const top15 = isOverview ? questions : questions.slice(0, 15);
   const title = axis && axisLabel
     ? `Perguntas sobre ${axisLabel}`
     : "Perguntas de Saúde em Crescimento";
 
-  const toggle = (q: string) => setExpanded((prev) => (prev === q ? null : q));
+  const toggle = async (question: string, cluster: string) => {
+    const isClosing = expanded === question;
+    setExpanded(isClosing ? null : question);
+    if (!isClosing && !relatedMap[question]) {
+      const { data } = await supabase
+        .from('health_questions')
+        .select('*')
+        .eq('cluster', cluster)
+        .neq('question', question)
+        .order('relative_volume', { ascending: false })
+        .limit(5);
+      if (data && data.length > 0) {
+        setRelatedMap(prev => ({
+          ...prev,
+          [question]: data.map(row => ({
+            question: row.question,
+            growthPercent: row.growth_percent,
+            relativeVolume: row.relative_volume,
+            axis: row.axis,
+            axisLabel: row.axis_label,
+            cluster: row.cluster,
+            relatedTerms: [],
+          })),
+        }));
+      } else {
+        setRelatedMap(prev => ({ ...prev, [question]: [] }));
+      }
+    }
+  };
 
   return (
     <div className="py-5 flex flex-col h-full min-h-0 max-h-[500px]">
