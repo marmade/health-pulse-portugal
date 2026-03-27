@@ -245,7 +245,7 @@ const Sobre = () => {
                 { title: "Dashboard", subtitle: "keywords + alertas", human: false },
                 { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false },
                 { title: "Guião", subtitle: "5 banco + 5 IA", human: false },
-                { title: "Curadoria Editorial", subtitle: "revisão humana", human: true },
+                { title: "Curadoria Editorial", subtitle: "criação de conteúdo", human: false },
                 { title: "Briefing", subtitle: "prioridades da semana", human: false },
                 { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
               ].map((step, idx, arr) => (
@@ -310,7 +310,7 @@ const Sobre = () => {
             { title: "Dashboard", subtitle: "keywords + alertas", human: false, terminal: false },
             { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false, terminal: false },
             { title: "Guião", subtitle: "5 banco + 5 IA", human: false, terminal: false },
-            { title: "Curadoria Editorial", subtitle: "revisão humana", human: true, terminal: false },
+            { title: "Curadoria Editorial", subtitle: "criação de conteúdo", human: false, terminal: false },
             { title: "Briefing", subtitle: "prioridades da semana", human: false, terminal: false },
             { title: "Diz que Disse", subtitle: "publicação", human: false, terminal: true },
           ].map((step, idx, arr) => (
