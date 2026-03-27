@@ -18,18 +18,14 @@ const FEEDS: FeedSource[] = [
   // MEDIA GERAL
   { url: 'https://feeds.feedburner.com/PublicoRSS', fallbackUrls: ['https://www.publico.pt/rss'], outlet: 'Público', type: 'media' },
   { url: 'https://observador.pt/feed/', outlet: 'Observador', type: 'media' },
-  { url: 'https://www.jn.pt/feed/', fallbackUrls: ['https://www.jn.pt/rss/'], outlet: 'Jornal de Notícias', type: 'media' },
   { url: 'https://www.dn.pt/stories.rss', fallbackUrls: ['https://www.dn.pt/feed/'], outlet: 'Diário de Notícias', type: 'media' },
-  { url: 'https://expresso.pt/feed/', fallbackUrls: ['https://expresso.pt/rss'], outlet: 'Expresso', type: 'media' },
-  { url: 'https://www.cmjornal.pt/feed/', fallbackUrls: ['https://www.cmjornal.pt/rss'], outlet: 'CM Jornal', type: 'media' },
+  { url: 'https://www.cmjornal.pt/rss', fallbackUrls: ['https://www.cmjornal.pt/rss/'], outlet: 'CM Jornal', type: 'media' },
   { url: 'https://www.rtp.pt/noticias/rss', fallbackUrls: ['https://www.rtp.pt/noticias/feed/'], outlet: 'RTP', type: 'media' },
-  { url: 'https://www.tsf.pt/feed/', fallbackUrls: ['https://www.tsf.pt/rss'], outlet: 'TSF', type: 'media' },
-  { url: 'https://sicnoticias.pt/feed/', fallbackUrls: ['https://sicnoticias.pt/rss'], outlet: 'SIC Notícias', type: 'media' },
-  { url: 'https://rr.sapo.pt/feed/', outlet: 'Renascença', type: 'media' },
-  { url: 'https://www.noticiasaominuto.com/feed', outlet: 'Notícias ao Minuto', type: 'media' },
+  { url: 'https://sicnoticias.pt/rss', fallbackUrls: ['https://sicnoticias.pt/rss/'], outlet: 'SIC Notícias', type: 'media' },
+  { url: 'https://www.noticiasaominuto.com/rss/ultima-hora', fallbackUrls: ['https://www.noticiasaominuto.com/rss'], outlet: 'Notícias ao Minuto', type: 'media' },
   // MEDIA — SECÇÕES SAÚDE
-  { url: 'https://www.publico.pt/rss/ciencia', outlet: 'Público — Ciência', type: 'media' },
-  { url: 'https://observador.pt/tag/saude/feed/', outlet: 'Observador — Saúde', type: 'media' },
+  { url: 'https://feeds.feedburner.com/PublicoRSS', outlet: 'Público — Ciência', type: 'media' },
+  { url: 'https://observador.pt/seccao/saude/feed/', fallbackUrls: ['https://observador.pt/seccao/sociedade/saude/feed/'], outlet: 'Observador — Saúde', type: 'media' },
   { url: 'https://visao.pt/saude/feed/', fallbackUrls: ['https://visao.sapo.pt/saude/feed/'], outlet: 'Visão — Saúde', type: 'media' },
   { url: 'https://www.eco.pt/tag/saude/feed/', outlet: 'ECO — Saúde', type: 'media' },
   // INSTITUCIONAL
@@ -37,9 +33,7 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.insa.min-saude.pt/feed/', fallbackUrls: ['https://www.insa.min-saude.pt/rss/'], outlet: 'INSA', type: 'institucional' },
   { url: 'https://www.sns.gov.pt/feed/', fallbackUrls: ['https://www.sns.gov.pt/rss/'], outlet: 'SNS', type: 'institucional' },
   { url: 'https://ordemdosmedicos.pt/feed/', outlet: 'Ordem dos Médicos', type: 'institucional' },
-  { url: 'https://www.ordemenfermeiros.pt/feed/', outlet: 'Ordem dos Enfermeiros', type: 'institucional' },
   { url: 'https://www.spms.min-saude.pt/feed/', outlet: 'SPMS', type: 'institucional' },
-  { url: 'https://www.ers.pt/feed/', outlet: 'ERS', type: 'institucional' },
   { url: 'https://saudemental.min-saude.pt/feed/', outlet: 'Coord. Nacional Saúde Mental', type: 'institucional' },
   // NUTRIÇÃO E ALIMENTAÇÃO
   { url: 'https://nutrimento.pt/feed/', outlet: 'Nutrimento (PNPAS)', type: 'institucional' },
@@ -55,7 +49,6 @@ const FEEDS: FeedSource[] = [
   { url: 'https://spem.pt/feed/', outlet: 'Sociedade Portuguesa de Esclerose Múltipla', type: 'institucional' },
   { url: 'https://gimm.pt/feed/', outlet: 'GIMM Gulbenkian', type: 'institucional' },
   // FACT-CHECKING
-  { url: 'https://poligrafo.sapo.pt/feed/', fallbackUrls: ['https://poligrafo.sapo.pt/feed'], outlet: 'Polígrafo', type: 'factcheck' },
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
 ];
 
