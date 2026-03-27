@@ -302,6 +302,8 @@ const SEED_DATA = [
     ambito: "Nacional",
     nome: "Sociedade Homeopática de Portugal (SHP)",
     link: "https://www.homeopatiaportugal.org",
+    ref_url: "https://www.msdmanuals.com/pt/casa/assuntos-especiais/medicina-integrativa-complementar-e-alternativa/homeopatia",
+    ref_label: "MSD Manuals — Homeopatia",
     descricao:
       "Associação de médicos e farmacêuticos fundada em 2003 que promove a homeopatia em Portugal. Membro do European Committee for Homeopathy. Apresenta-se como 'voz dos conhecimentos médicos', apesar de a homeopatia ser classificada como pseudociência pelo consenso científico — revisões sistemáticas e meta-análises não demonstram eficácia superior ao placebo.",
     col3: "• Estrutura profissional com médicos e farmacêuticos que confere falsa legitimidade\n• Associação europeia (ECH) que amplifica aparência de credibilidade institucional\n• Narrativa de 'conhecimento suprimido pelo establishment médico'\n• Presença em Portugal desde 1827 — longevidade confundida com validação",
@@ -314,6 +316,8 @@ const SEED_DATA = [
     ambito: "Nacional",
     nome: "Instituto Português de Naturologia (IPN)",
     link: "https://www.ipnaturologia.com",
+    ref_url: "https://www.msdmanuals.com/pt/casa/assuntos-especiais/medicina-integrativa-complementar-e-alternativa/naturopatia",
+    ref_label: "MSD Manuals — Naturopatia",
     descricao:
       "Autoproclamada 'maior escola de medicina natural do país', fundada em 1999. Oferece cursos de naturopatia, medicina tradicional chinesa, iridologia e acupuntura. Certificada pela DGERT como entidade formadora, o que confere aparência de validação estatal, apesar de as práticas ensinadas não terem evidência científica robusta.",
     col3: "• Certificação DGERT usada como selo de legitimidade para práticas sem evidência\n• Enquadramento legal (Lei 109/2019 das terapias não convencionais) confunde regulação com validação científica\n• Oferta formativa extensa que mimetiza estrutura de ensino superior\n• Clínica própria que combina formação com prática — circuito fechado de validação",
@@ -326,6 +330,8 @@ const SEED_DATA = [
     ambito: "Nacional",
     nome: "Associação Portuguesa de Reiki",
     link: "https://www.associacaoportuguesadereiki.com",
+    ref_url: "https://www.msdmanuals.com/pt/casa/assuntos-especiais/medicina-integrativa-complementar-e-alternativa/reiki",
+    ref_label: "MSD Manuals — Reiki",
     descricao:
       "Associação que promove a prática de Reiki em Portugal, incluindo em contextos hospitalares e oncológicos. Organiza voluntariado, formação e núcleos regionais. Mantém um 'Prémio Hayashi de Investigação Reiki' e uma biblioteca de 'estudos académicos', apesar de não existir mecanismo biofísico plausível para a prática nem evidência de eficácia além do efeito placebo.",
     col3: "• Integração em hospitais e instituições de saúde que normaliza a prática\n• Voluntariado e apoio a doentes oncológicos — apelo emocional forte\n• Prémio de 'investigação' que mimetiza processos científicos\n• Enquadramento legal como terapia não convencional em Portugal",
@@ -338,6 +344,8 @@ const SEED_DATA = [
     ambito: "Nacional",
     nome: "Medicina Funcional e Integrativa (conceito)",
     link: "",
+    ref_url: "https://www.msdmanuals.com/pt/casa/assuntos-especiais/medicina-integrativa-complementar-e-alternativa",
+    ref_label: "MSD Manuals — Medicina Integrativa e Alternativa",
     descricao:
       "Não é uma especialidade médica reconhecida pela Ordem dos Médicos em Portugal. É um rebranding de medicina alternativa que usa linguagem de biomarcadores, microbioma e 'causa raiz' para conferir aparência científica a abordagens não validadas. Clínicas e 'institutos' em Portugal oferecem consultas de 'medicina funcional' com preços elevados, combinando análises laboratoriais legítimas com interpretações e protocolos sem evidência.",
     col3: "• Linguagem científica sofisticada (biomarcadores, genómica, microbioma) que confere falsa legitimidade\n• Consultas longas e personalizadas que contrastam com a medicina convencional — apelo ao doente frustrado com o SNS\n• Protocolos de suplementação extensivos com margens comerciais elevadas\n• Alguns praticantes são médicos, o que confunde credenciais com validação do método",
@@ -350,6 +358,8 @@ const SEED_DATA = [
     ambito: "Nacional",
     nome: "Institutos de PNL (Programação Neurolinguística)",
     link: "",
+    ref_url: "https://pt.wikipedia.org/wiki/Programa%C3%A7%C3%A3o_neurolingu%C3%ADstica",
+    ref_label: "Wikipedia — PNL (classificação como pseudociência)",
     descricao:
       "Rede de institutos em Portugal que oferecem formações de 'practitioner' e 'master practitioner' em Programação Neurolinguística. Classificada como pseudociência pelo consenso científico — revisões sistemáticas e meta-análises não demonstram eficácia. Apesar disso, vários institutos são certificados pela DGERT, o que confunde regulação de entidade formadora com validação científica do conteúdo ensinado.",
     col3: "• Certificação DGERT usada como selo de credibilidade — mesma confusão que na naturopatia\n• Hierarquia de certificações ('practitioner', 'master', 'trainer') que mimetiza progressão académica\n• Linguagem que combina neurociência, linguística e psicologia para aparência interdisciplinar\n• Aplicação em contextos empresariais, coaching e terapia que amplifica o alcance",
@@ -612,6 +622,19 @@ function BenchmarkCard({ entry, accentColor }) {
               {bulletLines(entry.col4)}
             </div>
           </div>
+          {entry.ref_url && (
+            <div className="mt-5 pt-4" style={{ borderTop: "1px solid rgba(0,0,255,0.1)" }}>
+              <a
+                href={entry.ref_url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.12em] px-3 py-1.5 transition-colors hover:opacity-70"
+                style={{ color: "#0000FF", border: "1px solid #0000FF" }}
+              >
+                {entry.ref_label || "Referência científica"} →
+              </a>
+            </div>
+          )}
         </div>
       )}
     </div>
