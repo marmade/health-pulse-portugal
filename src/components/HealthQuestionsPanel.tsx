@@ -94,72 +94,28 @@ const HealthQuestionsPanel = ({ debunkingData, newsData, axis, axisLabel }: Prop
                     </div>
                   </button>
 
-                  {isExpanded && (
-                    <div className="pb-4 pl-0">
-                      <div className="border border-foreground/10 p-4 space-y-3">
-                        <div>
-                          <p className="editorial-label mb-1">Cluster associado</p>
-                          <p className="text-xs font-bold">{q.cluster}</p>
-                          <div className="flex flex-wrap gap-1 mt-1">
-                            {q.relatedTerms.map((t) => (
-                              <span
-                                key={t}
-                                className="text-[9px] px-1.5 py-0.5 border border-foreground/15 text-foreground/60"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
+                  {isExpanded && (() => {
+                    const relatedQuestions = questions
+                      .filter((rq) => rq.cluster === q.cluster && rq.question !== q.question)
+                      .sort((a, b) => b.relativeVolume - a.relativeVolume)
+                      .slice(0, 3);
+
+                    return relatedQuestions.length > 0 ? (
+                      <div className="pb-4 pl-0">
+                        <div className="border border-foreground/10 p-4">
+                          <p className="editorial-label mb-2">Pesquisas relacionadas</p>
+                          {relatedQuestions.map((rq) => (
+                            <p
+                              key={rq.question}
+                              className="text-[10px] text-foreground/50 leading-relaxed mb-1"
+                            >
+                              {rq.question}?
+                            </p>
+                          ))}
                         </div>
-
-                        {relatedNews.length > 0 && (
-                          <div>
-                            <p className="editorial-label mb-1">Notícias relacionadas</p>
-                            {relatedNews.map((n, j) => (
-                              <a
-                                key={j}
-                                href={n.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block text-xs font-medium hover:underline leading-tight mb-1"
-                              >
-                                {n.title}
-                                <span className="text-[9px] text-foreground/40 ml-2">
-                                  {n.outlet}
-                                </span>
-                              </a>
-                            ))}
-                          </div>
-                        )}
-
-                        {relatedDebunks.length > 0 && (
-                          <div>
-                            <p className="editorial-label mb-1">Fact-checks</p>
-                            {relatedDebunks.map((d, j) => (
-                              <a
-                                key={j}
-                                href={d.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block text-xs font-medium hover:underline leading-tight mb-1"
-                              >
-                                {d.title}
-                                <span className="text-[9px] text-foreground/40 ml-2">
-                                  {d.classification}
-                                </span>
-                              </a>
-                            ))}
-                          </div>
-                        )}
-
-                        {relatedNews.length === 0 && relatedDebunks.length === 0 && (
-                          <p className="text-[10px] text-foreground/30">
-                            Sem notícias ou fact-checks associados.
-                          </p>
-                        )}
                       </div>
-                    </div>
-                  )}
+                    ) : null;
+                  })()}
 
                   {i < top15.length - 1 && (
                     <div className="border-t border-foreground/10" />
