@@ -1,0 +1,2 @@
+ALTER TABLE public.bookmarks ADD COLUMN IF NOT EXISTS eixo text DEFAULT NULL;
+ALTER TABLE public.bookmarks ADD COLUMN IF NOT EXISTS subcategoria text DEFAULT NULL;
