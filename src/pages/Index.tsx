@@ -268,8 +268,6 @@ const Index = () => {
             {/* Linha 2: perguntas esquerda, alertas direita */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <HealthQuestionsPanel
-                debunkingData={debunkingData}
-                newsData={newsData}
                 axis={activeAxis}
                 axisLabel={filteredData[activeAxis]?.label}
               />
@@ -306,7 +304,7 @@ const Index = () => {
           <div className="mt-10">
             <div className="section-divider mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <HealthQuestionsPanel debunkingData={debunkingData} newsData={newsData} />
+              <HealthQuestionsPanel />
               <YouTubeTrendsPanel axis={activeAxis} />
             </div>
           </div>
