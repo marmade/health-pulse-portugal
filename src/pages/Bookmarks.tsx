@@ -60,8 +60,63 @@ const subcategoryOrder = [
   "outros",
 ];
 
+// Eixo + subcategoria mappings (frontend-only until DB columns exist)
+const EIXO_MAP: Record<string, string> = {
+  // Saúde Mental
+  "Psiquiatria": "saude-mental", "Suicidologia": "saude-mental", "Psicologia": "saude-mental",
+  "Psicodrama": "saude-mental", "Neuropediatria": "saude-mental", "Neurociências": "saude-mental",
+  "APAV": "saude-mental", "Cefaleias": "saude-mental", "Neurocirurgia": "saude-mental",
+  // Alimentação
+  "Nutrição": "alimentacao", "Alimentação": "alimentacao", "Alimentar": "alimentacao",
+  "Obesidade": "alimentacao", "Diabetologia": "alimentacao", "Gastrenterologia": "alimentacao",
+  "Nutrimento": "alimentacao", "EIPAS": "alimentacao", "Endocrinologia": "alimentacao",
+  "Metabólica": "alimentacao", "Endoscopia Digestiva": "alimentacao",
+  // Menopausa
+  "Menopausa": "menopausa", "Ginecologia": "menopausa", "Obstetrícia": "menopausa",
+  "Senologia": "menopausa", "Contracepção": "menopausa", "Reprodução": "menopausa",
+  "Materno": "menopausa", "Andrologia": "menopausa",
+  // Emergentes
+  "Oncologia": "emergentes", "Transplantação": "emergentes", "Vascular Cerebral": "emergentes",
+  "Imunologia": "emergentes", "Hematologia": "emergentes", "Saúde Pública": "emergentes",
+  "Saúde e Ambiente": "emergentes", "Hepatologia": "emergentes", "Hipertensão": "emergentes",
+  "Cruz Vermelha": "emergentes",
+};
+
+const SUBCAT_MAP: Record<string, string> = {
+  "DGS": "institucional", "Governo": "institucional", "Ordem dos": "institucional",
+  "EIPAS": "institucional", "Nutrimento": "institucional", "Alimentação Saudável": "institucional",
+  "GIMM": "academia", "Gulbenkian": "academia", "Neurociências": "academia",
+  "90 Segundos": "academia", "HPA": "academia",
+  "Cruz Vermelha": "ong_associacoes", "APAV": "ong_associacoes", "Conselho Português": "ong_associacoes",
+  "Bial": "farmaceutica",
+  "MSD": "referencia_clinica", "NewsFarma": "referencia_clinica",
+};
+
+function resolveEixo(b: Bookmark): string | null {
+  if (b.eixo) return b.eixo;
+  for (const [key, eixo] of Object.entries(EIXO_MAP)) {
+    if (b.titulo.includes(key)) return eixo;
+  }
+  return null;
+}
+
+function resolveSubcat(b: Bookmark): string {
+  if (b.subcategoria) return b.subcategoria;
+  if (b.categoria !== "fontes_referencia") return "";
+  for (const [key, sub] of Object.entries(SUBCAT_MAP)) {
+    if (b.titulo.includes(key)) return sub;
+  }
+  // Default: if it looks like a society
+  if (b.titulo.startsWith("Sociedade Portuguesa") || b.titulo.startsWith("Associação Portuguesa") ||
+      b.titulo.startsWith("Federação") || b.titulo.startsWith("Núcleo") || b.titulo.startsWith("Clube")) {
+    return "sociedades_cientificas";
+  }
+  return "outros";
+}
+
 const BookmarkCard = ({ b }: { b: Bookmark }) => {
-  const axisColors = b.eixo ? getAxisColors(b.eixo) : null;
+  const eixo = resolveEixo(b);
+  const axisColors = eixo ? getAxisColors(eixo) : null;
 
   return (
     <a
@@ -78,12 +133,12 @@ const BookmarkCard = ({ b }: { b: Bookmark }) => {
             {b.fonte && (
               <span className="text-[9px] uppercase tracking-wider opacity-50">{b.fonte}</span>
             )}
-            {axisColors && (
+            {axisColors && eixo && (
               <span
                 className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
                 style={{ backgroundColor: axisColors.bg, color: axisColors.text }}
               >
-                {AXIS_LABELS[b.eixo!] || b.eixo}
+                {AXIS_LABELS[eixo] || eixo}
               </span>
             )}
           </div>
@@ -134,7 +189,7 @@ const Bookmarks = () => {
   const renderFontesReferencia = (items: Bookmark[]) => {
     const bySubcat: Record<string, Bookmark[]> = {};
     for (const b of items) {
-      const sub = b.subcategoria || "outros";
+      const sub = resolveSubcat(b);
       if (!bySubcat[sub]) bySubcat[sub] = [];
       bySubcat[sub].push(b);
     }
