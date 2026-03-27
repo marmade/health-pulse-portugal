@@ -295,6 +295,54 @@ const SEED_DATA = [
     col3: "• Exploração de algoritmos de redes sociais para viralidade\n• Apelo emocional e testemunhos pessoais como 'prova'\n• Criação de comunidades fechadas que reforçam crenças\n• Monetização através de produtos e serviços não regulados",
     col4: "• Risco directo para a saúde pública (anti-vacinação, abandono de tratamentos)\n• Difícil de monitorizar e combater pela natureza descentralizada\n• Criação de bolhas informativas difíceis de penetrar",
   },
+  {
+    id: "bm-2b",
+    sinal: "-",
+    tipo: "Portal",
+    ambito: "Nacional",
+    nome: "Sociedade Homeopática de Portugal (SHP)",
+    link: "https://www.homeopatiaportugal.org",
+    descricao:
+      "Associação de médicos e farmacêuticos fundada em 2003 que promove a homeopatia em Portugal. Membro do European Committee for Homeopathy. Apresenta-se como 'voz dos conhecimentos médicos', apesar de a homeopatia ser classificada como pseudociência pelo consenso científico — revisões sistemáticas e meta-análises não demonstram eficácia superior ao placebo.",
+    col3: "• Estrutura profissional com médicos e farmacêuticos que confere falsa legitimidade\n• Associação europeia (ECH) que amplifica aparência de credibilidade institucional\n• Narrativa de 'conhecimento suprimido pelo establishment médico'\n• Presença em Portugal desde 1827 — longevidade confundida com validação",
+    col4: "• Erosão da confiança em medicina baseada em evidência\n• Risco de atraso ou abandono de tratamentos eficazes\n• Legitimação institucional de uma prática sem eficácia demonstrada\n• Confusão entre credenciais médicas dos associados e validade da homeopatia",
+  },
+  {
+    id: "bm-2c",
+    sinal: "-",
+    tipo: "Portal",
+    ambito: "Nacional",
+    nome: "Instituto Português de Naturologia (IPN)",
+    link: "https://www.ipnaturologia.com",
+    descricao:
+      "Autoproclamada 'maior escola de medicina natural do país', fundada em 1999. Oferece cursos de naturopatia, medicina tradicional chinesa, iridologia e acupuntura. Certificada pela DGERT como entidade formadora, o que confere aparência de validação estatal, apesar de as práticas ensinadas não terem evidência científica robusta.",
+    col3: "• Certificação DGERT usada como selo de legitimidade para práticas sem evidência\n• Enquadramento legal (Lei 109/2019 das terapias não convencionais) confunde regulação com validação científica\n• Oferta formativa extensa que mimetiza estrutura de ensino superior\n• Clínica própria que combina formação com prática — circuito fechado de validação",
+    col4: "• Formação de 'profissionais' que praticam sem base em evidência científica\n• Confusão entre certificação profissional e validação clínica\n• Risco de atraso no diagnóstico e tratamento de condições reais\n• Modelo de negócio baseado em formação contínua de práticas não validadas",
+  },
+  {
+    id: "bm-2d",
+    sinal: "-",
+    tipo: "Portal",
+    ambito: "Nacional",
+    nome: "Associação Portuguesa de Reiki",
+    link: "https://www.associacaoportuguesadereiki.com",
+    descricao:
+      "Associação que promove a prática de Reiki em Portugal, incluindo em contextos hospitalares e oncológicos. Organiza voluntariado, formação e núcleos regionais. Mantém um 'Prémio Hayashi de Investigação Reiki' e uma biblioteca de 'estudos académicos', apesar de não existir mecanismo biofísico plausível para a prática nem evidência de eficácia além do efeito placebo.",
+    col3: "• Integração em hospitais e instituições de saúde que normaliza a prática\n• Voluntariado e apoio a doentes oncológicos — apelo emocional forte\n• Prémio de 'investigação' que mimetiza processos científicos\n• Enquadramento legal como terapia não convencional em Portugal",
+    col4: "• Normalização de pseudociência em contexto clínico (hospitais, cuidados paliativos)\n• Confusão entre conforto emocional e eficácia terapêutica\n• Legitimação institucional pode levar à substituição de tratamentos eficazes\n• Desvio de recursos e atenção de intervenções baseadas em evidência",
+  },
+  {
+    id: "bm-2e",
+    sinal: "-",
+    tipo: "Portal",
+    ambito: "Nacional",
+    nome: "Medicina Funcional e Integrativa (conceito)",
+    link: "",
+    descricao:
+      "Não é uma especialidade médica reconhecida pela Ordem dos Médicos em Portugal. É um rebranding de medicina alternativa que usa linguagem de biomarcadores, microbioma e 'causa raiz' para conferir aparência científica a abordagens não validadas. Clínicas e 'institutos' em Portugal oferecem consultas de 'medicina funcional' com preços elevados, combinando análises laboratoriais legítimas com interpretações e protocolos sem evidência.",
+    col3: "• Linguagem científica sofisticada (biomarcadores, genómica, microbioma) que confere falsa legitimidade\n• Consultas longas e personalizadas que contrastam com a medicina convencional — apelo ao doente frustrado com o SNS\n• Protocolos de suplementação extensivos com margens comerciais elevadas\n• Alguns praticantes são médicos, o que confunde credenciais com validação do método",
+    col4: "• Exploração da frustração legítima com o sistema de saúde para vender serviços não validados\n• Custos elevados que criam desigualdade no acesso à 'saúde personalizada'\n• Risco de sobrediagnóstico e tratamentos desnecessários baseados em interpretações não convencionais de análises\n• Erosão da confiança na medicina baseada em evidência ao apresentar-se como 'evolução' desta",
+  },
   // ── BENCHMARK − ── Personas Nacionais ─────────────────────────────────────
   {
     id: "bm-3",
