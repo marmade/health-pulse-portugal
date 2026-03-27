@@ -74,7 +74,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               return (
                 <div key={q.question}>
                   <button
-                    onClick={() => toggle(q.question)}
+                    onClick={() => toggle(q.question, q.cluster)}
                     className="w-full text-left py-2.5 group"
                   >
                     <div className="flex items-start gap-4">
