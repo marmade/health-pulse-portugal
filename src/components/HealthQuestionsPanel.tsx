@@ -11,7 +11,7 @@ type Props = {
 
 const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const isOverview = !axis || axis === "all";
+  const [relatedMap, setRelatedMap] = useState<Record<string, HealthQuestion[]>>({});
   const { questions, isLoading } = useHealthQuestions(axis);
   const top15 = isOverview ? questions : questions.slice(0, 15);
   const title = axis && axisLabel
