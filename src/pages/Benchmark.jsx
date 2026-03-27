@@ -343,6 +343,18 @@ const SEED_DATA = [
     col3: "• Linguagem científica sofisticada (biomarcadores, genómica, microbioma) que confere falsa legitimidade\n• Consultas longas e personalizadas que contrastam com a medicina convencional — apelo ao doente frustrado com o SNS\n• Protocolos de suplementação extensivos com margens comerciais elevadas\n• Alguns praticantes são médicos, o que confunde credenciais com validação do método",
     col4: "• Exploração da frustração legítima com o sistema de saúde para vender serviços não validados\n• Custos elevados que criam desigualdade no acesso à 'saúde personalizada'\n• Risco de sobrediagnóstico e tratamentos desnecessários baseados em interpretações não convencionais de análises\n• Erosão da confiança na medicina baseada em evidência ao apresentar-se como 'evolução' desta",
   },
+  {
+    id: "bm-2f",
+    sinal: "-",
+    tipo: "Portal",
+    ambito: "Nacional",
+    nome: "Institutos de PNL (Programação Neurolinguística)",
+    link: "",
+    descricao:
+      "Rede de institutos em Portugal que oferecem formações de 'practitioner' e 'master practitioner' em Programação Neurolinguística. Classificada como pseudociência pelo consenso científico — revisões sistemáticas e meta-análises não demonstram eficácia. Apesar disso, vários institutos são certificados pela DGERT, o que confunde regulação de entidade formadora com validação científica do conteúdo ensinado.",
+    col3: "• Certificação DGERT usada como selo de credibilidade — mesma confusão que na naturopatia\n• Hierarquia de certificações ('practitioner', 'master', 'trainer') que mimetiza progressão académica\n• Linguagem que combina neurociência, linguística e psicologia para aparência interdisciplinar\n• Aplicação em contextos empresariais, coaching e terapia que amplifica o alcance",
+    col4: "• A DGERT certifica a entidade formadora, não valida o conteúdo científico — distinção que o público desconhece\n• Pessoas formadas em PNL podem apresentar-se como 'terapeutas' sem formação clínica\n• Risco de substituição de acompanhamento psicológico qualificado por técnicas sem evidência\n• Modelo de negócio baseado em formações contínuas de elevado custo com certificações sem valor científico",
+  },
   // ── BENCHMARK − ── Personas Nacionais ─────────────────────────────────────
   {
     id: "bm-3",
