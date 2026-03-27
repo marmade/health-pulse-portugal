@@ -48,6 +48,8 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.cnc.uc.pt/pt/feed/', outlet: 'Centro de Neurociências e Biologia Celular', type: 'institucional' },
   { url: 'https://spem.pt/feed/', outlet: 'Sociedade Portuguesa de Esclerose Múltipla', type: 'institucional' },
   { url: 'https://gimm.pt/feed/', outlet: 'GIMM Gulbenkian', type: 'institucional' },
+  // DIVULGAÇÃO CIENTÍFICA
+  { url: 'https://www.90segundosdeciencia.pt/feed/', outlet: '90 Segundos de Ciência', type: 'media' },
   // FACT-CHECKING
   { url: 'https://observador.pt/factchecks/feed/', outlet: 'Observador Fact Check', type: 'factcheck' },
 ];
