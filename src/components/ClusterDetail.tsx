@@ -9,7 +9,8 @@ import {
 } from "recharts";
 import type { ClusterWithMetrics } from "@/data/clusters";
 import { generateClusterTrend } from "@/data/clusters";
-import { generateKeywordTrend as genKwTrend } from "@/data/mockData";
+import { buildKeywordTrend } from "@/lib/buildTrend";
+import type { HistoricalSnapshot } from "@/hooks/useHistoricalData";
 
 const COLORS = [
   "hsl(240, 100%, 50%)",
@@ -22,21 +23,22 @@ const COLORS = [
 type Props = {
   cluster: ClusterWithMetrics;
   period: string;
+  historicalData?: HistoricalSnapshot[];
 };
 
-const ClusterDetail = ({ cluster, period }: Props) => {
+const ClusterDetail = ({ cluster, period, historicalData = [] }: Props) => {
   const clusterTrend = useMemo(
-    () => generateClusterTrend(cluster, period),
-    [cluster, period]
+    () => generateClusterTrend(cluster, period, historicalData),
+    [cluster, period, historicalData]
   );
 
-  // Build per-keyword chart data
+  // Build per-keyword chart data from real historical snapshots
   const kwChartData = useMemo(() => {
     const trends = cluster.resolvedKeywords.map((kw) => ({
       term: kw.term,
-      data: genKwTrend(kw, period),
+      data: buildKeywordTrend(historicalData, kw.term, period),
     }));
-    if (trends.length === 0) return [];
+    if (trends.length === 0 || trends[0].data.length === 0) return [];
     return trends[0].data.map((point, i) => {
       const merged: Record<string, unknown> = { week: point.week };
       trends.forEach((t) => {
@@ -44,43 +46,45 @@ const ClusterDetail = ({ cluster, period }: Props) => {
       });
       return merged;
     });
-  }, [cluster, period]);
+  }, [cluster, period, historicalData]);
 
   return (
     <div className="border border-foreground/10 p-4 space-y-4 mb-2">
       {/* Aggregated cluster trend */}
-      <div>
-        <p className="editorial-label mb-2">
-          Volume agregado — {cluster.cluster_name}
-        </p>
-        <div className="h-32">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={clusterTrend}>
-              <XAxis
-                dataKey="week"
-                tick={{ fontSize: 9, fill: "hsl(240, 100%, 50%)", fontFamily: "'Space Grotesk'" }}
-                axisLine={{ stroke: "hsl(240, 100%, 50%)", strokeWidth: 0.5, opacity: 0.3 }}
-                tickLine={false}
-              />
-              <YAxis hide />
-              <Tooltip
-                contentStyle={{
-                  background: "#fff",
-                  border: "1px solid hsl(240, 100%, 50%)",
-                  borderRadius: 0,
-                  fontSize: 11,
-                  fontFamily: "'Space Grotesk'",
-                }}
-              />
-              <Line type="monotone" dataKey="current" stroke="hsl(240, 100%, 50%)" strokeWidth={1.5} dot={false} name="2026" />
-              <Line type="monotone" dataKey="previous" stroke="hsl(240, 100%, 50%)" strokeWidth={1} strokeDasharray="4 4" dot={false} opacity={0.3} name="2025" />
-            </LineChart>
-          </ResponsiveContainer>
+      {clusterTrend.length > 0 && (
+        <div>
+          <p className="editorial-label mb-2">
+            Volume agregado — {cluster.cluster_name}
+          </p>
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={clusterTrend}>
+                <XAxis
+                  dataKey="week"
+                  tick={{ fontSize: 9, fill: "hsl(240, 100%, 50%)", fontFamily: "'Space Grotesk'" }}
+                  axisLine={{ stroke: "hsl(240, 100%, 50%)", strokeWidth: 0.5, opacity: 0.3 }}
+                  tickLine={false}
+                />
+                <YAxis hide />
+                <Tooltip
+                  contentStyle={{
+                    background: "#fff",
+                    border: "1px solid hsl(240, 100%, 50%)",
+                    borderRadius: 0,
+                    fontSize: 11,
+                    fontFamily: "'Space Grotesk'",
+                  }}
+                />
+                <Line type="monotone" dataKey="current" stroke="hsl(240, 100%, 50%)" strokeWidth={1.5} dot={false} name="2026" />
+                <Line type="monotone" dataKey="previous" stroke="hsl(240, 100%, 50%)" strokeWidth={1} strokeDasharray="4 4" dot={false} opacity={0.3} name="2025" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Per-keyword breakdown chart */}
-      {cluster.resolvedKeywords.length > 1 && (
+      {cluster.resolvedKeywords.length > 1 && kwChartData.length > 0 && (
         <div>
           <p className="editorial-label mb-2">Evolução por keyword</p>
           <div className="h-32">
@@ -126,6 +130,13 @@ const ClusterDetail = ({ cluster, period }: Props) => {
             ))}
           </div>
         </div>
+      )}
+
+      {/* No data message */}
+      {clusterTrend.length === 0 && (
+        <p className="text-[10px] text-foreground/30">
+          Sem dados históricos disponíveis para este cluster.
+        </p>
       )}
 
       {/* Keyword list */}

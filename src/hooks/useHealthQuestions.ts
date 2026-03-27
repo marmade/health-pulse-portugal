@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import {
-  type HealthQuestion,
-  healthQuestions as fallbackQuestions,
-  getTopQuestionsPerAxis,
-  getHealthQuestions as getFallbackQuestions,
-} from '@/data/healthQuestions';
+import type { HealthQuestion } from '@/data/healthQuestions';
 
 export function useHealthQuestions(axis?: string) {
   const [questions, setQuestions] = useState<HealthQuestion[]>([]);
@@ -18,8 +13,6 @@ export function useHealthQuestions(axis?: string) {
       setIsLoading(true);
 
       try {
-        // Quando axis='all': 2 perguntas por eixo (balanceado)
-        // Quando axis específico: top 10 desse eixo
         let rows: any[] = [];
         if (!axis || axis === 'all') {
           const axes = ['saude-mental', 'alimentacao', 'menopausa', 'emergentes'];
@@ -46,32 +39,25 @@ export function useHealthQuestions(axis?: string) {
           if (axisError) throw axisError;
           rows = axisData || [];
         }
-        const data = rows;
 
         if (!cancelled) {
-          if (data && data.length > 0) {
-            setQuestions(
-              data.map((row) => ({
-                question: row.question,
-                growthPercent: row.growth_percent,
-                relativeVolume: row.relative_volume,
-                axis: row.axis,
-                axisLabel: row.axis_label,
-                cluster: row.cluster,
-                relatedTerms: [],
-              }))
-            );
-          } else {
-            // Fallback to hardcoded data
-            const isOverview = !axis || axis === 'all';
-            setQuestions(isOverview ? getTopQuestionsPerAxis(2) : getFallbackQuestions(axis));
-          }
+          const mapped = rows.map((row) => ({
+            question: row.question,
+            growthPercent: row.growth_percent,
+            relativeVolume: row.relative_volume,
+            axis: row.axis,
+            axisLabel: row.axis_label,
+            cluster: row.cluster,
+            relatedTerms: [],
+          }));
+          // Sort cross-axis by growth so the most explosive questions surface first
+          mapped.sort((a, b) => b.growthPercent - a.growthPercent);
+          setQuestions(mapped);
         }
       } catch (err) {
         console.error('Error fetching health questions:', err);
         if (!cancelled) {
-          const isOverview = !axis || axis === 'all';
-          setQuestions(isOverview ? getTopQuestionsPerAxis(2) : getFallbackQuestions(axis));
+          setQuestions([]);
         }
       } finally {
         if (!cancelled) setIsLoading(false);

@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    // 1. Fetch all active keywords
+    // 1. Fetch all active keywords (volumes already updated by Google Trends script)
     const { data: keywords, error: kwError } = await supabase
       .from("keywords")
       .select("*")
@@ -33,36 +33,14 @@ Deno.serve(async (req) => {
     const today = new Date().toISOString().split("T")[0];
     const snapshotRows: any[] = [];
 
-    // 2. Update each keyword with ±15% realistic variation
+    // 2. Create historical snapshot from current real data (no modification)
     for (const kw of keywords) {
-      const variation = 1 + (Math.random() * 0.3 - 0.15); // ±15%
-      const newVolume = Math.max(1, Math.round(kw.current_volume * variation));
-      const newChange = +((
-        ((newVolume - kw.previous_volume) / Math.max(1, kw.previous_volume)) *
-        100
-      ).toFixed(1));
-      const newTrend =
-        newChange > 10 ? "up" : newChange < -10 ? "down" : "stable";
-
-      const { error: updateErr } = await supabase
-        .from("keywords")
-        .update({
-          previous_volume: kw.current_volume,
-          current_volume: newVolume,
-          change_percent: newChange,
-          trend: newTrend,
-        })
-        .eq("id", kw.id);
-
-      if (updateErr) console.error("Update error for", kw.term, updateErr);
-
-      // Prepare snapshot row
       snapshotRows.push({
         snapshot_date: today,
         axis: kw.axis,
         keyword: kw.term,
-        search_index: newVolume,
-        change_percent: newChange,
+        search_index: kw.current_volume,
+        change_percent: kw.change_percent,
         is_emergent: kw.is_emergent,
       });
     }
@@ -84,7 +62,7 @@ Deno.serve(async (req) => {
 
     return new Response(
       JSON.stringify({
-        message: `Refreshed ${keywords.length} keywords`,
+        message: `Snapshot created for ${keywords.length} keywords`,
         snapshots: snapshotRows.length,
         timestamp: new Date().toISOString(),
       }),

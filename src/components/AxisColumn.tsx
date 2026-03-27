@@ -17,8 +17,9 @@ type Props = {
 };
 
 const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive = [], hideChart, hideKeywords }: Props) => {
-  const totalChange =
-    keywords.reduce((sum, k) => sum + k.changePercent, 0) / keywords.length;
+  const totalChange = allKeywords.length > 0
+    ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
+    : 0;
   const emergentCount = useMemo(
     () => allKeywords.filter((kw) => kw.isEmergent).length,
     [allKeywords]
@@ -73,7 +74,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, archive =
       {!hideChart && (
         <>
           <div className="border-t border-foreground/10" />
-          <TrendChart data={trendData} label={label} />
+          <TrendChart data={trendData} label={label} period={period} />
         </>
       )}
 

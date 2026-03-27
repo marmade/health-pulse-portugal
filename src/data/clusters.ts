@@ -1,5 +1,5 @@
 import type { Keyword, TrendPoint } from "./mockData";
-import { generateKeywordTrend } from "./mockData";
+import { buildKeywordTrend } from "@/lib/buildTrend";
 
 export type Cluster = {
   cluster_name: string;
@@ -91,12 +91,20 @@ export function resolveClusterMetrics(
   });
 }
 
-/** Generate aggregated trend data for a cluster */
-export function generateClusterTrend(cluster: ClusterWithMetrics, period: string): TrendPoint[] {
+/** Generate aggregated trend data for a cluster from real historical snapshots */
+export function generateClusterTrend(
+  cluster: ClusterWithMetrics,
+  period: string,
+  historicalData: any[] = [],
+): TrendPoint[] {
   if (cluster.resolvedKeywords.length === 0) return [];
 
-  const allTrends = cluster.resolvedKeywords.map((kw) => generateKeywordTrend(kw, period));
-  
+  const allTrends = cluster.resolvedKeywords.map((kw) =>
+    buildKeywordTrend(historicalData, kw.term, period)
+  );
+
+  if (allTrends[0].length === 0) return [];
+
   return allTrends[0].map((point, i) => ({
     week: point.week,
     current: allTrends.reduce((s, t) => s + (t[i]?.current ?? 0), 0),

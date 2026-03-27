@@ -9,7 +9,8 @@ import {
   Legend,
 } from "recharts";
 import type { Keyword } from "@/data/mockData";
-import { generateKeywordTrend } from "@/data/mockData";
+import { buildKeywordTrend } from "@/lib/buildTrend";
+import type { HistoricalSnapshot } from "@/hooks/useHistoricalData";
 
 const COLORS = [
   "hsl(240, 100%, 50%)",
@@ -24,9 +25,10 @@ type Props = {
   selectedTerms: string[];
   onToggleTerm: (term: string) => void;
   period: string;
+  historicalData?: HistoricalSnapshot[];
 };
 
-const KeywordCompare = ({ allKeywords, selectedTerms, onToggleTerm, period }: Props) => {
+const KeywordCompare = ({ allKeywords, selectedTerms, onToggleTerm, period, historicalData = [] }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredOptions = useMemo(
@@ -44,13 +46,14 @@ const KeywordCompare = ({ allKeywords, selectedTerms, onToggleTerm, period }: Pr
     [allKeywords, selectedTerms]
   );
 
-  // Build merged chart data
+  // Build merged chart data from real historical snapshots
   const chartData = useMemo(() => {
     if (selectedKeywords.length === 0) return [];
     const trends = selectedKeywords.map((kw) => ({
       term: kw.term,
-      data: generateKeywordTrend(kw, period),
+      data: buildKeywordTrend(historicalData, kw.term, period),
     }));
+    if (trends[0].data.length === 0) return [];
     return trends[0].data.map((point, i) => {
       const merged: Record<string, unknown> = { week: point.week };
       trends.forEach((t) => {
@@ -59,7 +62,7 @@ const KeywordCompare = ({ allKeywords, selectedTerms, onToggleTerm, period }: Pr
       });
       return merged;
     });
-  }, [selectedKeywords, period]);
+  }, [selectedKeywords, period, historicalData]);
 
   return (
     <div className="space-y-4">
@@ -121,7 +124,7 @@ const KeywordCompare = ({ allKeywords, selectedTerms, onToggleTerm, period }: Pr
       )}
 
       {/* Comparative chart */}
-      {selectedKeywords.length > 0 && (
+      {selectedKeywords.length > 0 && chartData.length > 0 && (
         <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>

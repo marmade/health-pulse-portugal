@@ -1,6 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { axisData as mockAxisData, getFilteredAxisData as getMockFilteredData, type Keyword, type TrendPoint } from '@/data/mockData';
+import type { Keyword, TrendPoint } from '@/data/mockData';
+import { buildAxisTrend } from '@/lib/buildTrend';
 
 type AxisDataResult = Record<string, {
   label: string;
@@ -9,67 +10,11 @@ type AxisDataResult = Record<string, {
   trend: TrendPoint[];
 }>;
 
-// Per-keyword period multipliers
-const kwPeriodMult: Record<string, Record<string, number>> = {
-  burnout: { "7d": 1.5, "30d": 1.2, "12m": 1 },
-  pânico: { "7d": 1.8, "30d": 1.3, "12m": 1 },
-  "PTSD": { "7d": 0.6, "30d": 0.8, "12m": 1 },
-  "solidão": { "7d": 0.5, "30d": 0.7, "12m": 1 },
-  "TDAH adulto": { "7d": 1.4, "30d": 1.1, "12m": 1 },
-  "terapia online": { "7d": 1.6, "30d": 1.3, "12m": 1 },
-  "automutilação": { "7d": 1.3, "30d": 1.1, "12m": 1 },
-  "jejum intermitente": { "7d": 1.7, "30d": 1.4, "12m": 1 },
-  "alimentação plant-based": { "7d": 1.5, "30d": 1.2, "12m": 1 },
-  "ultraprocessados": { "7d": 1.8, "30d": 1.3, "12m": 1 },
-  "dieta cetogénica": { "7d": 1.6, "30d": 1.2, "12m": 1 },
-  "menopausa precoce": { "7d": 1.4, "30d": 1.1, "12m": 1 },
-  "libido menopausa": { "7d": 1.3, "30d": 1.1, "12m": 1 },
-  "menopausa masculina": { "7d": 1.9, "30d": 1.3, "12m": 1 },
-  "mpox portugal": { "7d": 2.0, "30d": 1.5, "12m": 1 },
-  "dengue europa": { "7d": 2.2, "30d": 1.6, "12m": 1 },
-  "vírus nipah": { "7d": 2.5, "30d": 1.4, "12m": 1 },
-  "bactérias carnívoras": { "7d": 2.0, "30d": 1.5, "12m": 1 },
-  "microplásticos sangue": { "7d": 1.6, "30d": 1.2, "12m": 1 },
-  "sarampo surto": { "7d": 1.8, "30d": 1.3, "12m": 1 },
-};
-
 const axisLabels: Record<string, string> = {
   "saude-mental": "SAÚDE MENTAL",
   "alimentacao": "ALIMENTAÇÃO",
   "menopausa": "MENOPAUSA",
   "emergentes": "EMERGENTES",
-};
-
-const generateTrend = (base: number, variance: number, period: string = "12m"): TrendPoint[] => {
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const currentDayOfWeek = now.getDay();
-
-  const configs: Record<string, { labels: string[]; count: number }> = {
-    "7d": { labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"], count: 7 },
-    "30d": { labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4"], count: 4 },
-    "12m": { labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"], count: 12 },
-  };
-  const config = configs[period] || configs["12m"];
-  return config.labels.map((w, i) => {
-    const previous = Math.round(base * 0.8 + (Math.random() - 0.5) * variance * 0.7);
-
-    if (period === "12m" && i > currentMonth) {
-      return { week: w, current: undefined as unknown as number, previous };
-    }
-    if (period === "7d") {
-      const dayMap = [1, 2, 3, 4, 5, 6, 0];
-      if (dayMap[i] > currentDayOfWeek && dayMap[i] !== 0) {
-        return { week: w, current: undefined as unknown as number, previous };
-      }
-    }
-
-    return {
-      week: w,
-      current: Math.round(base + (Math.random() - 0.3) * variance),
-      previous,
-    };
-  });
 };
 
 export function useAxisData(period: string) {
@@ -86,63 +31,110 @@ export function useAxisData(period: string) {
       setError(null);
 
       try {
-        const { data: keywords, error: fetchError } = await supabase
-          .from('keywords')
-          .select('*')
-          .eq('is_active', true);
+        // Fetch keywords and historical snapshots in parallel
+        const [kwResult, snapResult] = await Promise.all([
+          supabase.from('keywords').select('*').eq('is_active', true),
+          supabase.from('historical_snapshots').select('*').order('snapshot_date', { ascending: true }),
+        ]);
 
-        if (fetchError) throw fetchError;
+        if (kwResult.error) throw kwResult.error;
+
+        const keywords = kwResult.data;
+        const snapshots = snapResult.data || [];
 
         if (!keywords || keywords.length === 0) {
-          // Fallback to mock data
-          const mockData = getMockFilteredData(period, "pt");
           if (!cancelled) {
-            setData(mockData);
+            setData(null);
             setIsFromDb(false);
           }
           return;
         }
 
-        // Group keywords by axis
+        // Compute period-specific volumes from historical snapshots
+        const now = new Date();
+        let currentCutoff: Date;
+        let previousCutoff: Date;
+
+        if (period === "7d") {
+          currentCutoff = new Date(now);
+          currentCutoff.setDate(currentCutoff.getDate() - 7);
+          previousCutoff = new Date(currentCutoff);
+          previousCutoff.setDate(previousCutoff.getDate() - 7);
+        } else if (period === "30d") {
+          currentCutoff = new Date(now);
+          currentCutoff.setDate(currentCutoff.getDate() - 30);
+          previousCutoff = new Date(currentCutoff);
+          previousCutoff.setDate(previousCutoff.getDate() - 30);
+        } else {
+          // 12m — use last 12 months vs previous 12 months
+          currentCutoff = new Date(now);
+          currentCutoff.setFullYear(currentCutoff.getFullYear() - 1);
+          previousCutoff = new Date(currentCutoff);
+          previousCutoff.setFullYear(previousCutoff.getFullYear() - 1);
+        }
+
+        // Build per-keyword volume averages for the selected period
+        const kwSnapMap: Record<string, { current: number[]; previous: number[] }> = {};
+        for (const s of snapshots) {
+          const d = new Date(s.snapshot_date);
+          if (!kwSnapMap[s.keyword]) kwSnapMap[s.keyword] = { current: [], previous: [] };
+          if (d >= currentCutoff) {
+            kwSnapMap[s.keyword].current.push(s.search_index);
+          } else if (d >= previousCutoff && d < currentCutoff) {
+            kwSnapMap[s.keyword].previous.push(s.search_index);
+          }
+        }
+
+        const avg = (arr: number[]) => arr.length > 0 ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : 0;
+
+        // Group keywords by axis with period-specific volumes
         const grouped: Record<string, Keyword[]> = {};
         for (const kw of keywords) {
+          const snaps = kwSnapMap[kw.term];
+          const hasSnapshots = snaps && (snaps.current.length > 0 || snaps.previous.length > 0);
+
+          // Use snapshot-derived volumes when available, fall back to DB values
+          const currentVolume = hasSnapshots && snaps.current.length > 0
+            ? avg(snaps.current)
+            : kw.current_volume;
+          const previousVolume = hasSnapshots && snaps.previous.length > 0
+            ? avg(snaps.previous)
+            : kw.previous_volume;
+          const changePercent = previousVolume > 0
+            ? +((currentVolume - previousVolume) / previousVolume * 100).toFixed(1)
+            : Number(kw.change_percent);
+          const trend = changePercent > 10 ? "up" : changePercent < -10 ? "down" : "stable";
+          const isEmergent = changePercent >= 50 && currentVolume >= 10;
+
           const mapped: Keyword = {
             term: kw.term,
             synonyms: kw.synonyms || [],
             category: kw.category,
             axis: kw.axis,
             source: kw.source,
-            currentVolume: kw.current_volume,
-            previousVolume: kw.previous_volume,
-            changePercent: Number(kw.change_percent),
-            trend: kw.trend as "up" | "down" | "stable",
+            currentVolume,
+            previousVolume,
+            changePercent,
+            trend: trend as "up" | "down" | "stable",
             lastPeak: kw.last_peak || '',
-            isEmergent: kw.is_emergent,
+            isEmergent,
           };
-
-          // Apply period multipliers
-          const pm = kwPeriodMult[mapped.term]?.[period] ?? 1;
-
-          mapped.currentVolume = Math.round(mapped.currentVolume * pm);
-          mapped.changePercent = +(((mapped.currentVolume - mapped.previousVolume) / mapped.previousVolume) * 100).toFixed(1);
-          mapped.trend = (pm > 1.2 ? "up" : pm < 0.8 ? "down" : mapped.trend) as "up" | "down" | "stable";
 
           if (!grouped[kw.axis]) grouped[kw.axis] = [];
           grouped[kw.axis].push(mapped);
         }
 
-        // Build result
+        // Build result with real historical trends
         const result: AxisDataResult = {};
         for (const [axisId, axisKeywords] of Object.entries(grouped)) {
           const sorted = [...axisKeywords].sort((a, b) => b.currentVolume - a.currentVolume);
           const top5 = sorted.slice(0, 5);
-          const baseVol = Math.round(top5.reduce((s, k) => s + k.currentVolume, 0) / top5.length);
 
           result[axisId] = {
             label: axisLabels[axisId] || axisId.toUpperCase(),
             keywords: top5,
             allKeywords: sorted,
-            trend: generateTrend(baseVol, baseVol * 0.4, period),
+            trend: buildAxisTrend(snapshots, axisId, period),
           };
         }
 
@@ -152,10 +144,8 @@ export function useAxisData(period: string) {
         }
       } catch (err) {
         console.error('Error fetching axis data:', err);
-        // Fallback to mock data on error
-        const mockData = getMockFilteredData(period, "pt");
         if (!cancelled) {
-          setData(mockData);
+          setData(null);
           setIsFromDb(false);
           setError(err instanceof Error ? err.message : 'Erro ao carregar dados');
         }
@@ -185,7 +175,7 @@ export function useDebunkingData() {
       const { data: debunking } = await supabase
         .from('debunking')
         .select('*');
-      
+
       if (debunking && debunking.length > 0) {
         setData(debunking.map(d => ({
           term: d.term,
@@ -215,7 +205,7 @@ export function useNewsData() {
         .from('news_items')
         .select('*')
         .order('date', { ascending: false });
-      
+
       if (news && news.length > 0) {
         setData(news.map(n => ({
           title: n.title,
@@ -225,7 +215,6 @@ export function useNewsData() {
           relatedTerm: n.related_term,
           sourceType: (n as any).source_type || 'media',
         })));
-        // Use the most recent created_at as last fetch timestamp
         const latest = news.reduce((max, n) => n.created_at > max ? n.created_at : max, news[0].created_at);
         setLastFetchTimestamp(latest);
       }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
-import { getTopQuestionsPerAxis } from "@/data/healthQuestions";
+// Health questions are fetched from Supabase — no hardcoded fallback
 import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
 
@@ -90,25 +90,6 @@ function getWeekRange() {
   };
 }
 
-function getPreviousWeekRange() {
-  const now = new Date();
-  const day = now.getDay();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1) - 7);
-  monday.setHours(0, 0, 0, 0);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-
-  const fmtShort = (d: Date) =>
-    d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
-
-  return {
-    isoStart: monday.toISOString().split("T")[0],
-    isoEnd: sunday.toISOString().split("T")[0],
-    shortLabel: `${fmtShort(monday)} — ${fmtShort(sunday)} ${monday.getFullYear()}`,
-  };
-}
-
 const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
@@ -141,14 +122,6 @@ const Briefing = () => {
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
       if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number; relative_volume: number; axis: string}[]);
       setLoading(false);
-
-      // Auto-archive previous week silently
-      autoArchivePreviousWeek(
-        kwRes.data as KeywordRow[] || [],
-        newsRes.data as NewsRow[] || [],
-        debunkRes.data as DebunkingRow[] || [],
-        archiveRes.data as ArchivedBriefing[] || [],
-      );
     };
     fetchData();
   }, []);
@@ -184,58 +157,6 @@ const Briefing = () => {
     fetchDizQueDisse();
   }, [keywords]);
 
-  const autoArchivePreviousWeek = async (
-    kw: KeywordRow[],
-    nws: NewsRow[],
-    dbk: DebunkingRow[],
-    existingArchives: ArchivedBriefing[],
-  ) => {
-    const prev = getPreviousWeekRange();
-    const alreadyArchived = existingArchives.some((a) => a.week_start === prev.isoStart);
-    if (alreadyArchived) return;
-
-    const emergentKw = kw.filter((k) => k.is_emergent);
-    const topQuestions = getTopQuestionsPerAxis(2).slice(0, 5);
-
-    try {
-      await supabase.from("briefings_archive").insert({
-        week_start: prev.isoStart,
-        week_end: prev.isoEnd,
-        week_label: prev.shortLabel,
-        top_emerging: emergentKw.slice(0, 5).map((k) => ({
-          term: k.term,
-          axis: k.axis,
-          change_percent: k.change_percent,
-        })),
-        top_questions: topQuestions.map((q) => ({
-          term: q.question,
-          current_volume: q.relativeVolume,
-        })),
-        top_debunking: dbk.slice(0, 5).map((d) => ({
-          term: d.term,
-          title: d.title,
-          classification: d.classification,
-          source: d.source,
-        })),
-        top_news: nws.slice(0, 5).map((n) => ({
-          title: n.title,
-          outlet: n.outlet,
-          date: n.date,
-          source_type: n.source_type,
-        })),
-      });
-
-      // Refresh archives silently
-      const { data } = await supabase
-        .from("briefings_archive")
-        .select("*")
-        .order("week_start", { ascending: false });
-      if (data) setArchives(data as ArchivedBriefing[]);
-    } catch (e) {
-      console.error("Auto-archive error:", e);
-    }
-  };
-
   // Derived data
   const topGrowing = [...keywords]
     .sort((a, b) => b.change_percent - a.change_percent)
@@ -245,7 +166,7 @@ const Briefing = () => {
 
   const topVolume = healthQuestionsData.length > 0
     ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.growth_percent }))
-    : getTopQuestionsPerAxis(2).slice(0, 5).map((q) => ({ term: q.question, current_volume: q.relativeVolume }));
+    : [];
 
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]

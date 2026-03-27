@@ -9,44 +9,11 @@ import SearchAlerts from "@/components/SearchAlerts";
 import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
 import YouTubeTrendsPanel from "@/components/YouTubeTrendsPanel";
 import Filters from "@/components/Filters";
-import { debunkingData as mockDebunkingData, newsData as mockNewsData } from "@/data/mockData";
 import { detectAlerts } from "@/lib/detectAlerts";
 import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
 import { useLastRefreshed } from "@/hooks/useLastRefreshed";
 import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
-
-// Helpers de semana (partilhados com Briefing)
-function getWeekRangeIdx() {
-  const now = new Date();
-  const day = now.getDay();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-  monday.setHours(0, 0, 0, 0);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  const fmt = (d: Date) => d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
-  return {
-    isoStart: monday.toISOString().split("T")[0],
-    isoEnd: sunday.toISOString().split("T")[0],
-    label: `${fmt(monday)} — ${fmt(sunday)} ${now.getFullYear()}`,
-  };
-}
-function getPrevWeekRangeIdx() {
-  const now = new Date();
-  const day = now.getDay();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1) - 7);
-  monday.setHours(0, 0, 0, 0);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  const fmt = (d: Date) => d.toLocaleDateString("pt-PT", { day: "2-digit", month: "2-digit" });
-  return {
-    isoStart: monday.toISOString().split("T")[0],
-    isoEnd: sunday.toISOString().split("T")[0],
-    label: `${fmt(monday)} — ${fmt(sunday)} ${monday.getFullYear()}`,
-  };
-}
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -61,9 +28,9 @@ const Index = () => {
   const lastRefreshed = useLastRefreshed();
   const { data: historicalData } = useHistoricalData(filters.period);
 
-  // Use DB data or fallback to mock
-  const debunkingData = dbDebunkingData.length > 0 ? dbDebunkingData : mockDebunkingData;
-  const newsData = dbNewsData.length > 0 ? dbNewsData : mockNewsData;
+  // Use only real DB data — no mock fallback
+  const debunkingData = dbDebunkingData;
+  const newsData = dbNewsData;
 
   // Filtrar debunking e notícias pelo eixo activo
   const axisTerms = useMemo(() => {
@@ -78,69 +45,28 @@ const Index = () => {
   }, [debunkingData, axisTerms]);
 
   const filteredNewsData = useMemo(() => {
-    if (!axisTerms) return newsData;
-    return newsData.filter((n: any) => axisTerms.has((n.relatedTerm || "").toLowerCase()));
-  }, [newsData, axisTerms]);
+    let result = newsData;
 
-  // Auto-arquivo por eixo — grava silenciosamente a semana anterior quando o eixo é aberto
-  const autoArchiveEixo = async (axis: string) => {
-    if (axis === "all") return;
-    const prev = getPrevWeekRangeIdx();
-    // Verificar se já existe
-    const { data: existing } = await (supabase.from as any)("eixos_archive")
-      .select("id")
-      .eq("axis", axis)
-      .eq("week_start", prev.isoStart)
-      .maybeSingle();
-    if (existing) return;
-
-    const axisData = filteredData[axis];
-    if (!axisData) return;
-
-    const axisLabels: Record<string, string> = {
-      "saude-mental": "Saúde Mental",
-      alimentacao: "Alimentação",
-      menopausa: "Menopausa",
-      emergentes: "Emergentes",
-    };
-
-    const topKeywords = (axisData.keywords || [])
-      .sort((a: any, b: any) => b.changePercent - a.changePercent)
-      .slice(0, 5)
-      .map((k: any) => ({ term: k.term, change_percent: k.changePercent, current_volume: k.currentVolume }));
-
-    const topDebunking = filteredDebunkingData
-      .slice(0, 3)
-      .map((d: any) => ({ term: d.term, title: d.title, classification: d.classification }));
-
-    const topNews = filteredNewsData
-      .slice(0, 3)
-      .map((n: any) => ({ title: n.title, outlet: n.outlet, date: n.date, source_type: n.source_type }));
-
-    try {
-      const { data: inserted } = await (supabase.from as any)("eixos_archive").insert({
-        axis,
-        axis_label: axisLabels[axis] || axis,
-        week_start: prev.isoStart,
-        week_end: prev.isoEnd,
-        week_label: prev.label,
-        top_keywords: topKeywords,
-        top_questions: [],
-        top_debunking: topDebunking,
-        top_news: topNews,
-        top_youtube: [],
-      }).select("id").single();
-
-      // Refresh archives for this axis
-      const { data: archives } = await (supabase.from as any)("eixos_archive")
-        .select("*")
-        .eq("axis", axis)
-        .order("week_start", { ascending: false });
-      if (archives) setEixosArchives(prev => ({ ...prev, [axis]: archives }));
-    } catch (e) {
-      console.error("autoArchiveEixo error:", e);
+    // Filter by period
+    const now = new Date();
+    if (filters.period === "7d") {
+      const cutoff = new Date(now);
+      cutoff.setDate(cutoff.getDate() - 7);
+      result = result.filter((n: any) => new Date(n.date) >= cutoff);
+    } else if (filters.period === "30d") {
+      const cutoff = new Date(now);
+      cutoff.setDate(cutoff.getDate() - 30);
+      result = result.filter((n: any) => new Date(n.date) >= cutoff);
     }
-  };
+    // 12m — show all
+
+    // Filter by axis
+    if (axisTerms) {
+      result = result.filter((n: any) => axisTerms.has((n.relatedTerm || "").toLowerCase()));
+    }
+
+    return result;
+  }, [newsData, axisTerms, filters.period]);
 
   // Registar função de download PDF de eixo no window (chamada pelo AxisColumn)
   useEffect(() => {
@@ -148,20 +74,18 @@ const Index = () => {
     return () => { delete (window as any)._downloadEixoPdf; };
   }, []);
 
-  // Trigger auto-arquivo quando muda de eixo
+  // Load archives for the active axis (created by the weekly workflow)
   useEffect(() => {
-    if (activeAxis !== "all" && Object.keys(filteredData).length > 0) {
-      autoArchiveEixo(activeAxis);
-      // Carregar arquivo existente para este eixo
+    if (activeAxis !== "all") {
       (supabase.from as any)("eixos_archive")
         .select("*")
         .eq("axis", activeAxis)
         .order("week_start", { ascending: false })
-        .then(({ data }) => {
-          if (data) setEixosArchives(prev => ({ ...prev, [activeAxis]: data }));
+        .then(({ data }: any) => {
+          if (data) setEixosArchives((prev: any) => ({ ...prev, [activeAxis]: data }));
         });
     }
-  }, [activeAxis, isLoading]);
+  }, [activeAxis]);
 
   const alerts = useMemo(
     () => filteredData ? detectAlerts(filteredData, filters.period) : [],
@@ -180,6 +104,30 @@ const Index = () => {
     activeAxis === "all"
       ? axisOrder
       : axisOrder.filter((a) => a === activeAxis);
+
+  // Urgency ranking: score each axis by combined signals
+  const urgencyRanking = useMemo(() => {
+    if (!filteredData) return [];
+    return axisOrder
+      .map((axisId) => {
+        const axis = filteredData[axisId];
+        if (!axis) return null;
+        const allKw = axis.allKeywords;
+        const avgChange = allKw.length > 0
+          ? allKw.reduce((s, k) => s + k.changePercent, 0) / allKw.length
+          : 0;
+        const emergentCount = allKw.filter((k) => k.isEmergent).length;
+        const alertCount = alerts.filter((a) => a.axisLabel === axis.label).length;
+        // Score: weighted sum — alerts and emergent signals matter most
+        const score = avgChange + (emergentCount * 30) + (alertCount * 20);
+        return { axisId, label: axis.label, avgChange, emergentCount, alertCount, score };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b!.score - a!.score) as {
+        axisId: string; label: string; avgChange: number;
+        emergentCount: number; alertCount: number; score: number;
+      }[];
+  }, [filteredData, alerts]);
 
   // Loading state
   if (isLoading) {
@@ -217,13 +165,13 @@ const Index = () => {
       {/* Data source indicator */}
       {error && (
         <div className="px-6 py-2 bg-muted text-muted-foreground text-xs">
-          A usar dados de demonstração (erro: {error})
+          Erro ao carregar dados: {error}
         </div>
       )}
 
       {/* Filters */}
       <div className="px-6 py-2 overflow-x-auto">
-        <Filters filters={filters} onFilterChange={setFilters} historicalCount={historicalData.length} />
+        <Filters filters={filters} onFilterChange={setFilters} />
       </div>
 
       {/* Main grid */}
@@ -276,11 +224,61 @@ const Index = () => {
                 period={filters.period}
                 debunkingData={filteredDebunkingData}
                 newsData={filteredNewsData}
+                historicalData={historicalData}
               />
+            </div>
+
+            {/* Linha 3: YouTube deste eixo */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+              <YouTubeTrendsPanel axis={activeAxis} />
             </div>
           </div>
         ) : (
-          /* Overview: 4 axis columns */
+          /* Overview */
+          <>
+          {/* Urgency ranking */}
+          {urgencyRanking.length > 0 && (
+            <div className="mb-8">
+              <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50 mb-3">
+                Prioridade de comunicação esta semana
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {urgencyRanking.map((axis, i) => (
+                  <button
+                    key={axis.axisId}
+                    onClick={() => setActiveAxis(axis.axisId)}
+                    className="flex items-center gap-2 px-3 py-2 border transition-colors hover:bg-foreground/5"
+                    style={{
+                      borderColor: i === 0 ? "#0000FF" : "rgba(0,0,255,0.15)",
+                      borderWidth: i === 0 ? 2 : 1,
+                    }}
+                  >
+                    <span className="text-[9px] font-bold text-foreground/30">
+                      {i + 1}.
+                    </span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: i === 0 ? "#0000FF" : undefined }}>
+                      {axis.label}
+                    </span>
+                    <span className={`text-[10px] font-semibold ${axis.avgChange > 0 ? "" : "opacity-40"}`}>
+                      {axis.avgChange > 0 ? "+" : ""}{axis.avgChange.toFixed(0)}%
+                    </span>
+                    {axis.alertCount > 0 && (
+                      <span className="inline-flex items-center gap-0.5">
+                        <span className="w-1.5 h-1.5 bg-destructive rounded-full animate-pulse" />
+                        <span className="text-[8px] font-bold">{axis.alertCount}</span>
+                      </span>
+                    )}
+                    {axis.emergentCount > 0 && (
+                      <span className="text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 bg-foreground text-background">
+                        {axis.emergentCount} sinal{axis.emergentCount > 1 ? "is" : ""}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
             {visibleAxes.map((axisId) => {
               const axis = filteredData[axisId];
@@ -297,15 +295,31 @@ const Index = () => {
               );
             })}
           </div>
+          </>
         )}
 
-        {/* Health Questions + YouTube Trends side by side */}
+        {/* Alerts + Health Questions + YouTube Trends */}
         {activeAxis === 'all' && (
           <div className="mt-10">
-            <div className="section-divider mb-6" />
+            {alerts.length > 0 && (
+              <>
+                <div className="section-divider mb-6" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <SearchAlerts
+                    alerts={alerts}
+                    period={filters.period}
+                    debunkingData={debunkingData}
+                    newsData={newsData}
+                    historicalData={historicalData}
+                  />
+                  <YouTubeTrendsPanel axis={activeAxis} />
+                </div>
+              </>
+            )}
+            <div className="section-divider mb-6 mt-10" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <HealthQuestionsPanel />
-              <YouTubeTrendsPanel axis={activeAxis} />
+              {alerts.length === 0 && <YouTubeTrendsPanel axis={activeAxis} />}
             </div>
           </div>
         )}

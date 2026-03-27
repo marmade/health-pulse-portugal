@@ -17,9 +17,16 @@ const monthFull = [
 ];
 const currentMonthLabel = monthLabels[new Date().getMonth()];
 
+const periodLabels: Record<string, { current: string; previous: string; comparison: string }> = {
+  "12m": { current: "2026", previous: "2025", comparison: "vs ano anterior" },
+  "30d": { current: "Últimos 30d", previous: "30d anteriores", comparison: "vs 30d anteriores" },
+  "7d": { current: "Últimos 7d", previous: "7d anteriores", comparison: "vs 7d anteriores" },
+};
+
 type Props = {
   data: TrendPoint[];
   label: string;
+  period?: string;
 };
 
 const CustomTooltip = ({
@@ -27,6 +34,7 @@ const CustomTooltip = ({
   payload,
   label,
   peakValue,
+  period,
 }: any) => {
   if (!active || !payload?.length) return null;
 
@@ -34,20 +42,20 @@ const CustomTooltip = ({
   const value = currentEntry?.value as number | undefined;
   if (value == null) return null;
 
-  // Find month index from short label
-  const monthIdx = monthLabels.indexOf(label as string);
-  const monthName = monthIdx >= 0 ? monthFull[monthIdx] : label;
-  const year = new Date().getFullYear();
+  const pLabels = periodLabels[period] || periodLabels["12m"];
 
-  // Calculate variation vs previous month from the chart data
-  const allData = currentEntry?.payload ? undefined : undefined;
-  // We get prev month value from the payload's source
-  let variationText = "";
-  const chartData = (currentEntry as any)?.payload;
-  // We'll compute variation in the parent and pass via context — 
-  // for now compute from payload
-  const prevMonthEntry = payload.find((p: any) => p.dataKey === "previous");
-  const prevYearValue = prevMonthEntry?.value as number | undefined;
+  // Build display title based on period
+  let title: string;
+  if (period === "12m") {
+    const monthIdx = monthLabels.indexOf(label as string);
+    const monthName = monthIdx >= 0 ? monthFull[monthIdx] : label;
+    title = `${monthName} ${new Date().getFullYear()}`;
+  } else {
+    title = label as string;
+  }
+
+  const prevEntry = payload.find((p: any) => p.dataKey === "previous");
+  const prevValue = prevEntry?.value as number | undefined;
 
   const isPeak = value === peakValue;
 
@@ -74,20 +82,18 @@ const CustomTooltip = ({
           marginBottom: 6,
         }}
       >
-        {monthName} {year}
+        {title}
       </p>
       <p style={{ color: "#000000", fontSize: 11, margin: 0, marginBottom: 3 }}>
         <span style={{ fontWeight: 600 }}>Volume:</span> {value}{" "}
         <span style={{ fontSize: 9, color: "#666666" }}>(índice relativo 0–100)</span>
       </p>
-      {prevYearValue != null && (
+      {prevValue != null && prevValue > 0 && (
         <p style={{ color: "#000000", fontSize: 11, margin: 0, marginBottom: 3 }}>
-          {value >= prevYearValue ? "↑" : "↓"}{" "}
-          {value >= prevYearValue ? "+" : ""}
-          {prevYearValue !== 0
-            ? (((value - prevYearValue) / prevYearValue) * 100).toFixed(1)
-            : "0.0"}
-          % <span style={{ fontSize: 9, color: "#666666" }}>vs ano anterior</span>
+          {value >= prevValue ? "↑" : "↓"}{" "}
+          {value >= prevValue ? "+" : ""}
+          {(((value - prevValue) / prevValue) * 100).toFixed(1)}
+          % <span style={{ fontSize: 9, color: "#666666" }}>{pLabels.comparison}</span>
         </p>
       )}
       {isPeak && (
@@ -99,11 +105,19 @@ const CustomTooltip = ({
   );
 };
 
-const TrendChart = ({ data, label }: Props) => {
+const TrendChart = ({ data, label, period = "12m" }: Props) => {
   const peakValue = useMemo(
     () => Math.max(...data.map((d) => d.current).filter((v) => v != null)),
     [data]
   );
+
+  const pLabels = periodLabels[period] || periodLabels["12m"];
+
+  // Reference line only for 12m (current month marker)
+  const showRefLine = period === "12m" && data.some(d => d.week === currentMonthLabel);
+
+  // Check if previous data has any non-zero values
+  const hasPrevious = data.some(d => d.previous != null && d.previous > 0);
 
   return (
     <div>
@@ -118,7 +132,7 @@ const TrendChart = ({ data, label }: Props) => {
               tickLine={false}
             />
             <YAxis hide />
-            {data.some(d => d.week === currentMonthLabel) && (
+            {showRefLine && (
               <ReferenceLine
                 x={currentMonthLabel}
                 stroke="hsl(240, 100%, 50%)"
@@ -136,7 +150,7 @@ const TrendChart = ({ data, label }: Props) => {
               />
             )}
             <Tooltip
-              content={<CustomTooltip peakValue={peakValue} />}
+              content={<CustomTooltip peakValue={peakValue} period={period} />}
               cursor={{ stroke: "hsl(240, 100%, 50%)", strokeWidth: 0.5, strokeDasharray: "3 3" }}
             />
             <Line
@@ -146,31 +160,35 @@ const TrendChart = ({ data, label }: Props) => {
               strokeWidth={1.5}
               dot={false}
               activeDot={{ r: 3, fill: "#0000FF", stroke: "#0000FF" }}
-              name="2026"
+              name={pLabels.current}
               connectNulls={false}
             />
-            <Line
-              type="monotone"
-              dataKey="previous"
-              stroke="hsl(240, 100%, 50%)"
-              strokeWidth={1}
-              strokeDasharray="4 4"
-              dot={false}
-              opacity={0.3}
-              name="2025"
-            />
+            {hasPrevious && (
+              <Line
+                type="monotone"
+                dataKey="previous"
+                stroke="hsl(240, 100%, 50%)"
+                strokeWidth={1}
+                strokeDasharray="4 4"
+                dot={false}
+                opacity={0.3}
+                name={pLabels.previous}
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </div>
       <div className="flex items-center gap-4 mt-2">
         <div className="flex items-center gap-1.5">
           <div className="w-4 h-px bg-foreground" />
-          <span className="text-[9px] text-foreground/70">2026</span>
+          <span className="text-[9px] text-foreground/70">{pLabels.current}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-4 h-px bg-foreground/30 border-dashed" style={{ borderTop: "1px dashed hsl(240,100%,50%,0.3)", height: 0 }} />
-          <span className="text-[9px] text-foreground/30">2025</span>
-        </div>
+        {hasPrevious && (
+          <div className="flex items-center gap-1.5">
+            <div className="w-4 h-px bg-foreground/30 border-dashed" style={{ borderTop: "1px dashed hsl(240,100%,50%,0.3)", height: 0 }} />
+            <span className="text-[9px] text-foreground/30">{pLabels.previous}</span>
+          </div>
+        )}
       </div>
     </div>
   );

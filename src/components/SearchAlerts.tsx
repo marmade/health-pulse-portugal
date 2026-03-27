@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Keyword, TrendPoint, DebunkItem, NewsItem } from "@/data/mockData";
-import { generateKeywordTrend } from "@/data/mockData";
+import { buildKeywordTrend } from "@/lib/buildTrend";
+import type { HistoricalSnapshot } from "@/hooks/useHistoricalData";
 import TrendChart from "./TrendChart";
 
 export type SearchAlert = {
@@ -15,9 +16,10 @@ type Props = {
   period: string;
   debunkingData: DebunkItem[];
   newsData: NewsItem[];
+  historicalData?: HistoricalSnapshot[];
 };
 
-const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
+const SearchAlerts = ({ alerts, period, debunkingData, newsData, historicalData = [] }: Props) => {
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
 
   if (alerts.length === 0) return null;
@@ -49,6 +51,10 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
           const relatedDebunks = debunkingData.filter(
             (d) => d.term === alert.keyword.term
           );
+
+          const trendData = isExpanded
+            ? buildKeywordTrend(historicalData, alert.keyword.term, period)
+            : [];
 
           return (
             <div key={alert.keyword.term}>
@@ -92,13 +98,20 @@ const SearchAlerts = ({ alerts, period, debunkingData, newsData }: Props) => {
                 <div className="pb-4 pl-0">
                   <div className="border border-foreground/10 p-4 space-y-4">
                     {/* Trend chart */}
-                    <div>
-                      <p className="editorial-label mb-2">Evolução</p>
-                      <TrendChart
-                        data={generateKeywordTrend(alert.keyword, period)}
-                        label={alert.keyword.term}
-                      />
-                    </div>
+                    {trendData.length > 0 ? (
+                      <div>
+                        <p className="editorial-label mb-2">Evolução</p>
+                        <TrendChart
+                          data={trendData}
+                          label={alert.keyword.term}
+                          period={period}
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-[10px] text-foreground/30">
+                        Sem dados históricos disponíveis para esta keyword.
+                      </p>
+                    )}
 
                     {/* Related news */}
                     {relatedNews.length > 0 && (
