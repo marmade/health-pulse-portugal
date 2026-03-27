@@ -125,6 +125,7 @@ const BOOKMARK_CATEGORIAS = [
   { value: "cuidados_saude_primarios", label: "Cuidados de Saúde Primários" },
   { value: "dunning_kruger", label: "Saber que não sabe" },
   { value: "comunicacao_cientifica", label: "Comunicação Científica" },
+  { value: "fontes_referencia", label: "Fontes de Referência" },
 ];
 
 const emptyTexto = (): Omit<TextoItem, "id"> => ({

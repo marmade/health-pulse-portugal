@@ -51,6 +51,10 @@ Debunking: verificação e categorização manual de mitos e desinformação em 
 
 Cobertura mediática: curadoria editorial dos artigos recolhidos via RSS com base em relevância e fundamento científico.
 
+FONTES DE REFERÊNCIA
+
+Entidades consultadas para validação científica e contextualização editorial: Sociedade Portuguesa de Pediatria (SPP), Governo de Portugal — Área da Saúde, Ordem dos Enfermeiros, NewsFarma (agenda de eventos médicos), MSD Manuals (referência clínica peer-reviewed) e Comissão Nacional da Saúde Materna, da Criança e do Adolescente (CNSMCA). Estas fontes complementam os dados automáticos com informação institucional e científica verificada.
+
 ARQUIVO SEMANAL
 
 Todas as segundas-feiras, o workflow de actualização arquiva automaticamente os dados da semana anterior: top keywords, perguntas em crescimento, debunking, notícias e YouTube por eixo temático. Os arquivos ficam acessíveis no Briefing e em cada eixo, com possibilidade de exportação em PDF.`,

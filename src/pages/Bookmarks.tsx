@@ -19,6 +19,7 @@ const CATEGORIAS: Record<string, string> = {
   cuidados_saude_primarios: "Cuidados de Saúde Primários",
   dunning_kruger: "Saber que não sabe",
   comunicacao_cientifica: "Comunicação Científica",
+  fontes_referencia: "Fontes de Referência",
 };
 
 const Bookmarks = () => {
