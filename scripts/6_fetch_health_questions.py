@@ -1,17 +1,25 @@
 """
 6_fetch_health_questions.py
 ===========================
-Reportagem Viva — busca perguntas reais em crescimento no Google PT
-usando pytrends.related_queries() para cada keyword activa,
-e guarda na tabela health_questions do Supabase.
+Reportagem Viva — perguntas reais em crescimento via pytrends
+related_queries() para cada keyword activa.
+
+FONTE: pytrends related_queries() — queries que co-ocorrem na mesma
+sessão de pesquisa que a keyword. Inclui growth_percent (% de crescimento
+recente). Campo source="pytrends" distingue estes registos dos recolhidos
+pelo script 7_fetch_autocomplete_questions.py.
+
+UPSERT: chave única (question, axis, source).
+Requer constraint health_questions_question_axis_source_key na tabela.
 
 Como correr manualmente:
   python3 6_fetch_health_questions.py
 """
 
+import re
 import time
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from pytrends.request import TrendReq
 
 SUPABASE_URL = "https://cyjwhmuakmiytypewwfw.supabase.co"
@@ -24,10 +32,14 @@ HEADERS = {
     "Prefer": "return=minimal",
 }
 
-# Pausa entre pedidos (evita rate limit Google)
+HEADERS_UPSERT = {
+    **HEADERS,
+    "Prefer": "resolution=merge-duplicates,return=minimal",
+}
+
+SOURCE = "pytrends"
 PAUSA_SEGUNDOS = 10
 
-# Prefixos de pergunta — filtra queries que soam a pergunta real
 PREFIXOS_PERGUNTA = [
     "como", "o que", "o que é", "quais", "porque", "por que",
     "é normal", "posso", "sintomas", "quando", "quanto", "qual",
@@ -42,34 +54,106 @@ AXIS_LABELS = {
     "emergentes": "Emergentes",
 }
 
+# ---------------------------------------------------------------------------
+# FILTRO DE RUÍDO — 5 camadas
+# ---------------------------------------------------------------------------
 
-def buscar_keywords():
+BLOCKLIST_MARCAS = {
+    "lidl", "walmart", "continente", "pingo doce", "aldi", "mercadona",
+    "ikea", "amazon", "fnac", "worten", "minipreço", "intermarché",
+    "mcdonald", "burger king", "kfc", "subway", "starbucks",
+    "uber eats", "glovo", "bolt food",
+}
+
+BLOCKLIST_ENTRETENIMENTO = {
+    "filme", "movie", "cinema", "trailer", "estreia", "temporada",
+    "episódio", "episodio", "série", "serie", "netflix", "hbo", "disney",
+    "prime video", "streaming", "download", "torrent", "legendas",
+    "game", "jogo", "games", "gameplay", "review", "update", "patch",
+    "dlc", "xbox", "playstation", "nintendo", "steam", "epic games",
+    "álbum", "album", "single", "tour", "concerto", "festival", "spotify",
+    "transferência", "mercado", "benfica", "sporting", "porto", "liga",
+    "premier league", "champions",
+}
+
+REGEX_METEOROLOGIA = re.compile(
+    r"^(depressão|ciclone|tempestade|furacão|tufão|baixa pressão)\s+[A-Za-záéíóúàâêôãõüç]+$",
+    re.IGNORECASE,
+)
+
+REGEX_LOCALIZACAO = re.compile(
+    r"\b(near me|perto de mim|perto|onde fica|como chegar|morada|"
+    r"horário de|aberto agora|delivery|entrega|encomenda)\b",
+    re.IGNORECASE,
+)
+
+REGEX_ENTRETENIMENTO_NUMERADO = re.compile(
+    r"^(todo mundo|scary movie|final destination|resident evil|saw|"
+    r"john wick|fast and furious|velozes e furiosos)\s",
+    re.IGNORECASE,
+)
+
+REGEX_NUMERO_FINAL = re.compile(r"\d+\s*$")
+
+
+def e_ruido(query: str) -> tuple[bool, str]:
+    q = query.lower().strip()
+    for marca in BLOCKLIST_MARCAS:
+        if marca in q:
+            return True, f"marca:{marca}"
+    for termo in BLOCKLIST_ENTRETENIMENTO:
+        if termo in q:
+            return True, f"entretenimento:{termo}"
+    if REGEX_METEOROLOGIA.match(query.strip()):
+        return True, "meteorologia"
+    if REGEX_LOCALIZACAO.search(q):
+        return True, "localizacao"
+    if REGEX_NUMERO_FINAL.search(q) and len(q.split()) >= 3:
+        if REGEX_ENTRETENIMENTO_NUMERADO.match(q):
+            return True, "entretenimento_numerado"
+    return False, ""
+
+
+def e_pergunta(texto: str) -> bool:
+    t = texto.lower().strip()
+    return any(t.startswith(p) for p in PREFIXOS_PERGUNTA)
+
+
+# ---------------------------------------------------------------------------
+# SUPABASE
+# ---------------------------------------------------------------------------
+
+def buscar_keywords() -> list[dict]:
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/keywords",
         headers=HEADERS,
-        params={"select": "term,axis,category", "is_active": "eq.true"}
+        params={"select": "term,axis,category", "is_active": "eq.true"},
     )
     r.raise_for_status()
     return r.json()
 
 
-def e_pergunta(texto):
-    t = texto.lower().strip()
-    return any(t.startswith(p) for p in PREFIXOS_PERGUNTA)
+def upsert_perguntas(perguntas: list[dict]) -> bool:
+    if not perguntas:
+        return True
+    r = requests.post(
+        f"{SUPABASE_URL}/rest/v1/health_questions",
+        headers=HEADERS_UPSERT,
+        json=perguntas,
+    )
+    if r.status_code not in (200, 201, 204):
+        print(f"    ERRO upsert: {r.status_code} {r.text[:200]}")
+        return False
+    return True
 
 
-def buscar_queries_crescimento(pytrends, keyword, axis):
-    """
-    Devolve lista de dicts com perguntas reais em crescimento para esta keyword.
-    Usa related_queries() — 'rising' são as pesquisas com maior crescimento.
-    """
+# ---------------------------------------------------------------------------
+# PYTRENDS
+# ---------------------------------------------------------------------------
+
+def buscar_queries_crescimento(pytrends: TrendReq, keyword: str, axis: str) -> list[dict]:
     try:
-        pytrends.build_payload(
-            [keyword],
-            geo="PT",
-            timeframe="today 3-m",
-            gprop=""
-        )
+        pytrends.build_payload([keyword], geo="PT", timeframe="today 3-m", gprop="")
         resultado = pytrends.related_queries()
 
         if not resultado or keyword not in resultado:
@@ -79,15 +163,20 @@ def buscar_queries_crescimento(pytrends, keyword, axis):
         if rising is None or rising.empty:
             return []
 
+        agora = datetime.now(timezone.utc).isoformat()
         perguntas = []
+
         for _, row in rising.iterrows():
             query = str(row.get("query", "")).strip()
             value = row.get("value", 0)
-
             if not query:
                 continue
 
-            # Valor "Breakout" significa >5000% — normalizar para 5000
+            ruido, motivo = e_ruido(query)
+            if ruido:
+                print(f"    [RUÍDO:{motivo}] {query}")
+                continue
+
             if isinstance(value, str) and "breakout" in value.lower():
                 growth = 5000
             else:
@@ -96,12 +185,9 @@ def buscar_queries_crescimento(pytrends, keyword, axis):
                 except (ValueError, TypeError):
                     growth = 0
 
-            # Calcular volume relativo (0-100) baseado no rank
             rank_idx = len(perguntas)
             relative_volume = max(10, 100 - (rank_idx * 8))
 
-            # Incluir todas as queries (não só perguntas) — o painel filtra depois
-            # mas marcar se é pergunta para o frontend poder filtrar
             perguntas.append({
                 "question": query,
                 "growth_percent": min(growth, 9999),
@@ -110,7 +196,9 @@ def buscar_queries_crescimento(pytrends, keyword, axis):
                 "axis_label": AXIS_LABELS.get(axis, axis),
                 "cluster": keyword,
                 "is_question": e_pergunta(query),
-                "updated_at": datetime.utcnow().isoformat(),
+                "source": SOURCE,
+                "updated_at": agora,
+                "last_seen_at": agora,
             })
 
         return perguntas
@@ -120,54 +208,30 @@ def buscar_queries_crescimento(pytrends, keyword, axis):
         return []
 
 
-def limpar_tabela():
-    r = requests.delete(
-        f"{SUPABASE_URL}/rest/v1/health_questions",
-        headers=HEADERS,
-        params={"id": "not.is.null"}
-    )
-    return r.status_code in (200, 204)
-
-
-def inserir_perguntas(perguntas):
-    if not perguntas:
-        return 0
-    r = requests.post(
-        f"{SUPABASE_URL}/rest/v1/health_questions",
-        headers=HEADERS,
-        json=perguntas
-    )
-    return r.status_code in (200, 201)
-
+# ---------------------------------------------------------------------------
+# MAIN
+# ---------------------------------------------------------------------------
 
 def main():
-    print("Reportagem Viva — Perguntas de Saúde em Crescimento")
+    print("Reportagem Viva — Queries em Crescimento (pytrends)")
     print(f"{datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
-    pytrends = TrendReq(
-        hl="pt-PT",
-        tz=-60,
-        timeout=(10, 25),
-        retries=2,
-        backoff_factor=0.5,
-    )
+    pytrends = TrendReq(hl="pt-PT", tz=-60, timeout=(10, 25), retries=2, backoff_factor=0.5)
 
     print("A carregar keywords do Supabase...")
     keywords = buscar_keywords()
     print(f"  {len(keywords)} keywords activas\n")
 
-    todas_perguntas = []
+    todas: list[dict] = []
 
     for i, kw in enumerate(keywords):
-        term = kw["term"]
-        axis = kw["axis"]
+        term, axis = kw["term"], kw["axis"]
         print(f"[{i+1}/{len(keywords)}] [{axis}] {term}")
 
         perguntas = buscar_queries_crescimento(pytrends, term, axis)
-
         if perguntas:
-            todas_perguntas.extend(perguntas)
+            todas.extend(perguntas)
             n_perg = sum(1 for p in perguntas if p["is_question"])
             print(f"    {len(perguntas)} queries ({n_perg} perguntas)")
         else:
@@ -176,76 +240,56 @@ def main():
         if i < len(keywords) - 1:
             time.sleep(PAUSA_SEGUNDOS)
 
-    print(f"\nTotal recolhido: {len(todas_perguntas)} queries")
+    print(f"\nTotal recolhido: {len(todas)} queries")
 
-    # Ordenar por crescimento decrescente e eliminar duplicados
-    vistas = set()
-    unicas = []
-    todas_perguntas.sort(key=lambda x: x["growth_percent"], reverse=True)
-    for p in todas_perguntas:
-        chave = p["question"].lower().strip()
+    # De-duplicar por (question.lower(), axis, source)
+    vistas: set[tuple] = set()
+    unicas: list[dict] = []
+    todas.sort(key=lambda x: x["growth_percent"], reverse=True)
+
+    for p in todas:
+        chave = (p["question"].lower().strip(), p["axis"], p["source"])
         if chave not in vistas:
             vistas.add(chave)
             unicas.append(p)
 
-    print(f"Após de-duplicação: {len(unicas)} queries únicas")
     n_perguntas = sum(1 for p in unicas if p["is_question"])
-    print(f"Das quais {n_perguntas} são perguntas reais\n")
+    print(f"Após de-duplicação: {len(unicas)} queries únicas ({n_perguntas} perguntas)\n")
 
-    print("A limpar tabela anterior...")
-    ok_limpa = limpar_tabela()
-    print(f"  {'OK' if ok_limpa else 'ERRO ao limpar'}")
-
-    print(f"A inserir {len(unicas)} queries...")
-    # Inserir em lotes de 50
+    print(f"A fazer upsert de {len(unicas)} queries...")
     inseridas = 0
     for i in range(0, len(unicas), 50):
         lote = unicas[i:i+50]
-        if inserir_perguntas(lote):
+        if upsert_perguntas(lote):
             inseridas += len(lote)
 
     print()
     print("=" * 60)
-    print(f"Concluído — {inseridas} perguntas guardadas no Supabase")
+    print(f"Concluído — {inseridas} queries upserted (source=pytrends)")
     print("=" * 60)
 
-    # Expandir o Mural com novos termos descobertos
     expandir_mural(unicas)
 
 
-
-
-def expandir_mural(todas_perguntas):
-    """
-    Verifica quais termos descobertos pelo script ainda não existem na tabela keywords
-    e insere os novos com is_active=True, para que o Mural cresça automaticamente.
-    Usa growth_percent >= 100 como critério mínimo de relevância.
-    Limita a 20 novos termos por run para não inflar o mural.
-    """
+def expandir_mural(todas_perguntas: list[dict]):
     print("\nA expandir Mural com novos termos...")
-
-    # Buscar keywords existentes
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/keywords",
         headers=HEADERS,
-        params={"select": "term", "is_active": "eq.true"}
+        params={"select": "term", "is_active": "eq.true"},
     )
     if not r.ok:
         print("  Erro ao buscar keywords existentes")
         return
 
     existentes = {row["term"].lower().strip() for row in r.json()}
-
-    # Filtrar termos novos com crescimento relevante
     candidatos = [
         p for p in todas_perguntas
         if p["growth_percent"] >= 100
         and p["question"].lower().strip() not in existentes
-        and not p["is_question"]  # só termos, não perguntas completas
-        and len(p["question"].split()) <= 4  # máx 4 palavras (termos concisos)
+        and not p["is_question"]
+        and len(p["question"].split()) <= 4
     ]
-
-    # Ordenar por crescimento e limitar a 20
     candidatos.sort(key=lambda x: x["growth_percent"], reverse=True)
     novos = candidatos[:20]
 
@@ -253,6 +297,7 @@ def expandir_mural(todas_perguntas):
         print("  Nenhum termo novo relevante encontrado")
         return
 
+    agora = datetime.now(timezone.utc).isoformat()
     print(f"  {len(novos)} termos novos para o Mural:")
     payload = []
     for p in novos:
@@ -272,12 +317,13 @@ def expandir_mural(todas_perguntas):
     r2 = requests.post(
         f"{SUPABASE_URL}/rest/v1/keywords",
         headers={**HEADERS, "Prefer": "resolution=ignore-duplicates,return=minimal"},
-        json=payload
+        json=payload,
     )
     if r2.status_code in (200, 201, 204):
-        print(f"  OK — {len(payload)} termos inseridos no Mural")
+        print(f"  OK — {len(payload)} termos inseridos")
     else:
-        print(f"  Erro ao inserir: {r2.status_code} {r2.text[:100]}")
+        print(f"  Erro: {r2.status_code} {r2.text[:100]}")
+
 
 if __name__ == "__main__":
     main()
