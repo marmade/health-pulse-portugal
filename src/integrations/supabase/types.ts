@@ -42,30 +42,36 @@ export type Database = {
         Row: {
           categoria: string
           created_at: string
+          eixo: string | null
           fonte: string
           id: string
           notas: string | null
           ordem: number
+          subcategoria: string | null
           titulo: string
           url: string
         }
         Insert: {
           categoria?: string
           created_at?: string
+          eixo?: string | null
           fonte?: string
           id?: string
           notas?: string | null
           ordem?: number
+          subcategoria?: string | null
           titulo: string
           url: string
         }
         Update: {
           categoria?: string
           created_at?: string
+          eixo?: string | null
           fonte?: string
           id?: string
           notas?: string | null
           ordem?: number
+          subcategoria?: string | null
           titulo?: string
           url?: string
         }
