@@ -51,6 +51,11 @@ const FEEDS: FeedSource[] = [
   { url: 'https://spc.pt/feed/', outlet: 'Sociedade Portuguesa de Cardiologia', type: 'institucional' },
   { url: 'https://spsp.pt/feed/', outlet: 'Sociedade Portuguesa de Saúde Pública', type: 'institucional' },
   { url: 'https://spesf.pt/feed/', outlet: 'SP Enfermagem de Saúde Familiar', type: 'institucional' },
+  { url: 'http://www.sppsm.org/feed/', outlet: 'SP Psiquiatria e Saúde Mental', type: 'institucional' },
+  { url: 'http://www.spmi.pt/feed/', outlet: 'SP Medicina Interna', type: 'institucional' },
+  { url: 'http://www.speo-obesidade.pt/feed/', outlet: 'SP Estudo da Obesidade', type: 'institucional' },
+  { url: 'http://www.spavc.org/feed/', outlet: 'SP Acidente Vascular Cerebral', type: 'institucional' },
+  { url: 'http://neuropediatria.pt/feed/', outlet: 'SP Neuropediatria', type: 'institucional' },
   // ONG E ASSOCIAÇÕES
   { url: 'https://apav.pt/feed/', outlet: 'APAV', type: 'institucional' },
   { url: 'https://cpsa.pt/feed/', outlet: 'Conselho Português para a Saúde e Ambiente', type: 'institucional' },
