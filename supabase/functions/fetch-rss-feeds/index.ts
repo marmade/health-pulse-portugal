@@ -41,6 +41,9 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.spms.min-saude.pt/feed/', outlet: 'SPMS', type: 'institucional' },
   { url: 'https://www.ers.pt/feed/', outlet: 'ERS', type: 'institucional' },
   { url: 'https://saudemental.min-saude.pt/feed/', outlet: 'Coord. Nacional Saúde Mental', type: 'institucional' },
+  // NUTRIÇÃO E ALIMENTAÇÃO
+  { url: 'https://nutrimento.pt/feed/', outlet: 'Nutrimento (PNPAS)', type: 'institucional' },
+  { url: 'https://alimentacaosaudavel.dgs.pt/feed/', outlet: 'Alimentação Saudável (DGS)', type: 'institucional' },
   // SOCIEDADES CIENTÍFICAS
   { url: 'https://spreumatologia.pt/feed/', outlet: 'Sociedade Portuguesa de Reumatologia', type: 'institucional' },
   { url: 'https://spginecologia.pt/feed/', outlet: 'Sociedade Portuguesa de Ginecologia', type: 'institucional' },
