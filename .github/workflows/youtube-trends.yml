@@ -33,6 +33,12 @@ jobs:
         run: |
           echo "A buscar perguntas reais em crescimento..."
           python scripts/6_fetch_health_questions.py
+          
+      # ── PASSO 2B: Perguntas via Google Autocomplete ───────────────────────
+      - name: 2B — Perguntas de saúde (autocomplete)
+        run: |
+          echo "A buscar perguntas via Google Autocomplete..."
+          python scripts/7_fetch_autocomplete_questions.py
 
       # ── PASSO 3: Refresh trends → snapshots históricos ───────────────────
       - name: 3 — Refresh trends (snapshots históricos)
