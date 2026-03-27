@@ -103,17 +103,19 @@ const Briefing = () => {
   const [dizQueDisse, setDizQueDisse] = useState<DizQueDisse | null>(null);
   const [dizQueDisseLoading, setDizQueDisseLoading] = useState(false);
   const [dizQueDisseError, setDizQueDisseError] = useState(false);
+  const [youtube, setYoutube] = useState<{titulo: string; canal: string; views: number; url: string; eixo: string}[]>([]);
 
   const week = getWeekRange();
 
   useEffect(() => {
     const fetchData = async () => {
-      const [kwRes, newsRes, debunkRes, archiveRes, hqRes] = await Promise.all([
+      const [kwRes, newsRes, debunkRes, archiveRes, hqRes, ytRes] = await Promise.all([
         supabase.from("keywords").select("*").eq("is_active", true),
-        supabase.from("news_items").select("*").order("date", { ascending: false }).limit(3),
-        supabase.from("debunking").select("*").order("created_at", { ascending: false }).limit(1),
+        supabase.from("news_items").select("*").order("date", { ascending: false }),
+        supabase.from("debunking").select("*").order("created_at", { ascending: false }),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        supabase.from("health_questions").select("question, growth_percent, relative_volume, axis").order("growth_percent", { ascending: false }).limit(5),
+        supabase.from("health_questions").select("question, growth_percent, relative_volume, axis, axis_label").order("growth_percent", { ascending: false }),
+        supabase.from("youtube_trends").select("*").order("views", { ascending: false }).limit(5),
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
@@ -121,6 +123,7 @@ const Briefing = () => {
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
       if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number; relative_volume: number; axis: string}[]);
+      if (ytRes.data) setYoutube(ytRes.data as any[]);
       setLoading(false);
     };
     fetchData();
@@ -157,15 +160,22 @@ const Briefing = () => {
     fetchDizQueDisse();
   }, [keywords]);
 
-  // Derived data
+  // Derived data — consistent with dashboard
   const topGrowing = [...keywords]
     .sort((a, b) => b.change_percent - a.change_percent)
-    .slice(0, 3);
+    .slice(0, 5);
 
   const emergent = keywords.filter((k) => k.is_emergent);
 
+  // Filter news to this week
+  const weekNews = news.filter((n) => {
+    const d = new Date(n.date);
+    return d >= week.start && d <= week.end;
+  });
+  const displayNews = weekNews.length > 0 ? weekNews.slice(0, 5) : news.slice(0, 5);
+
   const topVolume = healthQuestionsData.length > 0
-    ? healthQuestionsData.map((q) => ({ term: q.question, current_volume: q.growth_percent }))
+    ? healthQuestionsData.slice(0, 8).map((q) => ({ term: q.question, current_volume: q.growth_percent, axis: q.axis }))
     : [];
 
   const topEmergent = emergent.length > 0
@@ -182,10 +192,11 @@ const Briefing = () => {
         topGrowing,
         emergent,
         topVolume,
-        news,
-        debunking,
+        news: displayNews,
+        debunking: debunking.slice(0, 3),
         topEmergent,
         dizQueDisse,
+        youtube,
       });
       toast.success("PDF exportado com sucesso");
     } catch {
@@ -339,13 +350,21 @@ const Briefing = () => {
         <div className="space-y-3 max-w-2xl">
           {topVolume.map((kw, i) => (
             <div key={kw.term} className="flex items-baseline justify-between border-b border-foreground/10 pb-3">
-              <div>
+              <div className="flex items-center gap-2">
                 <span className="text-xs font-bold tabular-nums opacity-40">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-sm font-medium ml-3">{kw.term}</span>
+                <span className="text-sm font-medium">{kw.term}</span>
+                {(kw as any).axis && (
+                  <span
+                    className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                    style={{ backgroundColor: getAxisColors((kw as any).axis).bg, color: getAxisColors((kw as any).axis).text }}
+                  >
+                    {axisLabels[(kw as any).axis] || (kw as any).axis}
+                  </span>
+                )}
               </div>
-              <span className="text-xs font-bold tabular-nums">
+              <span className="text-xs font-bold tabular-nums shrink-0 ml-2">
                 +{kw.current_volume}%
               </span>
             </div>
@@ -361,7 +380,7 @@ const Briefing = () => {
           O que os media dizem
         </h2>
         <div className="space-y-4 max-w-2xl">
-          {news.map((item, i) => (
+          {displayNews.map((item, i) => (
             <div key={i} className="border-b border-foreground/10 pb-4">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[9px] font-bold uppercase tracking-wider border border-foreground/30 px-1.5 py-0.5">
@@ -387,7 +406,7 @@ const Briefing = () => {
               </a>
             </div>
           ))}
-          {news.length === 0 && (
+          {displayNews.length === 0 && (
             <p className="text-sm opacity-60">Sem notícias esta semana.</p>
           )}
         </div>
@@ -401,27 +420,31 @@ const Briefing = () => {
           Mito da semana
         </h2>
         {debunking.length > 0 ? (
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="tag-emergent">
-                {debunking[0].classification}
-              </span>
-              <span className="text-[10px] uppercase tracking-wider opacity-50">
-                {debunking[0].source}
-              </span>
-            </div>
-            <p className="text-sm font-semibold mb-2">{debunking[0].title}</p>
-            <p className="text-xs opacity-60 leading-relaxed">
-              Tema relacionado: <span className="font-semibold">{debunking[0].term}</span>
-            </p>
-            <a
-              href={debunking[0].url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] uppercase tracking-wider font-bold mt-3 inline-block hover:opacity-70 transition-opacity"
-            >
-              Ver verificação →
-            </a>
+          <div className="space-y-6 max-w-2xl">
+            {debunking.slice(0, 3).map((d, i) => (
+              <div key={i} className={i > 0 ? "border-t border-foreground/10 pt-6" : ""}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="tag-emergent">
+                    {d.classification}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider opacity-50">
+                    {d.source}
+                  </span>
+                </div>
+                <p className="text-sm font-semibold mb-2">{d.title}</p>
+                <p className="text-xs opacity-60 leading-relaxed">
+                  Tema relacionado: <span className="font-semibold">{d.term}</span>
+                </p>
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] uppercase tracking-wider font-bold mt-3 inline-block hover:opacity-70 transition-opacity"
+                >
+                  Ver verificação →
+                </a>
+              </div>
+            ))}
           </div>
         ) : (
           <p className="text-sm opacity-60">Sem mito registado esta semana.</p>
@@ -430,7 +453,53 @@ const Briefing = () => {
 
       <div className="section-divider" />
 
-      {/* SECTION 6 — Sugestão de conteúdo */}
+      {/* SECTION 6 — YouTube */}
+      <section className="px-6 py-10">
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
+          O que se vê no YouTube
+        </h2>
+        <p className="text-xs opacity-50 mb-6">Top vídeos de canais portugueses de saúde e informação</p>
+        {youtube.length > 0 ? (
+          <div className="space-y-4 max-w-2xl">
+            {youtube.map((v, i) => (
+              <div key={i} className="flex items-start gap-3 border-b border-foreground/10 pb-4">
+                <span className="text-xs font-bold tabular-nums opacity-40 mt-0.5">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <a
+                    href={v.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium hover:opacity-70 transition-opacity leading-snug block"
+                  >
+                    {v.titulo}
+                  </a>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[10px] opacity-50">{v.canal}</span>
+                    <span
+                      className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                      style={{ backgroundColor: getAxisColors(v.eixo).bg, color: getAxisColors(v.eixo).text }}
+                    >
+                      {axisLabels[v.eixo] || v.eixo}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-sm font-bold">{v.views >= 1000 ? `${(v.views / 1000).toFixed(1)}K` : v.views}</span>
+                  <span className="text-[8px] opacity-40 block">views</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm opacity-60">Sem dados de YouTube disponíveis.</p>
+        )}
+      </section>
+
+      <div className="section-divider" />
+
+      {/* SECTION 7 — Sugestão de conteúdo */}
       <section className="px-6 py-10">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
           Sugestão de conteúdo

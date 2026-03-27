@@ -15,6 +15,7 @@ type BriefingPdfData = {
   debunking: { term: string; title: string; classification: string; source: string }[];
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
+  youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
 };
 
 const axisLabels: Record<string, string> = {
@@ -251,7 +252,30 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
   }
   y += 4;
 
-  // SECTION 6 — Sugestão
+  // SECTION 6 — YouTube
+  if (data.youtube && data.youtube.length > 0) {
+    sectionTitle("O que se vê no YouTube");
+    data.youtube.forEach((v, i) => {
+      checkPage(10);
+      setFont("bold", 8);
+      pdf.setTextColor(GREY);
+      pdf.text(String(i + 1).padStart(2, "0"), MARGIN, y);
+      setFont("normal", 9);
+      pdf.setTextColor(BLACK);
+      const titleLines = pdf.splitTextToSize(v.titulo, pageWidth - 2 * MARGIN - 40);
+      pdf.text(titleLines, MARGIN + 10, y);
+      setFont("normal", 8);
+      pdf.setTextColor(GREY);
+      const viewsText = v.views >= 1000 ? `${(v.views / 1000).toFixed(1)}K views` : `${v.views} views`;
+      pdf.text(viewsText, pageWidth - MARGIN, y, { align: "right" });
+      y += titleLines.length * 4;
+      pdf.text(`${v.canal}  ·  ${axisLabels[v.eixo] || v.eixo}`, MARGIN + 10, y);
+      y += 5;
+    });
+    y += 4;
+  }
+
+  // SECTION 7 — Sugestão
   if (data.topEmergent) {
     sectionTitle("Sugestão de conteúdo");
     checkPage(15);
@@ -265,7 +289,7 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     y += lines.length * 4 + 4;
   }
 
-  // SECTION 7 — Perguntas VoxPop
+  // SECTION 8 — Perguntas VoxPop
   if (data.dizQueDisse?.perguntas_voxpop?.length) {
     sectionTitle("Perguntas VoxPop");
     data.dizQueDisse.perguntas_voxpop.forEach((q, i) => {
@@ -282,7 +306,7 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     y += 4;
   }
 
-  // SECTION 8 — Revisão de Pares
+  // SECTION 9 — Revisão de Pares
   if (data.dizQueDisse?.especialista_sugerido) {
     sectionTitle("Revisão de Pares");
     checkPage(20);
