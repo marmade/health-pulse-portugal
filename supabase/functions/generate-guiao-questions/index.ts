@@ -30,11 +30,12 @@ Para cada pergunta inclui:
 
 Usa APENAS estas fontes científicas e institucionais para referencia_nome e referencia_url, por ordem de prioridade:
 
-MSD MANUALS (fonte prioritária — peer-reviewed, em português):
-- Saúde Mental: https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-de-sa%C3%BAde-mental
-- Alimentação: https://www.msdmanuals.com/pt/casa/dist%C3%BArbios-nutricionais
-- Menopausa: https://www.msdmanuals.com/pt/casa/problemas-de-sa%C3%BAde-feminina/menopausa
-- Emergentes: https://www.msdmanuals.com/pt/casa/infec%C3%A7%C3%B5es
+Fontes peer-reviewed em português (prioritárias):
+- MSD Manuals: https://www.msdmanuals.com/pt/casa (referência clínica peer-reviewed, gratuita)
+- Acta Médica Portuguesa: https://www.actamedicaportuguesa.com (principal revista médica portuguesa, open access)
+- Revista Portuguesa de Medicina Geral e Familiar: https://www.rpmgf.pt (cuidados primários, open access)
+- SciELO Portugal: https://www.scielo.pt (agregador de revistas científicas portuguesas)
+- Cochrane Library: https://www.cochranelibrary.com (revisões sistemáticas, resumos em linguagem simples)
 
 Fontes institucionais portuguesas:
 Para SAÚDE MENTAL: DGS (dgs.pt) · SNS24 (sns24.gov.pt/tema/saude-mental/) · OMS (who.int) · Ordem dos Psicólogos (ordemdospsicologos.pt)

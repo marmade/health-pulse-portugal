@@ -102,6 +102,12 @@ const URL_MAP: Record<string, Record<string, string>> = {
 const GLOBAL_SOURCES: Record<string, string> = {
   "PUBMED": "https://pubmed.ncbi.nlm.nih.gov/",
   "NIMH": "https://www.nimh.nih.gov",
+  "ACTA MÉDICA": "https://www.actamedicaportuguesa.com",
+  "ACTA MEDICA": "https://www.actamedicaportuguesa.com",
+  "RPMGF": "https://www.rpmgf.pt",
+  "MEDICINA GERAL E FAMILIAR": "https://www.rpmgf.pt",
+  "SCIELO": "https://www.scielo.pt",
+  "COCHRANE": "https://www.cochranelibrary.com",
 };
 
 // Aliases: map common variations to canonical keys
