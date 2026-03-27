@@ -602,9 +602,10 @@ export default function BenchmarkPage() {
       .sort((a, b) => (ambitoOrder[a.ambito] ?? 2) - (ambitoOrder[b.ambito] ?? 2) || (tipoOrder[a.tipo] ?? 2) - (tipoOrder[b.tipo] ?? 2));
 
     const totalAll = all.length;
+    const isNegative = sinal === "-";
 
     return (
-      <div>
+      <div style={isNegative ? { backgroundColor: "#FFF0F3", borderRadius: 4, padding: "1.5rem" } : undefined}>
         {/* Column title */}
         <div
           className="text-sm font-bold tracking-[0.1em] uppercase mb-4"
