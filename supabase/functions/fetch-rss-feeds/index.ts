@@ -48,6 +48,14 @@ const FEEDS: FeedSource[] = [
   { url: 'https://www.cnc.uc.pt/pt/feed/', outlet: 'Centro de Neurociências e Biologia Celular', type: 'institucional' },
   { url: 'https://spem.pt/feed/', outlet: 'Sociedade Portuguesa de Esclerose Múltipla', type: 'institucional' },
   { url: 'https://gimm.pt/feed/', outlet: 'GIMM Gulbenkian', type: 'institucional' },
+  { url: 'https://spc.pt/feed/', outlet: 'Sociedade Portuguesa de Cardiologia', type: 'institucional' },
+  { url: 'https://spsp.pt/feed/', outlet: 'Sociedade Portuguesa de Saúde Pública', type: 'institucional' },
+  { url: 'https://spesf.pt/feed/', outlet: 'SP Enfermagem de Saúde Familiar', type: 'institucional' },
+  // ONG E ASSOCIAÇÕES
+  { url: 'https://apav.pt/feed/', outlet: 'APAV', type: 'institucional' },
+  { url: 'https://cpsa.pt/feed/', outlet: 'Conselho Português para a Saúde e Ambiente', type: 'institucional' },
+  // FARMACÊUTICA
+  { url: 'https://www.bial.com/pt/feed/', outlet: 'Bial', type: 'institucional' },
   // DIVULGAÇÃO CIENTÍFICA
   { url: 'https://www.90segundosdeciencia.pt/feed/', outlet: '90 Segundos de Ciência', type: 'media' },
   // FACT-CHECKING

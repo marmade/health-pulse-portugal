@@ -55,6 +55,7 @@ CANAIS_PT = [
     {"id": "UC43Xmu6eMxUc4e5LITcKESw",  "nome": "ERS"},
     {"id": "UCOE-JsBcVf4__OlrsiW59EQ",  "nome": "República Portuguesa"},
     {"id": "UCDThSH2sV00KyNekSODyg_g",  "nome": "CNPS Mental"},
+    {"id": "UCIz4NsTmRImfjtknQ0hPt4A",  "nome": "SNS Portal"},
     # Saúde — ordens e sociedades científicas
     {"id": "UCayuHV0f3y1-qHSzh07UhFg",  "nome": "Ordem dos Médicos"},
     {"id": "UCCBlYMv3F6VkTsU57ZFUNyg",  "nome": "Ordem dos Psicólogos"},
@@ -66,6 +67,8 @@ CANAIS_PT = [
     {"id": "UCeIsY_mR0FoDRX2nWKcO12g",  "nome": "Sociedade Portuguesa de Literacia em Saúde"},
     {"id": "UCpLfK1hrhHxhk7vhXrrNsiA",  "nome": "Sociedade Portuguesa Patologia Coluna Vertebral"},
     {"id": "UCYRJph6b7Vt_NvT9uNetEJg",  "nome": "Sociedade Portuguesa de Esclerose Múltipla"},
+    {"id": "UCFfVOW1MeXLvlaFcOtUlHIA",  "nome": "Sociedade Portuguesa de Cardiologia"},
+    {"id": "UCAYMjfbvT-XaoE-rXQdpAVQ",  "nome": "Sociedade Portuguesa de Endocrinologia"},
     # Saúde — hospitais e seguros
     {"id": "UCaX52_iMXdddasXv1zPuzzQ",  "nome": "Trofa Saúde"},
     {"id": "UCa_iuEjOzgc2ZKo0-ZzNrKA",  "nome": "CUF"},
@@ -73,6 +76,8 @@ CANAIS_PT = [
     {"id": "UCGsIPe5hjisPH17GHDus2eg",  "nome": "Unilabs Portugal"},
     {"id": "UC0PZ_M__MEPDjzl1ru6Abtg",  "nome": "Médis"},
     {"id": "UC8j8qlWxOV4VjlQIz5CHKnQ",  "nome": "Lundbeck Portugal"},
+    {"id": "UCcoeRBF4Ivdm4aCwTDZdYIA",  "nome": "Bial"},
+    {"id": "UCr7zkgwa5ELLwj0epToZIBg",  "nome": "Grupo HPA Saúde"},
     # Ciência e academia
     {"id": "UCrDDWtZnSHtv5eAn3RCX0RA",  "nome": "Academia das Ciências de Lisboa"},
     {"id": "UC6yVe4JNXUdKFxZizE_ldsA",  "nome": "Fundação Francisco Manuel dos Santos"},
@@ -85,6 +90,12 @@ CANAIS_PT = [
     {"id": "UCjspnOYGdzo5Ll58fooY9Zw",  "nome": "Fundação Calouste Gulbenkian"},
     {"id": "UC0zfnw1q686zD4F335AYoTg",  "nome": "Centro de Neurociências e Biologia Celular"},
     {"id": "UCR8d63kMXqsGaDV9IOHi99Q",  "nome": "Portal Top Saúde"},
+    # ONG e associações
+    {"id": "UCsBd0_em-tcr8ovQ_eYgfYA",  "nome": "Cruz Vermelha Portuguesa"},
+    {"id": "UCyCPnLTvgyzicTHIZRbjN_w",  "nome": "APAV"},
+    {"id": "UC-liu13JMRDTjOm2YT2-p5A",  "nome": "Conselho Português para a Saúde e Ambiente"},
+    # Internacional
+    {"id": "UCkD7gm3Am3M3k156lk46t3A",  "nome": "UNESCO"},
     # Fact-check e literacia
     {"id": "UCjMzepu7e36usUEWU2wfHvg",  "nome": "Despolariza"},
     {"id": "UCiYGrdT8KPon4QsLsOfdu8A",  "nome": "News Farma"},
