@@ -127,9 +127,10 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 ## Pendentes
 
-- [ ] Correr workflow manualmente para popular snapshots e guiões
+- [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
 - [ ] Deploy edge functions novas no Supabase Lovable (generate-guioes-weekly, archive-weekly)
-- [ ] Migração colunas eixo/subcategoria nos bookmarks (pedir ao Lovable)
+- [x] ~~Migração colunas eixo/subcategoria nos bookmarks~~ (pedido ao Lovable 2026-03-27)
+- [x] ~~Token GitHub revogado~~
 - [ ] Channel IDs em falta: SPP (Pediatria), Ordem dos Enfermeiros
 - [ ] Migração para Supabase da Marta (quando for para produção)
 - [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
