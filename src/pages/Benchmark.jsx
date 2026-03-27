@@ -342,9 +342,9 @@ const SEED_DATA = [
     nome: "Robert F. Kennedy Jr.",
     link: "",
     descricao:
-      "Advogado e activista anti-vacinas, fundador da Children's Health Defense. Uma das figuras mais influentes do movimento anti-vacinação a nível global.",
-    col3: "• Capacidade de mobilização política e mediática\n• Uso de linguagem de 'liberdade de escolha' e direitos individuais\n• Exploração de casos reais de efeitos adversos para generalizar\n• Financiamento significativo para campanhas anti-vacinas",
-    col4: "• Impacto directo na hesitação vacinal global\n• Influência política crescente (candidatura presidencial)\n• Modelo de comunicação replicado por movimentos locais\n• Legitimação de narrativas anti-ciência em contexto político",
+      "Advogado e activista anti-vacinas, fundador da Children's Health Defense. Desde fevereiro de 2025, Secretário de Saúde dos EUA (HHS), nomeado por Donald Trump após desistir da corrida presidencial. Preside a comissão 'Make America Healthy Again' (MAHA). A sua nomeação coloca um dos maiores opositores de vacinas à frente do sistema de saúde norte-americano.",
+    col3: "• Capacidade de mobilização política que culminou em cargo governamental\n• Uso de linguagem de 'liberdade de escolha' e direitos individuais\n• Exploração de casos reais de efeitos adversos para generalizar\n• Financiamento significativo para campanhas anti-vacinas",
+    col4: "• Enquanto Secretário de Saúde dos EUA, tem poder directo sobre política vacinal e regulação\n• Legitimação institucional sem precedentes de narrativas anti-vacinas\n• Modelo de comunicação replicado por movimentos locais em Portugal e Europa\n• Impacto potencial na hesitação vacinal global amplificado pelo cargo governamental",
   },
   {
     id: "bm-7",
@@ -398,9 +398,9 @@ const SEED_DATA = [
     ambito: "Internacional",
     nome: "Didier Raoult",
     link: "",
-    descricao: "Virologista francês de renome que se tornou figura de desinformação durante a COVID-19 ao promover a hidroxicloroquina como cura sem evidência suficiente. Caso paradigmático de um cientista credenciado que entra em conflito com o consenso científico por razões de ego e visibilidade, com impacto directo em políticas de saúde pública.",
+    descricao: "Microbiologista francês, reformado em 2022, que se tornou figura central de desinformação durante a COVID-19 ao promover a hidroxicloroquina sem evidência suficiente. Alvo de investigação criminal por falsificação de documentação e procedimentos médicos injustificados no IHU Méditerranée. 46 publicações retractadas e 218+ com expressões de preocupação ética (dados de 2025).",
     col3: "• Credenciais científicas excepcionais usadas para desafiar o consenso com autoridade\n• Enorme visibilidade mediática em França e internacionalmente\n• Discurso de 'médico corajoso contra o sistema' com forte apelo emocional\n• Publicação acelerada de estudos metodologicamente fracos durante a pandemia",
-    col4: "• Influenciou directamente políticas de saúde em França e noutros países\n• Ilustra como cientistas credenciados podem tornar-se vectores de desinformação\n• Caso de estudo fundamental para literacia científica e avaliação de consenso\n• Para combater: distinção entre opinião de especialista e consenso científico",
+    col4: "• 46 artigos retractados e investigação criminal em curso — consequências reais\n• Ilustra como cientistas credenciados podem tornar-se vectores de desinformação\n• Sanções da ANSM ao IHU Méditerranée por má conduta em investigação\n• Caso de estudo fundamental para literacia científica e integridade de publicação",
   },
   {
     id: "bm-12",
@@ -409,9 +409,9 @@ const SEED_DATA = [
     ambito: "Internacional",
     nome: "Mehmet Oz (Dr. Oz)",
     link: "",
-    descricao: "Cirurgião cardíaco norte-americano reconvertido a apresentador televisivo e promotor de curas, dietas e suplementos sem evidência científica. Modelo global de celebrity medicine — uso de credenciais médicas para promover produtos e conteúdo pseudo-científico com alcance massivo. Condenado pelo Senado dos EUA por publicidade enganosa.",
-    col3: "• Credenciais de cirurgião cardíaco de Columbia University usadas como escudo de credibilidade\n• Programa televisivo com audiências de milhões durante mais de uma década\n• Linguagem acessível e emocional que ressoa com públicos vulneráveis\n• Modelo de negócio baseado em parcerias com fabricantes de suplementos",
-    col4: "• Define o modelo de celebrity medicine replicado por influenciadores de saúde em todo o mundo\n• Normaliza a promoção de produtos sem evidência por profissionais de saúde\n• Relevante para discutir conflitos de interesse e ética na comunicação médica\n• Para combater: regulação de comunicação médica em contextos comerciais",
+    descricao: "Cirurgião cardíaco de Columbia University reconvertido a apresentador televisivo e promotor de suplementos sem evidência. Desde abril de 2025, Administrador do CMS (Centers for Medicare and Medicaid Services), nomeado por Trump. Após uma década a promover curas milagrosas em televisão e ser condenado pelo Senado por publicidade enganosa, supervisiona agora o sistema de seguros de saúde de 150 milhões de americanos.",
+    col3: "• Credenciais de cirurgião cardíaco usadas como escudo de credibilidade durante décadas\n• Programa televisivo com audiências de milhões — definiu o modelo de celebrity medicine\n• Linguagem acessível e emocional que ressoa com públicos vulneráveis\n• Nomeado para cargo governamental apesar de historial de promoção de pseudo-ciência",
+    col4: "• Enquanto Administrador do CMS, tem poder directo sobre Medicare e Medicaid\n• Normaliza a transição de promotor de pseudo-ciência para decisor político de saúde\n• Caso extremo de conflito de interesse entre credenciais médicas e interesses comerciais\n• Relevante para discutir limites éticos da comunicação médica e accountability",
   },
   {
     id: "bm-13",
