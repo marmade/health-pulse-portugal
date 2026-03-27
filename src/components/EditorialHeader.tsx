@@ -3,16 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 /* ── Linha 1: REPORTAGEM VIVA + BENCHMARK | PLATAFORMA | SOBRE ── */
 const NAV_ITEMS = [
   { label: "Benchmark",  path: "/editorial/benchmark" },
+  { label: "Bookmarks",  path: "/editorial/bookmarks" },
+  { label: "Textos",     path: "/textos" },
   { label: "Plataforma", path: "/plataforma" },
   { label: "Sobre",      path: "/sobre" },
 ];
 
-/* ── Linha 2: GUIÕES | REVISÃO DE PARES | TEXTOS | BOOKMARKS ── */
+/* ── Linha 2: GUIÕES | REVISÃO DE PARES ── */
 const SUB_NAV_ITEMS = [
   { label: "Guiões",           path: "/editorial/guioes" },
   { label: "Revisão de Pares", path: "/revisao-pares" },
-  { label: "Textos",           path: "/textos" },
-  { label: "Bookmarks",        path: "/editorial/bookmarks" },
 ];
 
 const borderStyle = "1px solid rgba(0,0,255,0.15)";
