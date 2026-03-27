@@ -132,9 +132,9 @@ const SEED_DATA = [
     nome: "Tânia Graça",
     link: "",
     descricao:
-      "Nutricionista com presença digital activa e comunicação baseada em evidência. Combate activamente mitos alimentares nas redes sociais.",
-    col3: "• Comunicação acessível e baseada em evidência\n• Forte presença no Instagram com conteúdo educativo\n• Combate directo a mitos alimentares populares",
-    col4: "• Foco restrito à nutrição\n• Alcance limitado a um segmento demográfico específico\n• Vulnerável a ataques e pressão de indústrias alimentares",
+      "Psicóloga clínica e sexóloga com presença digital activa. Comunica sobre saúde mental, sexualidade e bem-estar com base em evidência científica.",
+    col3: "• Comunicação acessível sobre saúde mental e sexualidade\n• Forte presença no Instagram com conteúdo educativo e desmistificador\n• Aborda tabus (sexualidade, saúde mental) com linguagem directa e empática\n• Combina prática clínica com divulgação",
+    col4: "• Foco em psicologia e sexologia, não cobre outras áreas de saúde\n• Alcance limitado a um segmento demográfico específico (redes sociais)\n• Formato de conteúdo curto pode não aprofundar temas complexos",
   },
   {
     id: "bn-12",
