@@ -364,20 +364,28 @@ const Briefing = () => {
 
       <div className="section-divider" />
 
-      {/* SECTION 2 — Sinal de alerta */}
+      {/* SECTION 2 — Sinais de alerta */}
       <section className="px-6 py-10">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-          Sinal de alerta
+          Sinais de alerta
         </h2>
         {emergent.length === 0 ? (
-          <p className="text-sm opacity-60">Nenhum sinal emergente esta semana.</p>
+          <p className="text-sm opacity-60">Nenhum sinal de alerta esta semana.</p>
         ) : (
           <div className="space-y-3 max-w-2xl">
-            {emergent.map((kw) => {
+            {emergent
+              .sort((a, b) => b.change_percent - a.change_percent)
+              .map((kw) => {
               const c = getAxisColors(kw.axis);
+              // Emergent: volume was very low before (previous_volume < 5) → truly new signal
+              // Peak: existing term with strong growth
+              const isNewSignal = kw.previous_volume < 5;
+              const badgeLabel = isNewSignal ? "Emergente" : "Pico";
               return (
               <div key={kw.term} className="flex items-center gap-3">
-                <span className="tag-emergent">Emergente</span>
+                <span className={isNewSignal ? "tag-emergent" : "text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 border border-foreground"}>
+                  {badgeLabel}
+                </span>
                 <span className="text-sm font-semibold">{kw.term}</span>
                 <span
                   className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
