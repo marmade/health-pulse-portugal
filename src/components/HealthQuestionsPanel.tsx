@@ -116,16 +116,12 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
                   </button>
 
                   {isExpanded && (() => {
-                    const relatedQuestions = questions
-                      .filter((rq) => rq.cluster === q.cluster && rq.question !== q.question)
-                      .sort((a, b) => b.relativeVolume - a.relativeVolume)
-                      .slice(0, 5);
-
-                    return relatedQuestions.length > 0 ? (
+                    const related = relatedMap[q.question] || [];
+                    return related.length > 0 ? (
                       <div className="pb-4 pl-0">
                         <div className="border border-foreground/10 p-4">
                           <p className="editorial-label mb-2">Pesquisas relacionadas</p>
-                          {relatedQuestions.map((rq) => (
+                          {related.map((rq) => (
                             <p
                               key={rq.question}
                               className="text-[10px] text-foreground/50 leading-relaxed mb-1"
