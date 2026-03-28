@@ -1,0 +1,1 @@
+UPDATE public.plataforma_popups SET title = 'Diz que Disse', text = 'Serve como uma arma de bolso científica, que corre nos telemóveis e arquiva a revisão de pares. Permite ao utilizador pesquisar temas e aceder a respostas com fundamento científico em qualquer circunstância.' WHERE id = 'app';
