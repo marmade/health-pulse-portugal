@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 /* ── Fallback modal data ── */
 const fallbackModals: Record<string, { eyebrow: string; title: string; text: string }> = {
+  reportagem: { eyebrow: "Ecossistema Digital", title: "Reportagem Viva", text: "O formato central de produção de conteúdo. Combina vox pop com validação científica numa dinâmica de reportagem contínua que alimenta todos os canais de distribuição." },
   dgs: { eyebrow: "Parceiros Institucionais", title: "DGS — Direcção-Geral da Saúde", text: "A DGS é uma fonte primária de informação científica validada. O projecto utiliza os seus comunicados, orientações clínicas e alertas de saúde pública como base para a monitorização de tendências e validação do conteúdo produzido." },
   sns: { eyebrow: "Parceiros Institucionais", title: "SNS — Serviço Nacional de Saúde", text: "O SNS fornece dados epidemiológicos, estatísticas de saúde e informação institucional que alimentam os eixos temáticos do dashboard." },
   rtp: { eyebrow: "Amplificação", title: "RTP", text: "Parceiro de amplificação com potencial para co-produção de conteúdo ou divulgação junto de públicos mais alargados através dos canais digitais e televisivos." },
@@ -152,6 +153,10 @@ const Plataforma = () => {
 
         {/* 4 — Ecossistema Digital */}
         <SectionLabel>Ecossistema Digital</SectionLabel>
+        <DiagramBox label="Reportagem Viva" id="reportagem" style={S.digital} onClick={open} />
+
+        <Arrow opacity={0.3} />
+
         <div className="flex gap-3 justify-center flex-wrap">
           <DiagramBox label="Site" id="site" style={S.digital} onClick={open} />
           <DiagramBox label="APP" id="app" style={S.digital} onClick={open} />
