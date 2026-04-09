@@ -34,7 +34,7 @@ def buscar_keywords():
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/keywords",
         headers=HEADERS,
-        params={"select": "id,term,axis,current_volume,previous_volume", "is_active": "eq.true"}
+        params={"select": "id,term,axis,current_volume,previous_volume,is_emergent,change_percent", "is_active": "eq.true"}
     )
     r.raise_for_status()
     return r.json()
@@ -114,8 +114,13 @@ def main():
         current, previous = buscar_volume_real(pytrends, term)
 
         if current is None:
-            # Sem dados — manter valores existentes, não actualizar
-            print(f"    Sem dados — mantido")
+            # Sem dados — manter volumes, mas resetar emergente se estava activo
+            if kw.get("is_emergent"):
+                actualizar_keyword(kw["id"], kw["current_volume"], kw["previous_volume"],
+                                   kw.get("change_percent", 0), "stable", False)
+                print(f"    Sem dados — emergente resetado (sem confirmação Google Trends)")
+            else:
+                print(f"    Sem dados — mantido")
             sem_dados += 1
         else:
             # Calcular variação
@@ -127,8 +132,11 @@ def main():
 
             trend = "up" if change > 10 else "down" if change < -10 else "stable"
 
-            # Actualizar is_emergent automaticamente com base no volume e variação
+            # Actualizar is_emergent: activa com crescimento forte, expira quando estabiliza
             is_emergent = change >= 50 and current >= 10
+            # Log quando um emergente expira
+            if not is_emergent and kw.get("is_emergent"):
+                print(f"    ⚠ Emergente expirado (variação actual: {change:+.1f}%)")
 
             ok = actualizar_keyword(kw["id"], current, prev, change, trend, is_emergent)
             status = "OK" if ok else "ERRO"

@@ -21,7 +21,7 @@ export function detectAlerts(
 
   for (const [, axis] of Object.entries(axisData)) {
     for (const kw of axis.allKeywords) {
-      if (kw.changePercent >= threshold || kw.isEmergent) {
+      if (kw.changePercent >= threshold || (kw.isEmergent && kw.changePercent > 0)) {
         alerts.push({
           keyword: kw,
           growthPercent: kw.changePercent,

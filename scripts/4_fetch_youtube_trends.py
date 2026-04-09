@@ -10,6 +10,7 @@ Como correr:
 """
 
 import sys
+import re
 import requests
 from datetime import datetime, timezone, timedelta
 from googleapiclient.discovery import build
@@ -107,7 +108,7 @@ CANAIS_PT = [
 # Keywords por eixo temático (para classificar e filtrar vídeos)
 # ---------------------------------------------------------------------------
 EIXOS = {
-    "saude_mental": [
+    "saude-mental": [
         "saúde mental", "ansiedade", "depressão", "burnout", "stress", "psicologia",
         "psiquiatria", "bem-estar", "mental", "emoções", "autoestima", "luto",
         "mindfulness", "terapia", "perturbação", "suicídio", "solidão",
@@ -130,18 +131,35 @@ EIXOS = {
     ],
 }
 
-# Mapa inverso: keyword → eixo
-KW_TO_EIXO = {}
+# Mapa inverso: keyword → eixo (com regex word boundary)
+KW_TO_EIXO = []
 for eixo, kws in EIXOS.items():
     for kw in kws:
-        KW_TO_EIXO[kw.lower()] = eixo
+        # Compilar regex com word boundaries para evitar falsos positivos
+        pattern = re.compile(r'\b' + re.escape(kw.lower()) + r'\b')
+        KW_TO_EIXO.append((pattern, eixo))
+
+# Palavras no título que indicam que o vídeo NÃO é de saúde
+BLACKLIST_TITULOS = [
+    "presidente da república", "assembleia da república", "parlamento",
+    "futebol", "benfica", "sporting", "porto fc", "liga dos campeões",
+    "eleições", "autárquicas", "legislativas", "orçamento de estado",
+    "guerra", "ucrânia", "nato", "trump",
+]
+BLACKLIST_PATTERNS = [re.compile(re.escape(b)) for b in BLACKLIST_TITULOS]
 
 
 def classificar_eixo(titulo: str) -> str | None:
-    """Devolve o eixo temático se o título contiver uma keyword, None caso contrário."""
+    """Devolve o eixo temático se o título contiver uma keyword de saúde.
+    Usa word boundaries e blacklist para reduzir falsos positivos."""
     t = titulo.lower()
-    for kw, eixo in KW_TO_EIXO.items():
-        if kw in t:
+    # Rejeitar se o título contém termos da blacklist
+    for bp in BLACKLIST_PATTERNS:
+        if bp.search(t):
+            return None
+    # Procurar keyword de saúde com word boundary
+    for pattern, eixo in KW_TO_EIXO:
+        if pattern.search(t):
             return eixo
     return None
 
