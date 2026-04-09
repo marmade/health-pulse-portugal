@@ -31,8 +31,8 @@ HEADERS = {
 }
 
 TOP_GLOBAL = 30
-VIDEOS_POR_CANAL = 20      # vídeos a buscar por canal (para ter margem de filtragem)
-JANELA_DIAS = 365          # janela temporal máxima (1 ano)
+VIDEOS_POR_CANAL = 30      # vídeos a buscar por canal (para ter margem de filtragem)
+JANELA_DIAS = 90           # janela temporal — últimos 3 meses (garante rotação)
 
 # ---------------------------------------------------------------------------
 # Canais portugueses curados
@@ -173,7 +173,7 @@ def buscar_videos_canal(youtube, canal_id: str, canal_nome: str) -> list:
             channelId=canal_id,
             part="id",
             type="video",
-            order="viewCount",
+            order="date",
             publishedAfter=data_limite,
             maxResults=VIDEOS_POR_CANAL,
         ).execute()
