@@ -14,7 +14,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [relatedMap, setRelatedMap] = useState<Record<string, HealthQuestion[]>>({});
   const isOverview = !axis || axis === "all";
   const { questions, isLoading } = useHealthQuestions(axis);
-  const top15 = isOverview ? questions : questions.slice(0, 15);
+  const top15 = isOverview ? questions.slice(0, 30) : questions.slice(0, 15);
   const title = axis && axisLabel
     ? `Perguntas sobre ${axisLabel}`
     : "Perguntas de Saúde em Crescimento";
@@ -50,7 +50,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   };
 
   return (
-    <div className="py-5 flex flex-col h-full min-h-0 max-h-[500px]">
+    <div className="py-5 flex flex-col h-full min-h-0 max-h-[700px]">
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
@@ -67,12 +67,12 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         </div>
       ) : (
         <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow">
-          <div className="space-y-0">
+          <div className={`${isOverview ? "md:columns-2 md:gap-6" : ""} space-y-0`}>
             {top15.map((q, i) => {
               const isExpanded = expanded === q.question;
 
               return (
-                <div key={q.question}>
+                <div key={q.question} className="break-inside-avoid">
                   <button
                     onClick={() => toggle(q.question, q.cluster)}
                     className="w-full text-left py-2.5 group"

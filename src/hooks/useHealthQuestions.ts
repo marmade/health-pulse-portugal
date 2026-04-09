@@ -23,7 +23,7 @@ export function useHealthQuestions(axis?: string) {
                 .select('*')
                 .eq('axis', ax)
                 .order('growth_percent', { ascending: false })
-                .limit(2)
+                .limit(5)
             )
           );
           for (const r of results) {
