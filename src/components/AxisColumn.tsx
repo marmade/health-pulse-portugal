@@ -48,8 +48,8 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, a
                   </p>
                 </div>
               </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-[220px] text-xs leading-relaxed">
-                Média da variação percentual de todas as keywords deste eixo face ao período anterior.
+              <TooltipContent side="bottom" className="max-w-[280px] text-xs leading-relaxed">
+                Média da variação percentual de todas as keywords deste eixo, comparando o período actual com o anterior equivalente. Valores negativos indicam que as pesquisas diminuíram face ao período anterior — pode reflectir sazonalidade ou normalização após um pico.
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
