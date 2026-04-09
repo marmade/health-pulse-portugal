@@ -304,25 +304,19 @@ const Index = () => {
             {alerts.length > 0 && (
               <>
                 <div className="section-divider mb-6" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <SearchAlerts
-                    alerts={alerts}
-                    period={filters.period}
-                    debunkingData={debunkingData}
-                    newsData={newsData}
-                    historicalData={historicalData}
-                  />
-                  <YouTubeTrendsPanel axis={activeAxis} />
-                </div>
+                <SearchAlerts
+                  alerts={alerts}
+                  period={filters.period}
+                  debunkingData={debunkingData}
+                  newsData={newsData}
+                  historicalData={historicalData}
+                />
               </>
             )}
             <div className="section-divider mb-6 mt-10" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2">
-                <HealthQuestionsPanel />
-              </div>
-              {alerts.length === 0 && <YouTubeTrendsPanel axis={activeAxis} />}
-            </div>
+            <YouTubeTrendsPanel axis={activeAxis} />
+            <div className="section-divider mb-6 mt-10" />
+            <HealthQuestionsPanel />
           </div>
         )}
 

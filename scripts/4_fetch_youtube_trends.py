@@ -30,7 +30,7 @@ HEADERS = {
     "Prefer": "return=minimal",
 }
 
-TOP_GLOBAL = 15
+TOP_GLOBAL = 30
 VIDEOS_POR_CANAL = 20      # vídeos a buscar por canal (para ter margem de filtragem)
 JANELA_DIAS = 365          # janela temporal máxima (1 ano)
 
@@ -231,9 +231,14 @@ def main():
 
     print(f"\nTotal recolhido: {len(todos)} vídeos (antes de deduplicar)")
 
-    # De-duplicar por URL, ordenar por views
+    # De-duplicar por URL, ordenar por score (views × recência)
+    # Vídeos recentes recebem boost: score = views × (1 + 2/dias_desde_publicação)
+    def relevance_score(v):
+        days = max(1, (datetime.now(timezone.utc) - datetime.fromisoformat(v["data_publicacao"] + "T00:00:00+00:00")).days)
+        return v["views"] * (1 + 2.0 / days)
+
     vistos, top = set(), []
-    todos.sort(key=lambda v: v["views"], reverse=True)
+    todos.sort(key=relevance_score, reverse=True)
     for v in todos:
         if v["url"] not in vistos:
             vistos.add(v["url"])
