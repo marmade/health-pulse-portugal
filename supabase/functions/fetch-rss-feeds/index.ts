@@ -100,11 +100,14 @@ async function fetchFeedWithFallback(feed: FeedSource): Promise<{ xml: string; u
           if (xml.includes('<item') || xml.includes('<entry')) {
             return { xml, usedUrl: url };
           }
+          // 200 OK mas sem itens RSS — tentar próximo URL (não ficar neste)
+          break;
         }
-        // Se 200 mas sem conteúdo válido, não tenta outros UA para este URL
+        // 403/405 — tentar outro User-Agent; outros status — próximo URL
         if (res.status !== 403 && res.status !== 405) break;
       } catch (_) {
-        break; // timeout ou erro de rede — passar ao próximo URL
+        // timeout ou erro de rede — tentar próximo URL (não desistir de tudo)
+        break;
       }
     }
   }
@@ -163,8 +166,14 @@ Deno.serve(async (req) => {
     const { data: existingItems } = await sb.from('news_items').select('url');
     const existingUrls = new Set((existingItems || []).map((i: { url: string }) => i.url));
 
+    if (allTerms.length === 0) {
+      console.warn('RSS fetch: keywords table is empty — no articles will match');
+    }
+
     let totalInserted = 0;
     let totalProcessed = 0;
+    let totalDuplicates = 0;
+    let totalNoMatch = 0;
     const errors: string[] = [];
     const fallbacksUsed: string[] = [];
 
@@ -187,10 +196,10 @@ Deno.serve(async (req) => {
         }> = [];
 
         for (const item of items) {
-          if (!item.link || existingUrls.has(item.link)) continue;
+          if (!item.link || existingUrls.has(item.link)) { totalDuplicates++; continue; }
           const searchText = `${item.title} ${(item.description || '').substring(0, 200)}`;
           const matchedTerm = matchesKeyword(searchText, allTerms);
-          if (!matchedTerm) continue;
+          if (!matchedTerm) { totalNoMatch++; continue; }
 
           let relatedTerm = matchedTerm;
           for (const kw of keywordRows || []) {
@@ -228,14 +237,17 @@ Deno.serve(async (req) => {
     const result = {
       success: true,
       timestamp: new Date().toISOString(),
-      processed: totalProcessed,
-      inserted: totalInserted,
       feeds: FEEDS.length,
+      keywords: allTerms.length,
+      processed: totalProcessed,
+      duplicates: totalDuplicates,
+      no_match: totalNoMatch,
+      inserted: totalInserted,
       fallbacks_used: fallbacksUsed.length > 0 ? fallbacksUsed : undefined,
       errors: errors.length > 0 ? errors : undefined,
     };
 
-    console.log(`RSS fetch complete: ${totalInserted} new items from ${totalProcessed} processed`);
+    console.log(`RSS fetch complete: ${totalInserted} inserted, ${totalNoMatch} no keyword match, ${totalDuplicates} duplicates, from ${totalProcessed} processed (${allTerms.length} keywords)`);
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
@@ -243,7 +255,7 @@ Deno.serve(async (req) => {
     console.error('RSS fetch error:', error);
     return new Response(
       JSON.stringify({ success: false, error: error instanceof Error ? error.message : 'Unknown error' }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });

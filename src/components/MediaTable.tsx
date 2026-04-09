@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { NewsItem } from "@/data/mockData";
 import { getAxisFilterStyle } from "@/lib/axisColors";
+import { supabase } from "@/integrations/supabase/client";
 
 type Props = {
   items: NewsItem[];
@@ -8,14 +9,18 @@ type Props = {
   activeTheme?: string;
 };
 
-const themes = [
-  { id: "todos", label: "TODOS" },
-  { id: "saude-mental", label: "SAÚDE MENTAL", terms: ["ansiedade", "burnout", "TDAH", "depressão", "stress"] },
-  { id: "alimentacao", label: "ALIMENTAÇÃO", terms: ["ultraprocessados", "microplásticos", "jejum intermitente", "adoçantes"] },
-  { id: "menopausa", label: "MENOPAUSA", terms: ["menopausa"] },
-  { id: "emergentes", label: "EMERGENTES", terms: ["gripe aviária", "long covid", "resistência antibióticos", "H5N1"] },
-];
+type ThemeEntry = {
+  id: string;
+  label: string;
+  terms: string[];
+};
 
+const AXIS_LABELS: Record<string, string> = {
+  "saude-mental": "SAÚDE MENTAL",
+  alimentacao: "ALIMENTAÇÃO",
+  menopausa: "MENOPAUSA",
+  emergentes: "EMERGENTES",
+};
 
 const sourceTypeBadge = (type?: string) => {
   switch (type) {
@@ -42,8 +47,36 @@ const sourceTypeBadge = (type?: string) => {
 
 const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: Props) => {
   const [internalTheme, setInternalTheme] = useState("todos");
+  const [themes, setThemes] = useState<ThemeEntry[]>([{ id: "todos", label: "TODOS", terms: [] }]);
   const activeTheme = externalTheme ?? internalTheme;
-  
+
+  // Carregar terms de cada eixo dinamicamente a partir das keywords da BD
+  useEffect(() => {
+    const fetchThemes = async () => {
+      const { data } = await supabase
+        .from("keywords")
+        .select("term,axis")
+        .eq("is_active", true);
+      if (!data) return;
+
+      const byAxis: Record<string, string[]> = {};
+      for (const kw of data) {
+        if (!byAxis[kw.axis]) byAxis[kw.axis] = [];
+        byAxis[kw.axis].push(kw.term.toLowerCase());
+      }
+
+      const dynamic: ThemeEntry[] = [{ id: "todos", label: "TODOS", terms: [] }];
+      for (const [axisId, terms] of Object.entries(byAxis)) {
+        dynamic.push({
+          id: axisId,
+          label: AXIS_LABELS[axisId] || axisId.toUpperCase(),
+          terms,
+        });
+      }
+      setThemes(dynamic);
+    };
+    fetchThemes();
+  }, []);
 
   const filteredItems = useMemo(() => {
     // When external theme is set, items are already pre-filtered by parent
@@ -53,27 +86,29 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
 
     if (activeTheme !== "todos") {
       const theme = themes.find((t) => t.id === activeTheme);
-      if (theme?.terms) {
+      if (theme?.terms.length) {
         result = result.filter((item) =>
-          theme.terms!.some((term) =>
-            item.relatedTerm.toLowerCase().includes(term.toLowerCase())
+          theme.terms.some((term) =>
+            item.relatedTerm.toLowerCase().includes(term)
           )
         );
       }
     }
 
     return result;
-  }, [items, activeTheme, externalTheme]);
+  }, [items, activeTheme, externalTheme, themes]);
 
   return (
     <div className="flex flex-col h-full min-h-0">
       <div className="flex items-center gap-1.5 mb-1.5 flex-shrink-0">
         <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50">Cobertura Mediática</p>
-        <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
-          Cobertura Recente
-        </span>
+        {lastFetchTimestamp && (
+          <span className="text-[6px] font-bold uppercase tracking-wider px-1 py-0.5 bg-primary/10 text-primary border border-primary/20">
+            Última recolha: {new Date(lastFetchTimestamp).toLocaleDateString("pt-PT", { day: "2-digit", month: "short" })}
+          </span>
+        )}
       </div>
-      
+
       {/* Theme filter */}
       <div className="flex flex-wrap gap-0.5 mb-1 flex-shrink-0">
         {themes.map((t) => (
