@@ -56,7 +56,11 @@ const YouTubeTrendsPanel = ({ axis }: { axis?: string }) => {
         query = query.eq("eixo", axis);
       }
       const { data } = await query;
-      if (data) setTrends(data as YouTubeTrend[]);
+      if (data) {
+        // Garantir número par para colunas equilibradas
+        const even = data.length % 2 === 0 ? data : data.slice(0, -1);
+        setTrends(even as YouTubeTrend[]);
+      }
       setLoading(false);
     };
     fetchData();
