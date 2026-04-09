@@ -44,13 +44,12 @@ function simpleAvg(arr: number[]): number | undefined {
   return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
 }
 
-/** Volume-weighted average: sum(v²) / sum(v) — high-volume keywords dominate */
+/** Average for axis-level trends — same as simpleAvg.
+ * Each keyword's search_index already reflects its volume (0–100 Google Trends scale),
+ * so a simple mean correctly represents the axis without distortion. */
 function weightedAvg(arr: number[]): number | undefined {
   if (arr.length === 0) return undefined;
-  const sumV = arr.reduce((a, b) => a + b, 0);
-  if (sumV === 0) return 0;
-  const sumVV = arr.reduce((a, v) => a + v * v, 0);
-  return Math.round(sumVV / sumV);
+  return Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
 }
 
 // ── 12m ──────────────────────────────────────────────────────────────────────

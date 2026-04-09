@@ -91,18 +91,30 @@ export function useAxisData(period: string) {
         const grouped: Record<string, Keyword[]> = {};
         for (const kw of keywords) {
           const snaps = kwSnapMap[kw.term];
-          const hasSnapshots = snaps && (snaps.current.length > 0 || snaps.previous.length > 0);
+          const hasCurrent = snaps && snaps.current.length > 0;
+          const hasPrevious = snaps && snaps.previous.length > 0;
 
-          // Use snapshot-derived volumes when available, fall back to DB values
-          const currentVolume = hasSnapshots && snaps.current.length > 0
-            ? avg(snaps.current)
-            : kw.current_volume;
-          const previousVolume = hasSnapshots && snaps.previous.length > 0
-            ? avg(snaps.previous)
-            : kw.previous_volume;
-          const changePercent = previousVolume > 0
-            ? +((currentVolume - previousVolume) / previousVolume * 100).toFixed(1)
-            : Number(kw.change_percent);
+          // Only use snapshot-derived values when BOTH periods have data.
+          // If either is missing, use DB values consistently (both from same source).
+          let currentVolume: number;
+          let previousVolume: number;
+          let changePercent: number;
+
+          if (hasCurrent && hasPrevious) {
+            // Best case: real comparison within the selected period
+            currentVolume = avg(snaps.current);
+            previousVolume = avg(snaps.previous);
+            changePercent = previousVolume > 0
+              ? +((currentVolume - previousVolume) / previousVolume * 100).toFixed(1)
+              : 0;
+          } else {
+            // Insufficient snapshots for this period — use DB values
+            // (calculated from 4-week Google Trends window, consistent pair)
+            currentVolume = kw.current_volume;
+            previousVolume = kw.previous_volume;
+            changePercent = Number(kw.change_percent) || 0;
+          }
+
           const trend = changePercent > 10 ? "up" : changePercent < -10 ? "down" : "stable";
           const isEmergent = changePercent >= 50 && currentVolume >= 10;
 
@@ -174,7 +186,8 @@ export function useDebunkingData() {
     const fetchData = async () => {
       const { data: debunking } = await supabase
         .from('debunking')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (debunking && debunking.length > 0) {
         setData(debunking.map(d => ({
@@ -183,6 +196,7 @@ export function useDebunkingData() {
           classification: d.classification,
           source: d.source,
           url: d.url,
+          dataPublicacao: d.data_publicacao || null,
         })));
       }
       setIsLoading(false);
@@ -201,9 +215,13 @@ export function useNewsData() {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Limitar a 12 meses para evitar carregar toda a tabela
+      const newsCutoff = new Date();
+      newsCutoff.setFullYear(newsCutoff.getFullYear() - 1);
       const { data: news } = await supabase
         .from('news_items')
         .select('*')
+        .gte('date', newsCutoff.toISOString().split('T')[0])
         .order('date', { ascending: false });
 
       if (news && news.length > 0) {

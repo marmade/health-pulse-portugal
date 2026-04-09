@@ -65,7 +65,14 @@ const DebunkingTable = ({ items }: Props) => {
                     >
                       {item.title}
                     </a>
-                    <p className="text-[8px] text-foreground/40 mt-0.5">{item.source}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <p className="text-[8px] text-foreground/40">{item.source}</p>
+                      {(item as any).dataPublicacao && (
+                        <p className="text-[8px] text-foreground/30">
+                          {new Date((item as any).dataPublicacao).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", year: "numeric" })}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <span
                     className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 shrink-0 mt-0.5 ${
