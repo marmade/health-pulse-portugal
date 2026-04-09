@@ -65,15 +65,28 @@ BLOCKLIST_ENTRETENIMENTO = {
     "filme", "movie", "cinema", "trailer", "estreia", "temporada",
     "episódio", "episodio", "série", "serie", "netflix", "hbo", "disney",
     "prime video", "streaming", "download", "torrent", "legendas",
+    "elenco", "personagem", "ator", "atriz", "protagonista",
     "game", "jogo", "games", "gameplay", "review", "update", "patch",
-    "dlc", "xbox", "playstation", "nintendo", "steam", "epic games",
+    "takedown", "dlc", "xbox", "playstation", "nintendo", "steam", "epic games",
     "álbum", "album", "single", "tour", "concerto", "festival", "spotify",
     "transferência", "mercado", "benfica", "sporting", "porto", "liga",
     "premier league", "champions",
+    "wikipedia", "wiki", "reddit", "tiktok", "instagram",
 }
 
 REGEX_METEOROLOGIA = re.compile(
-    r"^(depressão|ciclone|tempestade|furacão|tufão|baixa pressão)\s+[A-Za-záéíóúàâêôãõüç]+$",
+    r"^(depressão|ciclone|tempestade|furacão|tufão|baixa pressão)\s+[A-Z][a-záéíóúàâêôãõüç]+$",
+)
+
+# Nomes de depressões meteorológicas — não são perguntas de saúde
+NOMES_METEO = {
+    "oriana", "ingrid", "therese", "goretti", "nils", "kristen", "kristin",
+    "elsa", "kirk", "boris", "ciaran", "agnes", "babet", "debi", "isha",
+    "henk", "jocelyn", "nelson", "elin", "herminia", "patricia", "olivia",
+}
+
+REGEX_DEPRESSAO_NOME = re.compile(
+    r"^depressão\s+(" + "|".join(NOMES_METEO) + r")\b",
     re.IGNORECASE,
 )
 
@@ -85,7 +98,8 @@ REGEX_LOCALIZACAO = re.compile(
 
 REGEX_ENTRETENIMENTO_NUMERADO = re.compile(
     r"^(todo mundo|scary movie|final destination|resident evil|saw|"
-    r"john wick|fast and furious|velozes e furiosos)\s",
+    r"john wick|fast and furious|velozes e furiosos|pânico|panico|"
+    r"burnout\s+\d)\s",
     re.IGNORECASE,
 )
 
@@ -102,6 +116,8 @@ def e_ruido(query: str) -> tuple[bool, str]:
             return True, f"entretenimento:{termo}"
     if REGEX_METEOROLOGIA.match(query.strip()):
         return True, "meteorologia"
+    if REGEX_DEPRESSAO_NOME.match(query.strip()):
+        return True, "depressao_nome"
     if REGEX_LOCALIZACAO.search(q):
         return True, "localizacao"
     if REGEX_NUMERO_FINAL.search(q) and len(q.split()) >= 3:
