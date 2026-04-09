@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-03-27 (sessão 2)
+> Última actualização: 2026-04-09 (sessão 3)
 
 ---
 
@@ -65,7 +65,7 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 | Tipo | Total | Detalhes |
 |---|---|---|
 | RSS feeds | 42 | Media geral, media saúde, institucional, nutrição, sociedades científicas, ONG, farmacêutica, divulgação, fact-check |
-| YouTube canais | 55 | Media, institucional, sociedades, hospitais, academia, ONG, fact-check, internacional |
+| YouTube canais | 48 | Media, institucional, sociedades, hospitais, academia, ONG, fact-check, internacional |
 | Bookmarks referência | 76 | Todas as sociedades médicas AJOMED + institucionais + ONG |
 | Fontes peer-reviewed | 5 | MSD Manuals, Acta Médica Portuguesa, RPMGF, SciELO PT, Cochrane |
 
@@ -101,9 +101,9 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 ## Dashboard — Dados 100% Reais
 
 - **Zero mock data** — eliminados Math.random, kwPeriodMult, mock fallbacks
-- **Gráficos**: `historical_snapshots` via `buildTrend.ts`, média ponderada por volume
-- **Volumes por período**: recalculados via snapshots (7d/30d/12m)
-- **Alertas**: thresholds 30% (7d), 50% (30d), 40% (12m) + emergentes automáticos
+- **Gráficos**: `historical_snapshots` via `buildTrend.ts`, média simples (corrigida sessão 3 — era sum(v²)/sum(v))
+- **Volumes por período**: recalculados via snapshots (7d/30d/12m); fallback consistente quando dados insuficientes (corrigido sessão 3)
+- **Alertas**: thresholds 30% (7d), 50% (30d), 40% (12m) + emergentes com variação > 0 (corrigido sessão 3 — antes incluía emergentes com variação negativa)
 - **Ranking urgência**: "Prioridade de comunicação esta semana" no overview e briefing
 
 ---
@@ -112,8 +112,8 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 | Tab | Estado |
 |---|---|
-| KEYWORDS | ✅ 83 keywords |
-| DEBUNKING | ✅ 36 registos |
+| KEYWORDS | ✅ 82 keywords |
+| DEBUNKING | ✅ 36 registos (35 com keyword_id linkado — sessão 3) |
 | NOTÍCIAS | ✅ OK |
 | TEXTOS | ✅ OK |
 | GUIÕES | ✅ OK — geração automática semanal |
@@ -131,11 +131,30 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - [ ] Deploy edge functions novas no Supabase Lovable (generate-guioes-weekly, archive-weekly)
 - [x] ~~Migração colunas eixo/subcategoria nos bookmarks~~ (pedido ao Lovable 2026-03-27)
 - [x] ~~Token GitHub revogado~~
+- [x] ~~Preencher keyword_id nos registos do debunking~~ (35/35 linkados — sessão 3)
+- [ ] Aplicar migração idx_news_items_date no Supabase (via Lovable ou dashboard)
 - [ ] Channel IDs em falta: SPP (Pediatria), Ordem dos Enfermeiros
 - [ ] Migração para Supabase da Marta (quando for para produção)
 - [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
 - [ ] Sazonalidade (precisa de 2+ anos de dados)
-- [ ] Preencher keyword_id nos registos do debunking
+
+## Code Review — Sessão 3 (2026-04-09)
+
+### Corrigido
+- **Weighted average distorcida** — `buildTrend.ts` usava `sum(v²)/sum(v)`, corrigido para média simples
+- **Fallback misturava períodos** — `useAxisData.ts` podia comparar snapshot parcial com valor BD de período diferente; agora usa BD completa quando dados insuficientes
+- **Emergentes nunca expiravam** — `5_fetch_google_trends.py` agora reseta `is_emergent` quando variação < 50% ou sem dados
+- **YouTube falsos positivos** — `4_fetch_youtube_trends.py` agora usa word boundaries + blacklist (política, futebol, etc.)
+- **YouTube axis mismatch** — `saude_mental` (underscore) corrigido para `saude-mental` (hyphen)
+- **Alertas stale** — `detectAlerts.ts` exclui emergentes com variação negativa
+- **Debunking sem data** — componente agora mostra `data_publicacao`, ordenado por data desc
+- **Notícias sem limite** — query limitada a 12 meses (performance)
+- **keyword_id no debunking** — script `8_link_debunking_keywords.py` linkou 35/35 registos
+
+### Limitações conhecidas (não corrigidas)
+- **Período "7d" com dados semanais** — workflow corre 1x/semana, logo "7d" terá 1-2 snapshots. Não engana (mostra dados BD) mas não acrescenta granularidade
+- **Debunking sem expiração** — entradas antigas aparecem como actuais; recomendação: adicionar TTL ou aviso visual de staleness
+- **Notícias acumulam na BD** — não há limpeza automática de registos > 12 meses; query já limita no frontend mas BD cresce
 
 ---
 
