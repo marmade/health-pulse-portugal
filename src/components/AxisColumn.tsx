@@ -63,7 +63,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, a
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="max-w-[220px] text-xs leading-relaxed">
-                  Keywords com crescimento explosivo (&gt;200% semanal) ou termos inéditos no histórico.
+                  Keywords com crescimento superior a 50% e volume mínimo de 10 pontos no índice Google Trends.
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
