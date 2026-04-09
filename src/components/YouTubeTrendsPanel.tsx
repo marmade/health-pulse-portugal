@@ -63,7 +63,7 @@ const YouTubeTrendsPanel = ({ axis }: { axis?: string }) => {
   }, [axis]);
 
   return (
-    <div className="py-5 flex flex-col h-full min-h-0 max-h-[700px]">
+    <div className={`py-5 flex flex-col h-full min-h-0 ${isOverview ? "" : "max-h-[700px]"}`}>
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
         <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
         <p className="text-xs font-bold uppercase tracking-[0.15em]">
@@ -74,7 +74,7 @@ const YouTubeTrendsPanel = ({ axis }: { axis?: string }) => {
         Selecção curada de canais portugueses de jornalismo e saúde
       </p>
 
-      <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow">
+      <div className={`flex-1 min-h-0 ${isOverview ? "" : "overflow-y-auto scrollbar-yellow"}`}>
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <div className="animate-spin h-5 w-5 border-2 border-foreground border-t-transparent rounded-full" />
