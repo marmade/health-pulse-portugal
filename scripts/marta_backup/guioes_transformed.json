@@ -1,0 +1,1002 @@
+[
+  {
+    "id": "00faf8da-a641-4a13-9787-4b79ec4950ce",
+    "tema": "saude_mental",
+    "subtema": "Sono",
+    "pergunta": "Tomar comprimidos para dormir vicia?",
+    "resposta": "Sim, e depressa. Os mais comuns criam dependência em poucas semanas. Há alternativas mais seguras, mas sempre com indicação médica.",
+    "referencia_cientifica": "INFARMED · SNS24 (https://www.infarmed.pt/web/infarmed/cidadaos/medicamentos-de-uso-humano/informacao-tematica)",
+    "ordem": 20,
+    "created_at": "2026-03-09T01:09:14.529607+00:00"
+  },
+  {
+    "id": "050fac2c-fcb3-46d2-8626-ef529007742d",
+    "tema": "menopausa",
+    "subtema": "Tratamentos",
+    "pergunta": "Já ouviste falar de menopausa precoce? O que achas que é?",
+    "resposta": "Cessação da função ovárica antes dos 40 anos, afectando cerca de 1% das mulheres. Pode ser espontânea, por cirurgia ou tratamentos oncológicos.",
+    "referencia_cientifica": "PubMed 28455517 · OMS (https://pubmed.ncbi.nlm.nih.gov/28455517/)",
+    "ordem": 42,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "05d19b70-3671-4849-8213-f7285880b653",
+    "tema": "saude_mental",
+    "subtema": "Ansiedade",
+    "pergunta": "Há coisas que fazemos no dia-a-dia que aumentam a ansiedade sem sabermos?",
+    "resposta": "Sim: uso excessivo de redes sociais, falta de sono, sedentarismo, cafeína em excesso e evitar situações que nos assustam.",
+    "referencia_cientifica": "PubMed 32967799 · SNS24 (https://pubmed.ncbi.nlm.nih.gov/32967799/)",
+    "ordem": 6,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "0809218e-47f3-4071-b83c-51f6ba0d8b35",
+    "tema": "alimentacao",
+    "subtema": "Horários",
+    "pergunta": "Comer à noite faz mesmo mais mal?",
+    "resposta": "Não directamente. O que importa é o total diário. Mas comer muito tarde pode prejudicar o sono e a digestão.",
+    "referencia_cientifica": "INSA · DGS (https://alimentacaosaudavel.dgs.pt/)",
+    "ordem": 23,
+    "created_at": "2026-03-09T01:09:14.577145+00:00"
+  },
+  {
+    "id": "08f694b6-53fe-40c4-87b8-8804a2145b62",
+    "tema": "alimentacao",
+    "subtema": "Açúcar",
+    "pergunta": "O açúcar é viciante?",
+    "resposta": "O açúcar activa os centros de recompensa do cérebro de forma real. O problema está no excesso e nos alimentos ultraprocessados, que estão em quase tudo o que comemos.",
+    "referencia_cientifica": "INSA · OMS (https://www.insa.min-saude.pt)",
+    "ordem": 16,
+    "created_at": "2026-03-09T01:09:14.512424+00:00"
+  },
+  {
+    "id": "0a2ed3f6-3923-4c50-88d8-fe2d61e0b13c",
+    "tema": "saude_mental",
+    "subtema": "Ansiedade",
+    "pergunta": "Ansiedade e nervosismo são a mesma coisa?",
+    "resposta": "Não. O nervosismo é pontual. A ansiedade é persistente, com sintomas físicos e pensamentos intrusivos que interferem na vida.",
+    "referencia_cientifica": "SNS24 — Ansiedade · OMS (https://www.who.int/news-room/fact-sheets/detail/mental-disorders)",
+    "ordem": 4,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "0a36a13f-6c61-498a-8899-72156dccd8c6",
+    "tema": "emergentes",
+    "subtema": "Microplásticos",
+    "pergunta": "O que são microplásticos?",
+    "resposta": "Partículas de plástico com menos de 5mm, resultantes da degradação de plásticos maiores. Estão na água, nos alimentos e no ar.",
+    "referencia_cientifica": "OMS — Microplastics · INSA (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 55,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "0c2bc328-9c86-4aca-942d-9ebd2d28ca5c",
+    "tema": "saude_mental",
+    "subtema": "Depressão",
+    "pergunta": "Tristeza e depressão são a mesma coisa?",
+    "resposta": "Não. A tristeza é passageira. A depressão persiste mais de 2 semanas, afecta o funcionamento diário e requer tratamento.",
+    "referencia_cientifica": "DGS — Saúde Mental · PubMed 28192787 (https://pubmed.ncbi.nlm.nih.gov/28192787/)",
+    "ordem": 3,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "0cf0193c-74eb-435a-973f-a69823505c17",
+    "tema": "menopausa",
+    "subtema": "O Que É",
+    "pergunta": "Os homens têm menopausa?",
+    "resposta": "Não existe equivalente directo. O hipogonadismo tardio é diferente: não é universal, não tem data definida e os sintomas são mais subtis.",
+    "referencia_cientifica": "PubMed 32691575 · SNS24 (https://pubmed.ncbi.nlm.nih.gov/32691575/)",
+    "ordem": 33,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "0e55f42d-88e0-4053-b306-fbbc76ebca10",
+    "tema": "emergentes",
+    "subtema": "COVID-19",
+    "pergunta": "Podemos ficar imunes à COVID-19 para sempre?",
+    "resposta": "Não. A imunidade diminui com o tempo, e o vírus muta. Por isso a vacinação periódica pode continuar a ser recomendada.",
+    "referencia_cientifica": "OMS · SNS24 (https://www.who.int/news-room/fact-sheets/detail/coronavirus-disease-(covid-19))",
+    "ordem": 21,
+    "created_at": "2026-03-09T01:09:14.520241+00:00"
+  },
+  {
+    "id": "10474c34-4230-4aa2-b910-a581f342036d",
+    "tema": "menopausa",
+    "subtema": "Saúde mental",
+    "pergunta": "A menopausa e a depressão estão ligadas?",
+    "resposta": "Sim. As alterações hormonais aumentam a vulnerabilidade à depressão, especialmente em mulheres com histórico de ansiedade.",
+    "referencia_cientifica": "Ordem dos Psicólogos · DGS (https://www.sns24.gov.pt/tema/saude-da-mulher/)",
+    "ordem": 25,
+    "created_at": "2026-03-09T01:09:14.520755+00:00"
+  },
+  {
+    "id": "14a0e9bd-1249-4775-9ba1-42ec7e0c52da",
+    "tema": "saude_mental",
+    "subtema": "Sono",
+    "pergunta": "Dormir pouco afecta a saúde mental?",
+    "resposta": "Sim. Privação de sono aumenta o risco de depressão e ansiedade, prejudica a regulação emocional e reduz a capacidade de lidar com o stress.",
+    "referencia_cientifica": "PubMed 31142947 · SNS24 (https://pubmed.ncbi.nlm.nih.gov/31142947/)",
+    "ordem": 11,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "171f92b8-bfed-4fea-957e-e6a85feb764a",
+    "tema": "saude_mental",
+    "subtema": "Ansiedade",
+    "pergunta": "Como é que uma pessoa fica quando tem ansiedade?",
+    "resposta": "Coração acelerado, aperto no peito, dificuldade em respirar, suores, tremores, sensação de perigo iminente sem causa aparente.",
+    "referencia_cientifica": "SNS24 · NIMH (https://www.sns24.gov.pt/tema/saude-mental/)",
+    "ordem": 5,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "1b578f33-b35a-4336-b2e0-791aa007f6e2",
+    "tema": "saude_mental",
+    "subtema": "Ajuda Profissional",
+    "pergunta": "Para que serve um psicólogo?",
+    "resposta": "Ajuda a compreender e modificar padrões de pensamento, emoção e comportamento que causam sofrimento, através de técnicas baseadas em evidência.",
+    "referencia_cientifica": "Ordem dos Psicólogos · SNS24 (https://www.ordemdospsicologos.pt)",
+    "ordem": 14,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "1e30f64a-67dc-4e85-a266-938a510f4bbc",
+    "tema": "emergentes",
+    "subtema": "Vacinas",
+    "pergunta": "As vacinas alteram o nosso ADN?",
+    "resposta": "Não. As vacinas de ARNm ensinam células a produzir uma proteína e depois desaparecem. Não entram no núcleo celular nem alteram o ADN.",
+    "referencia_cientifica": "OMS · SNS24 (https://www.who.int/news-room/fact-sheets/detail/vaccines-and-immunization-what-is-vaccination)",
+    "ordem": 14,
+    "created_at": "2026-03-09T01:09:14.496147+00:00"
+  },
+  {
+    "id": "22c2590b-21e7-44db-97b5-201f4828d50a",
+    "tema": "alimentacao",
+    "subtema": "Suplementos Alimentares",
+    "pergunta": "Um suplemento alimentar é o mesmo que um medicamento?",
+    "resposta": "Não. Os suplementos não precisam de demonstrar eficácia antes de ser vendidos. Os medicamentos passam por ensaios clínicos rigorosos.",
+    "referencia_cientifica": "INFARMED · DGS (https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx)",
+    "ordem": 30,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "26e38e8b-673e-4c4d-8dbe-6ef697a2b949",
+    "tema": "alimentacao",
+    "subtema": "Alimentação e Humor",
+    "pergunta": "O que é a microbiota intestinal e qual o papel que pode ter no teu estado de espírito?",
+    "resposta": "Conjunto de bactérias no intestino que comunicam com o cérebro pelo nervo vago e influenciam a produção de neurotransmissores ligados ao humor.",
+    "referencia_cientifica": "PubMed 28293160 · INSA (https://pubmed.ncbi.nlm.nih.gov/28293160/)",
+    "ordem": 21,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "272b626b-06e3-4c5b-bc9d-55dda4a6a917",
+    "tema": "alimentacao",
+    "subtema": "Mitos",
+    "pergunta": "O sal do Himalaia é mais saudável que o sal normal?",
+    "resposta": "Não existe evidência científica que o justifique. O sal cor-de-rosa tem os mesmos riscos do sal refinado em excesso.",
+    "referencia_cientifica": "OMS · INSA (https://www.who.int/news-room/fact-sheets/detail/healthy-diet)",
+    "ordem": 22,
+    "created_at": "2026-03-09T01:09:14.515334+00:00"
+  },
+  {
+    "id": "280188c3-ed91-4cb8-b402-2fc803e8d9f6",
+    "tema": "menopausa",
+    "subtema": "Sintomas",
+    "pergunta": "Os afrontamentos são mesmo incontroláveis?",
+    "resposta": "Sim. Afectam 60 a 80% das mulheres e acontecem sem aviso — uma onda de calor na parte superior do corpo, seguida de suores frios. Não há como prever nem controlar.",
+    "referencia_cientifica": "CUF · OMS (https://www.cuf.pt/saude-a-z/menopausa)",
+    "ordem": 16,
+    "created_at": "2026-03-09T01:09:14.496386+00:00"
+  },
+  {
+    "id": "284923f2-cf08-4369-8f4d-81929c39a593",
+    "tema": "alimentacao",
+    "subtema": "Glúten e Intolerâncias",
+    "pergunta": "O que é o glúten?",
+    "resposta": "Proteína presente no trigo, cevada e centeio, responsável pela elasticidade das massas.",
+    "referencia_cientifica": "INSA · DGS (https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx)",
+    "ordem": 25,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "28dba76a-42fa-47cb-bd72-17c406558b45",
+    "tema": "menopausa",
+    "subtema": "Cognição",
+    "pergunta": "A menopausa afecta a memória?",
+    "resposta": "Sim, temporariamente. As flutuações hormonais podem causar dificuldades de concentração e memória — o chamado \"nevoeiro mental\". Tende a melhorar com o tempo.",
+    "referencia_cientifica": "SNS24 · OMS (https://www.sns24.gov.pt/tema/saude-da-mulher/)",
+    "ordem": 24,
+    "created_at": "2026-03-09T01:09:14.505194+00:00"
+  },
+  {
+    "id": "2a9195bc-cf1d-4ec9-9769-96b58fc6e0b4",
+    "tema": "menopausa",
+    "subtema": "Saúde Mental na Menopausa",
+    "pergunta": "A menopausa pode causar depressão ou ansiedade?",
+    "resposta": "Sim. A flutuação hormonal afecta os neurotransmissores ligados ao humor. A perimenopausa é o período de maior vulnerabilidade.",
+    "referencia_cientifica": "PubMed 27513981 · OMS (https://pubmed.ncbi.nlm.nih.gov/27513981/)",
+    "ordem": 37,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "2bb84bd2-8553-4b80-8d00-f425b21e26c6",
+    "tema": "emergentes",
+    "subtema": "Doenças ressurgentes",
+    "pergunta": "A tuberculose ainda existe em Portugal?",
+    "resposta": "Sim. Portugal tem uma das taxas mais altas da Europa Ocidental. A tuberculose não desapareceu — e a resistência aos antibióticos é um problema crescente.",
+    "referencia_cientifica": "DGS · ECDC (https://www.ecdc.europa.eu/en/tuberculosis)",
+    "ordem": 17,
+    "created_at": "2026-03-09T01:09:14.435217+00:00"
+  },
+  {
+    "id": "2c4ebff6-071e-4bf1-ab42-eb49149978ec",
+    "tema": "menopausa",
+    "subtema": "Saúde Mental na Menopausa",
+    "pergunta": "As alterações de humor na menopausa são normais ou devem ser tratadas?",
+    "resposta": "São comuns mas não devem ser ignoradas. Depressão ou ansiedade persistentes requerem avaliação médica.",
+    "referencia_cientifica": "PubMed 28487290 · DGS (https://pubmed.ncbi.nlm.nih.gov/28487290/)",
+    "ordem": 38,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "3123d06e-3780-4f03-896c-68613a432bda",
+    "tema": "alimentacao",
+    "subtema": "Alimentação e Humor",
+    "pergunta": "Há alimentos que ajudam a combater a ansiedade ou a depressão?",
+    "resposta": "Não há superalimentos milagrosos. Mas dieta equilibrada com vegetais, peixe gordo, leguminosas e pouco açúcar está associada a melhor saúde mental.",
+    "referencia_cientifica": "PubMed 32350808 · DGS (https://pubmed.ncbi.nlm.nih.gov/32350808/)",
+    "ordem": 20,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "32b61414-2eaa-464a-a6d2-d77e9925b134",
+    "tema": "saude_mental",
+    "subtema": "Sono",
+    "pergunta": "Quantas horas de sono precisa um adulto?",
+    "resposta": "Entre 7 e 9 horas por noite. Menos de 6 horas de forma consistente está associado a maior risco de doenças cardiovasculares, obesidade e perturbações mentais.",
+    "referencia_cientifica": "OMS · PubMed 29073412 (https://pubmed.ncbi.nlm.nih.gov/29073412/)",
+    "ordem": 12,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "34e66317-c52f-45b8-933c-68ad20e435c5",
+    "tema": "menopausa",
+    "subtema": "Plantas medicinais",
+    "pergunta": "O chá de trevo vermelho ajuda nos afrontamentos?",
+    "resposta": "Tem alguma evidência, mas modesta. Nunca deve substituir a consulta médica — e alguns suplementos podem interferir com outros medicamentos.",
+    "referencia_cientifica": "INFARMED · OMS (https://www.infarmed.pt/web/infarmed/cidadaos/medicamentos-de-uso-humano/informacao-tematica)",
+    "ordem": 23,
+    "created_at": "2026-03-09T01:09:14.447501+00:00"
+  },
+  {
+    "id": "35738ae6-f37d-4389-b5e6-400c02a2afe0",
+    "tema": "menopausa",
+    "subtema": "Ossos",
+    "pergunta": "É verdade que a menopausa fragiliza os ossos?",
+    "resposta": "Sim. Sem estrogénio, a perda de massa óssea acelera bastante. Cálcio, vitamina D e exercício físico são essenciais a partir desta fase.",
+    "referencia_cientifica": "DGS · INSA (https://www.cuf.pt/saude-a-z/menopausa)",
+    "ordem": 22,
+    "created_at": "2026-03-09T01:09:14.435188+00:00"
+  },
+  {
+    "id": "3db8b8ca-5e4c-4ca0-a318-6b8a07eda89e",
+    "tema": "alimentacao",
+    "subtema": "Dieta",
+    "pergunta": "Os alimentos \"light\" ajudam a perder peso?",
+    "resposta": "Não necessariamente. Muitos têm menos gordura mas mais açúcar. O contexto da dieta total é o que realmente importa.",
+    "referencia_cientifica": "INFARMED · DGS (https://alimentacaosaudavel.dgs.pt/)",
+    "ordem": 25,
+    "created_at": "2026-03-09T01:09:14.52988+00:00"
+  },
+  {
+    "id": "401dc888-99e2-45cd-b7c5-0de4c262be4c",
+    "tema": "saude_mental",
+    "subtema": "Depressão",
+    "pergunta": "Dá para ter depressão sem estar triste?",
+    "resposta": "Sim. A depressão pode aparecer como vazio, irritabilidade ou cansaço extremo — sem nenhuma lágrima. Muita gente não se reconhece nos sintomas.",
+    "referencia_cientifica": "OMS · DGS (https://www.who.int/news-room/fact-sheets/detail/mental-disorders)",
+    "ordem": 18,
+    "created_at": "2026-03-09T01:09:14.583864+00:00"
+  },
+  {
+    "id": "48944bc8-e406-446e-9fba-171d5198416e",
+    "tema": "alimentacao",
+    "subtema": "Ultraprocessados",
+    "pergunta": "Sabes identificar um ultraprocessado numa lista de ingredientes?",
+    "resposta": "Se a lista tiver mais de 5 ingredientes com nomes que não reconheces como alimentos (xarope de glucose-frutose, dióxido de titânio), provavelmente é ultraprocessado.",
+    "referencia_cientifica": "INSA · DGS (https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx)",
+    "ordem": 18,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "48e8583e-1023-4641-a790-fc1ff054d9e6",
+    "tema": "menopausa",
+    "subtema": "Sintomas Físicos",
+    "pergunta": "A osteoporose tem alguma ligação com a menopausa?",
+    "resposta": "Sim, directa. Com a menopausa, a queda de estrogénios acelera a perda óssea — o risco de osteoporose aumenta significativamente nos primeiros anos.",
+    "referencia_cientifica": "DGS — Osteoporose · PubMed 29353391 (https://pubmed.ncbi.nlm.nih.gov/29353391/)",
+    "ordem": 35,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "4a00ee90-5c49-4cee-a5a8-5c0a5c014d47",
+    "tema": "emergentes",
+    "subtema": "Antibióticos",
+    "pergunta": "Tomar antibióticos para uma constipação ajuda?",
+    "resposta": "Não. As constipações são causadas por vírus e os antibióticos só funcionam contra bactérias. Usar antibióticos sem necessidade cria resistências — um problema sério de saúde pública.",
+    "referencia_cientifica": "DGS · SNS24 (https://www.dgs.pt)",
+    "ordem": 16,
+    "created_at": "2026-03-09T01:09:14.51541+00:00"
+  },
+  {
+    "id": "4d556991-84b9-4d9c-b770-dacd0518682c",
+    "tema": "menopausa",
+    "subtema": "Tabu Social",
+    "pergunta": "Achas que se fala o suficiente sobre menopausa em Portugal?",
+    "resposta": "Pergunta de contexto social — muitas mulheres chegam à menopausa sem informação adequada.",
+    "referencia_cientifica": "OMS (https://www.who.int/news-room/fact-sheets/detail/menopause)",
+    "ordem": 44,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "4e60bea0-ca46-4225-9313-ad343b946777",
+    "tema": "menopausa",
+    "subtema": "Tabu Social",
+    "pergunta": "A menopausa é um tema só de mulheres?",
+    "resposta": "Não. Afecta casais, famílias e locais de trabalho. Os parceiros precisam de compreender o que acontece. É um tema de saúde pública, não privado.",
+    "referencia_cientifica": "OMS · PubMed 28487290 (https://pubmed.ncbi.nlm.nih.gov/28487290/)",
+    "ordem": 43,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "5372194f-49d3-4998-89c0-ecf18c4bff85",
+    "tema": "menopausa",
+    "subtema": "Sintomas Físicos",
+    "pergunta": "Quais os sintomas físicos da menopausa?",
+    "resposta": "Afrontamentos, suores nocturnos, secura vaginal, perturbações do sono, dores nas articulações, aumento de peso abdominal, perda de densidade óssea.",
+    "referencia_cientifica": "OMS · DGS (https://www.dgs.pt/saude-a-ao-z/menopausa.aspx)",
+    "ordem": 34,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "53c20c79-5ffa-4c70-b6af-93c037b533d7",
+    "tema": "menopausa",
+    "subtema": "Menopausa precoce",
+    "pergunta": "A menopausa só acontece depois dos 50?",
+    "resposta": "Não. Em Portugal a idade média é 48 anos — e pode ocorrer muito antes dos 40, o que se chama menopausa precoce e precisa de acompanhamento médico.",
+    "referencia_cientifica": "CUF · DGS (https://www.cuf.pt/saude-a-z/menopausa)",
+    "ordem": 20,
+    "created_at": "2026-03-09T01:09:14.527278+00:00"
+  },
+  {
+    "id": "55824976-e7fa-4db2-926b-aa97f1233c01",
+    "tema": "emergentes",
+    "subtema": "Resistência a Antibióticos",
+    "pergunta": "O que farias diferente se soubesses que os antibióticos podem deixar de funcionar?",
+    "resposta": "Só tomar com receita, completar sempre o tratamento, nunca guardar para outra vez, não partilhar.",
+    "referencia_cientifica": "OMS — AMR · INSA (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 48,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "5592fcf0-9731-44e3-97e4-c157a24bc129",
+    "tema": "saude_mental",
+    "subtema": "Ajuda Profissional",
+    "pergunta": "Qual a diferença entre psicólogo e psiquiatra?",
+    "resposta": "O psicólogo usa psicoterapia. O psiquiatra é médico e pode prescrever medicação. Muitas condições beneficiam de ambos em simultâneo.",
+    "referencia_cientifica": "SNS24 · Ordem dos Psicólogos (https://www.ordemdospsicologos.pt)",
+    "ordem": 15,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "55dcf599-f4bc-4de6-86d1-49d9d9759026",
+    "tema": "emergentes",
+    "subtema": "Vacinas",
+    "pergunta": "As vacinas têm chips para nos rastrear?",
+    "resposta": "Não. É um mito sem qualquer base científica. As vacinas contêm substâncias biológicas e químicas — nenhum dispositivo electrónico.",
+    "referencia_cientifica": "OMS · DGS (https://www.who.int/news-room/fact-sheets/detail/vaccines-and-immunization-what-is-vaccination)",
+    "ordem": 13,
+    "created_at": "2026-03-09T01:09:14.457427+00:00"
+  },
+  {
+    "id": "5ab1e49d-46bd-4aec-8d5b-73aba8999174",
+    "tema": "alimentacao",
+    "subtema": "Jejum Intermitente",
+    "pergunta": "O jejum intermitente é adequado para toda a gente?",
+    "resposta": "Não. É contraindicado em grávidas, crianças, diabetes tipo 1 e historial de distúrbios alimentares. Deve ser orientado por profissional de saúde.",
+    "referencia_cientifica": "PubMed 32060194 · DGS (https://pubmed.ncbi.nlm.nih.gov/32060194/)",
+    "ordem": 24,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "6a06dbf1-f4d6-4238-afea-9981a79562fd",
+    "tema": "alimentacao",
+    "subtema": "Glúten e Intolerâncias",
+    "pergunta": "Sabias que há pessoas intolerantes ao glúten? O que achas que provoca essa intolerância?",
+    "resposta": "Na doença celíaca, o sistema imunitário ataca o intestino delgado em resposta ao glúten. Afecta cerca de 1% da população. É autoimune, não uma alergia.",
+    "referencia_cientifica": "PubMed 29551598 · INSA (https://pubmed.ncbi.nlm.nih.gov/29551598/)",
+    "ordem": 26,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "6edfc5df-942a-47a6-97e5-026c9e1b4d96",
+    "tema": "alimentacao",
+    "subtema": "Ultraprocessados",
+    "pergunta": "Comer ultraprocessados pode afectar a saúde mental?",
+    "resposta": "Sim. Estudos associam dietas ricas em ultraprocessados a maior risco de depressão e ansiedade, por inflamação sistémica e impacto na microbiota intestinal.",
+    "referencia_cientifica": "PubMed 32350808 · INSA (https://pubmed.ncbi.nlm.nih.gov/32350808/)",
+    "ordem": 17,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "71f79e81-a33d-4868-b8f0-309f2fbec83b",
+    "tema": "menopausa",
+    "subtema": "Sintomas Físicos",
+    "pergunta": "Como é que a menopausa afecta o sono?",
+    "resposta": "Os afrontamentos e suores nocturnos interrompem o sono. A queda de progesterona também contribui para insónia crónica.",
+    "referencia_cientifica": "PubMed 30003259 · OMS (https://pubmed.ncbi.nlm.nih.gov/30003259/)",
+    "ordem": 36,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "74303f62-3c8e-4b68-a2a1-4d8cc5135275",
+    "tema": "saude_mental",
+    "subtema": "Depressão",
+    "pergunta": "Quais os sintomas de uma pessoa que tem depressão?",
+    "resposta": "Tristeza persistente, perda de interesse, cansaço extremo, alterações de sono e apetite, dificuldade de concentração, sentimentos de inutilidade.",
+    "referencia_cientifica": "SNS24 — Depressão · OMS (https://www.who.int/news-room/fact-sheets/detail/mental-disorders)",
+    "ordem": 2,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "76b2f140-9440-44c1-9ec8-aa7dc22f5421",
+    "tema": "emergentes",
+    "subtema": "Microplásticos",
+    "pergunta": "Achas que podes ter microplásticos no teu corpo?",
+    "resposta": "Muito provavelmente sim. Já foram encontrados no sangue, pulmões, placenta e tecido cardíaco humano. O impacto na saúde ainda está a ser investigado.",
+    "referencia_cientifica": "PubMed 33514535 · OMS (https://pubmed.ncbi.nlm.nih.gov/33514535/)",
+    "ordem": 56,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "7db08f8f-71e8-4f78-a29b-a80a8863babe",
+    "tema": "saude_mental",
+    "subtema": "Burnout",
+    "pergunta": "O burnout é diferente de estar cansado?",
+    "resposta": "Sim. O burnout é um esgotamento crónico com impacto no trabalho, reconhecido pela OMS como fenómeno ocupacional — não passa só com um fim de semana de descanso.",
+    "referencia_cientifica": "OMS ICD-11 · DGS (https://www.who.int/news-room/fact-sheets/detail/mental-disorders)",
+    "ordem": 24,
+    "created_at": "2026-03-09T01:09:14.554149+00:00"
+  },
+  {
+    "id": "8083239c-b3b5-40c1-a891-0293b7ba760d",
+    "tema": "emergentes",
+    "subtema": "Higiene",
+    "pergunta": "Lavar as mãos é realmente tão importante quanto dizem?",
+    "resposta": "É das medidas mais eficazes que existem. Reduz a transmissão de doenças respiratórias e intestinais em até 40% — e não custa nada.",
+    "referencia_cientifica": "DGS · OMS (https://www.dgs.pt)",
+    "ordem": 24,
+    "created_at": "2026-03-09T01:09:14.439259+00:00"
+  },
+  {
+    "id": "86ef6af0-ee86-4f88-9634-cf4c89fe3ddb",
+    "tema": "alimentacao",
+    "subtema": "Intolerâncias",
+    "pergunta": "O glúten é perigoso para toda a gente?",
+    "resposta": "Não. Só é prejudicial para quem tem doença celíaca ou sensibilidade ao glúten. Para a maioria das pessoas, é completamente inofensivo.",
+    "referencia_cientifica": "INSA · OMS (https://www.insa.min-saude.pt)",
+    "ordem": 18,
+    "created_at": "2026-03-09T01:09:14.521522+00:00"
+  },
+  {
+    "id": "876a097d-45fd-47a5-982a-020219ff6130",
+    "tema": "saude_mental",
+    "subtema": "Ansiedade",
+    "pergunta": "A ansiedade é coisa de pessoas fracas?",
+    "resposta": "Não. A ansiedade tem causas neurológicas, hormonais e genéticas — não é uma escolha nem um defeito de personalidade.",
+    "referencia_cientifica": "Ordem dos Psicólogos · OMS (https://www.ordemdospsicologos.pt/pt/cidadaos)",
+    "ordem": 22,
+    "created_at": "2026-03-09T01:09:14.496263+00:00"
+  },
+  {
+    "id": "89494ae6-09e6-4c8d-ba17-f97fc19bee41",
+    "tema": "menopausa",
+    "subtema": "Saúde Mental na Menopausa",
+    "pergunta": "A menopausa afecta a forma como uma mulher se vê a si própria?",
+    "resposta": "Frequentemente sim. Alterações corporais, fim da fertilidade e estigma social podem afectar a auto-imagem e a identidade.",
+    "referencia_cientifica": "PubMed 31505910 · OMS (https://pubmed.ncbi.nlm.nih.gov/31505910/)",
+    "ordem": 39,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "89c03bd5-d15f-490a-97f3-edfb82289f4b",
+    "tema": "alimentacao",
+    "subtema": "Ultraprocessados",
+    "pergunta": "O que é um ultraprocessado? Consegues dar um exemplo?",
+    "resposta": "Produto fabricado industrialmente com ingredientes que não usamos em casa: corantes, emulsionantes, aromas artificiais. Ex: refrigerantes, salsichas, bolachas recheadas.",
+    "referencia_cientifica": "INSA · PubMed NOVA 31105044 (https://www.insa.min-saude.pt/category/areas-de-atuacao/alimentacao-e-nutricao/)",
+    "ordem": 16,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "8c4576ae-80d1-47d8-80d1-81ff6034f33c",
+    "tema": "emergentes",
+    "subtema": "Microplásticos",
+    "pergunta": "O que podes fazer no dia-a-dia para reduzir a exposição a microplásticos?",
+    "resposta": "Evitar aquecer comida em plástico, usar garrafas de vidro ou inox, reduzir alimentos embalados em plástico, filtrar a água, preferir roupas de fibras naturais.",
+    "referencia_cientifica": "OMS · INSA (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 57,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "8d4860ee-f1b4-453d-9706-a37c590fd9a7",
+    "tema": "menopausa",
+    "subtema": "Tratamentos",
+    "pergunta": "O que é a terapia hormonal? Achas que é perigosa?",
+    "resposta": "É a reposição dos hormonas que deixam de ser produzidos. É eficaz para sintomas severos. O risco é pequeno e depende do tipo, dose e duração.",
+    "referencia_cientifica": "OMS · PubMed 28703631 (https://pubmed.ncbi.nlm.nih.gov/28703631/)",
+    "ordem": 40,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "8eb0a6c5-b59b-4083-9582-dcc407ca4378",
+    "tema": "emergentes",
+    "subtema": "Gripe Aviária",
+    "pergunta": "É seguro comer frango ou ovos durante um surto de gripe aviária?",
+    "resposta": "Sim, se bem cozinhados. O calor (70 graus) destrói o vírus. Não há transmissão pelo consumo de alimentos devidamente cozinhados.",
+    "referencia_cientifica": "OMS — Food safety · INSA (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 53,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "8fc67f79-ad51-4f2b-b998-b0b1c3572cf5",
+    "tema": "alimentacao",
+    "subtema": "Probióticos",
+    "pergunta": "Os probióticos do iogurte realmente funcionam?",
+    "resposta": "Depende do produto. Alguns iogurtes têm bactérias benéficas com evidência real. Kefir e vegetais fermentados são fontes mais potentes.",
+    "referencia_cientifica": "INSA · OMS (https://www.insa.min-saude.pt)",
+    "ordem": 20,
+    "created_at": "2026-03-09T01:09:14.504149+00:00"
+  },
+  {
+    "id": "9112075a-e70b-4116-aed3-8abafe4c5d8d",
+    "tema": "alimentacao",
+    "subtema": "Jejum Intermitente",
+    "pergunta": "Sabes o que é o jejum intermitente?",
+    "resposta": "Estratégia alimentar que alterna períodos de alimentação com períodos de jejum. A forma mais comum é 16:8 (16 horas sem comer, 8 horas para comer).",
+    "referencia_cientifica": "DGS · PubMed 31881139 (https://pubmed.ncbi.nlm.nih.gov/31881139/)",
+    "ordem": 22,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "92fbf863-1e92-4c8a-866e-18607569eba6",
+    "tema": "alimentacao",
+    "subtema": "Suplementos Alimentares",
+    "pergunta": "Devemos tomar suplementos alimentares? Em que situações?",
+    "resposta": "Só quando existe deficiência diagnosticada ou necessidade clínica. Uma dieta equilibrada cobre as necessidades da maioria das pessoas.",
+    "referencia_cientifica": "DGS · INSA (https://www.dgs.pt/promocao-da-saude/alimentacao-saudavel.aspx)",
+    "ordem": 28,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "94972d25-6387-461b-88f7-092cbbcafece",
+    "tema": "emergentes",
+    "subtema": "Resistência a Antibióticos",
+    "pergunta": "Já tomaste antibióticos sem receita médica? Achas que isso tem consequências?",
+    "resposta": "Usar antibióticos sem necessidade ou não completar o tratamento favorece bactérias resistentes.",
+    "referencia_cientifica": "INSA · OMS (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 47,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "954a85a0-ef8a-4788-9d1f-6f708bf64f57",
+    "tema": "saude_mental",
+    "subtema": "Psicologia",
+    "pergunta": "Ir ao psicólogo é só para quem está \"maluco\"?",
+    "resposta": "Não. A psicologia trata de bem-estar, stress e relações — não só de doença grave. Qualquer pessoa pode beneficiar.",
+    "referencia_cientifica": "Ordem dos Psicólogos · DGS (https://www.ordemdospsicologos.pt/pt/cidadaos)",
+    "ordem": 16,
+    "created_at": "2026-03-09T01:09:14.583815+00:00"
+  },
+  {
+    "id": "96c9f305-d7c9-43a3-8468-2dfd3269357b",
+    "tema": "saude_mental",
+    "subtema": "Depressão pós-parto",
+    "pergunta": "Os homens sofrem de depressão pós-parto?",
+    "resposta": "Sim. Estima-se que 1 em cada 10 pais desenvolve depressão pós-parto, muitas vezes sem reconhecer os sintomas.",
+    "referencia_cientifica": "SNS24 · OMS (https://www.sns24.gov.pt/tema/saude-mental/)",
+    "ordem": 21,
+    "created_at": "2026-03-09T01:09:14.5274+00:00"
+  },
+  {
+    "id": "96fc465c-4b84-43d8-9ef4-d67493474e6a",
+    "tema": "saude_mental",
+    "subtema": "Medicação",
+    "pergunta": "Os antidepressivos viciam?",
+    "resposta": "Não são aditivos no sentido clínico, mas a suspensão deve ser gradual e sempre com acompanhamento médico.",
+    "referencia_cientifica": "SNS24 · INFARMED (https://www.sns24.gov.pt/tema/saude-mental/)",
+    "ordem": 17,
+    "created_at": "2026-03-09T01:09:14.44744+00:00"
+  },
+  {
+    "id": "9f14e36c-5b5f-4a68-8bcc-515641fbf2d3",
+    "tema": "emergentes",
+    "subtema": "Long COVID",
+    "pergunta": "O que é o long covid?",
+    "resposta": "Sintomas que persistem mais de 12 semanas após infecção por SARS-CoV-2. Os mais comuns: fadiga extrema, brain fog, falta de ar. Afecta cerca de 10% dos infeccionados.",
+    "referencia_cientifica": "OMS — Long COVID · SNS24 (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 49,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "a3ec7057-4e94-4d97-9e99-ef6747ba0675",
+    "tema": "emergentes",
+    "subtema": "Gripe Aviária",
+    "pergunta": "O que é a gripe aviária? Pode infectar humanos?",
+    "resposta": "Causada pelo H5N1, circula principalmente em aves. Pode infectar humanos por contacto directo. A transmissão humano-humano é rara mas é o maior risco pandémico.",
+    "referencia_cientifica": "OMS — Avian influenza · INSA (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 52,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "a713845b-d343-4720-9717-18933f3fb09c",
+    "tema": "alimentacao",
+    "subtema": "Suplementos",
+    "pergunta": "Tomar vitaminas substitui comer bem?",
+    "resposta": "Não. Suplementos não replicam a complexidade dos alimentos reais. Só fazem sentido quando há uma deficiência diagnosticada — senão é dinheiro deitado fora.",
+    "referencia_cientifica": "DGS · INFARMED (https://alimentacaosaudavel.dgs.pt/)",
+    "ordem": 19,
+    "created_at": "2026-03-09T01:09:14.553759+00:00"
+  },
+  {
+    "id": "b171ce24-aea6-49f1-9765-c286dbf99627",
+    "tema": "emergentes",
+    "subtema": "COVID-19",
+    "pergunta": "A COVID-19 acabou?",
+    "resposta": "Não oficialmente. O vírus continua a circular em variantes, com menos impacto clínico do que no pico. A OMS levantou a emergência global, mas a vigilância mantém-se.",
+    "referencia_cientifica": "OMS · SNS24 (https://www.who.int/news-room/fact-sheets/detail/coronavirus-disease-(covid-19))",
+    "ordem": 25,
+    "created_at": "2026-03-09T01:09:14.548475+00:00"
+  },
+  {
+    "id": "b320560c-4575-49d1-80f8-70bf454fe8f4",
+    "tema": "menopausa",
+    "subtema": "Tratamentos",
+    "pergunta": "Existem alternativas naturais à terapia hormonal?",
+    "resposta": "Existem opções com alguma evidência: isoflavonas de soja, acteia de racemos, meditação. Mas a evidência é mais fraca que a terapia hormonal.",
+    "referencia_cientifica": "PubMed 28715951 · DGS (https://pubmed.ncbi.nlm.nih.gov/28715951/)",
+    "ordem": 41,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "b38b7436-4456-4cc6-9fab-d8ca983f624c",
+    "tema": "emergentes",
+    "subtema": "Long COVID",
+    "pergunta": "O long covid afecta a saúde mental?",
+    "resposta": "Sim. Depressão e ansiedade são frequentes — por efeito directo do vírus no sistema nervoso e pelo impacto de viver com doença crónica incapacitante.",
+    "referencia_cientifica": "PubMed 34330865 · OMS (https://pubmed.ncbi.nlm.nih.gov/34330865/)",
+    "ordem": 50,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "b8928523-ab08-45c5-9fd9-13e8246fd71b",
+    "tema": "emergentes",
+    "subtema": "Doenças tropicais",
+    "pergunta": "A dengue já chegou a Portugal?",
+    "resposta": "Sim. Existem casos autóctones na Madeira desde 2012. O mosquito vector já está presente em algumas regiões do continente.",
+    "referencia_cientifica": "DGS · ECDC (https://www.ecdc.europa.eu/en/dengue)",
+    "ordem": 20,
+    "created_at": "2026-03-09T01:09:14.553952+00:00"
+  },
+  {
+    "id": "bbf67728-0e89-4d85-8a7b-437becf60032",
+    "tema": "menopausa",
+    "subtema": "Perimenopausa",
+    "pergunta": "A menopausa acontece de repente?",
+    "resposta": "Não. É um processo gradual que pode durar anos. A perimenopausa começa muito antes da última menstruação.",
+    "referencia_cientifica": "DGS · SNS24 (https://www.sns24.gov.pt/tema/saude-da-mulher/)",
+    "ordem": 18,
+    "created_at": "2026-03-09T01:09:14.437442+00:00"
+  },
+  {
+    "id": "bdd3d87e-9e8d-425f-bb39-749358c164b1",
+    "tema": "saude_mental",
+    "subtema": "Sono",
+    "pergunta": "Insónia é uma doença ou um sintoma?",
+    "resposta": "Pode ser as duas coisas. Existe insónia primária e insónia secundária (sintoma de depressão, ansiedade ou dor crónica).",
+    "referencia_cientifica": "DGS · SNS24 (https://www.dgs.pt/saude-mental.aspx)",
+    "ordem": 10,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "bee7dfe8-bd3c-46e9-ae85-66420bebef5f",
+    "tema": "emergentes",
+    "subtema": "Resistência a Antibióticos",
+    "pergunta": "O que sabes sobre resistência a antibióticos?",
+    "resposta": "As bactérias adaptam-se e deixam de ser destruídas pelos antibióticos. Já mata mais de 1 milhão de pessoas por ano e é uma das maiores ameaças à saúde global.",
+    "referencia_cientifica": "OMS — AMR · DGS (https://www.dgs.pt/doencas-infecciosas.aspx)",
+    "ordem": 46,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "c18931e5-4ed8-4dcf-a1d3-68f1c4acfdf9",
+    "tema": "menopausa",
+    "subtema": "O Que É",
+    "pergunta": "A menopausa é uma doença ou uma fase natural da vida?",
+    "resposta": "É uma fase natural e inevitável do envelhecimento feminino. Não é uma doença — mas os seus sintomas podem afectar a qualidade de vida.",
+    "referencia_cientifica": "OMS · DGS (https://www.dgs.pt/saude-a-ao-z/menopausa.aspx)",
+    "ordem": 32,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "c2a64d5b-0741-4ae7-acf2-edd463bd7a3f",
+    "tema": "emergentes",
+    "subtema": "Gripe",
+    "pergunta": "A gripe é apenas uma constipação mais forte?",
+    "resposta": "Não. A gripe pode ser grave e causar complicações sérias, especialmente em idosos, crianças e imunodeprimidos. A vacina é recomendada todos os anos.",
+    "referencia_cientifica": "DGS · OMS (https://www.dgs.pt)",
+    "ordem": 18,
+    "created_at": "2026-03-09T01:09:14.554139+00:00"
+  },
+  {
+    "id": "c71acdf1-66ee-4d4d-9423-5b1a74c9c417",
+    "tema": "saude_mental",
+    "subtema": "Burnout",
+    "pergunta": "O burnout afecta só quem trabalha muito?",
+    "resposta": "Não. Afecta quem sente que o esforço não é reconhecido, que não tem controlo sobre o trabalho, ou que os seus valores conflituam com os da organização.",
+    "referencia_cientifica": "PubMed 30194160 · OMS (https://pubmed.ncbi.nlm.nih.gov/30194160/)",
+    "ordem": 8,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "cd127346-1217-446d-a7c2-39f760847905",
+    "tema": "alimentacao",
+    "subtema": "Pequeno-almoço",
+    "pergunta": "O pequeno-almoço é mesmo a refeição mais importante do dia?",
+    "resposta": "Depende da pessoa. Para alguns é essencial, para outros o jejum intermitente funciona. Não há uma regra universal.",
+    "referencia_cientifica": "SNS24 · OMS (https://www.sns24.gov.pt/tema/alimentacao/)",
+    "ordem": 24,
+    "created_at": "2026-03-09T01:09:14.556472+00:00"
+  },
+  {
+    "id": "cdc14cc5-dc74-457f-a6c0-6883a4f1c005",
+    "tema": "emergentes",
+    "subtema": "Long COVID",
+    "pergunta": "Conheces alguém que tenha long covid? Como descreve os sintomas?",
+    "resposta": "Pergunta de contexto — sem resposta correcta.",
+    "referencia_cientifica": "— (https://www.who.int/europe/news/item/14-01-2022-long-covid)",
+    "ordem": 51,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "cef17233-33bf-4e6a-b274-9fb9f8926a0e",
+    "tema": "saude_mental",
+    "subtema": "Bem-estar",
+    "pergunta": "Ouvir música pode melhorar a saúde mental?",
+    "resposta": "Sim. A musicoterapia tem evidência crescente na redução de ansiedade e depressão. Não substitui tratamento, mas é um aliado real.",
+    "referencia_cientifica": "OMS · SNS24 (https://www.who.int/news-room/fact-sheets/detail/mental-disorders)",
+    "ordem": 23,
+    "created_at": "2026-03-09T01:09:14.549047+00:00"
+  },
+  {
+    "id": "d0faa8d6-c4e7-4304-b819-3143ab252070",
+    "tema": "menopausa",
+    "subtema": "Tabu Social",
+    "pergunta": "O que mudarias na forma como a sociedade fala sobre menopausa?",
+    "resposta": "Pergunta de contexto social.",
+    "referencia_cientifica": "— (https://www.who.int/news-room/fact-sheets/detail/menopause)",
+    "ordem": 45,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "d1a2efb6-ee1e-44da-a9ae-059b5c50fdd2",
+    "tema": "menopausa",
+    "subtema": "Andropausa",
+    "pergunta": "Os homens também têm algo parecido com a menopausa?",
+    "resposta": "Sim — chama-se andropausa. É uma diminuição gradual de testosterona, com sintomas como cansaço, alterações de humor e menos líbido.",
+    "referencia_cientifica": "CUF · OMS (https://www.cuf.pt/mais-saude/andropausa-o-que-e-e-como-combater-os-primeiros-sinais)",
+    "ordem": 21,
+    "created_at": "2026-03-09T01:09:14.520843+00:00"
+  },
+  {
+    "id": "db3b6018-984a-4d86-8208-8d5a13f6b351",
+    "tema": "alimentacao",
+    "subtema": "Fruta e sumos",
+    "pergunta": "Beber sumos de fruta é o mesmo que comer fruta?",
+    "resposta": "Não. O sumo perde a fibra e concentra o açúcar. A fruta inteira é sempre preferível nutricionalmente.",
+    "referencia_cientifica": "DGS · SNS24 (https://alimentacaosaudavel.dgs.pt/)",
+    "ordem": 21,
+    "created_at": "2026-03-09T01:09:14.549406+00:00"
+  },
+  {
+    "id": "de40baa0-b67c-4123-9811-117092236653",
+    "tema": "emergentes",
+    "subtema": "Gripe",
+    "pergunta": "A vacina da gripe muda todos os anos?",
+    "resposta": "Sim. O vírus muta constantemente, por isso a vacina é reformulada todos os anos com as variantes previstas pela OMS para cada estação.",
+    "referencia_cientifica": "OMS · DGS (https://www.who.int/news-room/fact-sheets/detail/influenza-(seasonal))",
+    "ordem": 19,
+    "created_at": "2026-03-09T01:09:14.54366+00:00"
+  },
+  {
+    "id": "e046c5e8-f64e-4a41-ad9f-697aaa2de08f",
+    "tema": "emergentes",
+    "subtema": "Suplementos",
+    "pergunta": "Os produtos naturais são sempre seguros porque são naturais?",
+    "resposta": "Não. \"Natural\" não significa seguro — muitas plantas são tóxicas. Suplementos naturais podem interferir com medicamentos.",
+    "referencia_cientifica": "INFARMED · OMS (https://www.infarmed.pt/web/infarmed/cidadaos/medicamentos-de-uso-humano/informacao-tematica)",
+    "ordem": 22,
+    "created_at": "2026-03-09T01:09:14.505092+00:00"
+  },
+  {
+    "id": "e04a645e-5725-44f2-b7a8-a41becf5fc78",
+    "tema": "saude_mental",
+    "subtema": "Ajuda Profissional",
+    "pergunta": "Vês problemas em ir ao psicólogo? Porquê?",
+    "resposta": "Pergunta de contexto social — o estigma é o principal obstáculo ao tratamento de saúde mental em Portugal.",
+    "referencia_cientifica": "DGS — Literacia · OMS — Stigma (https://www.dgs.pt/saude-mental.aspx)",
+    "ordem": 13,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "e0714607-7f82-4d96-be31-2ef75f26c7e3",
+    "tema": "alimentacao",
+    "subtema": "Gorduras",
+    "pergunta": "Comer gordura engorda?",
+    "resposta": "Não directamente. As gorduras saudáveis — azeite, abacate, peixe gordo — são essenciais. O que engorda é o excesso calórico total.",
+    "referencia_cientifica": "DGS · INSA (https://alimentacaosaudavel.dgs.pt/)",
+    "ordem": 17,
+    "created_at": "2026-03-09T01:09:14.54926+00:00"
+  },
+  {
+    "id": "e0ba9c7f-bf4e-4427-b200-67298dfcead5",
+    "tema": "saude_mental",
+    "subtema": "Burnout",
+    "pergunta": "O burnout é reconhecido como doença?",
+    "resposta": "É reconhecido pela OMS como fenómeno ocupacional no ICD-11, mas não é classificado como doença.",
+    "referencia_cientifica": "OMS ICD-11 · DGS (https://www.dgs.pt/saude-mental.aspx)",
+    "ordem": 9,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "e543c3bb-baea-4907-a088-eff5c891d4ac",
+    "tema": "saude_mental",
+    "subtema": "Burnout",
+    "pergunta": "O que é o burnout? Como se distingue do cansaço normal?",
+    "resposta": "Burnout é esgotamento crónico ligado ao trabalho com três dimensões: exaustão, distanciamento mental e redução da eficácia. O cansaço normal resolve-se com descanso; o burnout não.",
+    "referencia_cientifica": "OMS — ICD-11 · DGS (https://www.dgs.pt/saude-mental.aspx)",
+    "ordem": 7,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "e6d0dc5b-47d5-4447-a62c-258e8eb24a2d",
+    "tema": "saude_mental",
+    "subtema": "Depressão",
+    "pergunta": "A depressão é uma doença ou um estado de espírito?",
+    "resposta": "É uma doença clínica, com causas biológicas, psicológicas e sociais. Não é fraqueza nem má disposição.",
+    "referencia_cientifica": "DGS — Saúde Mental · OMS — Depression (https://www.dgs.pt/saude-mental.aspx)",
+    "ordem": 1,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "ead7f53b-1513-4d7f-b1d4-d2d32b3955ae",
+    "tema": "emergentes",
+    "subtema": "Gripe Aviária",
+    "pergunta": "Como se transmite a gripe aviária?",
+    "resposta": "Por contacto directo com aves infectadas ou superfícies contaminadas. Não se transmite pelo ar em condições normais.",
+    "referencia_cientifica": "ECDC — H5N1 · OMS (https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance)",
+    "ordem": 54,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "eadbbc7e-5735-466b-9108-46692a7b8024",
+    "tema": "saude_mental",
+    "subtema": "Stress",
+    "pergunta": "O stress faz sempre mal?",
+    "resposta": "Não. Um pouco de stress ajuda a focar e a reagir. O problema é o stress crónico, sem pausa para recuperar.",
+    "referencia_cientifica": "SNS24 · OMS (https://www.sns24.gov.pt/tema/saude-mental/)",
+    "ordem": 19,
+    "created_at": "2026-03-09T01:09:14.43735+00:00"
+  },
+  {
+    "id": "ebaf8e56-d0a4-46d1-b7b2-6ee376c4c8a3",
+    "tema": "menopausa",
+    "subtema": "Terapia hormonal",
+    "pergunta": "A terapia hormonal causa cancro?",
+    "resposta": "O risco depende do tipo, dose e duração. Para a maioria das mulheres saudáveis, os benefícios superam os riscos. Deve ser avaliada individualmente com o médico.",
+    "referencia_cientifica": "CUF · OMS (https://www.cuf.pt/mais-saude/o-que-e-terapia-hormonal-de-substituicao)",
+    "ordem": 19,
+    "created_at": "2026-03-09T01:09:14.529469+00:00"
+  },
+  {
+    "id": "ecc9e39e-dc8c-4fec-a256-124c2cc08b61",
+    "tema": "alimentacao",
+    "subtema": "Jejum Intermitente",
+    "pergunta": "O que acontece ao corpo quando fazemos jejum intermitente?",
+    "resposta": "Após cerca de 12 horas sem comer, o corpo usa gordura como combustível (cetose) e aumenta a autofagia — processo de limpeza celular.",
+    "referencia_cientifica": "PubMed 31881139 · INSA (https://pubmed.ncbi.nlm.nih.gov/31881139/)",
+    "ordem": 23,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "ed34e40b-fc16-4e7b-9469-b79fec9770d6",
+    "tema": "alimentacao",
+    "subtema": "Glúten e Intolerâncias",
+    "pergunta": "Se o glúten está nas farinhas e toda a humanidade se alimentou de farinha durante séculos, como explicas que haja pessoas intolerantes?",
+    "resposta": "A predisposição genética (HLA-DQ2/DQ8) sempre existiu. O que mudou foi a maior quantidade de glúten nos trigos modernos e possivelmente alterações na microbiota.",
+    "referencia_cientifica": "PubMed 28631526 · PubMed 29551598 (https://pubmed.ncbi.nlm.nih.gov/28631526/)",
+    "ordem": 27,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "ee346bd3-d141-43ca-aef4-2e47067ea858",
+    "tema": "menopausa",
+    "subtema": "O Que É",
+    "pergunta": "O que é a menopausa? A partir de que idade acontece?",
+    "resposta": "Cessação permanente da menstruação, confirmada após 12 meses consecutivos sem período. Ocorre em média aos 51 anos.",
+    "referencia_cientifica": "OMS — Menopause · DGS (https://www.dgs.pt/saude-a-ao-z/menopausa.aspx)",
+    "ordem": 31,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "eecdbfac-9c14-4aa5-b62d-a4b72838fd7e",
+    "tema": "menopausa",
+    "subtema": "Sexualidade",
+    "pergunta": "A menopausa é o fim da vida sexual?",
+    "resposta": "Não. Muitas mulheres reportam maior satisfação sexual depois da menopausa, sem preocupações com contracepção.",
+    "referencia_cientifica": "SNS24 · OMS (https://www.sns24.gov.pt/tema/saude-da-mulher/)",
+    "ordem": 17,
+    "created_at": "2026-03-09T01:09:14.457538+00:00"
+  },
+  {
+    "id": "f08f06e0-ab6a-4173-9be8-efea7b8c8f80",
+    "tema": "saude_mental",
+    "subtema": "Infância",
+    "pergunta": "Crianças também podem ter depressão?",
+    "resposta": "Sim. A depressão infantil existe e manifesta-se de forma diferente dos adultos — irritabilidade, recusa escolar, queixas físicas sem causa aparente.",
+    "referencia_cientifica": "DGS · SNS24 (https://www.sns24.gov.pt/tema/saude-mental/)",
+    "ordem": 25,
+    "created_at": "2026-03-09T01:09:14.435306+00:00"
+  },
+  {
+    "id": "f4ce628f-2a6a-47e3-8168-c9ad3d2a6e9c",
+    "tema": "alimentacao",
+    "subtema": "Suplementos Alimentares",
+    "pergunta": "Os suplementos substituem uma alimentação equilibrada?",
+    "resposta": "Não. Os nutrientes dos alimentos têm efeitos sinérgicos que os suplementos isolados não replicam.",
+    "referencia_cientifica": "PubMed 30336697 · DGS (https://pubmed.ncbi.nlm.nih.gov/30336697/)",
+    "ordem": 29,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "f5d2e0db-f4f7-4960-822c-7f786695dc5e",
+    "tema": "alimentacao",
+    "subtema": "Alimentação e Humor",
+    "pergunta": "O que comes afecta o teu pensamento ou humor?",
+    "resposta": "Sim. A alimentação influencia a serotonina (90% produzida no intestino), os níveis de inflamação e a energia cerebral. Dieta mediterrânica associada a menor risco de depressão.",
+    "referencia_cientifica": "PubMed 25451578 · INSA (https://pubmed.ncbi.nlm.nih.gov/25451578/)",
+    "ordem": 19,
+    "created_at": "2026-03-08T20:14:10.06987+00:00"
+  },
+  {
+    "id": "fe499fc3-cbe8-47bc-99d9-14a387f585dc",
+    "tema": "emergentes",
+    "subtema": "Clima e saúde",
+    "pergunta": "As alterações climáticas vão trazer novas doenças a Portugal?",
+    "resposta": "Sim. O aquecimento favorece a expansão de mosquitos vectores de dengue, malária e leishmaniose para latitudes mais altas — incluindo Portugal.",
+    "referencia_cientifica": "ECDC · DGS (https://www.ecdc.europa.eu/en/climate-change)",
+    "ordem": 23,
+    "created_at": "2026-03-09T01:09:14.548795+00:00"
+  },
+  {
+    "id": "fed6a472-f772-47a8-9feb-1bebe245f408",
+    "tema": "emergentes",
+    "subtema": "Doenças virais",
+    "pergunta": "A varíola dos macacos transforma-nos em macacos?",
+    "resposta": "Não — é apenas o nome da doença, que foi transmitida originalmente por macacos. O vírus não causa qualquer transformação física.",
+    "referencia_cientifica": "ECDC · OMS (https://www.ecdc.europa.eu/en/mpox)",
+    "ordem": 15,
+    "created_at": "2026-03-09T01:09:14.510387+00:00"
+  }
+]

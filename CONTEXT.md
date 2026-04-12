@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-04-09 (sessão 3)
+> Última actualização: 2026-04-12 (sessão 4)
 
 ---
 
@@ -19,9 +19,9 @@
 ## Stack
 
 - **Frontend:** React + Vite + TypeScript + Tailwind + shadcn/ui (Lovable)
-- **Backend:** Supabase — duas instâncias DISTINTAS:
-  - **Lovable** (gerida pelo Lovable): `cyjwhmuakmiytypewwfw.supabase.co` — NÃO aparece no dashboard da Marta; alterações só via prompts Lovable, migrations, ou API com anon key
-  - **Manual (Marta)**: `ijpxjpbjudaddfatibfl.supabase.co` — única acessível directamente no dashboard do Supabase
+- **Backend:** Supabase — instância **única** (migração concluída sessão 4):
+  - **Produção (Marta):** `ijpxjpbjudaddfatibfl.supabase.co` — acessível no dashboard do Supabase
+  - ~~**Lovable** (descontinuada): `cyjwhmuakmiytypewwfw.supabase.co`~~ — mantida como arquivo, frontend já não aponta para ela
 - **Design:** Space Grotesk, azul `#0000FF`, magenta `#FF00FF`, fundo branco, sem sombras nem gradientes
 - **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`
 - **Claude Code:** instalado localmente; alias `rv` → `cd ~/health-pulse-portugal && claude`
@@ -112,29 +112,32 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 | Tab | Estado |
 |---|---|
-| KEYWORDS | ✅ 82 keywords |
-| DEBUNKING | ✅ 36 registos (35 com keyword_id linkado — sessão 3) |
-| NOTÍCIAS | ✅ OK |
-| TEXTOS | ✅ OK |
-| GUIÕES | ✅ OK — geração automática semanal |
-| PLATAFORMA | ✅ OK |
-| SOBRE | ✅ Editável — DB ganha sobre ficheiro (base limpa) |
-| BOOKMARKS | ✅ 76 referências + 6 categorias + badges eixo |
+| KEYWORDS | ✅ 83 keywords (migradas do Lovable) |
+| DEBUNKING | ✅ 36 registos (dados da Marta, transformados para schema Lovable) |
+| NOTÍCIAS | ✅ 158 (migradas do Lovable) |
+| TEXTOS | ✅ 4 (migrados do Lovable) |
+| GUIÕES | ✅ 100 (dados da Marta, transformados) + 1 semanal |
+| PLATAFORMA | ✅ 15 popups |
+| SOBRE | ✅ 11 blocos |
+| BOOKMARKS | ✅ 182 (179 Lovable + 3 Marta merged) |
 | BENCHMARK | ✅ Verificado — personas + pseudociência + MSD links |
-| REVISÃO PARES | ✅ OK |
+| REVISÃO PARES | ✅ 4 (migrados do Lovable) |
 
 ---
 
 ## Pendentes
 
 - [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
-- [ ] Deploy edge functions novas no Supabase Lovable (generate-guioes-weekly, archive-weekly)
+- [x] ~~Deploy edge functions novas no Supabase Lovable~~ (obsoleto — migração para Marta concluída)
 - [x] ~~Migração colunas eixo/subcategoria nos bookmarks~~ (pedido ao Lovable 2026-03-27)
 - [x] ~~Token GitHub revogado~~
 - [x] ~~Preencher keyword_id nos registos do debunking~~ (35/35 linkados — sessão 3)
-- [ ] Aplicar migração idx_news_items_date no Supabase (via Lovable ou dashboard)
+- [x] ~~Aplicar migração idx_news_items_date~~ (incluída na migração consolidada — sessão 4)
+- [x] ~~Migração para Supabase da Marta~~ (concluída sessão 4 — 2026-04-12)
+- [ ] **CRÍTICO: actualizar variáveis de ambiente no Lovable** — `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` para `ijpxjpbjudaddfatibfl` — sem isto o frontend em produção (lovable.app) continua a ler da instância antiga
+- [ ] Deploy edge functions no Supabase da Marta (generate-guioes-weekly, archive-weekly, fetch-rss-feeds, refresh-trends, generate-guiao-questions, generate-diz-que-disse, google-trends)
+- [ ] `eixos_archive` vazia — será populada no próximo workflow semanal (segunda-feira 06:00 UTC)
 - [ ] Channel IDs em falta: SPP (Pediatria), Ordem dos Enfermeiros
-- [ ] Migração para Supabase da Marta (quando for para produção)
 - [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
 - [ ] Sazonalidade (precisa de 2+ anos de dados)
 
@@ -156,6 +159,23 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - **Debunking sem expiração** — entradas antigas aparecem como actuais; recomendação: adicionar TTL ou aviso visual de staleness
 - **Notícias acumulam na BD** — não há limpeza automática de registos > 12 meses; query já limita no frontend mas BD cresce
 
+## Migração Supabase — Sessão 4 (2026-04-12)
+
+### Concluído
+- **Migração completa** de `cyjwhmuakmiytypewwfw` (Lovable) → `ijpxjpbjudaddfatibfl` (Marta)
+- **17 tabelas recriadas** com schema Lovable (drop + recreate); 2 preservadas (bookmarks, eixos_archive)
+- **Dados migrados**: ~7100 rows do Lovable + 136 rows transformados da Marta (debunking + guiões)
+- **Config actualizada**: `.env`, `config.toml`, workflow GitHub Actions, 5 scripts Python
+- **Backup** dos dados originais da Marta em `scripts/marta_backup/` (5 ficheiros JSON)
+- **SQL consolidado** das 38 migrations em `scripts/migration_consolidada.sql` (749 linhas)
+- **Scripts auxiliares**: `scripts/migrate_data.py`, `scripts/switch_supabase.sh`
+
+### Regra de merge aplicada
+- Conflito por ID → ganha a instância com mais registos nessa tabela
+- debunking (36) e guiões (100): dados da Marta, transformados para schema Lovable
+- bookmarks (179→182): Lovable + 3 da Marta merged
+- Tudo o resto: Lovable
+
 ---
 
 ## Padrões estabelecidos
@@ -163,7 +183,7 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - **Lovable:** Marta envia sempre os prompts ela própria
 - **Claude Code:** usar para trabalho de código, scripts, commits (alias `rv`)
 - **claude.ai:** estratégia, explicações, briefings entre sessões
-- **Supabase Lovable:** alterações de dados via API com anon key; DDL via prompts Lovable
+- **Supabase (Marta):** inst��ncia única de produção; alterações via dashboard ou API com service_role key
 - **GitHub commits:** via Claude Code (git normal)
 - **Troca de sessão:** Claude actualiza CONTEXT.md + cria `docs/sessoes/YYYY-MM-DD.md`
 - **Rigor científico:** documentar sempre a fonte e limitações metodológicas
