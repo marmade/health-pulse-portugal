@@ -187,7 +187,7 @@ export function useDebunkingData() {
       const { data: debunking } = await supabase
         .from('debunking')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('data_publicacao', { ascending: false });
 
       if (debunking && debunking.length > 0) {
         setData(debunking.map(d => ({

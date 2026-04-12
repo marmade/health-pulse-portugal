@@ -13,6 +13,20 @@ jobs:
   actualizar:
     runs-on: ubuntu-latest
     steps:
+      # ── PASSO 0: Ping Supabase para evitar pausa por inactividade ──────
+      - name: 0 — Ping Supabase (wake up)
+        run: |
+          echo "A verificar se a instância Supabase está activa..."
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://ijpxjpbjudaddfatibfl.supabase.co/rest/v1/" \
+            -H "apikey: $SUPABASE_ANON_KEY")
+          echo "Health check HTTP $CODE"
+          if [ "$CODE" != "200" ]; then
+            echo "::warning::Supabase health check devolveu HTTP $CODE — a instância pode estar a arrancar"
+            echo "A aguardar 30s para a instância acordar..."
+            sleep 30
+          fi
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
@@ -71,6 +85,12 @@ jobs:
           if [ "$CODE" != "200" ]; then
             echo "::warning::fetch-rss-feeds devolveu HTTP $CODE"
           fi
+
+      # ── PASSO 4B: Limpeza semanal de notícias antigas ────────────────────
+      - name: 4B — Limpeza notícias antigas
+        run: |
+          echo "A limpar notícias antigas por eixo..."
+          python scripts/9_cleanup_old_news.py
 
       # ── PASSO 5: YouTube trends ───────────────────────────────────────────
       - name: 5 — YouTube trends

@@ -478,7 +478,7 @@ export default function Admin() {
   const fetchAll = async () => {
     const [kw, db, nw, tx, gu, pp, sb, bk] = await Promise.all([
       supabase.from("keywords").select("id, term, axis, is_active").order("term"),
-      supabase.from("debunking").select("*").order("created_at", { ascending: false }),
+      supabase.from("debunking").select("*").order("data_publicacao", { ascending: false }),
       supabase.from("news_items").select("*").order("date", { ascending: false }).limit(100),
       supabase.from("textos").select("*").order("ordem"),
       supabase.from("guioes").select("*").order("tema").order("ordem"),

@@ -60,6 +60,7 @@ CANAIS_PT = [
     # Saúde — ordens e sociedades científicas
     {"id": "UCayuHV0f3y1-qHSzh07UhFg",  "nome": "Ordem dos Médicos"},
     {"id": "UCCBlYMv3F6VkTsU57ZFUNyg",  "nome": "Ordem dos Psicólogos"},
+    {"id": "UCuDagVc79VVXXPFJurgXIiw",  "nome": "Ordem dos Enfermeiros"},
     {"id": "UCMhhHdT1z26KmamNK1Ppwcw",  "nome": "Sociedade Portuguesa de Ginecologia"},
     {"id": "UC35wTBunWWqWL-7g3M8Vqrw",  "nome": "Sociedade Portuguesa de Psiquiatria"},
     {"id": "UC2cLsvuBCQifCJHP8SQHBdg",  "nome": "Sociedade Portuguesa de Reumatologia"},

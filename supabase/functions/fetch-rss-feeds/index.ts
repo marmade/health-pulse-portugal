@@ -153,14 +153,22 @@ Deno.serve(async (req) => {
 
     const { data: keywordRows, error: kwErr } = await sb
       .from('keywords')
-      .select('term, synonyms')
+      .select('id, term, synonyms')
       .eq('is_active', true);
     if (kwErr) throw kwErr;
 
+    // Map cada termo/sinónimo → { term (canónico), id }
+    const termToKeyword = new Map<string, { term: string; id: string }>();
     const allTerms: string[] = [];
     for (const kw of keywordRows || []) {
       allTerms.push(kw.term);
-      if (kw.synonyms && Array.isArray(kw.synonyms)) allTerms.push(...kw.synonyms);
+      termToKeyword.set(kw.term.toLowerCase(), { term: kw.term, id: kw.id });
+      if (kw.synonyms && Array.isArray(kw.synonyms)) {
+        for (const syn of kw.synonyms) {
+          allTerms.push(syn);
+          termToKeyword.set(syn.toLowerCase(), { term: kw.term, id: kw.id });
+        }
+      }
     }
 
     const { data: existingItems } = await sb.from('news_items').select('url');
@@ -193,6 +201,7 @@ Deno.serve(async (req) => {
         const toInsert: Array<{
           title: string; outlet: string; date: string;
           url: string; related_term: string; source_type: string;
+          keyword_id: string | null;
         }> = [];
 
         for (const item of items) {
@@ -201,11 +210,9 @@ Deno.serve(async (req) => {
           const matchedTerm = matchesKeyword(searchText, allTerms);
           if (!matchedTerm) { totalNoMatch++; continue; }
 
-          let relatedTerm = matchedTerm;
-          for (const kw of keywordRows || []) {
-            if (kw.term.toLowerCase() === matchedTerm.toLowerCase()) { relatedTerm = kw.term; break; }
-            if (kw.synonyms?.some((s: string) => s.toLowerCase() === matchedTerm.toLowerCase())) { relatedTerm = kw.term; break; }
-          }
+          const resolved = termToKeyword.get(matchedTerm.toLowerCase());
+          const relatedTerm = resolved?.term ?? matchedTerm;
+          const keywordId = resolved?.id ?? null;
 
           let date: string;
           try {
@@ -220,6 +227,7 @@ Deno.serve(async (req) => {
             url: item.link,
             related_term: relatedTerm,
             source_type: feed.type,
+            keyword_id: keywordId,
           });
           existingUrls.add(item.link);
         }

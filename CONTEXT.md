@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-04-12 (sessão 4)
+> Última actualização: 2026-04-12 (sessão 5)
 
 ---
 
@@ -64,8 +64,8 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 | Tipo | Total | Detalhes |
 |---|---|---|
-| RSS feeds | 42 | Media geral, media saúde, institucional, nutrição, sociedades científicas, ONG, farmacêutica, divulgação, fact-check |
-| YouTube canais | 48 | Media, institucional, sociedades, hospitais, academia, ONG, fact-check, internacional |
+| RSS feeds | 44 | Media geral, media saúde, institucional, nutrição, sociedades científicas, ONG, farmacêutica, divulgação, fact-check |
+| YouTube canais | 56 | Media, institucional, sociedades, hospitais, academia, ONG, fact-check, internacional, autarquias |
 | Bookmarks referência | 76 | Todas as sociedades médicas AJOMED + institucionais + ONG |
 | Fontes peer-reviewed | 5 | MSD Manuals, Acta Médica Portuguesa, RPMGF, SciELO PT, Cochrane |
 
@@ -76,12 +76,14 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 **Workflow:** `youtube-trends.yml` — "Actualização Semanal — Reportagem Viva"
 **Schedule:** Segundas-feiras 06:00 UTC (07:00 Lisboa) | Também disparo manual
 
-### 7 passos:
+### 10 passos:
+0. Ping Supabase — wake up da instância se pausada (sessão 5)
 1. Google Trends PT (`scripts/5_fetch_google_trends.py`) → `keywords`
 2. Perguntas pytrends (`scripts/6_fetch_health_questions.py`) → `health_questions` (source=pytrends)
 3. Perguntas autocomplete (`scripts/7_fetch_autocomplete_questions.py`) → `health_questions` (source=autocomplete)
 4. Refresh trends (Edge Function `refresh-trends`) → `historical_snapshots`
-5. RSS feeds (Edge Function `fetch-rss-feeds`) → `news_items`
+5. RSS feeds (Edge Function `fetch-rss-feeds`) → `news_items` (com `keyword_id` — sessão 5)
+4B. Limpeza notícias antigas por eixo (`scripts/9_cleanup_old_news.py`) — sessão 5
 6. YouTube (`scripts/4_fetch_youtube_trends.py`) → `youtube_trends`
 7. Guiões semanais (Edge Function `generate-guioes-weekly`) → `guioes_semanais`
 8. Arquivo semanal (Edge Function `archive-weekly`) → `eixos_archive` + `briefings_archive`
@@ -90,7 +92,7 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 | Nome | Função |
 |---|---|
 | `refresh-trends` | Cria snapshots históricos (sem alterar volumes) |
-| `fetch-rss-feeds` | Recolhe notícias de 42 RSS feeds |
+| `fetch-rss-feeds` | Recolhe notícias de 44 RSS feeds (com keyword_id desde sessão 5) |
 | `archive-weekly` | Arquiva 4 eixos + briefing |
 | `generate-guioes-weekly` | Gera guiões dos 4 eixos (5 banco + 5 IA) |
 | `generate-guiao-questions` | Gera perguntas IA via Perplexity Sonar |
@@ -134,10 +136,20 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - [x] ~~Preencher keyword_id nos registos do debunking~~ (35/35 linkados — sessão 3)
 - [x] ~~Aplicar migração idx_news_items_date~~ (incluída na migração consolidada — sessão 4)
 - [x] ~~Migração para Supabase da Marta~~ (concluída sessão 4 — 2026-04-12)
+- [x] ~~Ping Supabase no workflow~~ (passo 0, wake up antes dos outros passos — sessão 5)
+- [x] ~~Limpeza semanal de notícias por eixo~~ (`scripts/9_cleanup_old_news.py`, passo 4B — sessão 5)
+- [x] ~~Debunking ordenado por data_publicacao DESC~~ (3 queries corrigidas — sessão 5)
+- [x] ~~keyword_id no RSS fetch~~ (`fetch-rss-feeds/index.ts` agora insere keyword_id — sessão 5)
+- [x] ~~Backfill keyword_id em news_items~~ (158/158 resolvidos, `scripts/10_backfill_news_keyword_id.py` — sessão 5)
+- [x] ~~Sinónimos curtos adicionados~~ (menopausa, gripe aviária, microplásticos, TDAH — sessão 5)
+- [x] ~~Channel ID Ordem dos Enfermeiros~~ (UCuDagVc79VVXXPFJurgXIiw adicionado — sessão 5)
+- [x] ~~SPP Pediatria~~ (confirmado: canal não existe no YouTube — sessão 5)
 - [ ] **CRÍTICO: actualizar variáveis de ambiente no Lovable** — `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` para `ijpxjpbjudaddfatibfl` — sem isto o frontend em produção (lovable.app) continua a ler da instância antiga
 - [ ] Deploy edge functions no Supabase da Marta (generate-guioes-weekly, archive-weekly, fetch-rss-feeds, refresh-trends, generate-guiao-questions, generate-diz-que-disse, google-trends)
 - [ ] `eixos_archive` vazia — será populada no próximo workflow semanal (segunda-feira 06:00 UTC)
-- [ ] Channel IDs em falta: SPP (Pediatria), Ordem dos Enfermeiros
+- [ ] Actualizar /sobre bloco "fontes-de-dados": 16→44 feeds RSS, 36→56 canais YouTube, adicionar Google Autocomplete como fonte (via Lovable)
+- [ ] Análise aos gráficos: verificar cálculo de `change_percent` em `5_fetch_google_trends.py` — confirmar coerência com /sobre, avaliar defensabilidade metodológica
+- [ ] Saúdes.pt como fonte de curadoria manual de keywords e debunking (origem comercial Medis — a documentar)
 - [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
 - [ ] Sazonalidade (precisa de 2+ anos de dados)
 
@@ -157,7 +169,7 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 ### Limitações conhecidas (não corrigidas)
 - **Período "7d" com dados semanais** — workflow corre 1x/semana, logo "7d" terá 1-2 snapshots. Não engana (mostra dados BD) mas não acrescenta granularidade
 - **Debunking sem expiração** — entradas antigas aparecem como actuais; recomendação: adicionar TTL ou aviso visual de staleness
-- **Notícias acumulam na BD** — não há limpeza automática de registos > 12 meses; query já limita no frontend mas BD cresce
+- ~~**Notícias acumulam na BD**~~ — resolvido sessão 5: limpeza semanal condicional por eixo (`scripts/9_cleanup_old_news.py`)
 
 ## Migração Supabase — Sessão 4 (2026-04-12)
 
@@ -183,7 +195,7 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - **Lovable:** Marta envia sempre os prompts ela própria
 - **Claude Code:** usar para trabalho de código, scripts, commits (alias `rv`)
 - **claude.ai:** estratégia, explicações, briefings entre sessões
-- **Supabase (Marta):** inst��ncia única de produção; alterações via dashboard ou API com service_role key
+- **Supabase (Marta):** instância única de produção; alterações via dashboard ou API com service_role key
 - **GitHub commits:** via Claude Code (git normal)
 - **Troca de sessão:** Claude actualiza CONTEXT.md + cria `docs/sessoes/YYYY-MM-DD.md`
 - **Rigor científico:** documentar sempre a fonte e limitações metodológicas

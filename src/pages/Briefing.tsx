@@ -112,7 +112,7 @@ const Briefing = () => {
       const [kwRes, newsRes, debunkRes, archiveRes, hqRes, ytRes] = await Promise.all([
         supabase.from("keywords").select("*").eq("is_active", true),
         supabase.from("news_items").select("*").order("date", { ascending: false }),
-        supabase.from("debunking").select("*").order("created_at", { ascending: false }),
+        supabase.from("debunking").select("*").order("data_publicacao", { ascending: false }),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
         supabase.from("health_questions").select("question, growth_percent, relative_volume, axis, axis_label").order("growth_percent", { ascending: false }),
         supabase.from("youtube_trends").select("*").order("views", { ascending: false }).limit(5),
