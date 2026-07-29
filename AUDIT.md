@@ -134,3 +134,73 @@ Estes fazem parte do plano de 5 fases discutido, ainda não iniciado:
   BOOKMARKS por auditar)
 - Fase 5: Exportação de PDF e relatórios (decidir se mantém manual ou automatiza;
   corrigir hardcode de datas)
+
+---
+
+## 4. RESOLVIDO — Causa raiz da divergência "instância antiga vs. nova"
+
+**Sessão de diagnóstico: 2026-07-29** (via chat Claude + Claude Code + Supabase MCP)
+
+O site publicado lê da instância antiga gerida pelo Lovable (`cyjwhmuakmiytypewwfw`),
+não da instância manual da Marta (`ijpxjpbjudaddfatibfl`). Causa raiz confirmada por
+git log, não por suposição:
+
+- Commit `9f2e367` (12/04/2026) migrou correctamente `.env`, workflow e
+  `config.toml` para a instância nova. Ficou correcto durante mais de um mês.
+- Commit `5246597` (21/05/2026), autor `gpt-engineer-app[bot]` (motor do Lovable),
+  mensagem "Changes", dentro de um commit-pai "Update plan / Plan file updated
+  during planning mode" — reverteu o `.env` de volta para a instância antiga.
+- **Mecanismo:** quando o Lovable Cloud está ligado a um projecto, cada edição no
+  editor visual pode reescrever a ligação Supabase de volta para a instância que
+  o Lovable gere — mesmo sem alteração de código, mesmo em "modo de planeamento".
+  Confirmado na documentação oficial do Lovable (`docs.lovable.dev/integrations/supabase`).
+- **Implicação prática:** enquanto o Lovable Cloud estiver ligado a este projecto,
+  usar o editor visual pode reverter a escolha da instância nova a qualquer
+  momento, sem aviso. Por confirmar: estado da ligação no separador Cloud do
+  editor Lovable.
+
+**Estado de dados, comparado directamente (verificado por SQL em ambas):**
+
+| | Antiga (`cyjwhmuakmiytypewwfw`) | Nova (`ijpxjpbjudaddfatibfl`) |
+|---|---|---|
+| historical_snapshots | 12072 linhas | 3298 linhas |
+| Última actualização | 2026-07-27 (viva até ontem) | 2026-04-12 (parada há 3,5 meses) |
+| news_items | 1328 linhas | 158 linhas |
+| Edge Functions deployadas | 7 de 7 | 5 de 7 |
+
+**Mecanismo do "escritor invisível" da antiga, identificado:** `pg_cron` + `pg_net`
+(extensões nativas do Postgres para agendamento dentro da própria base de dados).
+Activadas na migração original do Lovable (`20260308113243`), com os
+`cron.schedule(...)` em si criados manualmente no dashboard Supabase — nunca
+ficaram em ficheiro, por isso nunca apareceram em nenhuma auditoria de código
+anterior. Confirmado por MCP directo na instância nova: as mesmas extensões
+existem lá (herdadas do schema migrado), mas `select * from cron.job` devolve
+**zero linhas** — a capacidade foi migrada, o agendamento nunca foi.
+
+Achado secundário, sem relação com o caso: ficheiro workflow duplicado e órfão em
+`scripts/.github/workflows/youtube-trends.yml` — confirmado que não executa
+(GitHub só lê `.github/workflows/` na raiz do repo) e não menciona Supabase.
+Candidato a remoção por higiene, sem urgência.
+
+**Hipótese levantada e refutada:** ligação entre o hardcode de datas em
+`pdfExport.ts` (`["2025-10"..."2026-03"]`, já registado na secção anterior) e a
+janela de dados reais da instância antiga. Verificação por `git log -L` na linha
+exacta: escrita no commit `1abd33e`, 27/03/2026 — é uma janela fixa de 6 meses a
+terminar no mês em que o ficheiro foi escrito, sem relação com o início da
+corrupção dos dados de trends (que começou depois, em Abril). Registar como
+coincidência de calendário, não como pista.
+
+**Por investigar, ainda em aberto:**
+- Alcance exacto da corrupção nos dados de trends da instância antiga: quantas
+  das 83 keywords em `historical_snapshots` têm `search_index` congelado (mesmo
+  valor repetido) nos últimos 20-90 dias, e desde quando. Query fornecida,
+  resultado pendente.
+- `.env` (com chave publishable Supabase) está commitado no repo público, fora
+  do `.gitignore`. Confirmar se as RLS policies protegem adequadamente os dados
+  antes de assumir que isto é inofensivo.
+
+**Decisão ainda por tomar, com estes dados como base:** manter a antiga como
+oficial (mais histórico, viva até agora, mas trends corrompidos) vs. migrar
+definitivamente para a nova (arquitectura correcta, mas buraco de 3,5 meses e
+agendamentos pg_cron por recriar manualmente — desta vez como ficheiro de
+migração, não clique de dashboard).
