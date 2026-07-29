@@ -191,16 +191,44 @@ corrupção dos dados de trends (que começou depois, em Abril). Registar como
 coincidência de calendário, não como pista.
 
 **Por investigar, ainda em aberto:**
-- Alcance exacto da corrupção nos dados de trends da instância antiga: quantas
-  das 83 keywords em `historical_snapshots` têm `search_index` congelado (mesmo
-  valor repetido) nos últimos 20-90 dias, e desde quando. Query fornecida,
-  resultado pendente.
 - `.env` (com chave publishable Supabase) está commitado no repo público, fora
   do `.gitignore`. Confirmar se as RLS policies protegem adequadamente os dados
   antes de assumir que isto é inofensivo.
 
-**Decisão ainda por tomar, com estes dados como base:** manter a antiga como
-oficial (mais histórico, viva até agora, mas trends corrompidos) vs. migrar
-definitivamente para a nova (arquitectura correcta, mas buraco de 3,5 meses e
-agendamentos pg_cron por recriar manualmente — desta vez como ficheiro de
-migração, não clique de dashboard).
+**Extensão da corrupção — confirmada por SQL (2026-07-29):**
+
+De 82 keywords activas em `historical_snapshots`, **82 têm o valor de
+`search_index` congelado** nos últimos 20 dias (`palavras_com_sinal_real = 0`).
+Confirmado por query de variância por keyword.
+
+Verificação da data de corte, sobre os últimos 90 dias: as 5 keywords com
+mudança mais recente mostram todas a mesma última data real — **2026-04-30**.
+Não há nenhuma keyword com mudança registada depois dessa data. Ou seja, o
+corte não é gradual: dados de trends reais até 30/04/2026, e a partir de
+01/05/2026, cerca de três meses seguidos (Maio, Junho, Julho) de valores
+repetidos, sem sinal real nenhum.
+
+`news_items`, alimentado por um job diferente (`fetch-rss-feeds-daily`,
+confirmado Active), mantém-se real e contínuo até 2026-07-27 — a corrupção
+afecta só a tabela de trends, não as notícias.
+
+**Decisão fechada:** instância nova (`ijpxjpbjudaddfatibfl`) passa a oficial.
+Razão: nenhuma das duas instâncias tem trends fiáveis nos últimos três meses,
+mas a antiga fabrica dados a fingir que são reais, enquanto a nova apresenta
+um vazio honesto. Para um projecto académico, dados fabricados e não
+identificáveis como tal pesam mais contra do que a ausência de dados.
+
+**Próximos passos, por esta ordem:**
+1. Exportar de `cyjwhmuakmiytypewwfw`, antes de qualquer desligamento: (a)
+   `historical_snapshots` filtrado a `snapshot_date <= '2026-04-30'` (única
+   fatia real); (b) `news_items` na íntegra (mantém-se real até 27/07).
+2. Importar esses dados para `ijpxjpbjudaddfatibfl`, preenchendo o vazio que
+   lá existe entre 2026-04-12 e a data de hoje, na medida do possível.
+3. Recriar em `ijpxjpbjudaddfatibfl` os jobs `fetch-rss-feeds-daily` e
+   `refresh-trends-daily` (este último corrigido, via trendspy + backoff,
+   já decidido na secção 3) — desta vez como ficheiro de migração
+   (`supabase/migrations/`), não configuração manual no dashboard, para não
+   se repetir o problema descrito acima.
+4. Confirmar no separador Cloud do Lovable se a ligação Supabase↔Lovable
+   continua activa e decidir se se desliga, agora que a antiga deixa de ser
+   oficial.
