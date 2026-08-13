@@ -232,3 +232,65 @@ identificáveis como tal pesam mais contra do que a ausência de dados.
 4. Confirmar no separador Cloud do Lovable se a ligação Supabase↔Lovable
    continua activa e decidir se se desliga, agora que a antiga deixa de ser
    oficial.
+
+---
+
+## 5. RESOLVIDO — Escrita pública bloqueada por RLS na instância antiga
+
+**Sessão de verificação: 2026-08-13** (via Claude Code, REST API directa)
+
+Sessão curta de verificação, sem alterações a código, dados ou configuração.
+Estado do repositório marcado com a tag git `estado-2026-08-13` (commit `f037e54`).
+
+**Configuração, tal como está hoje:**
+
+- O `.env` continua a apontar para a instância antiga (`cyjwhmuakmiytypewwfw`),
+  com chave `anon`. A decisão da secção 4 — instância nova passa a oficial —
+  ainda não está reflectida em nenhum ficheiro.
+- **Não existem credenciais da instância nova em lado nenhum do projecto.** Só há
+  um ficheiro de ambiente (`.env`); não há `.env.local` nem qualquer variável a
+  apontar para `ijpxjpbjudaddfatibfl`.
+- O `.env` **não está no `.gitignore`** e está versionado (`tracked`), pelo que o
+  seu conteúdo está no histórico do repositório público. Confirma o item deixado
+  em aberto na secção 4.
+
+**Leitura com a chave anon (instância antiga) — permitida:**
+
+| Tabela | Pedido | Resultado |
+|---|---|---|
+| `historical_snapshots` | `GET ?select=*&limit=1` | HTTP **200**, com dados |
+| `news_items` | `GET ?select=*&limit=1` | HTTP **200**, com dados |
+
+A instância antiga está viva e legível. Isto viabiliza a exportação prevista no
+ponto 1 dos próximos passos da secção 4 sem precisar da chave `service_role`.
+
+**Escrita com a chave anon (instância antiga) — bloqueada:**
+
+| Tabela | Pedido | Resultado |
+|---|---|---|
+| `historical_snapshots` | `POST` de 1 linha de teste | HTTP **401**, Postgres `42501` |
+| `news_items` | `POST` de 1 linha de teste | HTTP **401**, Postgres `42501` |
+
+Mensagem devolvida nos dois casos: `new row violates row-level security policy`.
+`42501` é `insufficient_privilege`: há RLS activa e nenhuma policy concede
+`INSERT` ao papel `anon`. **Nenhuma linha foi inserida** — não ficou lixo de teste
+em nenhuma das tabelas.
+
+**Conclusão sobre a origem da corrupção de Maio-Julho:** o vector "escrita externa
+por terceiros através da chave exposta no repositório público" fica **eliminado
+por teste**, não por suposição. Reforça a atribuição ao `pg_cron` feita na secção
+4, mas não a fecha — só este vector foi testado.
+
+**Vectores de escrita ainda por verificar** (nenhum deles exige escrever seja o que
+for para ser verificado):
+- chave `service_role` usada pelo workflow do GitHub Actions;
+- Edge Functions deployadas na instância antiga, que correm com privilégios próprios;
+- alterações manuais via dashboard Supabase.
+
+**Por verificar — RLS de `contactos_projecto`:** é a única tabela do projecto que
+pelo nome guarda dados de pessoas. As duas tabelas testadas hoje estão protegidas
+na escrita mas abertas na leitura; se `contactos_projecto` seguir o mesmo padrão,
+os contactos são publicamente legíveis com uma chave que está num repositório
+público. Verificar isto antes de qualquer outra higiene de segurança — tem
+prioridade sobre tirar o `.env` do repo, porque a chave anon é pública por desenho
+e é a RLS que faz o trabalho.
