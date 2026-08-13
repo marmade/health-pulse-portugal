@@ -1,6 +1,7 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-04-12 (sessão 5)
+> Última actualização: 2026-08-13 (sessão 8)
+> Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 
 ---
 
@@ -19,12 +20,18 @@
 ## Stack
 
 - **Frontend:** React + Vite + TypeScript + Tailwind + shadcn/ui (Lovable)
-- **Backend:** Supabase — instância **única** (migração concluída sessão 4):
-  - **Produção (Marta):** `ijpxjpbjudaddfatibfl.supabase.co` — acessível no dashboard do Supabase
-  - ~~**Lovable** (descontinuada): `cyjwhmuakmiytypewwfw.supabase.co`~~ — mantida como arquivo, frontend já não aponta para ela
+- **Backend:** Supabase — **duas instâncias, estado transitório** (ver `AUDIT.md` secções 4 e 5):
+  - **Oficial (decisão de 29/07/2026):** `ijpxjpbjudaddfatibfl.supabase.co` (Marta) — **viva**.
+    O workflow correu a 03/08 e 10/08; RSS, `health_questions`, `youtube_trends` e
+    `guioes_semanais` foram actualizados a 10/08. O único passo partido é o do Google Trends
+  - **Em uso de facto:** `cyjwhmuakmiytypewwfw.supabase.co` (Lovable) — é para aqui que o
+    site publicado aponta. **A migração da sessão 4 foi apagada:** o `.env` aponta para a
+    instância antiga e não contém credenciais da nova (verificado 13/08/2026)
+  - Enquanto o Lovable Cloud estiver ligado ao projecto, editar no editor visual pode
+    alterar o `.env` sem aviso
 - **Design:** Space Grotesk, azul `#0000FF`, magenta `#FF00FF`, fundo branco, sem sombras nem gradientes
 - **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`
-- **Claude Code:** instalado localmente; alias `rv` → `cd ~/health-pulse-portugal && claude`
+- **Claude Code:** instalado localmente; comando `claude`, a partir de `~/Documents/health-pulse-portugal`
 
 ---
 
@@ -76,6 +83,19 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 **Workflow:** `youtube-trends.yml` — "Actualização Semanal — Reportagem Viva"
 **Schedule:** Segundas-feiras 06:00 UTC (07:00 Lisboa) | Também disparo manual
 
+> **Estado:** o workflow foi desactivado automaticamente pelo GitHub por inactividade do
+> repositório e reactivado a 28/07/2026. Corre desde então (03/08, 10/08).
+>
+> **Passo 1 (Google Trends) partido — verificado a 13/08/2026.** Quando a recolha falha
+> (HTTP 429, ver `AUDIT.md` secção 2), o script **escreve `0`** em vez de manter o valor
+> anterior ou marcar erro. Estado a 10/08: **43 de 82 keywords a zero**, e só **12 mudaram**
+> face a 03/08. Consequências: nenhum sinal emergente dispara, e o dashboard apresenta uma
+> **falha de recolha como ausência de interesse** — quando o estado real é desconhecido.
+>
+> **Correcção decidida (13/08/2026):** escrever `NULL` em vez de `0` quando a recolha falha,
+> e acrescentar uma coluna `collection_status` que distinga explicitamente "recolhido",
+> "falhou" e "sem dados". Sem isto, nenhuma série de trends é defensável na tese.
+
 ### 10 passos:
 0. Ping Supabase — wake up da instância se pausada (sessão 5)
 1. Google Trends PT (`scripts/5_fetch_google_trends.py`) → `keywords`
@@ -100,7 +120,19 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 ---
 
-## Dashboard — Dados 100% Reais
+## Dashboard — Dados 100% Reais (com ressalva desde Maio/2026)
+
+> **Ressalva.** O princípio de zero mock data mantém-se no código, mas nenhuma das duas
+> instâncias tem hoje uma série de trends fiável, e por razões diferentes:
+>
+> - **Antiga (`cyjwhmuakmiytypewwfw`) — congelada.** Dados de trends reais até **30/04/2026**;
+>   a partir de 01/05, 82 de 82 keywords repetem o último valor sem sinal real. É esta a
+>   instância que o site publicado lê, e ela apresenta valores parados como se fossem actuais.
+> - **Nova (`ijpxjpbjudaddfatibfl`) — contaminada por zeros.** Desde a retoma do workflow
+>   (03/08), as falhas de recolha entram na série como `0`, indistinguíveis de interesse
+>   nulo real.
+>
+> `news_items` não é afectada em nenhuma das duas — mantém-se real e contínua.
 
 - **Zero mock data** — eliminados Math.random, kwPeriodMult, mock fallbacks
 - **Gráficos**: `historical_snapshots` via `buildTrend.ts`, média simples (corrigida sessão 3 — era sum(v²)/sum(v))
@@ -127,15 +159,60 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 
 ---
 
+## Prioridades — decisão de 2026-08-13
+
+**Prioridade à Reportagem Viva (lado A). Lado B em pausa deliberada.** O lado B não recebe
+conteúdo novo há meses — `guioes` desde 09/03/2026, `debunking` desde 25/03/2026 — e essa
+pausa passa a ser explícita, não acidental: enquanto a série de trends não for defensável,
+o esforço vai todo para o lado A. Reavaliar quando os pendentes críticos estiverem fechados.
+
 ## Pendentes
 
+### Críticos — por esta ordem (13/08/2026)
+
+A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que ele.
+
+1. [ ] **Verificar RLS de `contactos_projecto`.** Dados pessoais; única tabela por testar.
+   Determina a gravidade real da chave exposta no repositório
+2. [ ] **Exportar dados da instância antiga**, antes de qualquer desligamento —
+   `historical_snapshots` até 30/04/2026 (única fatia real) e `news_items` na íntegra.
+   Leitura confirmada possível a 13/08/2026
+3. [ ] **Importar esses dados para a instância nova**, preenchendo o vazio entre 12/04/2026
+   e a retoma do workflow, na medida do possível
+4. [ ] **Actualizar `.env` e env vars do Lovable** para `ijpxjpbjudaddfatibfl`
+5. [ ] **Cortar a ligação Lovable Cloud↔Supabase.** Enquanto estiver activa, o editor visual
+   pode alterar o `.env` sem aviso e desfazer o item 4
+6. [ ] **`NULL` + `collection_status` no script de Trends** (`5_fetch_google_trends.py`) —
+   parar de escrever `0` em falhas de recolha. Cada semana que o workflow corre sem isto
+   acrescenta zeros falsos à série da instância oficial
+7. [ ] **Substituir `pytrends` por `trendspy` + backoff** (`AUDIT.md` secção 2) — ataca a
+   causa das falhas que o item 6 passa a registar honestamente
+
+### Restantes
+
+- [ ] **Migração para `ijpxjpbjudaddfatibfl`** — iniciada na sessão 4, apagada; retomada em
+      13/08/2026 pela sequência dos Críticos
+- [ ] Recriar os cron jobs em `ijpxjpbjudaddfatibfl` como ficheiro de migração, não no dashboard
+- [ ] Deploy das 2 edge functions em falta na instância nova (`generate-guioes-weekly`,
+      `archive-weekly` — 5 de 7 já lá estão)
+- [ ] `.env` fora do `.gitignore` e versionado — higiene, sujeito a confirmação do RLS de
+      `contactos_projecto`: se essa tabela não estiver protegida, a chave exposta dá acesso
+      a dados pessoais
+- [ ] `eixos_archive` vazia — será populada no próximo workflow semanal (segunda-feira 06:00 UTC)
+- [ ] Actualizar /sobre bloco "fontes-de-dados": 16→44 feeds RSS, 36→56 canais YouTube, adicionar Google Autocomplete como fonte (via Lovable)
+- [ ] Análise aos gráficos: verificar cálculo de `change_percent` em `5_fetch_google_trends.py` — confirmar coerência com /sobre, avaliar defensabilidade metodológica
+- [ ] Saúdes.pt como fonte de curadoria manual de keywords e debunking (origem comercial Medis — a documentar)
+- [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
+- [ ] Sazonalidade (precisa de 2+ anos de dados)
+
+### Concluídos
+
+- [x] ~~Revogar o PAT do GitHub exposto~~ (revogado a 13/08/2026 — distinto do token da sessão 4)
 - [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
-- [x] ~~Deploy edge functions novas no Supabase Lovable~~ (obsoleto — migração para Marta concluída)
 - [x] ~~Migração colunas eixo/subcategoria nos bookmarks~~ (pedido ao Lovable 2026-03-27)
-- [x] ~~Token GitHub revogado~~
+- [x] ~~Token GitHub revogado~~ (token da sessão 4, Abril/2026 — distinto do que foi revogado a 13/08/2026)
 - [x] ~~Preencher keyword_id nos registos do debunking~~ (35/35 linkados — sessão 3)
 - [x] ~~Aplicar migração idx_news_items_date~~ (incluída na migração consolidada — sessão 4)
-- [x] ~~Migração para Supabase da Marta~~ (concluída sessão 4 — 2026-04-12)
 - [x] ~~Ping Supabase no workflow~~ (passo 0, wake up antes dos outros passos — sessão 5)
 - [x] ~~Limpeza semanal de notícias por eixo~~ (`scripts/9_cleanup_old_news.py`, passo 4B — sessão 5)
 - [x] ~~Debunking ordenado por data_publicacao DESC~~ (3 queries corrigidas — sessão 5)
@@ -144,14 +221,6 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 - [x] ~~Sinónimos curtos adicionados~~ (menopausa, gripe aviária, microplásticos, TDAH — sessão 5)
 - [x] ~~Channel ID Ordem dos Enfermeiros~~ (UCuDagVc79VVXXPFJurgXIiw adicionado — sessão 5)
 - [x] ~~SPP Pediatria~~ (confirmado: canal não existe no YouTube — sessão 5)
-- [ ] **CRÍTICO: actualizar variáveis de ambiente no Lovable** — `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` para `ijpxjpbjudaddfatibfl` — sem isto o frontend em produção (lovable.app) continua a ler da instância antiga
-- [ ] Deploy edge functions no Supabase da Marta (generate-guioes-weekly, archive-weekly, fetch-rss-feeds, refresh-trends, generate-guiao-questions, generate-diz-que-disse, google-trends)
-- [ ] `eixos_archive` vazia — será populada no próximo workflow semanal (segunda-feira 06:00 UTC)
-- [ ] Actualizar /sobre bloco "fontes-de-dados": 16→44 feeds RSS, 36→56 canais YouTube, adicionar Google Autocomplete como fonte (via Lovable)
-- [ ] Análise aos gráficos: verificar cálculo de `change_percent` em `5_fetch_google_trends.py` — confirmar coerência com /sobre, avaliar defensabilidade metodológica
-- [ ] Saúdes.pt como fonte de curadoria manual de keywords e debunking (origem comercial Medis — a documentar)
-- [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
-- [ ] Sazonalidade (precisa de 2+ anos de dados)
 
 ## Code Review — Sessão 3 (2026-04-09)
 
@@ -193,9 +262,15 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 ## Padrões estabelecidos
 
 - **Lovable:** Marta envia sempre os prompts ela própria
-- **Claude Code:** usar para trabalho de código, scripts, commits (alias `rv`)
+- **Claude Code:** usar para trabalho de código, scripts, commits (comando `claude`, a partir
+  de `~/Documents/health-pulse-portugal`)
 - **claude.ai:** estratégia, explicações, briefings entre sessões
-- **Supabase (Marta):** instância única de produção; alterações via dashboard ou API com service_role key
+- **Supabase:** duas instâncias até a transição fechar; confirmar sempre em qual se está a
+  trabalhar antes de alterar dados. Agendamento (`pg_cron`) só via ficheiro de migração,
+  nunca no dashboard — foi assim que o cron da instância antiga ficou invisível no repositório
+  e continuou a copiar dados de Abril durante meses sem ser detectado
+- **Recolha de dados:** uma falha de recolha nunca se escreve como valor. `NULL` + estado
+  explícito, nunca `0` — um zero é indistinguível de um dado real e corrompe a série
 - **GitHub commits:** via Claude Code (git normal)
 - **Troca de sessão:** Claude actualiza CONTEXT.md + cria `docs/sessoes/YYYY-MM-DD.md`
 - **Rigor científico:** documentar sempre a fonte e limitações metodológicas
