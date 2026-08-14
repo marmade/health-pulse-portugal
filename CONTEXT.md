@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-08-14 (sessão 8)
+> Última actualização: 2026-08-14 (sessão 9)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 
 ---
