@@ -1,7 +1,28 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-08-13 (sessão 8)
+> Última actualização: 2026-08-14 (sessão 8)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
+
+---
+
+## Verificações
+
+> Cada linha diz o que foi verificado, quando e como. Afirmação sem método é suposição.
+> Antes de agir sobre qualquer destas linhas, confirma a data: verificação com mais de um mês não é estado actual.
+
+| Afirmação | Data | Método | Resultado |
+|---|---|---|---|
+| Instância `ijpxjpbjudaddfatibfl` está viva e recebe escrita do workflow | 14/08/2026 | Contagem REST de `historical_snapshots` | 3462 linhas, data máxima 10/08/2026 |
+| Passo 3 (`refresh-trends`) escreve na instância nova todas as segundas | 14/08/2026 | +164 linhas desde 29/07 = 2 × 82 keywords (inferência aritmética) | Confirmado, com inferência assinalada |
+| `refresh-trends` copia `current_volume` sem validar | 14/08/2026 | Leitura directa de `supabase/functions/refresh-trends/index.ts` | Confirmado; insert único e atómico, resposta 200 conta linhas preparadas, não gravadas |
+| Escrita anónima via REST bloqueada por RLS | 13/08/2026 | POST com chave anon a duas tabelas | HTTP 401, Postgres 42501. **Só duas tabelas testadas** |
+| Escrita via Edge Function | — | Não testado | Em aberto. `verify_jwt = false` confirmado na instância nova; desconhecido na antiga |
+| RLS de `contactos_projecto` | — | Não testado | Em aberto. Única tabela com dados pessoais |
+| Edge Functions deployadas na instância nova | 14/08/2026 | MCP Supabase `list_edge_functions` | 5 activas: `refresh-trends`, `archive-weekly`, `generate-guioes-weekly`, `google-trends`, `fetch-rss-feeds` |
+| Edge Functions em falta | 14/08/2026 | MCP + POST a `generate-diz-que-disse` | `generate-diz-que-disse` e `generate-guiao-questions` (HTTP 404) |
+| Código das funções em produção | 14/08/2026 | MCP: todas em versão 1, deploy 28/07/2026 17:20–17:27 | Nunca redeployadas. Alterações no repositório desde 28/07 NÃO estão em produção |
+| `VITE_PERPLEXITY_API_KEY` existe como secret na instância nova | 14/08/2026 | Painel Supabase (verificado pela Marta) | Existe, criada 12/04/2026. Sem função deployada que a leia |
+| `6_fetch_health_questions.py` usa `pytrends` e pode falhar em silêncio | — | Não verificado | Em aberto. Mesma exposição a HTTP 429 do script de Trends |
 
 ---
 
@@ -96,17 +117,22 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 > e acrescentar uma coluna `collection_status` que distinga explicitamente "recolhido",
 > "falhou" e "sem dados". Sem isto, nenhuma série de trends é defensável na tese.
 
-### 10 passos:
+### Passos — numeração real do ficheiro (verificado 14/08/2026)
+
+**Activos:**
 0. Ping Supabase — wake up da instância se pausada (sessão 5)
-1. Google Trends PT (`scripts/5_fetch_google_trends.py`) → `keywords`
-2. Perguntas pytrends (`scripts/6_fetch_health_questions.py`) → `health_questions` (source=pytrends)
-3. Perguntas autocomplete (`scripts/7_fetch_autocomplete_questions.py`) → `health_questions` (source=autocomplete)
-4. Refresh trends (Edge Function `refresh-trends`) → `historical_snapshots`
-5. RSS feeds (Edge Function `fetch-rss-feeds`) → `news_items` (com `keyword_id` — sessão 5)
+2. Perguntas de saúde (`scripts/6_fetch_health_questions.py`) → `health_questions` (source=pytrends)
+2B. Perguntas autocomplete (`scripts/7_fetch_autocomplete_questions.py`) → `health_questions` (source=autocomplete)
+4. RSS feeds (Edge Function `fetch-rss-feeds`) → `news_items` (com `keyword_id` — sessão 5)
 4B. Limpeza notícias antigas por eixo (`scripts/9_cleanup_old_news.py`) — sessão 5
-6. YouTube (`scripts/4_fetch_youtube_trends.py`) → `youtube_trends`
-7. Guiões semanais (Edge Function `generate-guioes-weekly`) → `guioes_semanais`
-8. Arquivo semanal (Edge Function `archive-weekly`) → `eixos_archive` + `briefings_archive`
+5. YouTube (`scripts/4_fetch_youtube_trends.py`) → `youtube_trends`
+6. Guiões semanais (Edge Function `generate-guioes-weekly`) → `guioes_semanais`
+7. Arquivo semanal (Edge Function `archive-weekly`) → `eixos_archive` + `briefings_archive`
+
+**Comentados a 14/08/2026** — não removidos; o bloco de comentário no próprio ficheiro
+explica o motivo e a condição para religar:
+1. Google Trends PT (`scripts/5_fetch_google_trends.py`) → `keywords`
+3. Refresh trends (Edge Function `refresh-trends`) → `historical_snapshots`
 
 ### Edge Functions
 | Nome | Função |
@@ -190,11 +216,29 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **Corrigir o `.gitignore` para excluir o `.env` — obrigatoriamente ANTES do item 4 dos
+      Críticos** (actualizar o `.env` com as credenciais da instância nova). Se o ficheiro
+      continuar versionado quando lá forem escritas as credenciais da instância viva, essas
+      credenciais vão parar a um repositório público. Tirar do tracking agora não as remove
+      do histórico — o que lá está exposto continua exposto —, mas impede que as novas lá
+      entrem. Ordem correcta: `.gitignore` → `git rm --cached .env` → só depois escrever as
+      credenciais novas.
 - [ ] **Migração para `ijpxjpbjudaddfatibfl`** — iniciada na sessão 4, apagada; retomada em
       13/08/2026 pela sequência dos Críticos
 - [ ] Recriar os cron jobs em `ijpxjpbjudaddfatibfl` como ficheiro de migração, não no dashboard
-- [ ] Deploy das 2 edge functions em falta na instância nova (`generate-guioes-weekly`,
-      `archive-weekly` — 5 de 7 já lá estão)
+- [ ] **Deploy das 2 edge functions em falta na instância nova:** `generate-diz-que-disse` e
+      `generate-guiao-questions`, ambas HTTP 404 a 14/08/2026. As outras cinco estão activas
+      desde 28/07/2026 — incluindo `generate-guioes-weekly` e `archive-weekly`, que versões
+      anteriores deste documento davam erradamente como em falta.
+
+      **Duas condições obrigatórias antes de as deployar:**
+      1. **Verificação de chamador por segredo partilhado** — o workflow envia um header, a
+         função compara-o com uma variável de ambiente e devolve 401 se não bater. Nunca
+         `service_role` key no workflow.
+      2. **Renomear `VITE_PERPLEXITY_API_KEY` para `PERPLEXITY_API_KEY`** — painel e código
+         ao mesmo tempo. O prefixo `VITE_` faz o Vite injectar a variável no bundle do
+         frontend: basta alguém pô-la no `.env`, que é o gesto natural dado o nome, para a
+         chave paga passar a ser servida ao browser.
 - [ ] `.env` fora do `.gitignore` e versionado — higiene, sujeito a confirmação do RLS de
       `contactos_projecto`: se essa tabela não estiver protegida, a chave exposta dá acesso
       a dados pessoais

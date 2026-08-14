@@ -36,39 +36,57 @@ jobs:
       - name: Instalar dependências Python
         run: pip install "pytrends==4.9.2" "urllib3<2.0" google-api-python-client requests --quiet
 
+      # DESLIGADO A 14/08/2026 — não voltar a ligar sem ler CONTEXT.md
+      # Motivo: 5_fetch_google_trends.py escreve 0 quando a recolha falha, em vez
+      # de manter o valor ou marcar erro. A 10/08, 43 de 82 keywords a 0.
+      # O passo 3 (refresh-trends) copia keywords.current_volume para
+      # historical_snapshots sem validar, propagando os zeros para a série.
+      # Os dois estão comentados em conjunto: desligar só um não trava a propagação.
+      # Condição para religar: script a escrever NULL + collection_status em vez de 0,
+      # e refresh-trends a ignorar linhas sem recolha válida. Ambos testados.
+      #
       # ── PASSO 1: Google Trends reais → volumes das keywords ──────────────
-      - name: 1 — Google Trends PT (volumes reais)
-        run: |
-          echo "A buscar volumes reais do Google Trends PT..."
-          python scripts/5_fetch_google_trends.py
+      # - name: 1 — Google Trends PT (volumes reais)
+      #   run: |
+      #     echo "A buscar volumes reais do Google Trends PT..."
+      #     python scripts/5_fetch_google_trends.py
 
       # ── PASSO 2: Perguntas de saúde em crescimento ────────────────────────
       - name: 2 — Perguntas de saúde em crescimento
         run: |
           echo "A buscar perguntas reais em crescimento..."
           python scripts/6_fetch_health_questions.py
-          
+
       # ── PASSO 2B: Perguntas via Google Autocomplete ───────────────────────
       - name: 2B — Perguntas de saúde (autocomplete)
         run: |
           echo "A buscar perguntas via Google Autocomplete..."
           python scripts/7_fetch_autocomplete_questions.py
 
+      # DESLIGADO A 14/08/2026 — não voltar a ligar sem ler CONTEXT.md
+      # Motivo: 5_fetch_google_trends.py escreve 0 quando a recolha falha, em vez
+      # de manter o valor ou marcar erro. A 10/08, 43 de 82 keywords a 0.
+      # O passo 3 (refresh-trends) copia keywords.current_volume para
+      # historical_snapshots sem validar, propagando os zeros para a série.
+      # Os dois estão comentados em conjunto: desligar só um não trava a propagação.
+      # Condição para religar: script a escrever NULL + collection_status em vez de 0,
+      # e refresh-trends a ignorar linhas sem recolha válida. Ambos testados.
+      #
       # ── PASSO 3: Refresh trends → snapshots históricos ───────────────────
-      - name: 3 — Refresh trends (snapshots históricos)
-        run: |
-          echo "A invocar refresh-trends..."
-          RESP=$(curl -s -w "\n%{http_code}" -X POST \
-            "$SUPABASE_URL/functions/v1/refresh-trends" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{}')
-          BODY=$(echo "$RESP" | head -n -1)
-          CODE=$(echo "$RESP" | tail -n 1)
-          echo "HTTP $CODE — $BODY"
-          if [ "$CODE" != "200" ]; then
-            echo "::warning::refresh-trends devolveu HTTP $CODE"
-          fi
+      # - name: 3 — Refresh trends (snapshots históricos)
+      #   run: |
+      #     echo "A invocar refresh-trends..."
+      #     RESP=$(curl -s -w "\n%{http_code}" -X POST \
+      #       "$SUPABASE_URL/functions/v1/refresh-trends" \
+      #       -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+      #       -H "Content-Type: application/json" \
+      #       -d '{}')
+      #     BODY=$(echo "$RESP" | head -n -1)
+      #     CODE=$(echo "$RESP" | tail -n 1)
+      #     echo "HTTP $CODE — $BODY"
+      #     if [ "$CODE" != "200" ]; then
+      #       echo "::warning::refresh-trends devolveu HTTP $CODE"
+      #     fi
 
       # ── PASSO 4: RSS feeds → notícias ────────────────────────────────────
       - name: 4 — Fetch RSS feeds (notícias)

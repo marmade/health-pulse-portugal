@@ -90,7 +90,11 @@ não uma falha de desenho do sistema da Marta.
 
 ---
 
-## 3. POR INVESTIGAR — Duas Edge Functions em falta (HTTP 404)
+## 3. RESOLVIDO — Edge Functions em falta (HTTP 404)
+
+> **Corrigido a 14/08/2026.** O corpo original desta secção, escrito na sessão de
+> 28-29/07, identificava as funções erradas. A correcção está no fim, a seguir ao
+> registo original, que se mantém para não apagar o rasto do diagnóstico.
 
 Descoberto na run #30, passos finais do workflow:
 
@@ -114,12 +118,43 @@ isto é uma lacuna silenciosa adicional, do mesmo tipo que o problema #2 (o
 workflow reporta sucesso global mesmo com estes dois passos a falhar — são só
 avisos, `Warning:`, não erros fatais).
 
-**Por fazer:** listar as Edge Functions realmente deployadas na instância
-`ijpxjpbjudaddfatibfl` (via Supabase MCP ou dashboard) e comparar com o que o
-workflow espera encontrar. Decidir se se recriam as funções, se se actualiza o
-workflow para apontar para os nomes correctos, ou se estes passos devem
-simplesmente ser removidos do workflow (se a funcionalidade já não for
-necessária).
+---
+
+### Correcção — verificado a 14/08/2026 (MCP Supabase, `list_edge_functions`)
+
+**As duas funções identificadas acima estão activas.** `generate-guioes-weekly` e
+`archive-weekly` foram deployadas a **28/07/2026, às 17:23 e 17:21** respectivamente,
+na mesma tarde em que a run #30 devolveu os 404 — e continuam `ACTIVE`.
+
+**A hipótese 1 estava correcta quando os 404 foram observados** (run #30, manhã de
+28/07): nesse momento as funções não existiam mesmo na instância nova. Deixou de o
+ser às 17:21 e 17:23 desse mesmo dia, quando foram deployadas. O texto acima foi
+escrito depois disso e **nunca foi actualizado**, pelo que ficou a apontar como em
+falta duas funções que já lá estavam.
+
+**Estado real a 14/08/2026** — 5 de 7 deployadas, todas `ACTIVE`, todas em
+`version: 1`, todas deployadas entre as 17:20 e as 17:27 de 28/07/2026:
+
+| Função | Estado | Deploy |
+|---|---|---|
+| `refresh-trends` | ACTIVE | 28/07/2026 17:20 |
+| `archive-weekly` | ACTIVE | 28/07/2026 17:21 |
+| `generate-guioes-weekly` | ACTIVE | 28/07/2026 17:23 |
+| `google-trends` | ACTIVE | 28/07/2026 17:24 |
+| `fetch-rss-feeds` | ACTIVE | 28/07/2026 17:27 |
+
+**As que faltam são outras duas:** `generate-diz-que-disse` e `generate-guiao-questions`
+— precisamente as que chamam a API da Perplexity. Confirmado por POST directo a
+`generate-diz-que-disse`, que devolveu `HTTP 404 — {"code":"NOT_FOUND"}`.
+
+**Achado secundário, com consequência:** `updated_at` é igual a `created_at` nas
+cinco, e todas estão em `version: 1`. Nunca foram redeployadas desde 28/07. Qualquer
+alteração feita no repositório a `supabase/functions/` depois dessa data **não está
+em produção** — o código que corre na instância é o dessa tarde.
+
+**Por fazer:** deploy das duas funções em falta, com as condições de segurança
+registadas nos Restantes do `CONTEXT.md` (verificação de chamador por segredo
+partilhado; renomear `VITE_PERPLEXITY_API_KEY`).
 
 ---
 
@@ -276,10 +311,43 @@ Mensagem devolvida nos dois casos: `new row violates row-level security policy`.
 `INSERT` ao papel `anon`. **Nenhuma linha foi inserida** — não ficou lixo de teste
 em nenhuma das tabelas.
 
-**Conclusão sobre a origem da corrupção de Maio-Julho:** o vector "escrita externa
-por terceiros através da chave exposta no repositório público" fica **eliminado
-por teste**, não por suposição. Reforça a atribuição ao `pg_cron` feita na secção
-4, mas não a fecha — só este vector foi testado.
+**Conclusão sobre a origem da corrupção de Maio-Julho — corrigida a 14/08/2026.**
+
+A redacção original desta conclusão dizia que o vector "escrita externa por terceiros
+através da chave exposta no repositório público" ficava **eliminado por teste**. Era
+demasiado ampla: eliminava um caminho e dava a entender que os eliminava todos.
+
+**O que se mantém válido.** O teste de escrita directa via **REST** devolveu **HTTP 401**
+(Postgres `42501`) nas duas tabelas testadas da instância antiga. A chave anon exposta
+não permite escrever por esse caminho, e isso está provado.
+
+**O que não foi testado.** O caminho por **Edge Function**, em nenhuma das duas
+instâncias. As funções autenticam-se internamente com `service_role`, que ignora RLS por
+definição — `refresh-trends` é o exemplo lido em código. Se forem invocáveis sem
+autenticação, existe um caminho de escrita que não passa pela RLS e que não exige sequer
+a chave anon.
+
+**Estado da verificação do `verify_jwt`, por instância** — a distinção importa, porque
+esta secção trata da instância antiga e a evidência recolhida é da nova:
+
+| Instância | `verify_jwt` | Como se sabe |
+|---|---|---|
+| Nova (`ijpxjpbjudaddfatibfl`) | `false` nas 7 | `supabase/config.toml` (que aponta para esta instância) + estado deployado confirmado por MCP a 14/08/2026 |
+| Antiga (`cyjwhmuakmiytypewwfw`) | **desconhecido** | Não verificado. A secção 4 regista 7 de 7 funções deployadas, mas a sua configuração de autenticação nunca foi inspeccionada |
+
+Ou seja: na instância nova o caminho está aberto e confirmado; na antiga é plausível por
+analogia — as funções vieram do mesmo projecto Lovable — mas **não está verificado**, e
+não deve ser tratado como se estivesse.
+
+**O que uma invocação não autenticada permitiria, e o que não permitiria.** Permitiria
+**disparar as escritas que as funções já fazem** — snapshots repetidos em
+`historical_snapshots`, recolhas de RSS, arquivos semanais. **Não permitiria injectar
+valores à escolha**, porque as funções copiam dados de origens fixas e não aceitam
+valores do chamador. O risco realista é poluição da série e ruído, não fabricação
+dirigida de dados.
+
+Quanto à atribuição da corrupção ao `pg_cron` feita na secção 4: continua a ser a
+explicação mais sustentada, mas por eliminação parcial, não por prova directa.
 
 **Vectores de escrita ainda por verificar** (nenhum deles exige escrever seja o que
 for para ser verificado):
