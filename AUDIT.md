@@ -172,7 +172,45 @@ Estes fazem parte do plano de 5 fases discutido, ainda não iniciado:
 
 ---
 
-## 4. RESOLVIDO — Causa raiz da divergência "instância antiga vs. nova"
+## 4. Causa raiz da divergência "instância antiga vs. nova"
+
+**RESOLVIDO** quanto à causa raiz · **NÃO VERIFICADO** quanto à qualidade dos dados da
+instância antiga (revisão de 07/09/2026)
+
+> **REVISÃO DE 07/09/2026 — ler antes do resto da secção.**
+>
+> **O que se mantém verificado.** A causa raiz — o Lovable reverter o `.env` para a
+> instância antiga — foi reconfirmada hoje por `git log --format="%h %ad" -- .env`: o commit
+> `5246597` é de **21/05/2026**, posterior à migração `9f2e367` de 12/04/2026. O mecanismo
+> está provado e não é posto em causa.
+>
+> **O que passa a NÃO VERIFICADO.** A afirmação de que a instância antiga tem "dados de
+> trends reais até 30/04/2026", mais abaixo em *Extensão da corrupção*. Nunca foi testada
+> com os critérios aplicados a 07/09/2026 à instância nova — procura de valores fora do
+> intervalo 0–100 e de valores presos no mínimo. Na instância nova, o período **09/03 a
+> 12/04/2026**, que é exactamente o mesmo período nas duas, tem 16 linhas com `search_index`
+> acima de 100 (impossível num índice normalizado 0–100) e 43% das linhas presas no valor 1.
+>
+> **Porque é que o teste de 29/07 não chega.** Mediu **variância** — a série mexe ou está
+> congelada? — e não **plausibilidade** — estes valores podem existir? Uma série pode variar
+> e ser fabricada: foi isso que se encontrou na instância nova. "Última data com mudança =
+> 30/04" prova que houve escrita até aí, não prova que o que foi escrito é real.
+>
+> **Como tem de ser feito o teste.** Não basta procurar valores fora de 0–100. As 240 linhas
+> de seed retrodatado da instância nova foram inseridas a **08/03/2026**, um dia antes do
+> início do período 09/03–12/04, e as duas instâncias partilham origem — o mesmo projecto
+> Lovable. A hipótese a testar na antiga é dupla: **(1)** tem valores impossíveis?
+> **(2)** tem o mesmo bloco de seed retrodatado inserido num único minuto? A segunda só
+> aparece agrupando por `date_trunc('minute', created_at)`. Foi esse agrupamento que revelou
+> o seed; uma consulta por `snapshot_date` não o teria apanhado, porque as datas do seed
+> estão espalhadas por seis meses.
+>
+> **Consequência.** Os pontos 1 e 2 dos *Próximos passos* ficam **suspensos** até correr na
+> instância antiga o teste acima. Se o resultado for igual, são cancelados — seria importar
+> dados indefensáveis para a instância limpa.
+>
+> Ver `CONTEXT.md` (tabela de Verificações e secção Suspensos) e
+> `docs/sessoes/2026-09-07.md`, ponto 2.
 
 **Sessão de diagnóstico: 2026-07-29** (via chat Claude + Claude Code + Supabase MCP)
 
@@ -225,12 +263,20 @@ terminar no mês em que o ficheiro foi escrito, sem relação com o início da
 corrupção dos dados de trends (que começou depois, em Abril). Registar como
 coincidência de calendário, não como pista.
 
-**Por investigar, ainda em aberto:**
-- `.env` (com chave publishable Supabase) está commitado no repo público, fora
+**Respondido a 07/09/2026 — estava em aberto desde 29/07:**
+- ~~`.env` (com chave publishable Supabase) está commitado no repo público, fora
   do `.gitignore`. Confirmar se as RLS policies protegem adequadamente os dados
-  antes de assumir que isto é inofensivo.
+  antes de assumir que isto é inofensivo.~~
+  **Respondido, e a resposta é má.** O `.env` contém só variáveis `VITE_*`, sem
+  `service_role` — mas a RLS **não** protege. A `contactos_projecto` tem quatro políticas
+  `qual = true`: leitura, inserção, alteração **e remoção** públicas, sobre 4 linhas com
+  nome, e-mail, telefone, especialidade e bio de pessoas reais. A chave é pública por
+  desenho; era a RLS que tinha de fazer o trabalho, e não faz. Ver `CONTEXT.md`, Crítico
+  nº 1.
 
-**Extensão da corrupção — confirmada por SQL (2026-07-29):**
+**Extensão da corrupção — confirmada por SQL (2026-07-29).**
+**Números não fiáveis para decidir exportação — ver a revisão de 07/09/2026 no topo desta
+secção.** O que se segue mede variância, não plausibilidade.
 
 De 82 keywords activas em `historical_snapshots`, **82 têm o valor de
 `search_index` congelado** nos últimos 20 dias (`palavras_com_sinal_real = 0`).
@@ -254,11 +300,15 @@ um vazio honesto. Para um projecto académico, dados fabricados e não
 identificáveis como tal pesam mais contra do que a ausência de dados.
 
 **Próximos passos, por esta ordem:**
-1. Exportar de `cyjwhmuakmiytypewwfw`, antes de qualquer desligamento: (a)
-   `historical_snapshots` filtrado a `snapshot_date <= '2026-04-30'` (única
-   fatia real); (b) `news_items` na íntegra (mantém-se real até 27/07).
-2. Importar esses dados para `ijpxjpbjudaddfatibfl`, preenchendo o vazio que
-   lá existe entre 2026-04-12 e a data de hoje, na medida do possível.
+1. **SUSPENSO (07/09/2026).** Exportar de `cyjwhmuakmiytypewwfw`, antes de qualquer
+   desligamento: (a) `historical_snapshots` filtrado a `snapshot_date <= '2026-04-30'`;
+   (b) `news_items` na íntegra (mantém-se real até 27/07). **Condição para retomar:**
+   correr primeiro na instância antiga o teste descrito na revisão no topo desta secção.
+   A premissa de que a fatia até 30/04 é a "única fatia real" é precisamente a afirmação
+   que não está verificada.
+2. **SUSPENSO (07/09/2026).** Importar esses dados para `ijpxjpbjudaddfatibfl`,
+   preenchendo o vazio que lá existe entre 2026-04-12 e a data de hoje. Depende
+   inteiramente do ponto 1.
 3. Recriar em `ijpxjpbjudaddfatibfl` os jobs `fetch-rss-feeds-daily` e
    `refresh-trends-daily` (este último corrigido, via trendspy + backoff,
    já decidido na secção 3) — desta vez como ficheiro de migração
@@ -270,7 +320,11 @@ identificáveis como tal pesam mais contra do que a ausência de dados.
 
 ---
 
-## 5. RESOLVIDO — Escrita pública bloqueada por RLS na instância antiga
+## 5. Escrita pública e RLS na instância antiga
+
+**RESOLVIDO** quanto à escrita via REST nas duas tabelas testadas · **EM ABERTO** quanto ao
+RLS de `contactos_projecto` na instância antiga e aos vectores por Edge Function
+(revisão de 07/09/2026)
 
 **Sessão de verificação: 2026-08-13** (via Claude Code, REST API directa)
 
@@ -355,10 +409,22 @@ for para ser verificado):
 - Edge Functions deployadas na instância antiga, que correm com privilégios próprios;
 - alterações manuais via dashboard Supabase.
 
-**Por verificar — RLS de `contactos_projecto`:** é a única tabela do projecto que
-pelo nome guarda dados de pessoas. As duas tabelas testadas hoje estão protegidas
-na escrita mas abertas na leitura; se `contactos_projecto` seguir o mesmo padrão,
-os contactos são publicamente legíveis com uma chave que está num repositório
-público. Verificar isto antes de qualquer outra higiene de segurança — tem
-prioridade sobre tirar o `.env` do repo, porque a chave anon é pública por desenho
-e é a RLS que faz o trabalho.
+**RLS de `contactos_projecto` — respondido para a instância NOVA, em aberto para a ANTIGA
+(revisão de 07/09/2026).**
+
+A redacção original desta secção previa que, se `contactos_projecto` seguisse o padrão das
+duas tabelas testadas a 13/08 — protegidas na escrita, abertas na leitura —, os contactos
+seriam publicamente **legíveis**. **A previsão ficou aquém do que se encontrou.** Na
+instância nova (`ijpxjpbjudaddfatibfl`), a tabela tem RLS activa mas com **quatro políticas
+`qual = true`**: leitura, inserção, alteração **e remoção** públicas, sobre 4 linhas com
+nome, e-mail, telefone, especialidade e bio de pessoas reais. Não são apenas publicamente
+legíveis — são publicamente **apagáveis**.
+
+**A distinção de instância mantém-se, e importa.** Esta secção trata da instância **antiga**
+(`cyjwhmuakmiytypewwfw`); o achado de 07/09/2026 é da **nova**. Na antiga, o RLS de
+`contactos_projecto` continua **por verificar**, e não deve ser inferido por analogia — pela
+mesma razão pela qual o `verify_jwt` da antiga não foi inferido do da nova, acima nesta
+secção.
+
+A prioridade que esta secção estabelecia mantém-se e sai confirmada: a chave anon é pública
+por desenho, e é a RLS que tem de fazer o trabalho. Ver `CONTEXT.md`, Crítico nº 1.

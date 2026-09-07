@@ -1,7 +1,9 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-08-14 (sessão 9)
+> Última actualização: 2026-09-07 (sessão 10)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
+> **Exposição de dados pessoais em curso (07/09/2026):** `contactos_projecto` tem leitura,
+> inserção, alteração e remoção públicas. Ver Pendentes Críticos nº 1.
 
 ---
 
@@ -10,19 +12,35 @@
 > Cada linha diz o que foi verificado, quando e como. Afirmação sem método é suposição.
 > Antes de agir sobre qualquer destas linhas, confirma a data: verificação com mais de um mês não é estado actual.
 
+> **Onde foi verificado.** `[nesta sessão]` = Claude Code, 07/09/2026, com comando reproduzível ·
+> `[claude.ai, transcrito]` = verificado noutra janela e passado para aqui sem re-execução ·
+> `[declarado]` = afirmado pela Marta, sem teste · `[sessão anterior]` = verificado antes de
+> 07/09, data na coluna · `[por testar]` = nunca verificado
+
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
-| Instância `ijpxjpbjudaddfatibfl` está viva e recebe escrita do workflow | 14/08/2026 | Contagem REST de `historical_snapshots` | 3462 linhas, data máxima 10/08/2026 |
-| Passo 3 (`refresh-trends`) escreve na instância nova todas as segundas | 14/08/2026 | +164 linhas desde 29/07 = 2 × 82 keywords (inferência aritmética) | Confirmado, com inferência assinalada |
-| `refresh-trends` copia `current_volume` sem validar | 14/08/2026 | Leitura directa de `supabase/functions/refresh-trends/index.ts` | Confirmado; insert único e atómico, resposta 200 conta linhas preparadas, não gravadas |
-| Escrita anónima via REST bloqueada por RLS | 13/08/2026 | POST com chave anon a duas tabelas | HTTP 401, Postgres 42501. **Só duas tabelas testadas** |
-| Escrita via Edge Function | — | Não testado | Em aberto. `verify_jwt = false` confirmado na instância nova; desconhecido na antiga |
-| RLS de `contactos_projecto` | — | Não testado | Em aberto. Única tabela com dados pessoais |
-| Edge Functions deployadas na instância nova | 14/08/2026 | MCP Supabase `list_edge_functions` | 5 activas: `refresh-trends`, `archive-weekly`, `generate-guioes-weekly`, `google-trends`, `fetch-rss-feeds` |
-| Edge Functions em falta | 14/08/2026 | MCP + POST a `generate-diz-que-disse` | `generate-diz-que-disse` e `generate-guiao-questions` (HTTP 404) |
-| Código das funções em produção | 14/08/2026 | MCP: todas em versão 1, deploy 28/07/2026 17:20–17:27 | Nunca redeployadas. Alterações no repositório desde 28/07 NÃO estão em produção |
-| `VITE_PERPLEXITY_API_KEY` existe como secret na instância nova | 14/08/2026 | Painel Supabase (verificado pela Marta) | Existe, criada 12/04/2026. Sem função deployada que a leia |
-| `6_fetch_health_questions.py` usa `pytrends` e pode falhar em silêncio | — | Não verificado | Em aberto. Mesma exposição a HTTP 429 do script de Trends |
+| Workflow semanal corre sozinho, sem intervenção manual | 07/09/2026 | `[claude.ai, transcrito]` Escritas observadas em `ijpxjpbjudaddfatibfl` entre 12:25 e 12:28 UTC | Confirmado. `news_items` 278, `health_questions` 4604, `youtube_trends` 22, `guioes_semanais` 25, `eixos_archive` 24 |
+| Passos 1 e 3 (Google Trends) não escrevem nada | 14/08/2026 | `[sessão anterior]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentados desde 14/08/2026. **É esta a razão pela qual `historical_snapshots` está parada** — não é falha de recolha, é desactivação deliberada |
+| `contactos_projecto` sem protecção efectiva | 07/09/2026 | `[claude.ai, transcrito]` Inspecção das políticas RLS | **RLS activa mas com 4 políticas `qual = true`** — leitura, inserção, alteração e remoção públicas. 4 linhas com nome, e-mail, telefone, especialidade e bio de pessoas reais. Exposição consumada |
+| `historical_snapshots` não tem nenhuma janela defensável | 07/09/2026 | `[claude.ai, transcrito]` SQL: agrupamento por minuto de escrita e procura de valores fora de 0–100 | 3462 linhas. 240 são *seed* retrodatado, inserido num único minuto a 08/03/2026 com datas de 01/10/2025 a 01/03/2026. 3018 (09/03–12/04) têm valores acima de 100 num índice normalizado 0–100, e 43% presas no valor 1 |
+| Google Autocomplete não segmenta por país | 07/09/2026 | `[nesta sessão]` `md5` e `diff` sobre as 4 respostas guardadas (pedidos manuais feitos pela Marta) | Respostas **byte a byte idênticas** entre `gl=pt` e `gl=br` (`fa5766d4…`, `ea7a0f17…`). O parâmetro `gl` não altera o resultado. Evidência em `docs/evidencia/2026-09-07-autocomplete-gl/` |
+| `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, **zero emergentes com valor** |
+| `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
+| Datas dos commits ao `.env` | 07/09/2026 | `[nesta sessão]` `git log --format="%h %ad %s" --date=short -- .env` | 5 commits: 06/03, 12/04 (×3, um deles a migração), **21/05/2026**. Os 4 "Changes" são do bot do Lovable. Confirma que o Lovable reescreveu o `.env` **depois** da migração de 12/04 |
+| Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` está **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro |
+| `.env` aponta para a instância errada | 13/08/2026 | `[sessão anterior]` Leitura do ficheiro | Aponta para `cyjwhmuakmiytypewwfw` (antiga, congelada a 30/04). A oficial é `ijpxjpbjudaddfatibfl` |
+| Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.127) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.130); `is_question` fixo a `True` (l.136), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.97), parâmetro sem efeito |
+| Valores fabricados no script 6 (pytrends) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_fetch_health_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - rank*8)` (l.193); `"breakout"` convertido em `growth = 5000` (l.184-185); `expandir_mural()` (l.273-323) insere keywords com `previous_volume: 0`, `trend: "up"` e `current_volume` igual ao volume fabricado. **Que nunca tenha inserido nada é a consulta SQL da linha das `keywords`, não esta leitura** |
+| Script 6 é a única fonte de perguntas com base territorial | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:160` | Confirmado: `build_payload(..., geo="PT", timeframe="today 3-m")`. O `growth_percent` vem do valor real das *rising queries* do Google — **excepto** quando é `"breakout"`, caso em que é fabricado |
+| `6_fetch_health_questions.py` falha em silêncio | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:210-212` | **Confirmado.** Qualquer excepção (incluindo HTTP 429) é apanhada, impressa no log, e a função devolve lista vazia. Não escreve `NULL` nem marca estado: a keyword desaparece da recolha dessa semana sem rasto na base de dados |
+| `refresh-trends` copia `current_volume` sem validar | 14/08/2026 | `[sessão anterior]` Leitura de `supabase/functions/refresh-trends/index.ts` | Confirmado; insert único e atómico, resposta 200 conta linhas preparadas, não gravadas |
+| Escrita anónima via REST bloqueada por RLS | 13/08/2026 | `[sessão anterior]` POST com chave anon a duas tabelas | HTTP 401, Postgres 42501. **Só duas tabelas testadas — e `contactos_projecto` não era nenhuma delas** |
+| RLS das restantes tabelas | — | `[por testar]` | Em aberto. Depois do resultado de `contactos_projecto`, deixa de ser seguro presumir que estão protegidas |
+| Escrita via Edge Function | — | `[por testar]` | Em aberto. `verify_jwt = false` confirmado na instância nova; desconhecido na antiga |
+| Edge Functions deployadas na instância nova | 14/08/2026 | `[sessão anterior]` MCP Supabase `list_edge_functions` | 5 activas: `refresh-trends`, `archive-weekly`, `generate-guioes-weekly`, `google-trends`, `fetch-rss-feeds` |
+| Edge Functions em falta | 14/08/2026 | `[sessão anterior]` MCP + POST a `generate-diz-que-disse` | `generate-diz-que-disse` e `generate-guiao-questions` (HTTP 404) |
+| Código das funções em produção | 14/08/2026 | `[sessão anterior]` MCP: todas em versão 1, deploy 28/07/2026 17:20–17:27 | Nunca redeployadas. Alterações no repositório desde 28/07 NÃO estão em produção |
+| `VITE_PERPLEXITY_API_KEY` existe como secret na instância nova | 14/08/2026 | `[declarado]` Painel Supabase, verificado pela Marta | Existe, criada 12/04/2026. Sem função deployada que a leia |
 
 ---
 
@@ -32,7 +50,12 @@
 **Diz que Disse** — editorial de comunicação de ciências da saúde (lado B)
 
 - Lovable preview: https://preview--health-pulse-pt.lovable.app/
-- Admin: https://preview--health-pulse-pt.lovable.app/admin (password: healthpulse2026)
+- Admin: https://preview--health-pulse-pt.lovable.app/admin
+  (credencial removida do documento a 07/09/2026. Esteve em claro num
+  repositório público e **permanece no histórico do Git** — retirá-la do
+  ficheiro não a remove do repositório. Decisão de 07/09/2026: não
+  alterar a palavra-passe, porque o painel aponta para a instância antiga
+  e sai com o corte do Lovable. Até lá, o acesso é público de facto.)
 - Repositório: https://github.com/marmade/health-pulse-portugal
 - Lovable project ID: 69209c37-6f9e-4a84-bea9-8e56d0eace5a
 
@@ -97,6 +120,26 @@ last_seen_at (TIMESTAMPTZ DEFAULT now())
 | Bookmarks referência | 76 | Todas as sociedades médicas AJOMED + institucionais + ONG |
 | Fontes peer-reviewed | 5 | MSD Manuals, Acta Médica Portuguesa, RPMGF, SciELO PT, Cochrane |
 
+### Estatuto das fontes — decisão de 07/09/2026
+
+**Google Autocomplete mudou de estatuto.** Deixa de responder *"o que perguntam os
+portugueses"* e passa a responder *"como se formula a dúvida em português"*. A razão é
+factual e está verificada: `gl=pt` e `gl=br` devolvem respostas byte a byte idênticas — a
+fonte não segmenta por país.
+
+**Delimitação do objecto.** O protótipo recolhe **dúvidas formuladas em português, a partir
+de Portugal**. O critério é territorial, não linguístico.
+
+**O Google Trends fica** por ser a única das três fontes que segmenta por país de facto
+(`geo=PT`). É essa a função que desempenha no desenho, independentemente da decisão sobre
+como passar a recolhê-lo.
+
+| Fonte | Responde a | Segmenta por país |
+|---|---|---|
+| Google Trends (script 5) | dinâmica temporal do interesse | **Sim** — `geo=PT` |
+| pytrends *related queries* (script 6) | o que está a crescer | **Sim** — `geo=PT` |
+| Google Autocomplete (script 7) | como se formula a dúvida | **Não** — verificado 07/09/2026 |
+
 ---
 
 ## Automatização — GitHub Actions
@@ -148,15 +191,20 @@ explica o motivo e a condição para religar:
 
 ## Dashboard — Dados 100% Reais (com ressalva desde Maio/2026)
 
-> **Ressalva.** O princípio de zero mock data mantém-se no código, mas nenhuma das duas
-> instâncias tem hoje uma série de trends fiável, e por razões diferentes:
+> **Ressalva.** O princípio de zero mock data mantém-se no código, mas **nenhuma das duas
+> instâncias tem hoje uma série de trends utilizável**:
 >
-> - **Antiga (`cyjwhmuakmiytypewwfw`) — congelada.** Dados de trends reais até **30/04/2026**;
->   a partir de 01/05, 82 de 82 keywords repetem o último valor sem sinal real. É esta a
->   instância que o site publicado lê, e ela apresenta valores parados como se fossem actuais.
-> - **Nova (`ijpxjpbjudaddfatibfl`) — contaminada por zeros.** Desde a retoma do workflow
->   (03/08), as falhas de recolha entram na série como `0`, indistinguíveis de interesse
->   nulo real.
+> - **Nova (`ijpxjpbjudaddfatibfl`) — sem janela defensável.** Verificado a 07/09/2026: das
+>   3462 linhas de `historical_snapshots`, 240 são seed retrodatado e 3018 contêm valores
+>   impossíveis (acima de 100 num índice normalizado 0–100) ou presas no valor 1. Nenhuma
+>   fatia é apresentável numa tese. Série parada desde 10/08/2026.
+> - **Antiga (`cyjwhmuakmiytypewwfw`) — congelada, e a qualidade NÃO ESTÁ VERIFICADA.**
+>   Versões anteriores deste documento afirmavam "dados de trends reais até 30/04/2026".
+>   Essa afirmação nunca foi testada com os critérios de 07/09, e o período 09/03–12/04 é
+>   exactamente o mesmo que está contaminado na instância nova. Tratar como **não
+>   verificada** até correr lá o teste dos valores impossíveis. Ver `AUDIT.md` secção 4.
+> - É a instância antiga que o **site publicado** lê. Quem abrir o URL hoje vê valores de
+>   Abril apresentados como actuais — quatro meses de atraso.
 >
 > `news_items` não é afectada em nenhuma das duas — mantém-se real e contínua.
 
@@ -194,35 +242,78 @@ o esforço vai todo para o lado A. Reavaliar quando os pendentes críticos estiv
 
 ## Pendentes
 
-### Críticos — por esta ordem (13/08/2026)
+### Críticos — por esta ordem (07/09/2026)
 
 A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que ele.
 
-1. [ ] **Verificar RLS de `contactos_projecto`.** Dados pessoais; única tabela por testar.
-   Determina a gravidade real da chave exposta no repositório
-2. [ ] **Exportar dados da instância antiga**, antes de qualquer desligamento —
-   `historical_snapshots` até 30/04/2026 (única fatia real) e `news_items` na íntegra.
-   Leitura confirmada possível a 13/08/2026
-3. [ ] **Importar esses dados para a instância nova**, preenchendo o vazio entre 12/04/2026
-   e a retoma do workflow, na medida do possível
-4. [ ] **Actualizar `.env` e env vars do Lovable** para `ijpxjpbjudaddfatibfl`
-5. [ ] **Cortar a ligação Lovable Cloud↔Supabase.** Enquanto estiver activa, o editor visual
-   pode alterar o `.env` sem aviso e desfazer o item 4
-6. [ ] **`NULL` + `collection_status` no script de Trends** (`5_fetch_google_trends.py`) —
-   parar de escrever `0` em falhas de recolha. Cada semana que o workflow corre sem isto
-   acrescenta zeros falsos à série da instância oficial
-7. [ ] **Substituir `pytrends` por `trendspy` + backoff** (`AUDIT.md` secção 2) — ataca a
-   causa das falhas que o item 6 passa a registar honestamente
+1. [ ] **`contactos_projecto` — dados pessoais expostos.** Exportar as 4 linhas → apagar as
+   linhas da tabela → fechar as 4 políticas `qual = true`. Só depois, verificar o RLS de
+   todas as restantes tabelas, que até aqui se presumiam protegidas sem prova
+2. [ ] **Retirar o `.env` do tracking e corrigir as credenciais.**
+   `git rm --cached .env` seguido de escrever as credenciais da instância nova
+   (`ijpxjpbjudaddfatibfl`) no ficheiro local. A regra do `.gitignore` está em vigor desde
+   07/09/2026, mas o ficheiro continua versionado.
+   **Isto NÃO remove a chave `anon` do repositório público:** ela está também hardcoded em
+   `scripts/6_…py:26` e `scripts/7_…py:29`. O que fecha o risco de acesso é o RLS
+   (Crítico nº 1), não este item. O objectivo deste item é a correcção da instância errada,
+   não a segurança.
+3. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
+   estiver activa, o editor visual reescreve o `.env` e desfaz o item 2. Verificado no
+   histórico a 07/09/2026: o commit mais recente sobre o `.env` é `5246597`, de
+   **21/05/2026**, do bot — posterior à migração de 12/04/2026. Decisão de 07/09/2026:
+   abandonar o Lovable
+4. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
+   a aplicar ANTES de alguém implementar.**
+
+   O índice do Google Trends é normalizado ao **máximo da janela pedida**. Duas descargas
+   com janelas diferentes produzem séries em **escalas diferentes**, mesmo para a mesma
+   keyword. Consequência: fazer *append* incremental cria em silêncio uma série com duas
+   escalas misturadas — a mesma classe de falha que já custou as 3462 linhas de
+   `historical_snapshots`.
+
+   Regras, não sugestões:
+   - a tabela guarda `fetched_at`, `window_start`, `window_end` e identificador do pedido
+   - o dashboard lê **sempre de uma descarga só**
+   - **SUBSTITUIÇÃO, NUNCA ACUMULAÇÃO**
+   - séries longas em vez de pontos isolados; `geo=PT`; grupos com keyword-âncora
+   - `NULL` + `collection_status` nas falhas, nunca `0`
+
+   Calibração entre grupos de 5 keywords: West, R. (2020), *Calibration of Google Trends
+   Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
+
+   Religar os passos 1 e 3 antes disto só acrescenta lixo à série.
+5. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
+   autocomplete que já estão na base de dados. **Só depois** tocar no script — mexer antes
+   perde-as
+
+### Suspensos — dependem de verificação prévia
+
+- [ ] **Exportar `historical_snapshots` da instância antiga** — suspenso até correr nessa
+  instância o teste dos valores impossíveis (valores acima de 100 e valores presos em 1). Se
+  der o mesmo resultado da instância nova, este item e o seguinte são cancelados
+- [ ] **Importar esses dados para a instância nova** — depende inteiramente do anterior
+- [ ] **Decidir o destino do Google Trends no projecto** — em aberto a 07/09/2026. Opções em
+  cima da mesa: sair e passar a limitação documentada; recolher de IP residencial; API paga;
+  manter `pytrends`. Sem esta decisão, os passos 1 e 3 ficam comentados
 
 ### Restantes
 
-- [ ] **Corrigir o `.gitignore` para excluir o `.env` — obrigatoriamente ANTES do item 4 dos
-      Críticos** (actualizar o `.env` com as credenciais da instância nova). Se o ficheiro
-      continuar versionado quando lá forem escritas as credenciais da instância viva, essas
-      credenciais vão parar a um repositório público. Tirar do tracking agora não as remove
-      do histórico — o que lá está exposto continua exposto —, mas impede que as novas lá
-      entrem. Ordem correcta: `.gitignore` → `git rm --cached .env` → só depois escrever as
-      credenciais novas.
+- [ ] **Aviso operacional — segunda-feira 06:00 UTC.** O workflow volta a correr e o passo 2B
+      (`7_fetch_autocomplete_questions.py`) escreve mais linhas com `relative_volume`
+      fabricado. Não é urgente: são linhas que já vão ser apagadas de qualquer modo. Mas se
+      a próxima sessão demorar, vale a pena comentar o passo 2B como está feito para os
+      passos 1 e 3, em vez de acumular mais lixo
+- [ ] **Sessões 6 e 7 sem ficheiro em `docs/sessoes/`.** A numeração vai em 9 (14/08) mas só
+      existem 6 ficheiros anteriores a 07/09/2026. Registar as duas em falta, ou assumir a
+      lacuna explicitamente — contar ficheiros para inferir o número da sessão dá resultado
+      errado
+- [ ] **Painel admin com palavra-passe pública.** Exposta em claro no CONTEXT.md, em
+      repositório público. Decisão de 07/09/2026: não alterar, porque o painel sai com o
+      Lovable. Se o corte do Lovable for adiado ou o painel for reaproveitado na instância
+      nova, esta decisão tem de ser revista.
+      Exposta desde **08/03/2026** (`git log -S`: commit `ddfedee`, do bot do Lovable) —
+      seis meses. Continua em `src/pages/Admin.tsx`, portanto é servida no bundle do
+      frontend: retirá-la do CONTEXT.md não a esconde de quem abrir o site
 - [ ] **Migração para `ijpxjpbjudaddfatibfl`** — iniciada na sessão 4, apagada; retomada em
       13/08/2026 pela sequência dos Críticos
 - [ ] Recriar os cron jobs em `ijpxjpbjudaddfatibfl` como ficheiro de migração, não no dashboard
@@ -239,11 +330,10 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
          ao mesmo tempo. O prefixo `VITE_` faz o Vite injectar a variável no bundle do
          frontend: basta alguém pô-la no `.env`, que é o gesto natural dado o nome, para a
          chave paga passar a ser servida ao browser.
-- [ ] `.env` fora do `.gitignore` e versionado — higiene, sujeito a confirmação do RLS de
-      `contactos_projecto`: se essa tabela não estiver protegida, a chave exposta dá acesso
-      a dados pessoais
-- [ ] `eixos_archive` vazia — será populada no próximo workflow semanal (segunda-feira 06:00 UTC)
-- [ ] Actualizar /sobre bloco "fontes-de-dados": 16→44 feeds RSS, 36→56 canais YouTube, adicionar Google Autocomplete como fonte (via Lovable)
+- [ ] Actualizar /sobre bloco "fontes-de-dados": 16→44 feeds RSS, 36→56 canais YouTube,
+      acrescentar Google Autocomplete como fonte — **com a ressalva de que o autocomplete
+      não segmenta por país** (verificado 07/09/2026). As sugestões não são específicas de
+      Portugal, e isso tem de constar da metodologia, não ser omitido
 - [ ] Análise aos gráficos: verificar cálculo de `change_percent` em `5_fetch_google_trends.py` — confirmar coerência com /sobre, avaliar defensabilidade metodológica
 - [ ] Saúdes.pt como fonte de curadoria manual de keywords e debunking (origem comercial Medis — a documentar)
 - [ ] TED Talks / referências audiovisuais (Lado B — decisão adiada)
@@ -251,6 +341,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Concluídos
 
+- [x] ~~Verificar RLS de `contactos_projecto`~~ (07/09/2026 — resultado: **sem protecção
+      efectiva**; a correcção passa a ser o Crítico nº 1)
+- [x] ~~Acrescentar `.env` ao `.gitignore`~~ (sessão 10, 07/09/2026 — regra em
+      `.gitignore:16`, confirmada com `git check-ignore --no-index`. O ficheiro **continua
+      versionado**; retirar do tracking é o Crítico nº 2)
+- [x] ~~`eixos_archive` vazia~~ (07/09/2026 — 24 linhas, escritas pelo passo 7 do workflow)
 - [x] ~~Revogar o PAT do GitHub exposto~~ (revogado a 13/08/2026 — distinto do token da sessão 4)
 - [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
 - [x] ~~Migração colunas eixo/subcategoria nos bookmarks~~ (pedido ao Lovable 2026-03-27)
@@ -305,7 +401,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ## Padrões estabelecidos
 
-- **Lovable:** Marta envia sempre os prompts ela própria
+- **Lovable:** em abandono desde 07/09/2026 (ver Crítico nº 3). Até ao corte, Marta envia
+  sempre os prompts ela própria
+- **claude.ai não escreve no repositório:** o `CONTEXT.md` que a janela do claude.ai lê está
+  em Project Knowledge e é uma cópia só de leitura. O ficheiro vivo é
+  `~/Documents/health-pulse-portugal/CONTEXT.md`, e só o Claude Code ou a Marta lá escrevem.
+  As duas cópias divergirem foi o problema identificado a 14/08/2026
 - **Claude Code:** usar para trabalho de código, scripts, commits (comando `claude`, a partir
   de `~/Documents/health-pulse-portugal`)
 - **claude.ai:** estratégia, explicações, briefings entre sessões
