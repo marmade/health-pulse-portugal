@@ -32,7 +32,8 @@
 | Passo 2B (autocomplete) desligado | 09/09/2026 | `[nesta sessão]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentado a 09/09/2026, antecipado de sexta-feira. Motivo: testar o pipeline obriga a correr o workflow, e o passo 2B acrescentaria mais linhas com `relative_volume` fabricado às 3634 existentes. Passos activos no workflow: 11, contra 12 antes |
 | `contactos_projecto` fechada ao acesso anónimo | 09/09/2026 | `[nesta sessão]` Migração `20260909160000` aplicada; depois, pedidos REST com a chave anon (papel `anon` confirmado por descodificação do JWT) | 0 políticas, RLS activo, **4 linhas preservadas**. Com a anon: SELECT `HTTP 200 []`, INSERT `HTTP 401` (42501), UPDATE e DELETE `HTTP 204` com 0 linhas afectadas. Os 204 não são sucesso: a impressão md5 do conjunto manteve-se em `a0cb6e2c…` e o telefone visado pelo UPDATE está inalterado |
 | `historical_snapshots` não tem nenhuma janela defensável | 07/09/2026 | `[claude.ai, transcrito]` SQL: agrupamento por minuto de escrita e procura de valores fora de 0–100 | 3462 linhas. 240 são *seed* retrodatado, inserido num único minuto a 08/03/2026 com datas de 01/10/2025 a 01/03/2026. 3018 (09/03–12/04) têm valores acima de 100 num índice normalizado 0–100, e 43% presas no valor 1 |
-| `historical_snapshots` da instância antiga tem o mesmo defeito | 09/09/2026 | `[sessão 12]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave anon: contagens filtradas por `search_index` | **12072 linhas** (contra 3462 na nova), de 01/10/2025 a 27/07/2026. **16 com `search_index > 100`** — impossível num índice normalizado 0–100, o mesmo número que na instância nova. **4425 presas no valor 1** (36,7%) e 1696 a zero: **metade da série é o chão da falha**. Zero `NULL`. Mesmo defeito, escala maior. **Cancela os dois Suspensos da exportação**, pela condição que eles próprios definiam |
+| `historical_snapshots` da instância antiga: a série congelou a 14/04/2026 | 09/09/2026 | `[sessão 12]` Descarga das 12072 linhas com a chave anon; agregação por mês, por keyword, e comparação do conjunto `(keyword, search_index)` dia a dia | **12072 linhas**, 01/10/2025 a 27/07/2026. Por mês: 03/2026 2032 linhas/22 dias/38,4% a 0 ou 1 e **16 acima de 100**; 04/2026 2624/30 dias/52,6%; 05/2026 2542/31/54,9%; 06/2026 2460/30/54,9%; 07/2026 2214/27/54,9%. As 200 linhas de 10/2025 a 02/2026 estão a 0% de chão mas foram **todas escritas no minuto `2026-03-08T11:44`** — *seed* retrodatado. **De 14/04 a 27/07, 105 dias, cada dia é idêntico ao anterior** nas 82 keywords: `menopausa sintomas` = 44 em 88 pontos com desvio 0,0, `depressão` = 4, `burnout` = 26. **Na janela 05–07/2026 as 82 keywords são constantes.** O congelamento começa 2 dias depois da migração de 12/04 |
+| O que só existe na instância antiga é o período congelado | 09/09/2026 | `[sessão 12]` Contagem por mês nas duas instâncias | A nova tem 03/2026 (2032 linhas, 22 dias — **iguais** à antiga), 04/2026 **só até ao dia 12** (1066 linhas, 12 dias), e 2 dias de 08/2026. Só existe na antiga o período de **13/04 em diante**: 1558 linhas em 13–30/04, onde 42 keywords têm exactamente **dois** valores distintos — o de antes e o congelado, ou seja a própria transição — e 54,7% dos valores estão a 0 ou 1. **Apagar a instância antiga não perde nenhuma série que varie** |
 | Google Autocomplete não segmenta por país | 07/09/2026 | `[nesta sessão]` `md5` e `diff` sobre as 4 respostas guardadas (pedidos manuais feitos pela Marta) | Respostas **byte a byte idênticas** entre `gl=pt` e `gl=br` (`fa5766d4…`, `ea7a0f17…`). O parâmetro `gl` não altera o resultado. Evidência em `docs/evidencia/2026-09-07-autocomplete-gl/` |
 | `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, **zero emergentes com valor** |
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
@@ -55,7 +56,8 @@
 | EFEITO COLATERAL não registado na sessão 11 | 09/09/2026 | `[sessão 12]` Leitura de `RevisaoPares.tsx:80` e `:169-170`, cruzada com o resultado da chave anon | Fechar `contactos_projecto` ao anónimo a 09/09 fez a secção de contactos de `/revisao-pares` passar a mostrar **"Sem contactos registados"**. O código faz `if (ctRes.data) setContactos(ctRes.data)`: o RLS devolve `[]`, não erro, logo a lista fica vazia e a página degrada em silêncio. **A sessão 11 fechou a tabela sem registar que isto acontecia** |
 | CORRECÇÃO à sessão 11 — as bios não se perdem | 09/09/2026 | `[sessão 12]` `information_schema.columns` na instância nova + `md5(trim(...))` das bios nas duas instâncias | A sessão 11 afirmou que `bio_a`, `bio_b` e `afiliacao` **não existiam** na instância nova. **É falso.** Existem, e o `md5` do texto depois de `trim` é **idêntico** nas duas (`1270eee4…`, `2a5cd574…`) — a diferença de 1 caractere era espaço no fim. **Não há 174 caracteres a perder.** O erro foi ter inferido o schema do ficheiro de migração em vez de consultar a base de dados |
 | `revisao_pares` tem duas linhas com o mesmo `eixo` | 09/09/2026 | `[sessão 12]` `select eixo … order by eixo` na instância nova | Duas linhas com `eixo = 'emergentes'`. `RevisaoPares.tsx:84-85` indexa num mapa por `d.eixo`, logo **uma sobrepõe a outra** e a página mostra só um dos dois pares. A coluna `axis` existe mas está vazia nas 4 linhas — quem lê o schema pela migração `20260318100000` engana-se, porque a produção tem as duas colunas |
-| Três lockfiles, dois deles inúteis | 09/09/2026 | `[sessão 12]` Comparação do `package.json` (74 dependências) com cada lockfile | `package-lock.json` **não tem 8 dependências**, incluindo `@supabase/supabase-js`; é do commit do template (2025-01-01), tal como o `bun.lockb`. O `bun.lock` é de 12/04/2026 e tem as 74. Um build com npm falhava. Ficou só o `bun.lock` |
+| Três lockfiles, e o build a funcionar | 09/09/2026 | `[sessão 12]` Comparação do `package.json` (74 dependências) com cada lockfile; depois `npm install` e `npm run build` | O `package-lock.json` do repositório **não tinha 8 dependências**, incluindo `@supabase/supabase-js`; era do commit do template (2025-01-01), tal como o `bun.lockb`. Ficou primeiro o `bun.lock`, e a escolha foi **revista** quando a Marta instalou o Node: sem `bun` na máquina, esse lockfile não se conseguia verificar. Fica o **`package-lock.json` gerado de novo** — 570 pacotes, 0 em falta, e é com ele que o build está provado |
+| O build corre, e o bundle aponta para a instância certa | 09/09/2026 | `[sessão 12]` `npm run build` com e sem `.env`, e `grep` ao `dist/assets/index-*.js` | `✓ built in 2.31s`, 3808 módulos, aviso de chunk acima de 500 kB (1,75 MB, 519 kB gzipped). **`dist/_redirects` existe no output.** Com `.env`: `https://ijpxjpbjudaddfatibfl.supabase.co` no bundle, **zero ocorrências de `cyjwhmuakmiytypewwfw`**. Sem `.env`: a URL **não entra** no bundle e fica só a mensagem de erro do `client.ts` — confirma que a protecção funciona e que o build **não falha** sem as variáveis, falha o site. Testado com Node 24; o `.nvmrc` pede 20 e isso **não foi testado** |
 | Escrita anónima em 13 tabelas, 9 com DELETE | 09/09/2026 | `[nesta sessão]` `pg_policies`: políticas de INSERT/UPDATE/DELETE/ALL com `qual`/`with_check` a `true` e role não-`service_role` | `bookmarks` (ALL); `briefings_archive`, `debunking`, `guioes`, `guioes_semanais`, `health_questions`, `keywords`, `sobre_conteudo`, `textos`, `youtube_trends` (INSERT/UPDATE/**DELETE**); `news_items` (UPDATE/**DELETE**); `eixos_archive` (INSERT); `revisao_pares` (INSERT/UPDATE). Um DELETE anónimo apaga as 4604 linhas de `health_questions` |
 | Escrita anónima fechada em todas as tabelas | 09/09/2026 | `[nesta sessão]` Migração `20260909190000` (31 políticas removidas em 12 tabelas); depois, bateria de pedidos REST com a chave anon | **0 políticas de escrita a `public`** e 0 tabelas sem RLS. Com a anon: INSERT `HTTP 401`/42501 em 11 tabelas testadas; UPDATE e DELETE `HTTP 204` com 0 linhas, incluindo um DELETE **sem filtro** em `youtube_trends` e `debunking`. **Impressão md5 das contagens das 19 tabelas idêntica antes e depois (`b04740f7…`)**, texto da linha visada intacto, 0 alterações, 0 inserções de teste. Leitura verificada tabela a tabela: as 16 que o site lê continuam a devolver conteúdo |
 | Os 7 scripts do pipeline escrevem com a chave anon | 09/09/2026 | `[nesta sessão]` Leitura das linhas indicadas e descodificação de cada JWT | Chave hardcoded em `4_…py:25`, `5_…py:22`, `6_…py:26`, `7_…py:29`, `8_…py:14`, `9_…py:24`, `10_…py:17` — **a mesma chave `anon` nos sete** (md5 `cd6632b6`), de `ijpxjpbjudaddfatibfl`. Também em texto simples no `env:` do workflow (l.10). Escrevem: `9_…py:92` e `4_…py:254` fazem DELETE. **Fechar as escritas a anon antes de migrar estes scripts desliga os passos 2, 2B, 4B e 5** |
@@ -344,10 +346,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    **Isto NÃO remove a chave `anon` do repositório público:** continua no `env:` do workflow
    (l.10) e em todo o histórico do git. O que fecha o risco é o RLS, não este item — a chave
    `anon` é pública por desenho.
-   **Por confirmar:** a verificação no browser não foi feita — não há Node nesta máquina
-   (nem `node`, nem `npm`, nem `bun`, nem `node_modules`). A prova equivalente foi feita
-   contra a API com os valores do próprio ficheiro: `news_items` devolve **288**, o número da
-   instância nova. Falta correr `npm install && npm run dev` e ver no ecrã.
+   **Confirmado a 09/09/2026 (sessão 12), depois de a Marta instalar o Node:** `npm install`
+   e `npm run build` correram. O bundle publicado contém
+   `https://ijpxjpbjudaddfatibfl.supabase.co` e **zero ocorrências de `cyjwhmuakmiytypewwfw`**.
+   É prova mais forte do que o teste REST: não é a API que responde certo, é o ficheiro
+   compilado que tem lá a instância certa. Falta só abrir no browser.
 
 4. [ ] **Instância antiga `cyjwhmuakmiytypewwfw` — apagar os dados pessoais, e depois a
    instância inteira.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**.
@@ -379,8 +382,10 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
    **Destino decidido a 09/09/2026: Cloudflare Pages, pela integração Git do painel.**
    Quem o faz é a Marta, no browser. O repositório foi preparado a 09/09/2026 (commit
-   `fedd760`): fica só o `bun.lock` — o `package-lock.json` não tinha 8 dependências,
-   incluindo o `@supabase/supabase-js` —, `.nvmrc` com Node 20, `public/_redirects` com
+   `fedd760`): fica um lockfile só — o **`package-lock.json` gerado de novo**, 570 pacotes e 0
+   dependências em falta (o antigo não tinha 8, incluindo o `@supabase/supabase-js`; o
+   `bun.lock` saiu porque não há `bun` na máquina e não se conseguia verificar) —,
+   `.nvmrc` com Node 20, `public/_redirects` com
    `/* /index.html 200` (sem isto qualquer link directo dá 404, são 13 rotas mais um
    catch-all), e o `client.ts` a parar com mensagem explícita se faltar
    `VITE_SUPABASE_URL` ou `VITE_SUPABASE_PUBLISHABLE_KEY`.
@@ -388,8 +393,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    **Por fazer, e por esta ordem:**
    1. definir as duas variáveis no painel do Cloudflare, **para produção E para preview** —
       não vêm do `.env`, que não está versionado
-   2. correr o primeiro build. **Nunca foi corrido**: não há Node nesta máquina, e o que se
-      verificou daqui foi a cobertura das dependências, não a compilação
+   2. ~~correr o primeiro build~~ — **FEITO a 09/09/2026**, localmente: `✓ built in 2.31s`,
+      3808 módulos. Sai um aviso de chunk acima de 500 kB (1,75 MB, 519 kB gzipped): é aviso,
+      não erro. Verificado no output que `dist/_redirects` existe e que o bundle aponta para a
+      instância certa. **Cuidado:** o build foi feito com Node 24 e o `.nvmrc` diz 20 — o
+      Cloudflare vai usar 20, que o `vite` 5.4 suporta, mas isso é documentação, não teste
    3. só depois desligar o Lovable, para não ficar sem publicação nenhuma no intervalo
    4. **remover o `lovable-tagger`** — não foi tocado no commit `fedd760` de propósito: é
       importado no topo do `vite.config.ts`, fora da condição de modo, e o build parte se o
@@ -442,13 +450,18 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Suspensos — dependem de verificação prévia
 
-- [x] ~~**Exportar `historical_snapshots` da instância antiga**~~ — **CANCELADO a 09/09/2026**,
-  pela condição que o próprio item definia. O teste foi corrido nessa instância: das 12072
-  linhas, 16 têm `search_index > 100` (impossível num índice 0–100) e 4425 estão presas no
-  valor 1, mais 1696 a zero. **Metade da série é o chão da falha.** É o mesmo defeito da
-  instância nova, com mais linhas — não é histórico recuperável, é mais do mesmo lixo.
-  Apagar a instância antiga não perde nada defensável
-- [x] ~~**Importar esses dados para a instância nova**~~ — **CANCELADO**, dependia do anterior
+- [x] **Exportar `historical_snapshots` da instância antiga** — **FEITO a 09/09/2026**, para
+  `docs/arquivo/2026-09-09-instancia-antiga/`, junto com `news_items` (1994 linhas). São dados
+  não pessoais. As tabelas com dados pessoais **não** foram exportadas, por decisão do mesmo
+  dia. O arquivo é um seguro contra o único passo do plano sem volta atrás, não uma série
+  aproveitável — o `README.md` da pasta tem os números.
+- [x] ~~**Importar esses dados para a instância nova**~~ — **CANCELADO a 09/09/2026**, mas
+  **não pela razão que ficou escrita primeiro**. A primeira leitura desta sessão concluiu, a
+  partir de agregados, que "metade da série é o chão da falha". Isso é verdade e não chega:
+  agregados escondem janelas. Ao olhar por mês e por keyword, o que aparece é pior e mais
+  claro — **a série congelou a 14/04/2026** e os 105 dias seguintes são o mesmo valor
+  repetido. O período que a instância nova não cobre é exactamente o período congelado.
+  Não há nada que varie para importar
 - [ ] **Decidir o destino do Google Trends no projecto** — em aberto desde 07/09/2026. Ver
   Crítico nº 6, onde a decisão de schema já está fechada. Sem esta decisão, os passos 1 e 3
   ficam comentados.
