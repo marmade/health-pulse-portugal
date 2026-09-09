@@ -708,19 +708,23 @@ CREATE POLICY "Public insert access"
 
 
 -- ----------------------------------------------------------------------------
--- 5.18 revisao_pares -- Public read + insert + update
+-- 5.18 revisao_pares -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
+-- A tabela guarda dois perfis de revisores por eixo, com telefone e e-mail.
+-- As políticas de INSERT e UPDATE foram removidas a 09/09/2026 por
+-- supabase/migrations/20260909180000_revisao_pares_sem_escrita_anonima.sql:
+-- qualquer pessoa com a chave anon podia reescrever os contactos.
+--
+-- Verificado a 09/09/2026 com a chave anon:
+--   SELECT -> HTTP 200 (lê)    INSERT -> HTTP 401 (42501)
+--   UPDATE -> HTTP 204 (0 linhas; as 4 linhas ficaram intactas)
+--
+-- ATENÇÃO: o SELECT continua aberto por decisão de 09/09/2026, e isso é uma
+-- exposição assinalada, não resolvida — 4 e-mails e 3 telefones ficam legíveis
+-- a quem abrir a página. Decisão adiada. Não repor INSERT/UPDATE.
 CREATE POLICY "Public read"
   ON public.revisao_pares FOR SELECT
   USING (true);
-
-CREATE POLICY "Allow public insert on revisao_pares"
-  ON public.revisao_pares FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on revisao_pares"
-  ON public.revisao_pares FOR UPDATE
-  USING (true) WITH CHECK (true);
 
 
 -- ----------------------------------------------------------------------------
