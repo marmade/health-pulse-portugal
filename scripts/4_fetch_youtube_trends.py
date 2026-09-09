@@ -7,8 +7,12 @@ v4: lógica de canais curados (channel IDs fixos) em vez de pesquisa por keyword
 
 Como correr:
     python3 4_fetch_youtube_trends.py A_TUA_CHAVE_YOUTUBE
+
+Requer a variavel de ambiente SUPABASE_SERVICE_ROLE_KEY (GitHub Secret).
+Sem ela o script para imediatamente, em vez de correr sem gravar nada.
 """
 
+import os
 import sys
 import re
 import requests
@@ -22,7 +26,17 @@ if len(sys.argv) < 2:
 YOUTUBE_API_KEY = sys.argv[1]
 
 SUPABASE_URL = "https://ijpxjpbjudaddfatibfl.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHhqcGJqdWRhZGRmYXRpYmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NzEzODUsImV4cCI6MjA4ODU0NzM4NX0.SfOLBTYyIhk-CxzvtlvFu1E-GqBNXN3CbFqz8qx-BoM"
+# A chave vem do ambiente — GitHub Secret SUPABASE_SERVICE_ROLE_KEY.
+# SEM valor por defeito e SEM voltar à chave anon: desde 09/09/2026 a anon
+# deixa de ter escrita, e um fallback silencioso faria o script correr até ao
+# fim a não gravar nada. Se a variável faltar, pára aqui e em voz alta.
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+if not SUPABASE_KEY:
+    sys.exit(
+        "ERRO: falta a variavel de ambiente SUPABASE_SERVICE_ROLE_KEY.\n"
+        "      Definir como GitHub Secret e passa-la ao passo do workflow.\n"
+        "      A chave NUNCA deve ser escrita no codigo."
+    )
 HEADERS = {
     "apikey": SUPABASE_KEY,
     "Authorization": f"Bearer {SUPABASE_KEY}",

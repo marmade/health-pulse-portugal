@@ -1,9 +1,10 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-07 (sessão 10)
+> Última actualização: 2026-09-09 (sessão 11)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
-> **Exposição de dados pessoais em curso (07/09/2026):** `contactos_projecto` tem leitura,
-> inserção, alteração e remoção públicas. Ver Pendentes Críticos nº 1.
+> **`contactos_projecto` fechada a 09/09/2026** (migração `20260909160000`), com as 4 linhas
+> preservadas. **`revisao_pares` continua exposta** — 4 e-mails e 3 telefones legíveis por
+> qualquer pessoa, e alteráveis. Ver Pendentes Críticos nº 1.
 
 ---
 
@@ -12,30 +13,36 @@
 > Cada linha diz o que foi verificado, quando e como. Afirmação sem método é suposição.
 > Antes de agir sobre qualquer destas linhas, confirma a data: verificação com mais de um mês não é estado actual.
 
-> **Onde foi verificado.** `[nesta sessão]` = Claude Code, 07/09/2026, com comando reproduzível ·
+> **Onde foi verificado.** `[nesta sessão]` = Claude Code, com comando reproduzível, na data
+> da própria linha (07/09 na sessão 10, 09/09 na sessão 11) ·
 > `[claude.ai, transcrito]` = verificado noutra janela e passado para aqui sem re-execução ·
-> `[declarado]` = afirmado pela Marta, sem teste · `[sessão anterior]` = verificado antes de
-> 07/09, data na coluna · `[por testar]` = nunca verificado
+> `[declarado]` = afirmado pela Marta, sem teste · `[sessão anterior]` = verificado antes da
+> sessão que o regista, data na coluna · `[por testar]` = nunca verificado
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
 | Workflow semanal corre sozinho, sem intervenção manual | 07/09/2026 | `[claude.ai, transcrito]` Escritas observadas em `ijpxjpbjudaddfatibfl` entre 12:25 e 12:28 UTC | Confirmado. `news_items` 278, `health_questions` 4604, `youtube_trends` 22, `guioes_semanais` 25, `eixos_archive` 24 |
 | Passos 1 e 3 (Google Trends) não escrevem nada | 14/08/2026 | `[sessão anterior]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentados desde 14/08/2026. **É esta a razão pela qual `historical_snapshots` está parada** — não é falha de recolha, é desactivação deliberada |
-| `contactos_projecto` sem protecção efectiva | 07/09/2026 | `[claude.ai, transcrito]` Inspecção das políticas RLS | **RLS activa mas com 4 políticas `qual = true`** — leitura, inserção, alteração e remoção públicas. 4 linhas com nome, e-mail, telefone, especialidade e bio de pessoas reais. Exposição consumada |
+| Passo 2B (autocomplete) desligado | 09/09/2026 | `[nesta sessão]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentado a 09/09/2026, antecipado de sexta-feira. Motivo: testar o pipeline obriga a correr o workflow, e o passo 2B acrescentaria mais linhas com `relative_volume` fabricado às 3634 existentes. Passos activos no workflow: 11, contra 12 antes |
+| `contactos_projecto` fechada ao acesso anónimo | 09/09/2026 | `[nesta sessão]` Migração `20260909160000` aplicada; depois, pedidos REST com a chave anon (papel `anon` confirmado por descodificação do JWT) | 0 políticas, RLS activo, **4 linhas preservadas**. Com a anon: SELECT `HTTP 200 []`, INSERT `HTTP 401` (42501), UPDATE e DELETE `HTTP 204` com 0 linhas afectadas. Os 204 não são sucesso: a impressão md5 do conjunto manteve-se em `a0cb6e2c…` e o telefone visado pelo UPDATE está inalterado |
 | `historical_snapshots` não tem nenhuma janela defensável | 07/09/2026 | `[claude.ai, transcrito]` SQL: agrupamento por minuto de escrita e procura de valores fora de 0–100 | 3462 linhas. 240 são *seed* retrodatado, inserido num único minuto a 08/03/2026 com datas de 01/10/2025 a 01/03/2026. 3018 (09/03–12/04) têm valores acima de 100 num índice normalizado 0–100, e 43% presas no valor 1 |
 | Google Autocomplete não segmenta por país | 07/09/2026 | `[nesta sessão]` `md5` e `diff` sobre as 4 respostas guardadas (pedidos manuais feitos pela Marta) | Respostas **byte a byte idênticas** entre `gl=pt` e `gl=br` (`fa5766d4…`, `ea7a0f17…`). O parâmetro `gl` não altera o resultado. Evidência em `docs/evidencia/2026-09-07-autocomplete-gl/` |
 | `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, **zero emergentes com valor** |
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
 | Datas dos commits ao `.env` | 07/09/2026 | `[nesta sessão]` `git log --format="%h %ad %s" --date=short -- .env` | 5 commits: 06/03, 12/04 (×3, um deles a migração), **21/05/2026**. Os 4 "Changes" são do bot do Lovable. Confirma que o Lovable reescreveu o `.env` **depois** da migração de 12/04 |
-| Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` está **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro |
+| Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` estava **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro. *Estado a 09/09/2026: os 7 scripts passaram a ler do ambiente; os números de linha desta coluna são anteriores a essa alteração* |
 | `.env` aponta para a instância errada | 13/08/2026 | `[sessão anterior]` Leitura do ficheiro | Aponta para `cyjwhmuakmiytypewwfw` (antiga, congelada a 30/04). A oficial é `ijpxjpbjudaddfatibfl` |
-| Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.127) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.130); `is_question` fixo a `True` (l.136), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.97), parâmetro sem efeito |
-| Valores fabricados no script 6 (pytrends) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_fetch_health_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - rank*8)` (l.193); `"breakout"` convertido em `growth = 5000` (l.184-185); `expandir_mural()` (l.273-323) insere keywords com `previous_volume: 0`, `trend: "up"` e `current_volume` igual ao volume fabricado. **Que nunca tenha inserido nada é a consulta SQL da linha das `keywords`, não esta leitura** |
-| Script 6 é a única fonte de perguntas com base territorial | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:160` | Confirmado: `build_payload(..., geo="PT", timeframe="today 3-m")`. O `growth_percent` vem do valor real das *rising queries* do Google — **excepto** quando é `"breakout"`, caso em que é fabricado |
-| `6_fetch_health_questions.py` falha em silêncio | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:210-212` | **Confirmado.** Qualquer excepção (incluindo HTTP 429) é apanhada, impressa no log, e a função devolve lista vazia. Não escreve `NULL` nem marca estado: a keyword desaparece da recolha dessa semana sem rasto na base de dados |
+| Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.142) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.146); `is_question` fixo a `True` (l.151), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.112), parâmetro sem efeito |
+| Valores fabricados no script 6 (pytrends) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_fetch_health_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - rank*8)` (l.208); `"breakout"` convertido em `growth = 5000` (l.199-200); `expandir_mural()` (l.288-338) insere keywords com `previous_volume: 0`, `trend: "up"` e `current_volume` igual ao volume fabricado. **Que nunca tenha inserido nada é a consulta SQL da linha das `keywords`, não esta leitura** |
+| Script 6 é a única fonte de perguntas com base territorial | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:175` | Confirmado: `build_payload(..., geo="PT", timeframe="today 3-m")`. O `growth_percent` vem do valor real das *rising queries* do Google — **excepto** quando é `"breakout"`, caso em que é fabricado |
+| `6_fetch_health_questions.py` falha em silêncio | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:225-227` | **Confirmado.** Qualquer excepção (incluindo HTTP 429) é apanhada, impressa no log, e a função devolve lista vazia. Não escreve `NULL` nem marca estado: a keyword desaparece da recolha dessa semana sem rasto na base de dados |
 | `refresh-trends` copia `current_volume` sem validar | 14/08/2026 | `[sessão anterior]` Leitura de `supabase/functions/refresh-trends/index.ts` | Confirmado; insert único e atómico, resposta 200 conta linhas preparadas, não gravadas |
 | Escrita anónima via REST bloqueada por RLS | 13/08/2026 | `[sessão anterior]` POST com chave anon a duas tabelas | HTTP 401, Postgres 42501. **Só duas tabelas testadas — e `contactos_projecto` não era nenhuma delas** |
-| RLS das restantes tabelas | — | `[por testar]` | Em aberto. Depois do resultado de `contactos_projecto`, deixa de ser seguro presumir que estão protegidas |
+| RLS das restantes tabelas | 09/09/2026 | `[nesta sessão]` `pg_policies` cruzado com leitura REST tabela a tabela usando a chave anon | 19 tabelas, **todas com RLS activo — o que não protege nada por si só**. `contactos_projecto` devolve 0 linhas; todas as outras devolvem conteúdo à anon |
+| `revisao_pares` expõe dados pessoais | 09/09/2026 | `[nesta sessão]` `pg_policies` + leitura REST com a chave anon | Políticas `public` `true` em SELECT, INSERT e UPDATE. **4 linhas, 4 com nome, 4 com e-mail, 3 com telefone** (dois perfis por linha). Lidas e reescritas por quem tenha a chave. O `hideContact` de `RevisaoPares.tsx` esconde no ecrã, não impede o envio |
+| Escrita anónima em 13 tabelas, 9 com DELETE | 09/09/2026 | `[nesta sessão]` `pg_policies`: políticas de INSERT/UPDATE/DELETE/ALL com `qual`/`with_check` a `true` e role não-`service_role` | `bookmarks` (ALL); `briefings_archive`, `debunking`, `guioes`, `guioes_semanais`, `health_questions`, `keywords`, `sobre_conteudo`, `textos`, `youtube_trends` (INSERT/UPDATE/**DELETE**); `news_items` (UPDATE/**DELETE**); `eixos_archive` (INSERT); `revisao_pares` (INSERT/UPDATE). Um DELETE anónimo apaga as 4604 linhas de `health_questions` |
+| Os 7 scripts do pipeline escrevem com a chave anon | 09/09/2026 | `[nesta sessão]` Leitura das linhas indicadas e descodificação de cada JWT | Chave hardcoded em `4_…py:25`, `5_…py:22`, `6_…py:26`, `7_…py:29`, `8_…py:14`, `9_…py:24`, `10_…py:17` — **a mesma chave `anon` nos sete** (md5 `cd6632b6`), de `ijpxjpbjudaddfatibfl`. Também em texto simples no `env:` do workflow (l.10). Escrevem: `9_…py:92` e `4_…py:254` fazem DELETE. **Fechar as escritas a anon antes de migrar estes scripts desliga os passos 2, 2B, 4B e 5** |
+| Edge Functions não dependem da chave anon | 09/09/2026 | `[nesta sessão]` `grep` por `SERVICE_ROLE`/`ANON` nas 7 funções | As 5 que tocam no Supabase usam `service_role`: `archive-weekly`, `fetch-rss-feeds`, `generate-guioes-weekly`, `google-trends`, `refresh-trends`. Fechar as escritas a anon não as afecta |
 | Escrita via Edge Function | — | `[por testar]` | Em aberto. `verify_jwt = false` confirmado na instância nova; desconhecido na antiga |
 | Edge Functions deployadas na instância nova | 14/08/2026 | `[sessão anterior]` MCP Supabase `list_edge_functions` | 5 activas: `refresh-trends`, `archive-weekly`, `generate-guioes-weekly`, `google-trends`, `fetch-rss-feeds` |
 | Edge Functions em falta | 14/08/2026 | `[sessão anterior]` MCP + POST a `generate-diz-que-disse` | `generate-diz-que-disse` e `generate-guiao-questions` (HTTP 404) |
@@ -242,20 +249,43 @@ o esforço vai todo para o lado A. Reavaliar quando os pendentes críticos estiv
 
 ## Pendentes
 
-### Críticos — por esta ordem (07/09/2026)
+### Críticos — por esta ordem (09/09/2026)
 
 A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que ele.
 
-1. [ ] **`contactos_projecto` — dados pessoais expostos.** Exportar as 4 linhas → apagar as
-   linhas da tabela → fechar as 4 políticas `qual = true`. Só depois, verificar o RLS de
-   todas as restantes tabelas, que até aqui se presumiam protegidas sem prova
+0. [x] **`contactos_projecto` — fechada a 09/09/2026.** As 4 linhas **não** foram apagadas: é
+   a agenda de trabalho do projecto e os dados fazem falta. O que se removeu foi o acesso
+   anónimo. Migração `20260909160000`, políticas do `20260320193223` comentadas e secção 5.19
+   da consolidada reescrita, para que reaplicar qualquer um deles não reabra a exposição.
+   Provado com a chave anon, não com `service_role`. Commit `a3fe51f`
+
+1. [ ] **Escritas anónimas — 13 tabelas, 9 com DELETE. Nesta ordem, sem trocar.**
+   Fechar as escritas antes do ponto 4 desliga os passos 2, 2B, 4B e 5 do workflow, porque
+   os 7 scripts escrevem com a chave `anon`. O script 6 falha em silêncio, logo a avaria
+   não daria erro: daria uma semana sem dados sem ninguém reparar.
+
+   1. `SUPABASE_SERVICE_ROLE_KEY` como GitHub Secret. Nunca no código, nunca no repositório
+   2. os 7 scripts a lerem a chave de `os.environ`, **sem valor por defeito** — se faltar, o
+      script pára em voz alta em vez de continuar com a anon
+   3. o secret passado aos passos do workflow
+   4. correr o workflow à mão e **confirmar que escreve**
+   5. só então fechar INSERT/UPDATE/DELETE a anon em todas as tabelas. O SELECT fica aberto
+      onde o site precisa de ler
+   6. `revisao_pares`: fechar INSERT e UPDATE já, sem esperar pelo ponto 4 — nenhum script
+      lhe escreve. O SELECT fica aberto por decisão de 09/09/2026, **com a exposição
+      assinalada**: 4 e-mails e 3 telefones ficam legíveis a quem abrir a página. Decisão
+      adiada, não resolvida
+
+   As Edge Functions não são afectadas: as 5 que tocam no Supabase usam `service_role`
 2. [ ] **Retirar o `.env` do tracking e corrigir as credenciais.**
    `git rm --cached .env` seguido de escrever as credenciais da instância nova
    (`ijpxjpbjudaddfatibfl`) no ficheiro local. A regra do `.gitignore` está em vigor desde
    07/09/2026, mas o ficheiro continua versionado.
-   **Isto NÃO remove a chave `anon` do repositório público:** ela está também hardcoded em
-   `scripts/6_…py:26` e `scripts/7_…py:29`. O que fecha o risco de acesso é o RLS
-   (Crítico nº 1), não este item. O objectivo deste item é a correcção da instância errada,
+   **Isto NÃO remove a chave `anon` do repositório público.** Saiu dos 7 scripts a 09/09/2026
+   (passam a ler do ambiente), mas continua no `env:` do workflow (l.10) e em todo o
+   histórico do git. O que fecha o risco de acesso é o RLS (Crítico nº 1), não este item —
+   e a chave `anon` é, por desenho, pública: o erro nunca foi ela estar à vista, foi as
+   políticas deixarem-na escrever. O objectivo deste item é a correcção da instância errada,
    não a segurança.
 3. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
    estiver activa, o editor visual reescreve o `.env` e desfaz o item 2. Verificado no

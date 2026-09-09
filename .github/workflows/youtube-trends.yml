@@ -47,21 +47,43 @@ jobs:
       #
       # ── PASSO 1: Google Trends reais → volumes das keywords ──────────────
       # - name: 1 — Google Trends PT (volumes reais)
+      #   env:
+      #     SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       #   run: |
       #     echo "A buscar volumes reais do Google Trends PT..."
       #     python scripts/5_fetch_google_trends.py
 
       # ── PASSO 2: Perguntas de saúde em crescimento ────────────────────────
       - name: 2 — Perguntas de saúde em crescimento
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "A buscar perguntas reais em crescimento..."
           python scripts/6_fetch_health_questions.py
 
+      # DESLIGADO A 09/09/2026 — não voltar a ligar sem ler CONTEXT.md
+      # Motivo: 7_fetch_autocomplete_questions.py não recolhe volumes, fabrica-os.
+      # relative_volume = max(10, 100 - pos*5): é a posição na lista gravada como
+      # se fosse procura real. growth_percent fixo a 0 e is_question fixo a True,
+      # mesmo para termos que não são perguntas. E pos acumula ao longo dos 10
+      # seeds, logo a partir da 19ª sugestão o valor é sempre 10.
+      # O pedido usa gl=pt, parâmetro sem efeito: as respostas com gl=pt e gl=br
+      # são byte a byte idênticas (verificado 07/09/2026, evidência em
+      # docs/evidencia/2026-09-07-autocomplete-gl/).
+      # Antecipado de sexta para 09/09/2026: testar o pipeline obriga a correr o
+      # workflow, e com este passo activo cada corrida acrescenta mais linhas
+      # fabricadas às 3634 que já lá estão.
+      # Condição para religar: exportar primeiro as 3634 linhas de autocomplete
+      # (Crítico nº 5 — mexer no script antes disso perde-as), e depois o script
+      # a gravar o que mede ou NULL, nunca um número inventado a partir da posição.
+      #
       # ── PASSO 2B: Perguntas via Google Autocomplete ───────────────────────
-      - name: 2B — Perguntas de saúde (autocomplete)
-        run: |
-          echo "A buscar perguntas via Google Autocomplete..."
-          python scripts/7_fetch_autocomplete_questions.py
+      # - name: 2B — Perguntas de saúde (autocomplete)
+      #   env:
+      #     SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      #   run: |
+      #     echo "A buscar perguntas via Google Autocomplete..."
+      #     python scripts/7_fetch_autocomplete_questions.py
 
       # DESLIGADO A 14/08/2026 — não voltar a ligar sem ler CONTEXT.md
       # Motivo: 5_fetch_google_trends.py escreve 0 quando a recolha falha, em vez
@@ -106,12 +128,16 @@ jobs:
 
       # ── PASSO 4B: Limpeza semanal de notícias antigas ────────────────────
       - name: 4B — Limpeza notícias antigas
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "A limpar notícias antigas por eixo..."
           python scripts/9_cleanup_old_news.py
 
       # ── PASSO 5: YouTube trends ───────────────────────────────────────────
       - name: 5 — YouTube trends
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
