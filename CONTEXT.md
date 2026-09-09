@@ -31,6 +31,7 @@
 | `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, **zero emergentes com valor** |
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
 | Datas dos commits ao `.env` | 07/09/2026 | `[nesta sessão]` `git log --format="%h %ad %s" --date=short -- .env` | 5 commits: 06/03, 12/04 (×3, um deles a migração), **21/05/2026**. Os 4 "Changes" são do bot do Lovable. Confirma que o Lovable reescreveu o `.env` **depois** da migração de 12/04 |
+| O que o bot do Lovable fez ao `.env`, e o que o desencadeia | 09/09/2026 | `[nesta sessão]` `git fetch --all --prune`, `git log --all -m -- .env`, `git show 5246597` | **Dois commits, não um:** `5246597` (21/05 07:35:53 UTC) é a alteração, `e22227d` (07:36:47) é o merge — `git log -- .env` omitia o segundo. A alteração **repôs a instância antiga** (`ijpxjpbjudaddfatibfl` → `cyjwhmuakmiytypewwfw`) e não tocou em mais nada. Traz `Co-authored-by: marmade`: foi sessão interactiva, não o bot sozinho. **Contraprova:** a 09/09 a Marta abriu o Lovable só para ver créditos e o fetch não trouxe nada, em nenhum ramo |
 | Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` estava **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro. *Estado a 09/09/2026: os 7 scripts passaram a ler do ambiente; os números de linha desta coluna são anteriores a essa alteração* |
 | `.env` aponta para a instância errada | 13/08/2026 | `[sessão anterior]` Leitura do ficheiro | Aponta para `cyjwhmuakmiytypewwfw` (antiga, congelada a 30/04). A oficial é `ijpxjpbjudaddfatibfl` |
 | Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.142) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.146); `is_question` fixo a `True` (l.151), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.112), parâmetro sem efeito |
@@ -322,10 +323,30 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    políticas deixarem-na escrever. O objectivo deste item é a correcção da instância errada,
    não a segurança.
 4. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
-   estiver activa, o editor visual reescreve o `.env` e desfaz o item 2. Verificado no
-   histórico a 07/09/2026: o commit mais recente sobre o `.env` é `5246597`, de
-   **21/05/2026**, do bot — posterior à migração de 12/04/2026. Decisão de 07/09/2026:
-   abandonar o Lovable
+   estiver activa, o editor visual reescreve o `.env` e desfaz o item 3. Decisão de
+   07/09/2026: abandonar o Lovable.
+
+   **Detalhe apurado a 09/09/2026, mais grave do que estava registado.** São dois commits do
+   bot, não um: `5246597` (21/05/2026 07:35:53 UTC) é a alteração e `e22227d` (07:36:47) é o
+   *merge* que a trouxe para o `main`. O `git log -- .env` só mostrava o primeiro, porque
+   omite merges por omissão.
+
+   O que o commit fez não foi "reescrever o `.env`" — foi **repor a instância antiga**, e não
+   tocou em mais nenhum ficheiro:
+
+   ```
+   -VITE_SUPABASE_PROJECT_ID="ijpxjpbjudaddfatibfl"
+   +VITE_SUPABASE_PROJECT_ID="cyjwhmuakmiytypewwfw"
+   ```
+
+   Cinco semanas depois da migração de 12/04, o bot desfê-la no `.env`. E o commit traz
+   `Co-authored-by: marmade`: **não foi o Lovable a mexer sozinho num repositório parado, foi
+   uma sessão interactiva atribuída à conta da Marta.** O gatilho é abrir o editor e trabalhar
+   lá, não o tempo a passar.
+
+   Contraprova de 09/09/2026: a Marta abriu o Lovable nesse dia **só para ver créditos** e o
+   `git fetch --all` não trouxe commit nenhum, em nenhum ramo. Consultar não desencadeia
+   escrita; editar desencadeia.
 5. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
    a aplicar ANTES de alguém implementar.**
 
