@@ -74,7 +74,7 @@ jobs:
       # workflow, e com este passo activo cada corrida acrescenta mais linhas
       # fabricadas às 3634 que já lá estão.
       # Condição para religar: exportar primeiro as 3634 linhas de autocomplete
-      # (Crítico nº 6 — mexer no script antes disso perde-as), e depois o script
+      # (Crítico nº 7 — mexer no script antes disso perde-as), e depois o script
       # a gravar o que mede ou NULL, nunca um número inventado a partir da posição.
       #
       # ── PASSO 2B: Perguntas via Google Autocomplete ───────────────────────

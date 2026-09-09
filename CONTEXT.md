@@ -2,10 +2,12 @@
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
 > Última actualização: 2026-09-09 (sessão 11)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
-> **Escrita anónima fechada a 09/09/2026** em todas as tabelas, depois de o pipeline passar
-> a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de escrever —
-> decisão datada, ver "Estado do Admin".** Continua aberta a leitura pública de
-> `revisao_pares`, que expõe 4 e-mails e 3 telefones: decisão adiada, não resolvida.
+> **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
+> passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
+> escrever — decisão datada, ver "Estado do Admin".**
+> **Duas exposições continuam abertas:** a leitura pública de `revisao_pares` na instância
+> nova, e os mesmos dados pessoais na instância antiga `cyjwhmuakmiytypewwfw`, que responde
+> e não está protegida. Ver Pendentes Críticos nº 4.
 
 ---
 
@@ -32,6 +34,9 @@
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
 | Datas dos commits ao `.env` | 07/09/2026 | `[nesta sessão]` `git log --format="%h %ad %s" --date=short -- .env` | 5 commits: 06/03, 12/04 (×3, um deles a migração), **21/05/2026**. Os 4 "Changes" são do bot do Lovable. Confirma que o Lovable reescreveu o `.env` **depois** da migração de 12/04 |
 | O que o bot do Lovable fez ao `.env`, e o que o desencadeia | 09/09/2026 | `[nesta sessão]` `git fetch --all --prune`, `git log --all -m -- .env`, `git show 5246597` | **Dois commits, não um:** `5246597` (21/05 07:35:53 UTC) é a alteração, `e22227d` (07:36:47) é o merge — `git log -- .env` omitia o segundo. A alteração **repôs a instância antiga** (`ijpxjpbjudaddfatibfl` → `cyjwhmuakmiytypewwfw`) e não tocou em mais nada. Traz `Co-authored-by: marmade`: foi sessão interactiva, não o bot sozinho. **Contraprova:** a 09/09 a Marta abriu o Lovable só para ver créditos e o fetch não trouxe nada, em nenhum ramo |
+| `client.ts` não tem instância hardcoded | 09/09/2026 | `[nesta sessão]` Leitura de `src/integrations/supabase/client.ts` e `grep` por `VITE_SUPABASE` em todo o repositório | Lê `import.meta.env.VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY`, substituídos pelo Vite **em tempo de compilação**. Não há `define` no `vite.config.ts` nem outro `.env*`. **Corrigir o `.env` chega** — e o que estiver no `.env` no momento do build é o que o site usa |
+| `.env` a apontar para a instância nova | 09/09/2026 | `[nesta sessão]` Valores restaurados de `5246597^`; depois, pedido REST com as credenciais do próprio ficheiro | `news_items` devolve **288**, a contagem da instância nova. A chave do ficheiro é byte a byte a mesma que o workflow usa. **A verificação no browser NÃO foi feita:** não há Node nesta máquina |
+| A instância antiga não está fora do ar, e expõe os mesmos dados | 09/09/2026 | `[nesta sessão]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave `anon` do histórico do git | Responde a tudo. `news_items` 1994, `health_questions` 3362, `guioes_semanais` 5. **`contactos_projecto`: 4 linhas legíveis, 4 nomes, 3 e-mails, 3 telefones** — impressão dos nomes idêntica à da instância nova. `revisao_pares`: 4 linhas, com `bio_a`/`bio_b`/`afiliacao` que **não existem na nova**. "Congelada a 30/04" quer dizer sem escritas, não offline: se o site apontasse para lá não dava erro, mostrava dados errados |
 | Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` estava **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro. *Estado a 09/09/2026: os 7 scripts passaram a ler do ambiente; os números de linha desta coluna são anteriores a essa alteração* |
 | `.env` aponta para a instância errada | 13/08/2026 | `[sessão anterior]` Leitura do ficheiro | Aponta para `cyjwhmuakmiytypewwfw` (antiga, congelada a 30/04). A oficial é `ijpxjpbjudaddfatibfl` |
 | Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.142) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.146); `is_question` fixo a `True` (l.151), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.112), parâmetro sem efeito |
@@ -312,17 +317,44 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Enquanto isto não existir, **não repor políticas de escrita para `public`**. É desfazer
    tudo o que se fez a 09/09/2026.
 
-3. [ ] **Retirar o `.env` do tracking e corrigir as credenciais.**
-   `git rm --cached .env` seguido de escrever as credenciais da instância nova
-   (`ijpxjpbjudaddfatibfl`) no ficheiro local. A regra do `.gitignore` está em vigor desde
-   07/09/2026, mas o ficheiro continua versionado.
-   **Isto NÃO remove a chave `anon` do repositório público.** Saiu dos 7 scripts a 09/09/2026
-   (passam a ler do ambiente), mas continua no `env:` do workflow (l.10) e em todo o
-   histórico do git. O que fecha o risco de acesso é o RLS (Críticos nº 0 e 1, fechados a 09/09/2026), não este item —
-   e a chave `anon` é, por desenho, pública: o erro nunca foi ela estar à vista, foi as
-   políticas deixarem-na escrever. O objectivo deste item é a correcção da instância errada,
-   não a segurança.
-4. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
+3. [x] **`.env` — fora do tracking e a apontar para a instância certa (09/09/2026).**
+   `git rm --cached .env` feito; a regra do `.gitignore:16` já estava em vigor desde
+   07/09/2026. Os valores foram **restaurados do próprio histórico** (`5246597^`), não
+   escritos à mão: a chave que lá está é byte a byte a mesma que o workflow usa.
+   Confirmado que `src/integrations/supabase/client.ts` não tem instância nenhuma escrita —
+   lê `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY`, que o Vite substitui **em tempo
+   de compilação**. Corrigir o `.env` chegava, e chegou.
+   **Isto NÃO remove a chave `anon` do repositório público:** continua no `env:` do workflow
+   (l.10) e em todo o histórico do git. O que fecha o risco é o RLS, não este item — a chave
+   `anon` é pública por desenho.
+   **Por confirmar:** a verificação no browser não foi feita — não há Node nesta máquina
+   (nem `node`, nem `npm`, nem `bun`, nem `node_modules`). A prova equivalente foi feita
+   contra a API com os valores do próprio ficheiro: `news_items` devolve **288**, o número da
+   instância nova. Falta correr `npm install && npm run dev` e ver no ecrã.
+
+4. [ ] **AMANHÃ — apagar os dados pessoais na instância antiga `cyjwhmuakmiytypewwfw`.**
+   A Marta tem acesso administrativo lá; o Claude Code **não** (o MCP devolve "You do not
+   have permission"). O único acesso daqui é a chave `anon` do histórico do git, que não
+   serve para uma eliminação irreversível numa base de dados de produção.
+
+   Decisão de 09/09/2026: **não vale a pena fechar o RLS nessa instância — apagam-se as
+   linhas.** São 4 em `contactos_projecto` e 4 em `revisao_pares`.
+
+   Verificado a 09/09/2026 antes de decidir:
+   - `contactos_projecto`: a impressão dos nomes é **idêntica** nas duas instâncias
+     (`9c47acfd…`). São as mesmas 4 pessoas, e a cópia boa está na instância nova, já
+     protegida. Apagar lá não perde nada.
+   - `revisao_pares`: **cuidado, o schema é diferente.** A instância antiga tem `bio_a`,
+     `bio_b` e `afiliacao`, que **não existem na nova**. A `afiliacao` está vazia nas 4
+     linhas, mas há **`bio_a` em 2 linhas (132 caracteres) e `bio_b` em 1 (42)**, sem cópia
+     do outro lado. São 174 caracteres de biografia que se perdem se se apagar sem os copiar
+     primeiro. Decidir: copiar para a nova, ou aceitar a perda por escrito.
+
+   Enquanto isto não for feito, o Crítico nº 1 está fechado **em metade**: as mesmas pessoas
+   continuam legíveis em `cyjwhmuakmiytypewwfw` por quem tenha a chave `anon` dessa
+   instância, que está no histórico público do git.
+
+5. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
    estiver activa, o editor visual reescreve o `.env` e desfaz o item 3. Decisão de
    07/09/2026: abandonar o Lovable.
 
@@ -347,7 +379,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Contraprova de 09/09/2026: a Marta abriu o Lovable nesse dia **só para ver créditos** e o
    `git fetch --all` não trouxe commit nenhum, em nenhum ramo. Consultar não desencadeia
    escrita; editar desencadeia.
-5. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
+6. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
    a aplicar ANTES de alguém implementar.**
 
    O índice do Google Trends é normalizado ao **máximo da janela pedida**. Duas descargas
@@ -367,7 +399,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
 
    Religar os passos 1 e 3 antes disto só acrescenta lixo à série.
-6. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
+7. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
    autocomplete que já estão na base de dados. **Só depois** tocar no script — mexer antes
    perde-as
 
@@ -436,7 +468,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       efectiva**; foi o Crítico nº 1 dessa sessão e ficou fechado a 09/09/2026, Crítico nº 0)
 - [x] ~~Acrescentar `.env` ao `.gitignore`~~ (sessão 10, 07/09/2026 — regra em
       `.gitignore:16`, confirmada com `git check-ignore --no-index`. O ficheiro **continua
-      versionado**; retirar do tracking é o Crítico nº 3 desde a renumeração de 09/09/2026)
+      versionado**; retirar do tracking foi feito a 09/09/2026, Crítico nº 3)
 - [x] ~~`eixos_archive` vazia~~ (07/09/2026 — 24 linhas, escritas pelo passo 7 do workflow)
 - [x] ~~Revogar o PAT do GitHub exposto~~ (revogado a 13/08/2026 — distinto do token da sessão 4)
 - [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
@@ -492,7 +524,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ## Padrões estabelecidos
 
-- **Lovable:** em abandono desde 07/09/2026 (ver Crítico nº 4). Até ao corte, Marta envia
+- **Lovable:** em abandono desde 07/09/2026 (ver Crítico nº 5). Até ao corte, Marta envia
   sempre os prompts ela própria
 - **claude.ai não escreve no repositório:** o `CONTEXT.md` que a janela do claude.ai lê está
   em Project Knowledge e é uma cópia só de leitura. O ficheiro vivo é
