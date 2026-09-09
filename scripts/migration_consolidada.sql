@@ -595,9 +595,13 @@ CREATE POLICY "Public read access"
 --   SELECT -> HTTP 200 (lê)    INSERT -> HTTP 401 (42501)
 --   UPDATE -> HTTP 204 (0 linhas; as 4 linhas ficaram intactas)
 --
--- ATENÇÃO: o SELECT continua aberto por decisão de 09/09/2026, e isso é uma
--- exposição assinalada, não resolvida — 4 e-mails e 3 telefones ficam legíveis
--- a quem abrir a página. Decisão adiada. Não repor INSERT/UPDATE.
+-- O SELECT continua aberto de propósito: as linhas são o conteúdo da página
+-- /revisao-pares e a revisão por pares é um dos três actos do projecto.
+-- A exposição que isso implicava foi resolvida a 09/09/2026 por dados, não por
+-- políticas: a migração 20260909200000 esvaziou email_a, email_b, telefone_a e
+-- telefone_b. Verificado com a chave anon: 0 e-mails e 0 telefones visíveis.
+-- Ficam nome, especialidade, link, bio e sumário. Não repor INSERT/UPDATE,
+-- nem voltar a pôr contactos nesta tabela.
 CREATE POLICY "Public read"
   ON public.revisao_pares FOR SELECT
   USING (true);
