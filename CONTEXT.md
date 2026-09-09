@@ -362,11 +362,17 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
-- [ ] **Aviso operacional — segunda-feira 06:00 UTC.** O workflow volta a correr e o passo 2B
-      (`7_fetch_autocomplete_questions.py`) escreve mais linhas com `relative_volume`
-      fabricado. Não é urgente: são linhas que já vão ser apagadas de qualquer modo. Mas se
-      a próxima sessão demorar, vale a pena comentar o passo 2B como está feito para os
-      passos 1 e 3, em vez de acumular mais lixo
+- [x] ~~**Aviso operacional — segunda-feira 06:00 UTC**, passo 2B a acumular linhas
+      fabricadas~~ (resolvido a 09/09/2026: o passo 2B foi comentado, com motivo e condição
+      de religação no próprio `youtube-trends.yml`. Passos activos: 11)
+- [ ] **`set_updated_at` com `search_path` mutável.** Achado a 09/09/2026 pelo linter de
+      segurança do Supabase (`function_search_path_mutable`, nível WARN). É anterior a esta
+      sessão e não tem relação com o RLS. Fica registado para não se perder: a função devia
+      declarar `set search_path = ''` e qualificar os nomes.
+      https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable
+- [ ] **Nota sobre o linter:** o aviso `rls_enabled_no_policy` em `contactos_projecto` é
+      **deliberado**, não é para corrigir. RLS activo com zero políticas é exactamente o
+      estado pretendido: nega tudo a `anon`, e o `service_role` continua a passar
 - [ ] **Sessões 6 e 7 sem ficheiro em `docs/sessoes/`.** A numeração vai em 9 (14/08) mas só
       existem 6 ficheiros anteriores a 07/09/2026. Registar as duas em falta, ou assumir a
       lacuna explicitamente — contar ficheiros para inferir o número da sessão dá resultado
