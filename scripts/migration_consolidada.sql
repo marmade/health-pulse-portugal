@@ -724,23 +724,23 @@ CREATE POLICY "Allow public update on revisao_pares"
 
 
 -- ----------------------------------------------------------------------------
--- 5.19 contactos_projecto -- Public full CRUD
+-- 5.19 contactos_projecto -- SEM ACESSO ANÓNIMO (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
-CREATE POLICY "Allow public read on contactos_projecto"
-  ON public.contactos_projecto FOR SELECT
-  USING (true);
-
-CREATE POLICY "Allow public insert on contactos_projecto"
-  ON public.contactos_projecto FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on contactos_projecto"
-  ON public.contactos_projecto FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on contactos_projecto"
-  ON public.contactos_projecto FOR DELETE
-  USING (true);
+-- Esta tabela é a agenda de trabalho do projecto, não conteúdo do site: nome,
+-- e-mail, telefone, especialidade e bio de pessoas reais. Não leva políticas.
+--
+-- Com RLS activo (ver secção 2.19) e zero políticas, os roles anon e
+-- authenticated não lêem nem escrevem nada; o service_role ignora o RLS, logo a
+-- agenda continua acessível pelo painel Supabase.
+--
+-- Verificado a 09/09/2026 com a chave anon contra a instância ijpxjpbjudaddfatibfl:
+--   SELECT -> HTTP 200 []            INSERT -> HTTP 401 (42501)
+--   UPDATE -> HTTP 204 (0 linhas)    DELETE -> HTTP 204 (0 linhas)
+-- As 4 linhas mantiveram-se intactas (impressão md5 a0cb6e2c...).
+--
+-- As políticas "Public full CRUD" que aqui estavam foram removidas por
+-- supabase/migrations/20260909160000_contactos_projecto_rls_restrict.sql.
+-- NÃO as repor sem autenticação a sério no lugar.
 
 
 -- ============================================================================
