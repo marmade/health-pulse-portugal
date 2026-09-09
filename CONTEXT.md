@@ -571,6 +571,18 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       indexa por `eixo` num mapa, logo uma sobrepõe a outra e a página mostra só um dos dois
       pares. Achado a 09/09/2026. Decidir se é erro de dados (uma das linhas está a mais) ou
       se a página é que devia agrupar em vez de indexar
+- [ ] **Aplicar a convenção de etiquetas de fonte à tabela de Verificações.** Decidida a
+      09/09/2026, por aplicar — mexe em ~30 linhas e faz-se de uma vez.
+      **Dois eixos independentes, uma linha leva os dois** (ex.: `[sessão 12][bd]`):
+      as etiquetas actuais dizem **onde** foi verificado; as novas dizem **o que foi lido** —
+      `[bd]`, `[ficheiro]`, `[documento]`.
+      **`[agregado]` é modificador, não valor:** uma contagem por mês é uma pergunta à base de
+      dados e seria `[bd]` com legitimidade, logo pô-lo como alternativa deixaria passar
+      exactamente o erro que motivou isto. Forma certa: `[bd][agregado]` para contagens e
+      médias, `[bd]` sozinho para as linhas.
+      **Regra:** antes de uma decisão irreversível, uma linha `[agregado]` tem de ser reaberta
+      até às linhas. `[declarado]` não leva o segundo eixo — não houve leitura.
+      Motivo em `docs/sessoes/2026-09-09-b.md`, "a fonte derivada em vez da primária".
 - [ ] **`RevisaoPares.tsx` degrada em silêncio.** `if (ctRes.data) setContactos(ctRes.data)`
       trata `[]` do RLS como sucesso. Vale para as outras páginas: uma tabela fechada não dá
       erro, dá lista vazia. Se o site passar a depender disto, convém distinguir "sem dados"
