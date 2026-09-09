@@ -2,9 +2,10 @@
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
 > Última actualização: 2026-09-09 (sessão 11)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
-> **`contactos_projecto` fechada a 09/09/2026** (migração `20260909160000`), com as 4 linhas
-> preservadas. **`revisao_pares` continua exposta** — 4 e-mails e 3 telefones legíveis por
-> qualquer pessoa, e alteráveis. Ver Pendentes Críticos nº 1.
+> **Escrita anónima fechada a 09/09/2026** em todas as tabelas, depois de o pipeline passar
+> a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de escrever —
+> decisão datada, ver "Estado do Admin".** Continua aberta a leitura pública de
+> `revisao_pares`, que expõe 4 e-mails e 3 telefones: decisão adiada, não resolvida.
 
 ---
 
@@ -41,6 +42,7 @@
 | RLS das restantes tabelas | 09/09/2026 | `[nesta sessão]` `pg_policies` cruzado com leitura REST tabela a tabela usando a chave anon | 19 tabelas, **todas com RLS activo — o que não protege nada por si só**. `contactos_projecto` devolve 0 linhas; todas as outras devolvem conteúdo à anon |
 | `revisao_pares` expõe dados pessoais | 09/09/2026 | `[nesta sessão]` `pg_policies` + leitura REST com a chave anon | Políticas `public` `true` em SELECT, INSERT e UPDATE. **4 linhas, 4 com nome, 4 com e-mail, 3 com telefone** (dois perfis por linha). Lidas e reescritas por quem tenha a chave. O `hideContact` de `RevisaoPares.tsx` esconde no ecrã, não impede o envio |
 | Escrita anónima em 13 tabelas, 9 com DELETE | 09/09/2026 | `[nesta sessão]` `pg_policies`: políticas de INSERT/UPDATE/DELETE/ALL com `qual`/`with_check` a `true` e role não-`service_role` | `bookmarks` (ALL); `briefings_archive`, `debunking`, `guioes`, `guioes_semanais`, `health_questions`, `keywords`, `sobre_conteudo`, `textos`, `youtube_trends` (INSERT/UPDATE/**DELETE**); `news_items` (UPDATE/**DELETE**); `eixos_archive` (INSERT); `revisao_pares` (INSERT/UPDATE). Um DELETE anónimo apaga as 4604 linhas de `health_questions` |
+| Escrita anónima fechada em todas as tabelas | 09/09/2026 | `[nesta sessão]` Migração `20260909190000` (31 políticas removidas em 12 tabelas); depois, bateria de pedidos REST com a chave anon | **0 políticas de escrita a `public`** e 0 tabelas sem RLS. Com a anon: INSERT `HTTP 401`/42501 em 11 tabelas testadas; UPDATE e DELETE `HTTP 204` com 0 linhas, incluindo um DELETE **sem filtro** em `youtube_trends` e `debunking`. **Impressão md5 das contagens das 19 tabelas idêntica antes e depois (`b04740f7…`)**, texto da linha visada intacto, 0 alterações, 0 inserções de teste. Leitura verificada tabela a tabela: as 16 que o site lê continuam a devolver conteúdo |
 | Os 7 scripts do pipeline escrevem com a chave anon | 09/09/2026 | `[nesta sessão]` Leitura das linhas indicadas e descodificação de cada JWT | Chave hardcoded em `4_…py:25`, `5_…py:22`, `6_…py:26`, `7_…py:29`, `8_…py:14`, `9_…py:24`, `10_…py:17` — **a mesma chave `anon` nos sete** (md5 `cd6632b6`), de `ijpxjpbjudaddfatibfl`. Também em texto simples no `env:` do workflow (l.10). Escrevem: `9_…py:92` e `4_…py:254` fazem DELETE. **Fechar as escritas a anon antes de migrar estes scripts desliga os passos 2, 2B, 4B e 5** |
 | Edge Functions não dependem da chave anon | 09/09/2026 | `[nesta sessão]` `grep` por `SERVICE_ROLE`/`ANON` nas 7 funções | As 5 que tocam no Supabase usam `service_role`: `archive-weekly`, `fetch-rss-feeds`, `generate-guioes-weekly`, `google-trends`, `refresh-trends`. Fechar as escritas a anon não as afecta |
 | Escrita via Edge Function | — | `[por testar]` | Em aberto. `verify_jwt = false` confirmado na instância nova; desconhecido na antiga |
@@ -238,6 +240,28 @@ explica o motivo e a condição para religar:
 | BENCHMARK | ✅ Verificado — personas + pseudociência + MSD links |
 | REVISÃO PARES | ✅ 4 (migrados do Lovable) |
 
+### Decisão de 09/09/2026 — o `/admin` deixou de escrever
+
+Os números acima descrevem o que está na base de dados, **não** o que o `/admin` consegue
+fazer. Desde 09/09/2026 não consegue escrever nada.
+
+`Admin.tsx` e `Guioes.tsx:447-449` escrevem com a chave `anon`. Ao fechar a escrita anónima
+(migração `20260909190000`), os dois passam a receber `401`/42501. Foi decisão tomada com o
+custo à vista, não efeito colateral.
+
+Porquê aceitar o custo: a password do Admin é comparada no cliente (`Admin.tsx:463`) e vai no
+bundle publicado. Nunca foi protecção — era um aviso. Enquanto as políticas estivessem
+ligadas ao role `public`, qualquer pessoa com a chave `anon`, que está num repositório
+público, tinha exactamente os mesmos poderes que o `/admin`. O `Guioes.tsx` era pior: gravava
+guiões sem sequer pedir password.
+
+Até haver autenticação Supabase a sério, a gestão de conteúdos passa para o painel Supabase,
+que usa `service_role` e ignora o RLS. É trabalho manual assumido, com data.
+
+**Atenção para quem retomar isto:** autenticar no frontend não resolve por si. Enquanto as
+políticas forem para o role `public`, uma sessão autenticada não muda nada — as políticas
+novas têm de ser para `authenticated`. Ver Pendentes Críticos nº 2.
+
 ---
 
 ## Prioridades — decisão de 2026-08-13
@@ -259,40 +283,50 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    da consolidada reescrita, para que reaplicar qualquer um deles não reabra a exposição.
    Provado com a chave anon, não com `service_role`. Commit `a3fe51f`
 
-1. [ ] **Escritas anónimas — 13 tabelas, 9 com DELETE. Nesta ordem, sem trocar.**
-   Fechar as escritas antes do ponto 4 desliga os passos 2, 2B, 4B e 5 do workflow, porque
-   os 7 scripts escrevem com a chave `anon`. O script 6 falha em silêncio, logo a avaria
-   não daria erro: daria uma semana sem dados sem ninguém reparar.
+1. [x] **Escritas anónimas — fechadas a 09/09/2026.** A sequência de 6 pontos foi cumprida
+   pela ordem, sem trocar: secret criado, os 7 scripts a lerem do ambiente sem valor por
+   defeito, secret passado aos passos, workflow #37 corrido à mão e confirmado a escrever com
+   `service_role`, e só então as 31 políticas removidas em 12 tabelas (migração
+   `20260909190000`). `revisao_pares` fechado à escrita à parte (`20260909180000`).
+   Nenhum dado apagado: impressão md5 das contagens das 19 tabelas igual antes e depois.
+   Commits `a3fe51f`, `1ea9481`, `5e43a0e`.
 
-   1. `SUPABASE_SERVICE_ROLE_KEY` como GitHub Secret. Nunca no código, nunca no repositório
-   2. os 7 scripts a lerem a chave de `os.environ`, **sem valor por defeito** — se faltar, o
-      script pára em voz alta em vez de continuar com a anon
-   3. o secret passado aos passos do workflow
-   4. correr o workflow à mão e **confirmar que escreve**
-   5. só então fechar INSERT/UPDATE/DELETE a anon em todas as tabelas. O SELECT fica aberto
-      onde o site precisa de ler
-   6. `revisao_pares`: fechar INSERT e UPDATE já, sem esperar pelo ponto 4 — nenhum script
-      lhe escreve. O SELECT fica aberto por decisão de 09/09/2026, **com a exposição
-      assinalada**: 4 e-mails e 3 telefones ficam legíveis a quem abrir a página. Decisão
-      adiada, não resolvida
+2. [ ] **Autenticação Supabase a sério — e só depois repor escrita no `/admin`.**
+   Consequência assumida do ponto anterior: o `/admin` não escreve desde 09/09/2026, e a
+   gestão de conteúdos passou para o painel Supabase. Isto é um pendente, não um esquecimento.
 
-   As Edge Functions não são afectadas: as 5 que tocam no Supabase usam `service_role`
-2. [ ] **Retirar o `.env` do tracking e corrigir as credenciais.**
+   O que NÃO resolve: pôr um ecrã de login no frontend. Enquanto as políticas forem para o
+   role `public`, uma sessão autenticada tem exactamente os mesmos poderes que um anónimo.
+   A password actual (`Admin.tsx:463`) é comparada no cliente e vai no bundle.
+
+   O que resolve, por esta ordem:
+   1. Supabase Auth com utilizador real para a Marta
+   2. `Admin.tsx` e `Guioes.tsx` a usarem essa sessão, não a chave `anon`
+   3. políticas novas de INSERT/UPDATE/DELETE **para o role `authenticated`**, nunca `public`,
+      tabela a tabela e só nas que o admin precisa de escrever
+   4. `Guioes.tsx:447-449` grava sem pedir password nenhuma — ou passa a exigir sessão, ou
+      deixa de gravar
+   5. testar com a chave anon que continua a não escrever, como a 09/09/2026
+
+   Enquanto isto não existir, **não repor políticas de escrita para `public`**. É desfazer
+   tudo o que se fez a 09/09/2026.
+
+3. [ ] **Retirar o `.env` do tracking e corrigir as credenciais.**
    `git rm --cached .env` seguido de escrever as credenciais da instância nova
    (`ijpxjpbjudaddfatibfl`) no ficheiro local. A regra do `.gitignore` está em vigor desde
    07/09/2026, mas o ficheiro continua versionado.
    **Isto NÃO remove a chave `anon` do repositório público.** Saiu dos 7 scripts a 09/09/2026
    (passam a ler do ambiente), mas continua no `env:` do workflow (l.10) e em todo o
-   histórico do git. O que fecha o risco de acesso é o RLS (Crítico nº 1), não este item —
+   histórico do git. O que fecha o risco de acesso é o RLS (Críticos nº 0 e 1, fechados a 09/09/2026), não este item —
    e a chave `anon` é, por desenho, pública: o erro nunca foi ela estar à vista, foi as
    políticas deixarem-na escrever. O objectivo deste item é a correcção da instância errada,
    não a segurança.
-3. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
+4. [ ] **Cortar o Lovable e publicar via GitHub.** Enquanto a ligação Lovable Cloud↔Supabase
    estiver activa, o editor visual reescreve o `.env` e desfaz o item 2. Verificado no
    histórico a 07/09/2026: o commit mais recente sobre o `.env` é `5246597`, de
    **21/05/2026**, do bot — posterior à migração de 12/04/2026. Decisão de 07/09/2026:
    abandonar o Lovable
-4. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
+5. [ ] **Reescrever `5_fetch_google_trends.py` — decisão de schema fechada a 07/09/2026,
    a aplicar ANTES de alguém implementar.**
 
    O índice do Google Trends é normalizado ao **máximo da janela pedida**. Duas descargas
@@ -312,7 +346,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
 
    Religar os passos 1 e 3 antes disto só acrescenta lixo à série.
-5. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
+6. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
    autocomplete que já estão na base de dados. **Só depois** tocar no script — mexer antes
    perde-as
 
@@ -372,10 +406,10 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 ### Concluídos
 
 - [x] ~~Verificar RLS de `contactos_projecto`~~ (07/09/2026 — resultado: **sem protecção
-      efectiva**; a correcção passa a ser o Crítico nº 1)
+      efectiva**; foi o Crítico nº 1 dessa sessão e ficou fechado a 09/09/2026, Crítico nº 0)
 - [x] ~~Acrescentar `.env` ao `.gitignore`~~ (sessão 10, 07/09/2026 — regra em
       `.gitignore:16`, confirmada com `git check-ignore --no-index`. O ficheiro **continua
-      versionado**; retirar do tracking é o Crítico nº 2)
+      versionado**; retirar do tracking é o Crítico nº 3 desde a renumeração de 09/09/2026)
 - [x] ~~`eixos_archive` vazia~~ (07/09/2026 — 24 linhas, escritas pelo passo 7 do workflow)
 - [x] ~~Revogar o PAT do GitHub exposto~~ (revogado a 13/08/2026 — distinto do token da sessão 4)
 - [x] ~~Correr workflow manualmente para popular snapshots e guiões~~ (disparado 2026-03-27)
@@ -431,7 +465,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ## Padrões estabelecidos
 
-- **Lovable:** em abandono desde 07/09/2026 (ver Crítico nº 3). Até ao corte, Marta envia
+- **Lovable:** em abandono desde 07/09/2026 (ver Crítico nº 4). Até ao corte, Marta envia
   sempre os prompts ela própria
 - **claude.ai não escreve no repositório:** o `CONTEXT.md` que a janela do claude.ai lê está
   em Project Knowledge e é uma cópia só de leitura. O ficheiro vivo é

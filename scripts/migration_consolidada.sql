@@ -416,6 +416,14 @@ ALTER TABLE public.contactos_projecto ENABLE ROW LEVEL SECURITY;
 
 
 -- ----------------------------------------------------------------------------
+-- NOTA DE 09/09/2026 — nenhuma tabela concede escrita ao role `public`.
+-- As 31 políticas de INSERT/UPDATE/DELETE/ALL que aqui estavam foram removidas
+-- por supabase/migrations/20260909190000_sem_escrita_anonima_em_todas_as_tabelas.sql.
+-- Quem escreve: as Edge Functions e os 7 scripts do pipeline, com service_role.
+-- O /admin deixou de escrever — decisão datada, ver CONTEXT.md.
+-- NÃO repor políticas de escrita para `public`. Quando houver autenticação
+-- Supabase a sério, as novas políticas são para `authenticated`, não `public`.
+
 -- 5.1  trends_cache -- Public read, service_role full access
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on trends_cache"
@@ -428,22 +436,10 @@ CREATE POLICY "Allow service role full access on trends_cache"
 
 
 -- ----------------------------------------------------------------------------
--- 5.2  keywords -- Public read + public write (admin CMS)
+-- 5.2  keywords -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on keywords"
   ON public.keywords FOR SELECT
-  USING (true);
-
-CREATE POLICY "Allow public insert on keywords"
-  ON public.keywords FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on keywords"
-  ON public.keywords FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on keywords"
-  ON public.keywords FOR DELETE
   USING (true);
 
 
@@ -456,27 +452,15 @@ CREATE POLICY "Allow public read on trend_data"
 
 
 -- ----------------------------------------------------------------------------
--- 5.4  debunking -- Public read + public write (admin CMS)
+-- 5.4  debunking -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on debunking"
   ON public.debunking FOR SELECT
   USING (true);
 
-CREATE POLICY "Allow public insert on debunking"
-  ON public.debunking FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on debunking"
-  ON public.debunking FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on debunking"
-  ON public.debunking FOR DELETE
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.5  news_items -- Public read + service_role insert + public update/delete
+-- 5.5  news_items -- Leitura pública + escrita só por service_role (09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on news_items"
   ON public.news_items FOR SELECT
@@ -485,14 +469,6 @@ CREATE POLICY "Allow public read on news_items"
 CREATE POLICY "Allow service role insert on news_items"
   ON public.news_items FOR INSERT TO service_role
   WITH CHECK (true);
-
-CREATE POLICY "Allow public update on news_items"
-  ON public.news_items FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on news_items"
-  ON public.news_items FOR DELETE
-  USING (true);
 
 
 -- ----------------------------------------------------------------------------
@@ -520,82 +496,34 @@ CREATE POLICY "Allow service role write on app_settings"
 
 
 -- ----------------------------------------------------------------------------
--- 5.8  textos -- Public full CRUD
+-- 5.8  textos -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on textos"
   ON public.textos FOR SELECT
   USING (true);
 
-CREATE POLICY "Allow public insert on textos"
-  ON public.textos FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on textos"
-  ON public.textos FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on textos"
-  ON public.textos FOR DELETE
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.9  briefings_archive -- Public full CRUD
+-- 5.9  briefings_archive -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on briefings_archive"
   ON public.briefings_archive FOR SELECT
   USING (true);
 
-CREATE POLICY "Allow public insert on briefings_archive"
-  ON public.briefings_archive FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on briefings_archive"
-  ON public.briefings_archive FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on briefings_archive"
-  ON public.briefings_archive FOR DELETE
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.10 guioes -- Public full CRUD
+-- 5.10 guioes -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on guioes"
   ON public.guioes FOR SELECT
   USING (true);
 
-CREATE POLICY "Allow public insert on guioes"
-  ON public.guioes FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on guioes"
-  ON public.guioes FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on guioes"
-  ON public.guioes FOR DELETE
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.11 guioes_semanais -- Public full CRUD
+-- 5.11 guioes_semanais -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on guioes_semanais"
   ON public.guioes_semanais FOR SELECT
-  USING (true);
-
-CREATE POLICY "Allow public insert on guioes_semanais"
-  ON public.guioes_semanais FOR INSERT
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on guioes_semanais"
-  ON public.guioes_semanais FOR UPDATE
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on guioes_semanais"
-  ON public.guioes_semanais FOR DELETE
   USING (true);
 
 
@@ -612,7 +540,7 @@ CREATE POLICY "Allow service role write on plataforma_popups"
 
 
 -- ----------------------------------------------------------------------------
--- 5.13 sobre_conteudo -- Public read + service_role write + public CRUD
+-- 5.13 sobre_conteudo -- Leitura pública + escrita só por service_role (09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on sobre_conteudo"
   ON public.sobre_conteudo FOR SELECT TO anon, authenticated
@@ -622,89 +550,37 @@ CREATE POLICY "Allow service role write on sobre_conteudo"
   ON public.sobre_conteudo FOR ALL TO service_role
   USING (true) WITH CHECK (true);
 
-CREATE POLICY "Allow public insert on sobre_conteudo"
-  ON public.sobre_conteudo FOR INSERT TO public
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on sobre_conteudo"
-  ON public.sobre_conteudo FOR UPDATE TO public
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on sobre_conteudo"
-  ON public.sobre_conteudo FOR DELETE TO public
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.14 youtube_trends -- Public full CRUD
+-- 5.14 youtube_trends -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on youtube_trends"
   ON public.youtube_trends FOR SELECT TO anon, authenticated
   USING (true);
 
-CREATE POLICY "Allow public insert on youtube_trends"
-  ON public.youtube_trends FOR INSERT TO public
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on youtube_trends"
-  ON public.youtube_trends FOR UPDATE TO public
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on youtube_trends"
-  ON public.youtube_trends FOR DELETE TO public
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.15 bookmarks -- Public full CRUD
+-- 5.15 bookmarks -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on bookmarks"
   ON public.bookmarks FOR SELECT TO public
   USING (true);
 
-CREATE POLICY "Allow public insert on bookmarks"
-  ON public.bookmarks FOR INSERT TO public
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on bookmarks"
-  ON public.bookmarks FOR UPDATE TO public
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on bookmarks"
-  ON public.bookmarks FOR DELETE TO public
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.16 health_questions -- Public full CRUD
+-- 5.16 health_questions -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Allow public read on health_questions"
   ON public.health_questions FOR SELECT TO public
   USING (true);
 
-CREATE POLICY "Allow public insert on health_questions"
-  ON public.health_questions FOR INSERT TO public
-  WITH CHECK (true);
-
-CREATE POLICY "Allow public update on health_questions"
-  ON public.health_questions FOR UPDATE TO public
-  USING (true) WITH CHECK (true);
-
-CREATE POLICY "Allow public delete on health_questions"
-  ON public.health_questions FOR DELETE TO public
-  USING (true);
-
 
 -- ----------------------------------------------------------------------------
--- 5.17 eixos_archive -- Public read + public insert
+-- 5.17 eixos_archive -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
 CREATE POLICY "Public read access"
   ON public.eixos_archive FOR SELECT
   USING (true);
-
-CREATE POLICY "Public insert access"
-  ON public.eixos_archive FOR INSERT
-  WITH CHECK (true);
 
 
 -- ----------------------------------------------------------------------------
