@@ -35,7 +35,10 @@
 | `historical_snapshots` da instância antiga: a série congelou a 14/04/2026 | 09/09/2026 | `[sessão 12]` Descarga das 12072 linhas com a chave anon; agregação por mês, por keyword, e comparação do conjunto `(keyword, search_index)` dia a dia | **12072 linhas**, 01/10/2025 a 27/07/2026. Por mês: 03/2026 2032 linhas/22 dias/38,4% a 0 ou 1 e **16 acima de 100**; 04/2026 2624/30 dias/52,6%; 05/2026 2542/31/54,9%; 06/2026 2460/30/54,9%; 07/2026 2214/27/54,9%. As 200 linhas de 10/2025 a 02/2026 estão a 0% de chão mas foram **todas escritas no minuto `2026-03-08T11:44`** — *seed* retrodatado. **De 14/04 a 27/07, 105 dias, cada dia é idêntico ao anterior** nas 82 keywords: `menopausa sintomas` = 44 em 88 pontos com desvio 0,0, `depressão` = 4, `burnout` = 26. **Na janela 05–07/2026 as 82 keywords são constantes.** O congelamento começa 2 dias depois da migração de 12/04 |
 | O que só existe na instância antiga é o período congelado | 09/09/2026 | `[sessão 12]` Contagem por mês nas duas instâncias | A nova tem 03/2026 (2032 linhas, 22 dias — **iguais** à antiga), 04/2026 **só até ao dia 12** (1066 linhas, 12 dias), e 2 dias de 08/2026. Só existe na antiga o período de **13/04 em diante**: 1558 linhas em 13–30/04, onde 42 keywords têm exactamente **dois** valores distintos — o de antes e o congelado, ou seja a própria transição — e 54,7% dos valores estão a 0 ou 1. **Apagar a instância antiga não perde nenhuma série que varie** |
 | Google Autocomplete não segmenta por país | 07/09/2026 | `[nesta sessão]` `md5` e `diff` sobre as 4 respostas guardadas (pedidos manuais feitos pela Marta) | Respostas **byte a byte idênticas** entre `gl=pt` e `gl=br` (`fa5766d4…`, `ea7a0f17…`). O parâmetro `gl` não altera o resultado. Evidência em `docs/evidencia/2026-09-07-autocomplete-gl/` |
-| `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, **zero emergentes com valor** |
+| `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, ~~zero emergentes com valor~~ — *este último ponto foi corrigido a 09/09/2026: são 5 de 15 com valor; ver a linha CORRECÇÃO abaixo* |
+| A lista de 83 keywords vem do SNS 24 e da DGS | 09/09/2026 | `[declarado]` Afirmado pela Marta | A curadoria foi feita a partir de fontes institucionais. A lista não é uma amostra dos temas de saúde procurados — é uma amostra do **vocabulário com que o Estado nomeia** esses temas |
+| 38 de 82 keywords não têm resolução na própria série | 09/09/2026 | `[sessão 12]` Período arquivado 09/03–13/04, o único com variação; contagem de dias no valor mínimo de cada série, individualmente. O script 5 pede uma keyword de cada vez (`5_…py:63`), logo cada série está normalizada ao seu próprio máximo — a medida é de **resolução**, não de volume comparado | 38 keywords com ≥50% dos dias no chão da própria série; várias com **um único valor distinto** em todo o período (`prevenção suicídio`, `saúde mental jovens`, `reabilitação psicossocial`, `candida auris`). Contra: `menopausa sintomas` (max 100, 32 valores distintos), `long covid` (72, 29) e `burnout` (57, 21), com 0% no chão |
+| CORRECÇÃO — "zero emergentes com valor" não se confirma | 09/09/2026 | `[sessão 12]` `select … from keywords where is_active group by axis`, e o mesmo por `is_emergent` | A linha de 07/09/2026 dizia "zero emergentes com valor". **Hoje: `axis='emergentes'` tem 15 keywords activas e 5 com valor** (máximo 59). O zero só aparece na leitura por `is_emergent = true` — e essa é **vazia**: a coluna está a `true` em **0 linhas de toda a tabela**, logo dá zero por a *flag* nunca ser preenchida, não por o tema não ter sinal. Proporção com valor por eixo: emergentes **5/15 (33%)**, saúde mental 16/33 (48%), menopausa 8/16 (50%), alimentação 10/18 (56%). Emergentes **é o mais baixo, mas não é zero** |
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
 | Datas dos commits ao `.env` | 07/09/2026 | `[nesta sessão]` `git log --format="%h %ad %s" --date=short -- .env` | 5 commits: 06/03, 12/04 (×3, um deles a migração), **21/05/2026**. Os 4 "Changes" são do bot do Lovable. Confirma que o Lovable reescreveu o `.env` **depois** da migração de 12/04 |
 | O que o bot do Lovable fez ao `.env`, e o que o desencadeia | 09/09/2026 | `[nesta sessão]` `git fetch --all --prune`, `git log --all -m -- .env`, `git show 5246597` | **Dois commits, não um:** `5246597` (21/05 07:35:53 UTC) é a alteração, `e22227d` (07:36:47) é o merge — `git log -- .env` omitia o segundo. A alteração **repôs a instância antiga** (`ijpxjpbjudaddfatibfl` → `cyjwhmuakmiytypewwfw`) e não tocou em mais nada. Traz `Co-authored-by: marmade`: foi sessão interactiva, não o bot sozinho. **Contraprova:** a 09/09 a Marta abriu o Lovable só para ver créditos e o fetch não trouxe nada, em nenhum ramo |
@@ -165,6 +168,80 @@ como passar a recolhê-lo.
 | Google Trends (script 5) | dinâmica temporal do interesse | **Sim** — `geo=PT` |
 | pytrends *related queries* (script 6) | o que está a crescer | **Sim** — `geo=PT` |
 | Google Autocomplete (script 7) | como se formula a dúvida | **Não** — verificado 07/09/2026 |
+
+### Hipótese do vocabulário — 09/09/2026
+
+> **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
+> "A lista de 83 keywords vem do SNS 24 e da DGS", "38 de 82 keywords não têm resolução na
+> própria série" e "CORRECÇÃO — zero emergentes com valor não se confirma", na tabela de
+> Verificações. A explicação abaixo é uma **leitura** desses números e mantém-se por
+> confirmar até o teste ser corrido.
+
+As keywords sem sinal no Google Trends não são necessariamente temas que ninguém procura.
+Podem ser temas que ninguém **formula assim**.
+
+"Prevenção suicídio", "saúde mental jovens" e "reabilitação psicossocial" são linguagem de
+programa e de relatório. A hipótese é que o zero não mede desinteresse — mede **distância
+entre o vocabulário da instituição e o de quem pesquisa**.
+
+**O que a hipótese prevê, e o que os dados mostram — com uma correcção.** Se a lista é
+vocabulário institucional, o eixo Emergentes devia ser o mais afectado: um tema emergente
+ainda não tem nome institucional, porque a nomenclatura chega depois do fenómeno.
+
+A previsão **confirma-se na direcção, não na magnitude**. A versão anterior deste raciocínio
+apoiava-se em "zero emergentes com valor", registado a 07/09/2026. Verificado a 09/09/2026,
+esse zero não se sustenta: `axis='emergentes'` tem 15 keywords activas e **5 com valor**. O
+zero vinha da leitura por `is_emergent = true`, que está a `true` em **zero linhas de toda a
+tabela** — dá zero por a coluna nunca ser preenchida, não por ausência de sinal.
+
+O que fica de pé é a ordenação:
+
+| eixo | activas | com valor | % |
+|---|---|---|---|
+| **emergentes** | 15 | **5** | **33%** |
+| saúde mental | 33 | 16 | 48% |
+| menopausa | 16 | 8 | 50% |
+| alimentação | 18 | 10 | 56% |
+
+Emergentes é o eixo com menor proporção de keywords com sinal, como a hipótese prevê. Mas a
+diferença é de 33% contra 48–56%, não de zero contra o resto. **Uma tendência com quatro
+pontos não é uma demonstração** — é motivo para correr o teste, não para o dispensar.
+
+**Contraprova dentro da própria lista.** "Menopausa sintomas" veio da mesma origem
+institucional e tem sinal cheio (máximo 100, 32 valores distintos no período arquivado).
+Portanto a lista não é uniformemente institucional: há termos que já entraram na linguagem
+corrente e outros que não. **Quais entraram é mensurável.**
+
+**O teste que confirma ou nega.** Para uma keyword sem sinal, pedir ao Google Trends uma
+reformulação do mesmo conceito em linguagem corrente:
+
+- se a reformulação tiver sinal e o termo institucional não → **é vocabulário**, e a keyword
+  corrige-se reescrevendo-a
+- se nenhuma formulação do conceito tiver sinal → **é volume genuinamente baixo**, e o tema
+  sai do gráfico e fica do lado editorial
+
+Fazer esta distinção com método, e documentá-la, é o que separa uma limitação declarada de um
+achado.
+
+**Segundo teste, com dados que já existem e sem recolha nova.** Estão na base de dados duas
+listas de vocabulário sobre os mesmos temas, com proveniência conhecida:
+
+- **A** — as 83 keywords: como o Estado nomeia os assuntos de saúde
+- **B** — as 4626 linhas de `health_questions`: formulações reais, recolhidas do próprio
+  Google
+
+A distância entre A e B é mensurável hoje, sem depender do `pytrends` nem de limites de
+pedidos.
+
+**O que isto muda no protótipo.** A lista A deixa de ser a camada de detecção e passa a ser
+**termo de comparação**. A detecção passa a ser semeada por B. A lista A não se apaga: é o
+mapa do que a instituição considera relevante, para sobrepor ao mapa do que as pessoas
+perguntam. **As zonas onde os dois não coincidem são o objecto do projecto.**
+
+**Consequência para a tese.** Se se confirmar, deixa de ser uma limitação técnica de rodapé:
+um sistema de monitorização de literacia em saúde construído sobre volume de pesquisa e
+semeado por vocabulário institucional é **cego aos temas de baixa procura e alto risco**. É
+um achado sobre o método, obtido empiricamente com dados do próprio protótipo.
 
 ---
 
