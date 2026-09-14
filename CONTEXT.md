@@ -413,6 +413,53 @@ conteúdo novo há meses — `guioes` desde 09/03/2026, `debunking` desde 25/03/
 pausa passa a ser explícita, não acidental: enquanto a série de trends não for defensável,
 o esforço vai todo para o lado A. Reavaliar quando os pendentes críticos estiverem fechados.
 
+## Plano da semana — 15 a 18/09/2026
+
+> Escrito a 14/09/2026, **antes** da semana. Existe para o balanço ter contra o que se
+> medir: um balanço sem plano prévio mede-se contra a memória do que se tencionava fazer, e
+> a memória acomoda-se ao que aconteceu.
+
+| dia | trabalho |
+|---|---|
+| **terça 15** | **Preview local (`npm run dev`) e deploy.** É a tarde que **desbloqueia a semana** — sem ela, nada do que vem a seguir tem objecto |
+| **quarta 16** | **Exportar as 3634 linhas de autocomplete** (Crítico nº 7) · **inventariar as afirmações do dashboard** — o inventário é **da Marta**, feito da posição de quem lê a página |
+| **quinta 17** | **Varrimento:** confronto de **cada afirmação com o dado que a sustenta** |
+| **sexta 18** | **Decidir correcções** · **balanço da semana** |
+
+### Porque a ordem é esta, e não outra
+
+O varrimento das afirmações estava antes na semana e **foi movido para depois do deploy**. A
+razão não é de conveniência:
+
+**O site publicado lê a instância antiga e mostra Abril como actual**, e o preview local não
+estava a ser usado. Varrer a página publicada seria **varrer o artefacto errado** — produziria
+um inventário de afirmações sobre dados que a instância viva já não tem, e cada correcção
+decidida a partir dele estaria a corrigir o retrato errado.
+
+É a mesma distinção que atravessou a sessão 13: **a afirmação e a coisa afirmada têm de ser
+postas lado a lado**, e para isso a coisa afirmada tem de ser a que está viva. Daí terça
+vir primeiro e ser descrita como o que desbloqueia a semana, não como uma tarefa entre outras.
+
+### O que ficou de fora, por decisão
+
+**A escrita da secção metodológica não entra nesta semana, e isso é escolha, não
+esquecimento.** Ganhou base a 14/09/2026 — `docs/metodo/` criada, rascunho de apêndice e o
+anexo de coordenadas com os cinco casos ligados aos seus commits. O que falta não é material:
+**o texto tem de ser em voz própria**, e isso não se agenda ao lado de tarefas de execução
+nem se delega. Fica fora do plano para não aparecer no balanço de sexta como tarefa falhada
+quando não era tarefa desta semana.
+
+### Uma falha da rotina, registada
+
+**O ponto 1 da rotina — balanço da semana anterior — falhou a 14/09/2026.** A segunda-feira
+foi ocupada pelo estado da base de dados, pela auditoria da consolidada e pela arrumação das
+regras, e o balanço não se fez.
+
+**Movido para sexta 18**, junto com a decisão das correcções. O motivo de não ficar à espera
+da segunda seguinte: **não falhar duas segundas seguidas** é mais fácil do que recuperar uma
+rotina que se interrompeu duas vezes. Fica registado aqui em vez de desaparecer — uma rotina
+que falha sem deixar rasto é uma rotina que se perde sem ninguém decidir perdê-la.
+
 ## Pendentes
 
 ### Críticos — por esta ordem (09/09/2026)
