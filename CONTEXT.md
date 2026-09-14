@@ -597,6 +597,35 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+> **Dois destes itens são de acção manual, não de código** — estão marcados `[manual]`. Não
+> se resolvem com um commit: um é na interface do claude.ai, o outro é uma linha que só faz
+> sentido escrever a par com uma decisão de arrumação. Ficam aqui na mesma, porque um
+> pendente que não está na lista não é um pendente, é um esquecimento.
+
+- [ ] `[manual]` **Instruções do projecto no claude.ai desalinhadas com o repositório.**
+      Os dois primeiros parágrafos ficaram a meio depois da substituição de 14/09/2026:
+      **erro de escrita, frase pendurada, e um "Esse documento" que aponta para a cópia do
+      `CONTEXT.md` no Project Knowledge — cópia que já não existe.** Um apontador para uma
+      coisa apagada é pior do que não ter apontador nenhum: manda o leitor procurar o que
+      foi deliberadamente removido, que era precisamente a cópia desactualizada que causou
+      a divergência de origem desta sessão.
+      **Correcção na interface do claude.ai, não no repositório** — este ficheiro não
+      alcança as instruções do projecto.
+      **Texto de substituição acordado na sessão 13.** ⚠️ Esse texto **não está no
+      repositório**: vive na janela onde foi acordado. Quem for fazer a correcção tem de o
+      ir buscar lá, e se a janela se perder o texto perde-se com ela — é o mesmo problema
+      que esta sessão passou o dia a arrumar. Considerar colá-lo aqui ou em
+      `docs/operacoes/` antes de fechar o item.
+- [ ] `[manual]` **`CLAUDE.md` sem referência à regra do git.** A regra "git só no terminal,
+      nunca pelo bridge de ficheiros do Cowork" vive **só** no `CONTEXT.md`, em Padrões
+      estabelecidos. **Está no ficheiro certo** — é às sessões do Cowork que serve, e são
+      elas que leem o `CONTEXT.md` e não o `CLAUDE.md`. Não é para mover.
+      **O risco é de consolidação:** no dia em que alguém juntar os dois ficheiros por
+      arrumação, ou migrar as regras para o `CLAUDE.md` por ser o sítio óbvio, esta é a que
+      se perde — porque parece redundante a quem só lê um dos dois.
+      **Falta uma linha no `CLAUDE.md` a apontar para ela, com aviso explícito de não a
+      apagar ao consolidar.** Apontar, não duplicar: duas cópias da mesma regra é o defeito
+      que esta sessão acabou de corrigir noutro sítio.
 - [x] ~~**Aviso operacional — segunda-feira 06:00 UTC**, passo 2B a acumular linhas
       fabricadas~~ (resolvido a 09/09/2026: o passo 2B foi comentado, com motivo e condição
       de religação no próprio `youtube-trends.yml`. Passos activos: 11)
