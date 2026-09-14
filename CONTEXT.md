@@ -640,15 +640,24 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       regenerar o `types.ts`; é pequeno, mas é uma migração destrutiva e não se faz de
       passagem. **Sem urgência:** uma tabela vazia com RLS activo e só leitura pública não
       expõe nada. O risco que esta tabela levanta não é ela — é o item abaixo.
-- [ ] **Auditar `migration_consolidada.sql` contra o estado actual antes de a reaplicar.**
-      `[sessão 13][ficheiro]` É a segunda vez que este ficheiro reintroduziria uma decisão
-      de segurança já revertida: as políticas de `contactos_projecto` na secção 5.19
-      (tratado a 09/09/2026) e agora o `trend_data` com política de leitura pública nas
-      secções 2.3 e 5.3, mais a listagem em `migrate_data.py:35` (achado a 14/09/2026). O
-      risco é de calendário, não de código: a consolidada só se corre numa recriação de
-      emergência, que é precisamente quando ninguém revê 749 linhas. Auditá-la **agora**,
-      com tempo, e não no dia em que for precisa. Auditoria pendente; nada corrigido a
-      14/09/2026.
+- [ ] **`migration_consolidada.sql` — auditada a 14/09/2026, e o resultado foi o contrário
+      do esperado.** `[sessão 13][bd]` + `[ficheiro]` Ver `AUDIT.md` secção 6.
+      **CORRECÇÃO:** este item acusava o ficheiro de reintroduzir a leitura pública de
+      `trend_data` como decisão de segurança revertida. **É falso.** Essa política está
+      **activa na base de dados neste momento** — a migração de 09/09 removeu escrita
+      anónima e nunca tocou em leitura. O ficheiro descreve o estado actual e não o
+      contradiz. Houve **uma** reintrodução, `contactos_projecto`, tratada a 09/09/2026, e
+      não duas. A versão anterior deste item contradizia o item do `trend_data` quinze
+      linhas acima, que dizia — correctamente — que leitura pública numa tabela vazia com
+      RLS não expõe nada.
+      **O que a auditoria encontrou em vez disso, e é mais sério:**
+      o ficheiro **afirma ser idempotente e não é** (24 `CREATE POLICY` sem `IF NOT EXISTS`
+      e zero `DROP POLICY`; segunda corrida aborta em l.429), e o **histórico de migrações
+      não reconstrói a base que existe** — 4 dos 8 registos remotos não têm ficheiro local,
+      e os outros 4 têm ficheiro com o mesmo nome e versão diferente, logo um `db push` não
+      vê nenhuma das correcções de 09/09 como aplicada. Isso faz da consolidada o único
+      caminho de reconstrução real, o que **agrava** a falha de idempotência.
+      O ficheiro tem **632 linhas, não 749**. Pendentes em `AUDIT.md` secção 6.
 - [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
       Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
       alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
@@ -752,7 +761,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - **Dados migrados**: ~7100 rows do Lovable + 136 rows transformados da Marta (debunking + guiões)
 - **Config actualizada**: `.env`, `config.toml`, workflow GitHub Actions, 5 scripts Python
 - **Backup** dos dados originais da Marta em `scripts/marta_backup/` (5 ficheiros JSON)
-- **SQL consolidado** das 38 migrations em `scripts/migration_consolidada.sql` (749 linhas)
+- **SQL consolidado** das 38 migrations em `scripts/migration_consolidada.sql`
+  (749 linhas à data; **632 a 14/09/2026** — ver `AUDIT.md` secção 6)
 - **Scripts auxiliares**: `scripts/migrate_data.py`, `scripts/switch_supabase.sh`
 
 ### Regra de merge aplicada

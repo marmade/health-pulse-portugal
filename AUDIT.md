@@ -445,3 +445,139 @@ secção.
 
 A prioridade que esta secção estabelecia mantém-se e sai confirmada: a chave anon é pública
 por desenho, e é a RLS que tem de fazer o trabalho. Ver `CONTEXT.md`, Crítico nº 1.
+
+---
+
+## 6. Auditoria da `migration_consolidada.sql` — 14/09/2026
+
+Feita na sessão 13, a pedido de um pendente que esta auditoria acabou por **refutar**.
+Registo completo em `docs/sessoes/2026-09-14.md`.
+
+**Fontes.** `[bd]` = instância `ijpxjpbjudaddfatibfl` lida ao vivo por MCP Supabase
+(`pg_policies`, `pg_indexes`, `information_schema.columns`, `pg_extension`,
+`list_migrations`, `list_tables`). `[ficheiro]` = `scripts/migration_consolidada.sql` no
+disco, 632 linhas, 27180 bytes, modificado a 09/09/2026.
+
+### O que foi refutado
+
+Vale mais do que o que foi confirmado.
+
+- **Hipótese: a consolidada recria o recipiente dos contactos em `revisao_pares`.**
+  Refutada. `[bd]` As colunas `telefone_a`, `telefone_b`, `email_a` e `email_b` existem na
+  base viva, iguais às do ficheiro. A decisão de 09/09 foi ao nível dos **dados** (esvaziar),
+  não do schema, e o ficheiro é DDL — numa recriação nasceriam vazias.
+- **Hipótese: o ficheiro reintroduz a leitura pública de `trend_data` contra uma decisão
+  revertida.** Refutada — ver 6.1.
+
+### 6.1 — a acusação era falsa, e contradizia o ficheiro que a fazia
+
+`[bd]` A política `Allow public read on trend_data`, papel `public`, está **activa** na base
+de dados. `[ficheiro]` As secções 2.3 e 5.3 reproduzem-na. Logo o ficheiro **descreve o
+estado actual e não o contradiz**: a migração que removeu a escrita anónima — ficheiro local
+`20260909190000_sem_escrita_anonima_em_todas_as_tabelas.sql`, aplicada no remoto como versão
+`20260909181907` (os dois números são a mesma migração, ver 6.3) — mexeu **só em escrita e
+nunca tocou em leitura**. Não houve segunda reintrodução de decisão revertida: houve uma,
+`contactos_projecto`, tratada a 09/09/2026.
+
+O `CONTEXT.md` escrevia as duas coisas **a quinze linhas de distância**: que uma tabela vazia
+com RLS e só leitura pública "não expõe nada" (item do `trend_data`) e que essa mesma leitura
+pública era uma decisão de segurança revertida (item da consolidada). Mesma família da
+contradição da secção Stack, encontrada mais cedo no mesmo dia — e desta vez o texto
+contraditório foi escrito **de raiz nessa sessão**, não herdado de meses antes.
+
+### 6.2 — a idempotência é uma afirmação falsa, e falha no dia para que o ficheiro existe
+
+`[ficheiro]` Cabeçalho l.5: "single **idempotent** script". Tabelas, índices e extensões usam
+`IF NOT EXISTS`; as **24 `CREATE POLICY` não usam** — o PostgreSQL não tem `IF NOT EXISTS`
+para políticas — e **não existe uma única `DROP POLICY IF EXISTS`** no ficheiro. Segunda
+corrida sobre uma base que já tenha as políticas aborta em l.429.
+
+O cenário real não é a instância nova e limpa: é a **primeira corrida interrompida a meio** e
+a segunda a morrer na primeira política.
+
+### 6.3 — nem a pasta de migrações nem o histórico remoto reconstroem a base que existe
+
+`[ficheiro]` 42 ficheiros em `supabase/migrations/`. `[bd]` **8 registos** no histórico
+remoto. E a relação entre os dois lados parte-se de duas maneiras diferentes, que importa não
+confundir:
+
+- **4 dos 8 registos remotos não têm ficheiro local nenhum** — `create_base_tables`,
+  `create_dependent_tables`, `fix_eixos_archive_correct_schema` e
+  `add_eixo_and_subcategoria_to_bookmarks`, todos de Março. **História perdida:** foram
+  aplicados e não ficou o SQL.
+- **Os outros 4 têm ficheiro local com o mesmo nome e número de versão diferente.** Não é
+  ausência, é **a mesma migração com duas identidades**:
+
+| ficheiro local | versão aplicada no remoto |
+|---|---|
+| `20260909160000_contactos_projecto_rls_restrict.sql` | `20260909151958` |
+| `20260909180000_revisao_pares_sem_escrita_anonima.sql` | `20260909180147` |
+| `20260909190000_sem_escrita_anonima_em_todas_as_tabelas.sql` | `20260909181907` |
+| `20260909200000_revisao_pares_sem_contactos.sql` | `20260909192141` |
+
+*Inferência, não verificada:* o projecto foi criado a 08/03/2026 e o histórico remoto começa
+a 25/03 — compatível com o Lovable a aplicar SQL directo sem registar, e com o registo a
+começar quando se passou a aplicar por CLI/MCP.
+
+**Consequência verificada:** um `db push` desta pasta **não vê nenhuma das quatro correcções
+de 09/09 como aplicada** — o nome coincide, a versão não, e é pela versão que o Supabase
+decide. A consolidada é na prática o único caminho de reconstrução que existe. **Isso aumenta
+a importância dela, não diminui** — e é o que torna 6.2 sério.
+
+### 6.4 — três imprecisões menores
+
+- `[ficheiro]` O ficheiro tem **632 linhas, não 749**. O número errado estava no `CONTEXT.md`
+  e no `CLAUDE.md`, corrigido a 14/09/2026. *Inferência:* 749−632 = 117, compatível com a
+  substituição das 31 políticas de escrita pela nota de nove linhas a 09/09 — o que faria do
+  749 um número pré-09/09 nunca actualizado. O `docs/sessoes/2026-04-12.md` mantém o 749:
+  era exacto quando foi escrito, e alinhar registo histórico com o presente é falsificá-lo.
+- `[ficheiro]` Cabeçalho "Generated: 2026-04-12", num ficheiro com notas de 09/09 no corpo e
+  modificado a 09/09. O "38 incremental migrations" era exacto a 12/04 (42 locais menos as 4
+  de 09/09). **O corpo foi actualizado e o cabeçalho não** — outra vez o defeito da Stack.
+- Nome de política divergente: `Allow public read on bookmarks` `[ficheiro]` l.565 contra
+  `Public read` `[bd]`. E `idx_eixos_archive_axis_week` existe `[bd]` mas não na secção 3
+  `[ficheiro]` — logo "recreate the full schema" não é exacto.
+
+### O que confere
+
+`[bd]` + `[ficheiro]`, sem divergência: 19 tabelas contra 19, nomes iguais; 24 políticas
+contra 24; **zero políticas de escrita para `public` ou `anon`** em qualquer secção — a
+decisão de 09/09 está fielmente reflectida; `contactos_projecto` sem políticas nos dois
+lados, com a nota da 5.19 a proibir a reposição; colunas de `revisao_pares`,
+`contactos_projecto` e `eixos_archive` idênticas; `UNIQUE(axis, week_start)` nos dois lados;
+`pg_cron` e `pg_net` declarados e instalados.
+
+### Leitura
+
+**O ficheiro está em melhor estado do que o pendente que o acusava.** A regressão de
+segurança anunciada não existe. O que existe são duas afirmações falsas **dentro do próprio
+ficheiro** — a idempotência e a data de geração — e um histórico de migrações que não
+corresponde a nada.
+
+Para o apêndice metodológico, **6.3 vale mais do que a correcção**: o plano de recuperação
+assentava num registo de migrações que não descreve a base de dados que existe, e ninguém
+mentiu — a ferramenta que construiu o projecto escrevia sem registar. É uma observação sobre
+o que acontece à rastreabilidade quando se constrói com ferramentas que escrevem por nós.
+
+### Em aberto
+
+- [ ] **6.2 tem uma solução candidata, NÃO VERIFICADA:** envolver o ficheiro numa transacção
+      (`BEGIN` no início, `COMMIT` no fim), o que torna a re-corrida segura **sem
+      `DROP POLICY` nenhum**. Em PostgreSQL o DDL é transaccional: ou tudo é criado ou nada
+      é, logo uma corrida interrompida a meio deixa a base como estava e a segunda corrida é
+      uma primeira corrida.
+      `[ficheiro]` **Facto que a sustenta, esse verificado:** o ficheiro não contém uma única
+      instrução que não corra dentro de transacção — nem `CONCURRENTLY`, nem `VACUUM`, nem
+      `ALTER SYSTEM`. São 24 `CREATE POLICY`, 19 `CREATE TABLE`, 19 `ALTER TABLE`, 10 índices
+      e 2 `CREATE EXTENSION`, todas transaccionais.
+      **O que continua por verificar é o comportamento de ponta a ponta**, e testá-lo obriga
+      a uma base descartável — **não se testa contra a instância viva**. Enquanto não for
+      testada, o cabeçalho do ficheiro deve dizer que **corre uma só vez, em base vazia**.
+      Não é decisão da Marta: é trabalho pendente.
+
+      > A escolha que chegou a ser apresentada — `DROP POLICY IF EXISTS` **ou** declarar o
+      > ficheiro não-idempotente — era um **falso dilema**. As duas opções são piores do que
+      > a transacção: a primeira resolve a re-corrida mas abre uma janela em que as políticas
+      > não existem, perigosa se o ficheiro for corrido por engano contra a base viva.
+
+- [ ] Corrigir o cabeçalho do SQL: a linha "Generated" e a afirmação de idempotência.

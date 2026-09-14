@@ -19,16 +19,27 @@ seguir.
 
 ## 2. Auditar a `migration_consolidada.sql` antes de a reaplicar
 
-`scripts/migration_consolidada.sql` são 749 linhas que recriam o schema inteiro, e **já
-reintroduziu decisões de segurança revertidas** — as políticas de `contactos_projecto`
-(secção 5.19, tratado a 09/09/2026) e o `trend_data` com leitura pública (secções 2.3 e 5.3,
-achado a 14/09/2026).
+`scripts/migration_consolidada.sql` são 632 linhas que recriam o schema inteiro, e é **o
+único caminho de reconstrução que existe de facto**: o histórico de migrações não reconstrói
+a base de dados que existe — 4 dos 8 registos remotos não têm ficheiro local, e os outros 4
+têm ficheiro com o mesmo nome e número de versão diferente, logo um `db push` não vê as
+correcções de 09/09/2026 como aplicadas.
+
+**O ficheiro afirma ser idempotente e não é.** 24 `CREATE POLICY` sem `IF NOT EXISTS`, zero
+`DROP POLICY`: uma segunda corrida aborta em l.429. O cenário que importa não é a base limpa
+— é a primeira corrida interrompida a meio.
 
 O perigo é de calendário: a consolidada só se corre numa recriação de emergência, que é
-precisamente o dia em que ninguém revê 749 linhas. **Antes de a reaplicar, auditá-la contra
+precisamente o dia em que ninguém revê 632 linhas. **Antes de a reaplicar, auditá-la contra
 o estado actual da base de dados**, tabela a tabela e política a política.
 
-Ver o item próprio em `CONTEXT.md`, Pendentes → Restantes.
+> **Auditada a 14/09/2026 — e a primeira versão desta regra estava errada.** Acusava o
+> ficheiro de reintroduzir a leitura pública de `trend_data` como decisão revertida; essa
+> política está activa na base e nunca foi revertida. A acusação caiu, o risco real
+> apareceu, e é o que está escrito acima. Fica registado para que a regra não seja lida como
+> se tivesse sido sempre isto.
+
+Achados completos em `AUDIT.md` secção 6; pendentes no fim dessa secção.
 
 ---
 
