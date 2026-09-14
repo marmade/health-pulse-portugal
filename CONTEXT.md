@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-09 (sessão 12)
+> Última actualização: 2026-09-14 (sessão 13)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -25,8 +25,19 @@
 > `[declarado]` = afirmado pela Marta, sem teste · `[sessão anterior]` = verificado antes da
 > sessão que o regista, data na coluna · `[por testar]` = nunca verificado
 
+> **Segundo eixo, desde a sessão 13.** As linhas de 14/09/2026 levam também `[bd]`,
+> `[ficheiro]` ou `[documento]` — **o que foi lido**, não só onde; e `[agregado]` como
+> modificador quando o valor é uma contagem ou média. Convenção decidida a 09/09/2026; as
+> linhas anteriores ainda não a levam, ver Restantes.
+
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| O pipeline escreve com `service_role` numa corrida **agendada** | 14/09/2026 | `[sessão 13][bd][agregado]` `count(*)` por tabela nas 19 (`query_to_xml` sobre `pg_class`, MCP Supabase), comparado com 07/09 e 09/09 · `[documento]` API pública do GitHub, `actions/runs` | Run **#38**, evento `schedule`, 14/09 12:18–12:35 UTC, `success`. `news_items` 278→**310**, `health_questions` 4604→**4647**, `guioes_semanais` 25→**29**, `eixos_archive` 24→**28**, `youtube_trends` 22→**19** (substituição: o script 4 faz DELETE). **Primeira corrida agendada depois da migração `20260909190000`** — e a primeira de qualquer tipo: o #37 foi manual e anterior à migração. Escreveu com **zero políticas de escrita para `public`/`anon`**. **Ressalva:** a chave anon continua a invocar as Edge Functions dos passos 4, 6 e 7 (`youtube-trends.yml:10`) — o que ficou provado é que a **escrita** não depende dela, não que saiu do pipeline |
+| `historical_snapshots` continua parada, por desactivação e não por falha | 14/09/2026 | `[sessão 13][bd][agregado]` `count(*)` directo | **3462 linhas, inalteradas** desde 07/09. Coerente com os passos 1 e 3 comentados a 14/08/2026 |
+| Nenhuma política de escrita sobreviveu para `public`/`anon` | 14/09/2026 | `[sessão 13][bd]` `pg_policies` filtrado a `cmd <> 'SELECT'`, com a coluna `roles` | **6 políticas de escrita, todas `{service_role}`**: `app_settings` (ALL), `historical_snapshots` (INSERT), `news_items` (INSERT), `plataforma_popups` (ALL), `sobre_conteudo` (ALL), `trends_cache` (ALL). Zero para `public` ou `anon`. O estado de 09/09 aguentou uma corrida completa do pipeline |
+| `contactos_projecto` mantém-se fechada | 14/09/2026 | `[sessão 13][bd]` `pg_class.relrowsecurity` e contagem de `pg_policies`, mais `count(*)` | RLS activo, **0 políticas**, **4 linhas preservadas**. Inalterado desde 09/09/2026 |
+| O agendamento do GitHub Actions chega tarde — e isso não é falha | 14/09/2026 | `[sessão 13][documento]` API pública do GitHub, `actions/runs`, runs #32–#38 | O `cron` pede 06:00 UTC (`youtube-trends.yml:5`). Arranques reais: #32 07:49, #33 07:03, #34 07:06, #35 13:11, #36 12:02, **#38 12:18** (o #37 foi `workflow_dispatch`). O atraso do GitHub em workflows agendados passou de ~1h para ~6h. Todas com conclusão `success` — que **neste workflow não prova que os passos escreveram**, ver `AUDIT.md` secções 2 e 3. Fica registado para uma corrida que aparece ao meio-dia não ser lida como avaria |
+| Duas tabelas fora do modelo de dados documentado | 14/09/2026 | `[sessão 13][bd]` Listagem de `pg_class` cruzada com a secção "Modelo de Dados" deste ficheiro; depois `grep` por `.from("…")` em `src/` | `plataforma_popups` (**15 linhas**) e `trend_data` (**0 linhas, vazia**). Nenhuma das duas constava do modelo. `plataforma_popups` é lida por `Plataforma.tsx:91` e escrita pelo `/admin` (`Admin.tsx:485` e `:713`) — **está em uso**, faltava ao modelo. `trend_data` **não tem um único leitor no `src/`**: a única ocorrência é a declaração em `types.ts:596`, que é ficheiro gerado. Candidata a remoção, **não removida nesta sessão** |
 | Workflow semanal corre sozinho, sem intervenção manual | 07/09/2026 | `[claude.ai, transcrito]` Escritas observadas em `ijpxjpbjudaddfatibfl` entre 12:25 e 12:28 UTC | Confirmado. `news_items` 278, `health_questions` 4604, `youtube_trends` 22, `guioes_semanais` 25, `eixos_archive` 24 |
 | Passos 1 e 3 (Google Trends) não escrevem nada | 14/08/2026 | `[sessão anterior]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentados desde 14/08/2026. **É esta a razão pela qual `historical_snapshots` está parada** — não é falha de recolha, é desactivação deliberada |
 | Passo 2B (autocomplete) desligado | 09/09/2026 | `[nesta sessão]` Bloco comentado em `youtube-trends.yml`, com motivo e condição de religação no próprio ficheiro | Comentado a 09/09/2026, antecipado de sexta-feira. Motivo: testar o pipeline obriga a correr o workflow, e o passo 2B acrescentaria mais linhas com `relative_volume` fabricado às 3634 existentes. Passos activos no workflow: 11, contra 12 antes |
@@ -93,15 +104,22 @@
 ## Stack
 
 - **Frontend:** React + Vite + TypeScript + Tailwind + shadcn/ui (Lovable)
-- **Backend:** Supabase — **duas instâncias, estado transitório** (ver `AUDIT.md` secções 4 e 5):
-  - **Oficial (decisão de 29/07/2026):** `ijpxjpbjudaddfatibfl.supabase.co` (Marta) — **viva**.
-    O workflow correu a 03/08 e 10/08; RSS, `health_questions`, `youtube_trends` e
-    `guioes_semanais` foram actualizados a 10/08. O único passo partido é o do Google Trends
-  - **Em uso de facto:** `cyjwhmuakmiytypewwfw.supabase.co` (Lovable) — é para aqui que o
-    site publicado aponta. **A migração da sessão 4 foi apagada:** o `.env` aponta para a
-    instância antiga e não contém credenciais da nova (verificado 13/08/2026)
-  - Enquanto o Lovable Cloud estiver ligado ao projecto, editar no editor visual pode
-    alterar o `.env` sem aviso
+- **Backend:** Supabase — **uma instância em uso, outra por apagar** (ver `AUDIT.md` secções 4 e 5):
+  - **Em uso, e a única:** `ijpxjpbjudaddfatibfl.supabase.co` (Marta) — **viva**. É para aqui
+    que o `.env` aponta e é esta que está no bundle compilado (verificado 09/09/2026,
+    Crítico nº 3). O pipeline escreve aqui com `service_role`, a última vez na corrida
+    agendada #38 de 14/09/2026. O único passo partido é o do Google Trends, comentado
+    desde 14/08/2026
+  - **Por apagar:** `cyjwhmuakmiytypewwfw.supabase.co` (Lovable) — **já não é para aqui que o
+    site aponta**, mas responde e expõe os mesmos dados pessoais. Ver Crítico nº 4
+  - **Corrigido a 14/09/2026 — e o erro vale a pena ficar registado.** Esta secção dizia, até
+    hoje, que a instância antiga estava "em uso de facto" e que o `.env` apontava para lá.
+    Era verdade a 13/08/2026 e deixou de ser a 09/09/2026, sem que a secção fosse
+    actualizada: **o documento contradizia a tabela de Verificações e o Crítico nº 3 dele
+    próprio.** É a mesma classe de erro que a sessão 12 registou — ler o estado numa fonte
+    derivada em vez da primária —, desta vez dentro do ficheiro que é suposto ser a fonte
+  - Enquanto o Lovable Cloud estiver ligado ao projecto, editar no editor visual pode alterar
+    o `.env` sem aviso — foi o que aconteceu a 21/05/2026, commit `5246597`
 - **Design:** Space Grotesk, azul `#0000FF`, magenta `#FF00FF`, fundo branco, sem sombras nem gradientes
 - **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`
 - **Claude Code:** instalado localmente; comando `claude`, a partir de `~/Documents/health-pulse-portugal`
@@ -123,11 +141,22 @@
 
 **`keywords` é o elemento central** — todas as tabelas de monitorização ligam a ela via `keyword_id` (FK, nullable).
 
-### Tabelas — Lado A
+> **19 tabelas em `public`**, verificado a 14/09/2026. As duas do terceiro grupo foram
+> acrescentadas nessa data: estavam na base de dados e não neste modelo.
+
+### Tabelas — Lado A (11)
 `keywords`, `health_questions`, `news_items`, `debunking`, `youtube_trends`, `historical_snapshots`, `app_settings`, `trends_cache`, `briefings_archive`, `eixos_archive`, `guioes_semanais`
 
-### Tabelas — Lado B
+### Tabelas — Lado B (6)
 `revisao_pares`, `contactos_projecto`, `bookmarks`, `guioes`, `textos`, `sobre_conteudo`
+
+### Fora dos dois lados (2) — acrescentadas a 14/09/2026
+- **`plataforma_popups`** — 15 linhas. Conteúdo dos *popups* da página `/plataforma`: lida por
+  `Plataforma.tsx:91` e gerida no tab PLATAFORMA do `/admin` (`Admin.tsx:485` e `:713`).
+  Escrita fechada a `service_role` a 09/09/2026, como o resto. **Está em uso** — a ausência
+  era do modelo, não da base
+- **`trend_data`** — **0 linhas, vazia**. Criada pela migração `20260308110746` e nunca usada.
+  Nada no `src/` a lê. Candidata a remoção, ver Restantes — **não removida nesta sessão**
 
 ### health_questions — schema
 ```
@@ -248,10 +277,24 @@ um achado sobre o método, obtido empiricamente com dados do próprio protótipo
 ## Automatização — GitHub Actions
 
 **Workflow:** `youtube-trends.yml` — "Actualização Semanal — Reportagem Viva"
-**Schedule:** Segundas-feiras 06:00 UTC (07:00 Lisboa) | Também disparo manual
+**Schedule:** Segundas-feiras 06:00 UTC (07:00 Lisboa) — mas ver o atraso abaixo | Também disparo manual
 
 > **Estado:** o workflow foi desactivado automaticamente pelo GitHub por inactividade do
-> repositório e reactivado a 28/07/2026. Corre desde então (03/08, 10/08).
+> repositório e reactivado a 28/07/2026. **Corre desde então com conclusão `success` em
+> todas as runs — o que neste workflow não é prova de que todos os passos escreveram, ver
+> `AUDIT.md` secções 2 e 3.** As falhas dos passos saem como `::warning::`, não como erro
+> fatal: foi assim que os 404 das Edge Functions e os 429 do pytrends passaram
+> despercebidos. Runs #31 a #38: 03/08, 10/08, 17/08, 24/08, 31/08, 07/09, 09/09 (à mão,
+> #37) e **14/09 (#38)**.
+>
+> **O agendamento chega tarde, e isso não é falha — verificado a 14/09/2026.** O `cron` pede
+> segunda-feira às 06:00 UTC; os arranques reais foram #33 07:03, #34 07:06, #35 13:11,
+> #36 12:02 e #38 12:18. O atraso do GitHub em workflows agendados passou de ~1h para ~6h.
+>
+> **Escreve com `service_role` desde 09/09/2026.** Os passos em Python recebem
+> `SUPABASE_SERVICE_ROLE_KEY` do secret. A chave `anon` do `env:` (l.10) já não escreve nada:
+> só serve de *Bearer* para invocar as Edge Functions dos passos 4, 6 e 7, que escrevem com
+> `service_role` por dentro.
 >
 > **Passo 1 (Google Trends) partido — verificado a 13/08/2026.** Quando a recolha falha
 > (HTTP 429, ver `AUDIT.md` secção 2), o script **escreve `0`** em vez de manter o valor
@@ -392,6 +435,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    `20260909190000`). `revisao_pares` fechado à escrita à parte (`20260909180000`).
    Nenhum dado apagado: impressão md5 das contagens das 19 tabelas igual antes e depois.
    Commits `a3fe51f`, `1ea9481`, `5e43a0e`.
+
+   **Confirmado em corrida agendada a 14/09/2026, não só manual.** O #37 foi disparado à
+   mão, com a Marta a ver. O **#38 correu sozinho** pelo `cron`, com as 31 políticas já
+   removidas, e escreveu em cinco tabelas. É a prova que faltava: a de 09/09 mostrava que o
+   pipeline *podia* escrever com `service_role`, esta mostra que o **faz sem ninguém
+   carregar no botão**.
 
 2. [ ] **Autenticação Supabase a sério — e só depois repor escrita no `/admin`.**
    Consequência assumida do ponto anterior: o `/admin` não escreve desde 09/09/2026, e a
@@ -572,7 +621,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       pares. Achado a 09/09/2026. Decidir se é erro de dados (uma das linhas está a mais) ou
       se a página é que devia agrupar em vez de indexar
 - [ ] **Aplicar a convenção de etiquetas de fonte à tabela de Verificações.** Decidida a
-      09/09/2026, por aplicar — mexe em ~30 linhas e faz-se de uma vez.
+      09/09/2026, por aplicar — mexe em ~30 linhas antigas e faz-se de uma vez. **As seis
+      linhas da sessão 13 já a levam**, logo o trabalho que falta é só nas anteriores.
       **Dois eixos independentes, uma linha leva os dois** (ex.: `[sessão 12][bd]`):
       as etiquetas actuais dizem **onde** foi verificado; as novas dizem **o que foi lido** —
       `[bd]`, `[ficheiro]`, `[documento]`.
@@ -583,6 +633,27 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       **Regra:** antes de uma decisão irreversível, uma linha `[agregado]` tem de ser reaberta
       até às linhas. `[declarado]` não leva o segundo eixo — não houve leitura.
       Motivo em `docs/sessoes/2026-09-09-b.md`, "a fonte derivada em vez da primária".
+- [ ] **`trend_data` — tabela vazia e sem leitores, candidata a remoção.** 0 linhas,
+      verificado a 14/09/2026. Criada pela migração `20260308110746`, replicada na
+      consolidada (secções 2.3 e 5.3) e listada no `migrate_data.py:35`. Nada no `src/` a
+      lê: a única ocorrência é a declaração de tipos gerada em `types.ts:596`. Remover
+      obriga a mexer nesses três sítios e a regenerar o `types.ts` — é pequeno, mas é uma
+      migração destrutiva e não se faz de passagem. **Sem urgência:** uma tabela vazia com
+      RLS activo e só leitura pública não expõe nada.
+- [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
+      Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
+      alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
+      o **passo 5 do script não encontra nada para substituir** e reporta `NO CHANGE`.
+      Sobram-lhe três alvos reais: `.env`, `supabase/config.toml` e
+      `.github/workflows/youtube-trends.yml`. Fica registado porque uma ferramenta de
+      reparação que faz metade do trabalho **em silêncio** é a mesma classe de falha que
+      este projecto passou dois meses a desenterrar — quem a corresse a seguir a um novo
+      atropelo do Lovable veria "SWITCH COMPLETE" sem saber o que ficou por trocar.
+      **Segundo ponto:** o `find "$REPO_ROOT/scripts" -name '*.py'` do passo 5 apanhava
+      também a cópia órfã `scripts/.github/workflows/7_fetch_autocomplete_questions.py`,
+      movida a 14/09/2026 para `_antigos/`. O script **fica onde está** — sai na colheita do
+      Lovable, com o `Admin.tsx` (Crítico nº 5); até lá é a ferramenta que desfaz uma
+      reescrita do `.env` como a de 21/05/2026.
 - [ ] **`RevisaoPares.tsx` degrada em silêncio.** `if (ctRes.data) setContactos(ctRes.data)`
       trata `[]` do RLS como sucesso. Vale para as outras páginas: uma tabela fechada não dá
       erro, dá lista vazia. Se o site passar a depender disto, convém distinguir "sem dados"
