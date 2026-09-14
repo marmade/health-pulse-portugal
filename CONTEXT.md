@@ -634,12 +634,21 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       até às linhas. `[declarado]` não leva o segundo eixo — não houve leitura.
       Motivo em `docs/sessoes/2026-09-09-b.md`, "a fonte derivada em vez da primária".
 - [ ] **`trend_data` — tabela vazia e sem leitores, candidata a remoção.** 0 linhas,
-      verificado a 14/09/2026. Criada pela migração `20260308110746`, replicada na
-      consolidada (secções 2.3 e 5.3) e listada no `migrate_data.py:35`. Nada no `src/` a
-      lê: a única ocorrência é a declaração de tipos gerada em `types.ts:596`. Remover
-      obriga a mexer nesses três sítios e a regenerar o `types.ts` — é pequeno, mas é uma
-      migração destrutiva e não se faz de passagem. **Sem urgência:** uma tabela vazia com
-      RLS activo e só leitura pública não expõe nada.
+      verificado a 14/09/2026. Criada pela migração `20260308110746`. Nada no `src/` a lê:
+      a única ocorrência é a declaração de tipos gerada em `types.ts:596`. Remover obriga a
+      mexer em três sítios — essa migração, a consolidada e o `migrate_data.py:35` — e a
+      regenerar o `types.ts`; é pequeno, mas é uma migração destrutiva e não se faz de
+      passagem. **Sem urgência:** uma tabela vazia com RLS activo e só leitura pública não
+      expõe nada. O risco que esta tabela levanta não é ela — é o item abaixo.
+- [ ] **Auditar `migration_consolidada.sql` contra o estado actual antes de a reaplicar.**
+      `[sessão 13][ficheiro]` É a segunda vez que este ficheiro reintroduziria uma decisão
+      de segurança já revertida: as políticas de `contactos_projecto` na secção 5.19
+      (tratado a 09/09/2026) e agora o `trend_data` com política de leitura pública nas
+      secções 2.3 e 5.3, mais a listagem em `migrate_data.py:35` (achado a 14/09/2026). O
+      risco é de calendário, não de código: a consolidada só se corre numa recriação de
+      emergência, que é precisamente quando ninguém revê 749 linhas. Auditá-la **agora**,
+      com tempo, e não no dia em que for precisa. Auditoria pendente; nada corrigido a
+      14/09/2026.
 - [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
       Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
       alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
@@ -772,6 +781,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - **Recolha de dados:** uma falha de recolha nunca se escreve como valor. `NULL` + estado
   explícito, nunca `0` — um zero é indistinguível de um dado real e corrompe a série
 - **GitHub commits:** via Claude Code (git normal)
+- **Git só no terminal, nunca pelo bridge de ficheiros do Cowork.** Inclui comandos de
+  leitura: o `git status` escreve `.git/index.lock` e o shell do bridge não tem permissão
+  para o remover, o que deixa um lock órfão na pasta. Foi assim que apareceu o lock de
+  14/09/2026 — o mecanismo está provado pelo erro `unable to unlink .git/index.lock:
+  Operation not permitted` no output dessa sessão; a correspondência com a hora exacta
+  (15:38) não foi confirmada. Git é do Claude Code ou da Marta
 - **Troca de sessão:** Claude actualiza CONTEXT.md + cria `docs/sessoes/YYYY-MM-DD.md`
 - **Rigor científico:** documentar sempre a fonte e limitações metodológicas
 - **Fontes peer-reviewed:** MSD Manuals, Acta Médica PT, RPMGF, SciELO, Cochrane
