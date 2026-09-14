@@ -602,6 +602,20 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **Depositar um instantâneo do repositório num arquivo com DOI.** **Acção da Marta —
+      exige as contas dela** (GitHub + Zenodo); não se faz daqui.
+      **Porquê:** o apêndice metodológico e o `docs/metodo/anexo-coordenadas.md` ligam cinco
+      casos a commits deste repositório, e chamam-lhes de **grau 1 — verificáveis por
+      qualquer pessoa**. Esse grau assenta em o repositório ser público e continuar lá. **Um
+      commit é imutável; um repositório não é** — pode ser tornado privado, movido ou
+      apagado, e nesse dia as coordenadas de grau 1 passam todas a grau 3 de uma só vez, sem
+      aviso e sem nada no texto a assinalá-lo.
+      **Como:** criar uma *release* no GitHub e ligar o Zenodo ao repositório, que deposita o
+      instantâneo e devolve um DOI permanente. Depois, no anexo, acrescentar o DOI ao lado
+      dos hashes — o hash diz *onde* no histórico, o DOI garante que o histórico continua
+      acessível.
+      **Até lá**, o anexo diz isto na secção "Limite deste anexo", para a fragilidade estar
+      declarada e não descoberta por quem tentar verificar.
 - [x] ~~**Aviso operacional — segunda-feira 06:00 UTC**, passo 2B a acumular linhas
       fabricadas~~ (resolvido a 09/09/2026: o passo 2B foi comentado, com motivo e condição
       de religação no próprio `youtube-trends.yml`. Passos activos: 11)
