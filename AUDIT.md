@@ -538,6 +538,78 @@ a importância dela, não diminui** — e é o que torna 6.2 sério.
   `Public read` `[bd]`. E `idx_eixos_archive_axis_week` existe `[bd]` mas não na secção 3
   `[ficheiro]` — logo "recreate the full schema" não é exacto.
 
+### 6.5 — o ficheiro foi corrido, e a promessa da linha 6 cumpre-se
+
+`[sessão 13][bd]` Num projecto Supabase **descartável**, `teste-consolidada-descartavel`,
+ref `hypztdsgzuykoksrurto`, eu-west-1, plano free, custo **0 USD**. A instância real
+`ijpxjpbjudaddfatibfl` **não foi tocada**.
+
+**Era a primeira execução deste ficheiro desde que foi gerado a 12/04/2026.** Até
+14/09/2026, tudo o que se sabia dele — incluindo 6.2, 6.3 e 6.4 acima — sabia-se **por
+leitura**. A secção 6.5 é a parte que passou a ser observada.
+
+**Corrida 1, base vazia: passou inteira.** 2 extensões, 19 tabelas, 10 índices, 19
+`ENABLE ROW LEVEL SECURITY` e 24 políticas, **zero erros**. `CREATE EXTENSION pg_cron`
+**não** falhou por privilégios num projecto novo — hipótese que tinha sido admitida como
+possível e que fica **refutada**. A promessa da linha 6, "run on a fresh Supabase instance
+to recreate the full schema", **cumpre-se**.
+
+**O schema produzido é o certo.** Comparado com a instância real:
+
+| | teste | real |
+|---|---|---|
+| tabelas | 19 | 19 |
+| políticas | 24 | 24 |
+| índices `idx%` | **9** | **10** |
+| assinatura md5 das colunas | `48ba226abfeb347bf2734a123c8944f7` | **igual** |
+| assinatura md5 das políticas, **com** o nome | `e6907c4d96fd5dc96087977f6c9b2842` | `1a9a969bc40f5ba54b5041a0707885d0` |
+| assinatura md5 das políticas, **sem** o nome | `3cc48946875e9a1cf2f00987e5521cfc` | **igual** |
+
+As duas divergências são exactamente as previstas em 6.4, agora **medidas**: o índice a
+menos é o `idx_eixos_archive_axis_week`, e as assinaturas de políticas só divergem quando o
+nome entra no cálculo. Tirando o nome, são idênticas — ou seja **a única diferença de
+políticas entre o ficheiro e a base era o nome de uma delas** (`bookmarks`), e **nenhum
+efeito divergia**. As duas foram corrigidas no ficheiro a 14/09/2026.
+
+**Corrida 2, repetição: falhou, com o código à vista.**
+`ERROR: 42710: policy "Allow public read on trends_cache" for table "trends_cache" already
+exists`. Como tudo o que a precede tem `IF NOT EXISTS`, o ponto de morte é a **l.429**, a
+primeira política. **6.2 passa de dedução a observação.**
+
+> **Nota de método.** O ficheiro foi transmitido ao projecto de teste **pela janela de
+> conversa, não copiado byte a byte**. A fidelidade da transmissão é atestada pela
+> assinatura md5 das colunas coincidir com a da instância real — uma só letra trocada
+> mudaria o md5. É uma atestação forte do schema resultante, não uma prova de que os 27180
+> bytes eram idênticos.
+
+### 6.6 — a candidata da transacção, testada e parcialmente refutada
+
+`[sessão 13][bd]` Duas experiências no projecto de teste, cada uma com um `CREATE TABLE`
+seguido de um erro deliberado a meio:
+
+| experiência | a tabela sobreviveu? |
+|---|---|
+| **sem** `BEGIN` | **não** |
+| **com** `BEGIN` … `COMMIT` | **não** |
+
+**A candidata não acrescenta nada no caminho testado.** O caminho de execução usado — MCP
+`execute_sql` — **já envolve o lote numa transacção por si**, logo o `BEGIN` era redundante
+ali. A hipótese de 6.2, tal como estava formulada, fica **parcialmente refutada**.
+
+**Mas o que o teste revela é mais útil do que a candidata: a protecção vem de quem corre o
+ficheiro, não do ficheiro.**
+
+- `psql` **sem** `--single-transaction` confirma instrução a instrução e **deixaria a base a
+  meio**. **Este caminho NÃO foi testado** — exigia a senha da base do projecto de teste.
+  **Por verificar.**
+- O editor SQL do painel Supabase envolve o lote, como o MCP.
+
+**Decisão, aplicada ao ficheiro a 14/09/2026:** `BEGIN`/`COMMIT` entram — **não por serem
+necessários no caminho testado**, mas para que a garantia **deixe de depender de quem corre
+o ficheiro**. No dia da emergência ninguém escolhe o caminho de execução com cuidado. O
+`pg_cron` foi criado dentro de uma transacção na corrida 1, portanto não há obstáculo
+conhecido a ter as extensões lá dentro.
+
 ### O que confere
 
 `[bd]` + `[ficheiro]`, sem divergência: 19 tabelas contra 19, nomes iguais; 24 políticas
@@ -550,34 +622,45 @@ lados, com a nota da 5.19 a proibir a reposição; colunas de `revisao_pares`,
 ### Leitura
 
 **O ficheiro está em melhor estado do que o pendente que o acusava.** A regressão de
-segurança anunciada não existe. O que existe são duas afirmações falsas **dentro do próprio
-ficheiro** — a idempotência e a data de geração — e um histórico de migrações que não
-corresponde a nada.
+segurança anunciada não existe. O que existia eram duas afirmações falsas **dentro do próprio
+ficheiro** — a idempotência e a data de geração —, um índice e um nome de política em falta,
+e um histórico de migrações que não corresponde a nada.
+
+**As quatro primeiras foram corrigidas a 14/09/2026, depois de o ficheiro ter sido corrido
+pela primeira vez** (6.5 e 6.6): cabeçalho reescrito sem a palavra "idempotent" e com a
+condição de uso à vista, corpo envolvido em `BEGIN`/`COMMIT`, `idx_eixos_archive_axis_week`
+acrescentado, política de `bookmarks` renomeada para `Public read`. **O histórico de
+migrações (6.3) não é corrigível** — é o que é, e é por isso que continua a ser o achado
+mais importante desta secção.
 
 Para o apêndice metodológico, **6.3 vale mais do que a correcção**: o plano de recuperação
 assentava num registo de migrações que não descreve a base de dados que existe, e ninguém
 mentiu — a ferramenta que construiu o projecto escrevia sem registar. É uma observação sobre
 o que acontece à rastreabilidade quando se constrói com ferramentas que escrevem por nós.
 
+### Resolvido a 14/09/2026
+
+- [x] **A re-corrida e a corrida interrompida — fechadas.** O ficheiro passou a declarar a
+      condição de uso no cabeçalho, sem a palavra "idempotent", e o corpo ficou envolvido em
+      `BEGIN`/`COMMIT`. Uma corrida interrompida deixa de deixar rasto; uma segunda corrida
+      continua a falhar, e agora **está escrito no ficheiro que falha, e com que erro**.
+      O `BEGIN` entra apesar de 6.6 ter mostrado que é redundante no caminho testado: a
+      razão é tornar a garantia **independente de quem corre o ficheiro**.
+- [x] **6.4, as duas partes corrigíveis.** `idx_eixos_archive_axis_week` acrescentado à
+      secção 3; política de `bookmarks` renomeada para `Public read`, o nome que a base tem.
+      Restam as imprecisões **históricas** — o `749` e o cabeçalho "Generated: 2026-04-12" —,
+      que são **registo do que se pensou e quando**, não estado a corrigir.
+- [x] **Cabeçalho do SQL.** Reescrito: data de geração, data de edição do corpo, data em que
+      o cabeçalho a acompanhou, condição de uso e remissão para 6.5 e 6.6.
+
 ### Em aberto
 
-- [ ] **6.2 tem uma solução candidata, NÃO VERIFICADA:** envolver o ficheiro numa transacção
-      (`BEGIN` no início, `COMMIT` no fim), o que torna a re-corrida segura **sem
-      `DROP POLICY` nenhum**. Em PostgreSQL o DDL é transaccional: ou tudo é criado ou nada
-      é, logo uma corrida interrompida a meio deixa a base como estava e a segunda corrida é
-      uma primeira corrida.
-      `[ficheiro]` **Facto que a sustenta, esse verificado:** o ficheiro não contém uma única
-      instrução que não corra dentro de transacção — nem `CONCURRENTLY`, nem `VACUUM`, nem
-      `ALTER SYSTEM`. São 24 `CREATE POLICY`, 19 `CREATE TABLE`, 19 `ALTER TABLE`, 10 índices
-      e 2 `CREATE EXTENSION`, todas transaccionais.
-      **O que continua por verificar é o comportamento de ponta a ponta**, e testá-lo obriga
-      a uma base descartável — **não se testa contra a instância viva**. Enquanto não for
-      testada, o cabeçalho do ficheiro deve dizer que **corre uma só vez, em base vazia**.
-      Não é decisão da Marta: é trabalho pendente.
-
-      > A escolha que chegou a ser apresentada — `DROP POLICY IF EXISTS` **ou** declarar o
-      > ficheiro não-idempotente — era um **falso dilema**. As duas opções são piores do que
-      > a transacção: a primeira resolve a re-corrida mas abre uma janela em que as políticas
-      > não existem, perigosa se o ficheiro for corrido por engano contra a base viva.
-
-- [ ] Corrigir o cabeçalho do SQL: a linha "Generated" e a afirmação de idempotência.
+- [ ] **O comportamento pelo caminho `psql` continua por verificar.** `psql` **sem**
+      `--single-transaction` confirma instrução a instrução; com o `BEGIN`/`COMMIT` agora
+      dentro do ficheiro, a expectativa é que o rollback funcione à mesma, **mas isso não
+      foi testado** — o teste de 14/09 exigia a senha da base do projecto descartável, que
+      não estava disponível. É a única afirmação desta secção que assenta em leitura e não
+      em execução.
+- [ ] **Apagar o projecto de teste `hypztdsgzuykoksrurto`.** Está **pausado** desde
+      14/09/2026 e custa 0 USD, logo não há urgência. **Exige o painel do Supabase:** o MCP
+      não elimina projectos, só pausa.

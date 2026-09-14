@@ -1,11 +1,31 @@
 -- ============================================================================
 -- HEALTH PULSE PORTUGAL -- Consolidated Schema Migration
 -- ============================================================================
--- Generated: 2026-04-12
--- Source: 38 incremental migrations consolidated into a single idempotent script
--- Purpose: Run on a fresh Supabase instance to recreate the full schema
--- NOTE: DDL only -- no data inserts
+-- Generated: 2026-04-12, from 38 incremental migrations.
+--   Body edited 2026-09-09 (31 public-write policies removed, section 5.19
+--   rewritten). This header did not follow until 2026-09-14.
+-- Purpose: Run on a fresh Supabase instance to recreate the full schema.
+-- NOTE: DDL only -- no data inserts.
+--
+-- RUNS ONCE, ON AN EMPTY DATABASE. RUNNING IT A SECOND TIME FAILS.
+--   The 24 CREATE POLICY statements cannot be repeated -- PostgreSQL has no
+--   IF NOT EXISTS for policies -- so a second run dies on the first one
+--   (ERROR 42710). Do not describe this file as repeatable or re-runnable.
+--   An INTERRUPTED run leaves nothing behind: the body is wrapped in
+--   BEGIN/COMMIT, so a failure half-way rolls the whole thing back and the
+--   next attempt is a first attempt again.
+--
+-- Verified by execution on 2026-09-14, in a disposable project -- not by
+-- reading. See AUDIT.md sections 6.5 and 6.6.
 -- ============================================================================
+
+
+-- ============================================================================
+-- All or nothing. See the header: this is what makes an interrupted run safe
+-- regardless of who runs it. Do not remove without reading AUDIT.md 6.6 --
+-- psql without --single-transaction commits statement by statement.
+-- ============================================================================
+BEGIN;
 
 
 -- ============================================================================
@@ -378,6 +398,10 @@ CREATE INDEX IF NOT EXISTS idx_debunking_term ON public.debunking (term);
 CREATE INDEX IF NOT EXISTS idx_news_items_related_term ON public.news_items (related_term);
 CREATE INDEX IF NOT EXISTS idx_news_items_date ON public.news_items (date DESC);
 
+-- eixos_archive
+-- Acrescentado a 2026-09-14: existe na base de dados e faltava a este ficheiro.
+CREATE INDEX IF NOT EXISTS idx_eixos_archive_axis_week ON public.eixos_archive (axis, week_start DESC);
+
 -- briefings_archive (unique index on week_start)
 CREATE UNIQUE INDEX IF NOT EXISTS briefings_archive_week_start_idx ON public.briefings_archive (week_start);
 
@@ -562,7 +586,8 @@ CREATE POLICY "Allow public read on youtube_trends"
 -- ----------------------------------------------------------------------------
 -- 5.15 bookmarks -- Apenas leitura pública (alterado a 09/09/2026)
 -- ----------------------------------------------------------------------------
-CREATE POLICY "Allow public read on bookmarks"
+-- Nome corrigido a 2026-09-14 para o que a base de dados tem: "Public read".
+CREATE POLICY "Public read"
   ON public.bookmarks FOR SELECT TO public
   USING (true);
 
@@ -625,6 +650,9 @@ CREATE POLICY "Public read"
 -- As políticas "Public full CRUD" que aqui estavam foram removidas por
 -- supabase/migrations/20260909160000_contactos_projecto_rls_restrict.sql.
 -- NÃO as repor sem autenticação a sério no lugar.
+
+
+COMMIT;
 
 
 -- ============================================================================

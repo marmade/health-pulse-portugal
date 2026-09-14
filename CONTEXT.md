@@ -118,6 +118,11 @@
     actualizada: **o documento contradizia a tabela de Verificações e o Crítico nº 3 dele
     próprio.** É a mesma classe de erro que a sessão 12 registou — ler o estado numa fonte
     derivada em vez da primária —, desta vez dentro do ficheiro que é suposto ser a fonte
+  - **Descartável, a apagar:** `hypztdsgzuykoksrurto` (`teste-consolidada-descartavel`),
+    criado a 14/09/2026 só para correr a `migration_consolidada.sql` e **pausado no mesmo
+    dia**. Plano free, **0 USD**, sem dados do projecto — só o schema vazio que o teste criou.
+    Não tem ligação ao site nem ao pipeline. **Apagá-lo exige o painel do Supabase:** o MCP
+    não elimina projectos, só pausa. Ver `AUDIT.md` 6.5
   - Enquanto o Lovable Cloud estiver ligado ao projecto, editar no editor visual pode alterar
     o `.env` sem aviso — foi o que aconteceu a 21/05/2026, commit `5246597`
 - **Design:** Space Grotesk, azul `#0000FF`, magenta `#FF00FF`, fundo branco, sem sombras nem gradientes
@@ -657,7 +662,16 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       e os outros 4 têm ficheiro com o mesmo nome e versão diferente, logo um `db push` não
       vê nenhuma das correcções de 09/09 como aplicada. Isso faz da consolidada o único
       caminho de reconstrução real, o que **agrava** a falha de idempotência.
-      O ficheiro tem **632 linhas, não 749**. Pendentes em `AUDIT.md` secção 6.
+      O ficheiro tinha **632 linhas, não 749**.
+      **CORRIDO E CORRIGIDO a 14/09/2026.** Foi executado pela primeira vez desde que foi
+      gerado a 12/04/2026, num projecto Supabase **descartável** — a instância real não foi
+      tocada. Em base vazia **passou inteiro**, e o schema produzido tem a **mesma assinatura
+      md5 de colunas** que a instância real. A repetição falhou onde 6.2 previa, l.429, com
+      `ERROR 42710`. Quatro correcções aplicadas: corpo envolvido em `BEGIN`/`COMMIT`,
+      cabeçalho reescrito sem a palavra "idempotent" e com a condição de uso,
+      `idx_eixos_archive_axis_week` acrescentado e a política de `bookmarks` renomeada para
+      `Public read`. **Fica por verificar uma coisa só:** o comportamento pelo caminho
+      `psql` sem `--single-transaction`. Ver `AUDIT.md` secção 6, com 6.5 e 6.6.
 - [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
       Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
       alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
