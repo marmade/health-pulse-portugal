@@ -641,10 +641,27 @@ extensões. Estrutura verificada antes do teste: 660 linhas, `BEGIN` na l.28, `C
 l.655, primeira instrução executável na l.38 e última na l.630 — **nenhuma instrução fora da
 transacção** —, 24 `CREATE POLICY` e 11 instruções de índice.
 
-> **A ressalva de transmissão de 6.5 não se aplica a este teste.** O ficheiro corrido tem
-> `sha256` `2b4eb167cbb671cd7df82f731819b43b0e7799c175515223bce079321e241a9a`, **idêntico ao
-> do ficheiro versionado** — confirmado no terminal contra a cópia em disco. Aqui não há
-> transmissão a atestar por consequência: é o mesmo ficheiro, byte a byte.
+> **A ressalva de transmissão de 6.5 mantém-se aqui — não foi fechada.** O texto executado
+> contra a base **não** foi lido do ficheiro de uma ponta à outra: foi composto a partir da
+> leitura anterior mais as quatro alterações, e a leitura feita antes deste teste foi de
+> **estrutura** — linhas do `BEGIN` e do `COMMIT`, primeira e última instrução executável,
+> contagens, linhas alteradas —, não do conteúdo integral.
+>
+> **O que o `sha256` `2b4eb167cbb671cd7df82f731819b43b0e7799c175515223bce079321e241a9a` faz,
+> e só isso:** fixa **de que versão do ficheiro** este teste fala. Foi confirmado no terminal
+> contra a cópia em disco, que é idêntica à versionada. **Não atesta o texto executado.**
+>
+> **O que 6.7 tem a mais do que 6.5 não é identidade — é consequência mais forte.** Em 6.5
+> coincidiam **duas** assinaturas; aqui coincidem **as três**, incluindo a de políticas
+> **com** o nome, que é a mais sensível a qualquer alteração de texto. E o índice
+> acrescentado nasceu com definição **literalmente igual** à da instância real. Uma
+> composição infiel teria de reproduzir por acaso 24 nomes de política e uma definição de
+> índice — possível de imaginar, difícil de acontecer.
+>
+> **Prova por identidade do texto executado é inalcançável com as ferramentas actuais:**
+> exigiria o ficheiro chegar à base **sem passar pela janela** — ou seja, senha da base e
+> `psql`. É o mesmo obstáculo do item que ficou em aberto, e por isso os dois fecham juntos
+> ou não fecham.
 
 **Resultado: passou.** Incluindo `CREATE EXTENSION pg_cron` **dentro** da transacção
 explícita — ver 6.6.
