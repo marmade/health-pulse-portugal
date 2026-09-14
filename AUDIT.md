@@ -524,7 +524,13 @@ de 09/09 como aplicada** — o nome coincide, a versão não, e é pela versão 
 decide. A consolidada é na prática o único caminho de reconstrução que existe. **Isso aumenta
 a importância dela, não diminui** — e é o que torna 6.2 sério.
 
-### 6.4 — três imprecisões menores
+### 6.4 — três imprecisões menores — **fechadas a 14/09/2026, nas quatro partes**
+
+> **Estado:** as duas partes de estado foram corrigidas no ficheiro e **verificadas por
+> execução** (6.7): o índice nasce com a definição da instância real e a assinatura de
+> políticas com nome passou a coincidir. As duas imprecisões restantes — o `749` e o
+> cabeçalho antigo — são **história, não estado**: ficam registadas abaixo e não se corrigem
+> retroactivamente.
 
 - `[ficheiro]` O ficheiro tem **632 linhas, não 749**. O número errado estava no `CONTEXT.md`
   e no `CLAUDE.md`, corrigido a 14/09/2026. *Inferência:* 749−632 = 117, compatível com a
@@ -534,9 +540,14 @@ a importância dela, não diminui** — e é o que torna 6.2 sério.
 - `[ficheiro]` Cabeçalho "Generated: 2026-04-12", num ficheiro com notas de 09/09 no corpo e
   modificado a 09/09. O "38 incremental migrations" era exacto a 12/04 (42 locais menos as 4
   de 09/09). **O corpo foi actualizado e o cabeçalho não** — outra vez o defeito da Stack.
-- Nome de política divergente: `Allow public read on bookmarks` `[ficheiro]` l.565 contra
-  `Public read` `[bd]`. E `idx_eixos_archive_axis_week` existe `[bd]` mas não na secção 3
-  `[ficheiro]` — logo "recreate the full schema" não é exacto.
+- **[CORRIGIDO]** Nome de política divergente: `Allow public read on bookmarks`
+  `[ficheiro]` l.565 contra `Public read` `[bd]`. Renomeado no ficheiro a 14/09/2026, e a
+  assinatura md5 das políticas **com nome** passou a coincidir com a da base (6.7).
+- **[CORRIGIDO]** `idx_eixos_archive_axis_week` existia `[bd]` e faltava à secção 3
+  `[ficheiro]` — logo "recreate the full schema" não era exacto. Acrescentado a 14/09/2026
+  com a definição `(axis, week_start DESC)`, **lida de `pg_indexes.indexdef` na instância
+  real**; o segundo teste confirmou que nasce idêntico (6.7). Os índices `idx%` do ficheiro
+  passaram de 9 para 10, o número que a base tem.
 
 ### 6.5 — o ficheiro foi corrido, e a promessa da linha 6 cumpre-se
 
@@ -606,9 +617,67 @@ ficheiro, não do ficheiro.**
 
 **Decisão, aplicada ao ficheiro a 14/09/2026:** `BEGIN`/`COMMIT` entram — **não por serem
 necessários no caminho testado**, mas para que a garantia **deixe de depender de quem corre
-o ficheiro**. No dia da emergência ninguém escolhe o caminho de execução com cuidado. O
-`pg_cron` foi criado dentro de uma transacção na corrida 1, portanto não há obstáculo
-conhecido a ter as extensões lá dentro.
+o ficheiro**. No dia da emergência ninguém escolhe o caminho de execução com cuidado.
+
+**A decisão foi depois verificada por execução, não deixada em inferência — ver 6.7.** O
+ficheiro já alterado foi corrido de ponta a ponta numa base vazia e passou, **incluindo o
+`CREATE EXTENSION pg_cron` dentro de um bloco de transacção explícito**: a hipótese de que
+alguma instrução recusasse correr lá dentro fica **refutada por execução**. A afirmação do
+cabeçalho sobre a corrida interrompida deixou de ser raciocínio e passou a ser medida.
+
+### 6.7 — o ficheiro corrigido foi corrido, e o schema passou a coincidir nas três assinaturas
+
+`[sessão 13][bd]` **Motivo do segundo teste:** a correcção da secção anterior alterou o
+ficheiro e **ele não voltou a ser corrido**. O cabeçalho novo afirmava que uma corrida
+interrompida não deixa rasto, e essa afirmação era inferência; pior, se alguma instrução
+recusasse correr dentro de um bloco de transacção explícito, o ficheiro teria ficado com um
+cabeçalho novo e um corpo que já não corria. **Trocar uma afirmação falsa por outra** era o
+risco, e é exactamente o defeito que esta secção documenta.
+
+**Procedimento.** Projecto `hypztdsgzuykoksrurto` restaurado da pausa; as 19 tabelas largadas
+com `CASCADE` e as extensões `pg_cron` e `pg_net` removidas, para reproduzir uma base
+genuinamente vazia — confirmado antes de correr: 0 tabelas, 0 políticas, 0 das duas
+extensões. Estrutura verificada antes do teste: 660 linhas, `BEGIN` na l.28, `COMMIT` na
+l.655, primeira instrução executável na l.38 e última na l.630 — **nenhuma instrução fora da
+transacção** —, 24 `CREATE POLICY` e 11 instruções de índice.
+
+> **A ressalva de transmissão de 6.5 não se aplica a este teste.** O ficheiro corrido tem
+> `sha256` `2b4eb167cbb671cd7df82f731819b43b0e7799c175515223bce079321e241a9a`, **idêntico ao
+> do ficheiro versionado** — confirmado no terminal contra a cópia em disco. Aqui não há
+> transmissão a atestar por consequência: é o mesmo ficheiro, byte a byte.
+
+**Resultado: passou.** Incluindo `CREATE EXTENSION pg_cron` **dentro** da transacção
+explícita — ver 6.6.
+
+**E o schema produzido é agora exactamente o da instância real, nas três assinaturas:**
+
+| | teste, ficheiro corrigido | real |
+|---|---|---|
+| tabelas | 19 | 19 |
+| políticas | 24 | 24 |
+| índices `idx%` | **10** | **10** |
+| extensões alvo | 2 | 2 |
+| assinatura md5 das colunas | `48ba226abfeb347bf2734a123c8944f7` | **igual** |
+| assinatura md5 das políticas, **com** o nome | `1a9a969bc40f5ba54b5041a0707885d0` | **igual** |
+
+A assinatura de políticas com o nome era `e6907c4d96fd5dc96087977f6c9b2842` antes da
+correcção e **passou a coincidir**: a renomeação da política de `bookmarks` para
+`Public read` **fechou a última divergência de políticas**. Os índices `idx%` passaram de 9
+para 10, e o índice acrescentado **nasceu com a definição idêntica à real** —
+`CREATE INDEX idx_eixos_archive_axis_week ON public.eixos_archive USING btree (axis, week_start DESC)`.
+
+> **Proveniência da definição do índice.** O `(axis, week_start DESC)` não foi escolha de
+> ninguém: foi **lido de `pg_indexes.indexdef` na instância real a 14/09/2026**, antes de ser
+> escrito no ficheiro. A definição não chegou a passar para o registo de sessão — só o nome
+> do índice passou —, e o terminal aplicou-a assinalando que não a conseguia verificar do
+> lado dele. **A omissão foi do registo, e o reparo estava certo.** Fica aqui a proveniência
+> que faltava.
+
+**Nota de método, para o apêndice.** Este teste existe porque uma correcção foi aplicada e
+dada por boa **sem ser corrida**. O padrão repetiu-se três vezes num dia — a secção Stack, o
+cabeçalho da consolidada, e depois a própria correcção do cabeçalho: **o corpo muda e a
+afirmação sobre o corpo fica para trás.** Não é descuido de quem escreve; é o que acontece
+quando a afirmação e a coisa afirmada vivem em sítios diferentes.
 
 ### O que confere
 
@@ -629,9 +698,13 @@ e um histórico de migrações que não corresponde a nada.
 **As quatro primeiras foram corrigidas a 14/09/2026, depois de o ficheiro ter sido corrido
 pela primeira vez** (6.5 e 6.6): cabeçalho reescrito sem a palavra "idempotent" e com a
 condição de uso à vista, corpo envolvido em `BEGIN`/`COMMIT`, `idx_eixos_archive_axis_week`
-acrescentado, política de `bookmarks` renomeada para `Public read`. **O histórico de
-migrações (6.3) não é corrigível** — é o que é, e é por isso que continua a ser o achado
-mais importante desta secção.
+acrescentado, política de `bookmarks` renomeada para `Public read`. **E o ficheiro corrigido
+foi então corrido outra vez** (6.7), porque uma correcção dada por boa sem ser corrida é o
+mesmo defeito noutra roupa: passou, e o schema que produz coincide com o da instância real
+nas três assinaturas.
+
+**O histórico de migrações (6.3) não é corrigível** — é o que é, e é por isso que continua a
+ser o achado mais importante desta secção: foi o único que sobreviveu a tudo o resto.
 
 Para o apêndice metodológico, **6.3 vale mais do que a correcção**: o plano de recuperação
 assentava num registo de migrações que não descreve a base de dados que existe, e ninguém
@@ -640,27 +713,28 @@ o que acontece à rastreabilidade quando se constrói com ferramentas que escrev
 
 ### Resolvido a 14/09/2026
 
-- [x] **A re-corrida e a corrida interrompida — fechadas.** O ficheiro passou a declarar a
-      condição de uso no cabeçalho, sem a palavra "idempotent", e o corpo ficou envolvido em
-      `BEGIN`/`COMMIT`. Uma corrida interrompida deixa de deixar rasto; uma segunda corrida
-      continua a falhar, e agora **está escrito no ficheiro que falha, e com que erro**.
-      O `BEGIN` entra apesar de 6.6 ter mostrado que é redundante no caminho testado: a
-      razão é tornar a garantia **independente de quem corre o ficheiro**.
-- [x] **6.4, as duas partes corrigíveis.** `idx_eixos_archive_axis_week` acrescentado à
-      secção 3; política de `bookmarks` renomeada para `Public read`, o nome que a base tem.
+- [x] **A re-corrida e a corrida interrompida — fechadas, e verificadas por execução.** O
+      ficheiro passou a declarar a condição de uso no cabeçalho, sem a palavra "idempotent",
+      e o corpo ficou envolvido em `BEGIN`/`COMMIT`. **O ficheiro já corrigido foi corrido de
+      ponta a ponta numa base vazia e passou** (6.7) — incluindo o `CREATE EXTENSION pg_cron`
+      dentro da transacção explícita, hipótese de recusa **refutada por execução**. A
+      afirmação do cabeçalho sobre a corrida interrompida **não é inferência**.
+- [x] **6.4, as duas partes de estado.** `idx_eixos_archive_axis_week` acrescentado com a
+      definição lida de `pg_indexes.indexdef`; política de `bookmarks` renomeada para
+      `Public read`. **As três assinaturas do schema produzido coincidem agora com as da
+      instância real**, incluindo a de políticas com nome, que era a última a divergir.
       Restam as imprecisões **históricas** — o `749` e o cabeçalho "Generated: 2026-04-12" —,
       que são **registo do que se pensou e quando**, não estado a corrigir.
 - [x] **Cabeçalho do SQL.** Reescrito: data de geração, data de edição do corpo, data em que
-      o cabeçalho a acompanhou, condição de uso e remissão para 6.5 e 6.6.
+      o cabeçalho a acompanhou, condição de uso e remissão para 6.5, 6.6 e 6.7.
 
 ### Em aberto
 
-- [ ] **O comportamento pelo caminho `psql` continua por verificar.** `psql` **sem**
-      `--single-transaction` confirma instrução a instrução; com o `BEGIN`/`COMMIT` agora
-      dentro do ficheiro, a expectativa é que o rollback funcione à mesma, **mas isso não
-      foi testado** — o teste de 14/09 exigia a senha da base do projecto descartável, que
-      não estava disponível. É a única afirmação desta secção que assenta em leitura e não
-      em execução.
+- [ ] **O comportamento pelo caminho `psql` sem `--single-transaction`.** Com o
+      `BEGIN`/`COMMIT` dentro do ficheiro a questão perde peso — a transacção passou a ser
+      **propriedade do ficheiro e não do executor** —, mas **não foi medida**: exige a senha
+      da base, que não estava disponível. É **a única afirmação desta secção que continua a
+      assentar em leitura e não em execução**.
 - [ ] **Apagar o projecto de teste `hypztdsgzuykoksrurto`.** Está **pausado** desde
       14/09/2026 e custa 0 USD, logo não há urgência. **Exige o painel do Supabase:** o MCP
       não elimina projectos, só pausa.

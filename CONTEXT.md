@@ -670,8 +670,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       `ERROR 42710`. Quatro correcções aplicadas: corpo envolvido em `BEGIN`/`COMMIT`,
       cabeçalho reescrito sem a palavra "idempotent" e com a condição de uso,
       `idx_eixos_archive_axis_week` acrescentado e a política de `bookmarks` renomeada para
-      `Public read`. **Fica por verificar uma coisa só:** o comportamento pelo caminho
-      `psql` sem `--single-transaction`. Ver `AUDIT.md` secção 6, com 6.5 e 6.6.
+      `Public read`. **E o ficheiro já corrigido foi corrido outra vez**, de ponta a ponta
+      numa base vazia: passou, incluindo o `CREATE EXTENSION pg_cron` dentro da transacção,
+      e **o schema produzido coincide com o da instância real nas três assinaturas md5** —
+      colunas, políticas sem nome e políticas **com** nome, que era a última a divergir.
+      **Fica por verificar uma coisa só:** o comportamento pelo caminho `psql` sem
+      `--single-transaction`. Ver `AUDIT.md` secção 6, de 6.1 a 6.7.
 - [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
       Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
       alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
