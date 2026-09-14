@@ -250,10 +250,27 @@ anterior. Confirmado por MCP directo na instância nova: as mesmas extensões
 existem lá (herdadas do schema migrado), mas `select * from cron.job` devolve
 **zero linhas** — a capacidade foi migrada, o agendamento nunca foi.
 
-Achado secundário, sem relação com o caso: ficheiro workflow duplicado e órfão em
-`scripts/.github/workflows/youtube-trends.yml` — confirmado que não executa
-(GitHub só lê `.github/workflows/` na raiz do repo) e não menciona Supabase.
-Candidato a remoção por higiene, sem urgência.
+Achado secundário, sem relação com o caso: pasta `scripts/.github/workflows/`
+duplicada e órfã — confirmado que não executa, porque o GitHub só lê
+`.github/workflows/` na raiz do repositório. **Tinha dois ficheiros, não um:**
+
+- `youtube-trends.yml` — workflow duplicado, não menciona Supabase.
+- `7_fetch_autocomplete_questions.py` — **não registado nesta nota até
+  14/09/2026, e não é cópia do script activo.** É a versão anterior a
+  09/09/2026: tem a chave `anon` escrita no código (l.30) e **não tem a guarda
+  `os.environ.get("SUPABASE_SERVICE_ROLE_KEY")`** que faz o script activo parar
+  em voz alta quando o secret falta. Correr esta por engano seria correr sem
+  gravar nada — é pior do que a activa, não igual.
+
+**Movidos a 14/09/2026** (sessão 13), com `git mv` e sem apagar nada, para
+`_antigos/scripts-github-workflows-youtube-trends.yml` e
+`_antigos/scripts-github-workflows-7_fetch_autocomplete_questions.py`.
+A pasta `scripts/.github/` deixou de existir.
+
+**Mover não removeu a chave `anon` do repositório nem do histórico, e não
+precisava:** a chave `anon` é pública por desenho e o que fecha o risco é o
+RLS, fechado a 09/09/2026 — ver `CONTEXT.md`, Crítico nº 1. Isto foi higiene,
+não foi tapar um buraco de segurança.
 
 **Hipótese levantada e refutada:** ligação entre o hardcode de datas em
 `pdfExport.ts` (`["2025-10"..."2026-03"]`, já registado na secção anterior) e a
