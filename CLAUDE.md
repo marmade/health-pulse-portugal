@@ -2,7 +2,8 @@
 
 > Estas duas regras são para o **Claude Code**. Há regras do projecto que não estão aqui:
 > as que são para as sessões do Cowork/claude.ai vivem em `CONTEXT.md`, secção "Padrões
-> estabelecidos", porque é esse o ficheiro que essas sessões leem.
+> estabelecidos", porque é esse o ficheiro que essas sessões leem. **Ver a secção final**
+> antes de consolidar ou arrumar regras entre os dois ficheiros.
 
 ## 1. Sem linhas de atribuição nos commits
 
@@ -28,3 +29,14 @@ precisamente o dia em que ninguém revê 749 linhas. **Antes de a reaplicar, aud
 o estado actual da base de dados**, tabela a tabela e política a política.
 
 Ver o item próprio em `CONTEXT.md`, Pendentes → Restantes.
+
+---
+
+## Regras que não estão aqui — não as dupliques, não as apagues
+
+**A regra sobre não usar git através da ponte de ficheiros do Cowork vive no `CONTEXT.md`,
+secção "Padrões estabelecidos".** Está lá e não aqui de propósito: serve às sessões do
+Cowork/claude.ai, e são elas que leem o `CONTEXT.md`.
+
+**Não a dupliques neste ficheiro e não a apagues ao consolidar ficheiros.** A quem lê só um
+dos dois ela parece redundante — e é precisamente por isso que desaparece numa arrumação.
