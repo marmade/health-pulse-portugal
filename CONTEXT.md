@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-14 (sessão 13)
+> Última actualização: 2026-09-15 (sessão 14)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -8,9 +8,14 @@
 > Na instância nova **já não há contactos pessoais legíveis**: `contactos_projecto` está
 > fechada ao anónimo e os e-mails e telefones de `revisao_pares` foram esvaziados a
 > 09/09/2026 (sessão 12), sem apagar linhas nem esvaziar a página.
-> **Fica uma exposição:** os mesmos dados na instância antiga `cyjwhmuakmiytypewwfw`, que
-> responde e não está protegida. SQL pronto em `docs/operacoes/`; a instância vai ser
-> apagada por inteiro. Ver Pendentes Críticos nº 4.
+> **Fica uma exposição, e é maior do que este documento dizia até 15/09/2026:** os mesmos
+> dados na instância antiga `cyjwhmuakmiytypewwfw`, que responde, não está protegida **e
+> escreve todos os dias às 06:00 UTC**. Um `pg_cron` interno, invisível no repositório,
+> corre desde 09/03/2026 sem falhar um dia. **"Congelada" era falso.** SQL pronto em
+> `docs/operacoes/`; a instância vai ser apagada por inteiro. Ver Pendentes Críticos nº 4 e
+> `docs/evidencia/2026-09-15-cron-instancia-antiga/`.
+> **Publicado desde 15/09/2026** em `dizquedisse.martamadeira.pt` (Cloudflare Pages), a ler
+> a instância nova. A rota `/admin` foi removida no mesmo dia — ver Crítico nº 2.
 
 ---
 
@@ -32,6 +37,10 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
+| O `succeeded` do `pg_cron` não prova escrita | 15/09/2026 | `[sessão 14][bd]` Duração de cada execução em `cron.job_run_details` | ~**100 ms** por execução (06:00:00.214546 → .313409, a 15/09). Recolher 44 feeds RSS não se faz em décimo de segundo: o `net.http_post` **despacha** o pedido e devolve. **É a mesma armadilha do `success` do GitHub Actions** (`AUDIT.md` secções 2 e 3) — duas ferramentas, o mesmo erro de leitura. O que prova escrita é o crescimento de `news_items`, não o verde |
+| A instância nova não tem agendador interno | 15/09/2026 | `[sessão 14][bd]` `select count(*) from cron.job` por MCP Supabase, re-corrido no terminal antes do commit | **0 linhas.** Toda a automação da instância viva passa pelo `youtube-trends.yml`, que está versionado. **É a diferença que interessa:** na antiga a automação era invisível e ninguém a podia auditar; na nova lê-se num ficheiro |
+| A rota `/admin` saiu do bundle publicado | 15/09/2026 | `[sessão 14][ficheiro]` `grep` ao literal de `ADMIN_PASSWORD` em `dist/assets/*.js`, antes e depois de remover a rota e o `import` de `src/App.tsx`, com `npm run build` de raiz | **Antes: 1 ocorrência** em `index-DNndhXC6.js`. **Depois: 0**, e zero para `ADMIN_PASSWORD` e para as outras marcas do painel. Bundle de 1752,31 kB para **1642,12 kB**. O `import` teve de sair com a rota: mantê-lo deixaria o `Admin.tsx` no bundle com a password lá dentro, apenas inalcançável por URL |
 | O pipeline escreve com `service_role` numa corrida **agendada** | 14/09/2026 | `[sessão 13][bd][agregado]` `count(*)` por tabela nas 19 (`query_to_xml` sobre `pg_class`, MCP Supabase), comparado com 07/09 e 09/09 · `[documento]` API pública do GitHub, `actions/runs` | Run **#38**, evento `schedule`, 14/09 12:18–12:35 UTC, `success`. `news_items` 278→**310**, `health_questions` 4604→**4647**, `guioes_semanais` 25→**29**, `eixos_archive` 24→**28**, `youtube_trends` 22→**19** (substituição: o script 4 faz DELETE). **Primeira corrida agendada depois da migração `20260909190000`** — e a primeira de qualquer tipo: o #37 foi manual e anterior à migração. Escreveu com **zero políticas de escrita para `public`/`anon`**. **Ressalva:** a chave anon continua a invocar as Edge Functions dos passos 4, 6 e 7 (`youtube-trends.yml:10`) — o que ficou provado é que a **escrita** não depende dela, não que saiu do pipeline |
 | `historical_snapshots` continua parada, por desactivação e não por falha | 14/09/2026 | `[sessão 13][bd][agregado]` `count(*)` directo | **3462 linhas, inalteradas** desde 07/09. Coerente com os passos 1 e 3 comentados a 14/08/2026 |
 | Nenhuma política de escrita sobreviveu para `public`/`anon` | 14/09/2026 | `[sessão 13][bd]` `pg_policies` filtrado a `cmd <> 'SELECT'`, com a coluna `roles` | **6 políticas de escrita, todas `{service_role}`**: `app_settings` (ALL), `historical_snapshots` (INSERT), `news_items` (INSERT), `plataforma_popups` (ALL), `sobre_conteudo` (ALL), `trends_cache` (ALL). Zero para `public` ou `anon`. O estado de 09/09 aguentou uma corrida completa do pipeline |
@@ -89,13 +98,20 @@
 **Reportagem Viva** — dashboard de monitorização de narrativas de saúde em Portugal (lado A)
 **Diz que Disse** — editorial de comunicação de ciências da saúde (lado B)
 
-- Lovable preview: https://preview--health-pulse-pt.lovable.app/
-- Admin: https://preview--health-pulse-pt.lovable.app/admin
-  (credencial removida do documento a 07/09/2026. Esteve em claro num
-  repositório público e **permanece no histórico do Git** — retirá-la do
-  ficheiro não a remove do repositório. Decisão de 07/09/2026: não
-  alterar a palavra-passe, porque o painel aponta para a instância antiga
-  e sai com o corte do Lovable. Até lá, o acesso é público de facto.)
+- **Site publicado (desde 15/09/2026):** https://dizquedisse.martamadeira.pt —
+  Cloudflare Pages, projecto `health-pulse-portugal`, ramo `main`, a ler a instância
+  **nova**. URL técnico: `health-pulse-portugal.pages.dev`
+- **Lovable preview — a sair, e a mostrar o estado errado:**
+  https://preview--health-pulse-pt.lovable.app/ — aponta para a instância **antiga** e
+  mostra valores de Abril como actuais. Sai com o Crítico nº 5
+- **Admin: a rota `/admin` foi removida a 15/09/2026** (ver Crítico nº 2). O `Admin.tsx`
+  não foi apagado e volta quando houver autenticação a sério. No preview do Lovable, que
+  ainda serve o bundle antigo, a rota continua a existir até o Crítico nº 5 estar feito
+  (credencial removida do documento a 07/09/2026. Esteve em claro num repositório público e
+  **permanece no histórico do Git** — retirá-la do ficheiro não a remove do repositório.
+  ~~Decisão de 07/09/2026: não alterar a palavra-passe, porque o painel aponta para a
+  instância antiga e sai com o corte do Lovable.~~ **Essa decisão caducou a 15/09/2026, e a
+  resposta não foi mudar a password — foi remover a rota.** Ver Crítico nº 2.)
 - Repositório: https://github.com/marmade/health-pulse-portugal
 - Lovable project ID: 69209c37-6f9e-4a84-bea9-8e56d0eace5a
 
@@ -110,8 +126,12 @@
     Crítico nº 3). O pipeline escreve aqui com `service_role`, a última vez na corrida
     agendada #38 de 14/09/2026. O único passo partido é o do Google Trends, comentado
     desde 14/08/2026
-  - **Por apagar:** `cyjwhmuakmiytypewwfw.supabase.co` (Lovable) — **já não é para aqui que o
-    site aponta**, mas responde e expõe os mesmos dados pessoais. Ver Crítico nº 4
+  - **Por apagar, e NÃO está inerte:** `cyjwhmuakmiytypewwfw.supabase.co` (Lovable) — já
+    não é para aqui que o site publicado aponta, mas responde, expõe os mesmos dados
+    pessoais **e escreve todos os dias às 06:00 UTC**. Um `pg_cron` interno, criado no
+    dashboard e **invisível no repositório**, corre desde 09/03/2026 — 191 execuções em 191
+    dias. Verificado a 15/09/2026, evidência em
+    `docs/evidencia/2026-09-15-cron-instancia-antiga/`. Ver Crítico nº 4
   - **Corrigido a 14/09/2026 — e o erro vale a pena ficar registado.** Esta secção dizia, até
     hoje, que a instância antiga estava "em uso de facto" e que o `.env` apontava para lá.
     Era verdade a 13/08/2026 e deixou de ser a 09/09/2026, sem que a secção fosse
@@ -126,7 +146,17 @@
   - Enquanto o Lovable Cloud estiver ligado ao projecto, editar no editor visual pode alterar
     o `.env` sem aviso — foi o que aconteceu a 21/05/2026, commit `5246597`
 - **Design:** Space Grotesk, azul `#0000FF`, magenta `#FF00FF`, fundo branco, sem sombras nem gradientes
-- **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`
+- **Publicação:** **Cloudflare Pages** desde 15/09/2026 — projecto `health-pulse-portugal`,
+  ligado a `marmade/health-pulse-portugal`, ramo de produção `main`, preset Vite,
+  `npm run build`, output `dist`. Domínio `dizquedisse.martamadeira.pt`; URL técnico
+  `health-pulse-portugal.pages.dev`. As variáveis `VITE_SUPABASE_URL` e
+  `VITE_SUPABASE_PUBLISHABLE_KEY` têm de estar definidas em **Production e Preview** — sem
+  elas o build **passa** e o site abre em branco, como aconteceu no primeiro deployment.
+  **Por confirmar:** a versão de Node que o Cloudflare usou; o `.nvmrc` pede 20 e o log do
+  build não foi consultado
+- **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`.
+  **Na instância viva não há agendador interno** — `cron.job` devolve 0 linhas, verificado a
+  15/09/2026. Toda a automação dela é um ficheiro versionado
 - **Claude Code:** instalado localmente; comando `claude`, a partir de `~/Documents/health-pulse-portugal`
 
 ---
@@ -354,8 +384,15 @@ explica o motivo e a condição para religar:
 >   Essa afirmação nunca foi testada com os critérios de 07/09, e o período 09/03–12/04 é
 >   exactamente o mesmo que está contaminado na instância nova. Tratar como **não
 >   verificada** até correr lá o teste dos valores impossíveis. Ver `AUDIT.md` secção 4.
-> - É a instância antiga que o **site publicado** lê. Quem abrir o URL hoje vê valores de
->   Abril apresentados como actuais — quatro meses de atraso.
+> - ~~É a instância antiga que o **site publicado** lê. Quem abrir o URL hoje vê valores de
+>   Abril apresentados como actuais — quatro meses de atraso.~~
+>   **Deixou de ser verdade a 15/09/2026.** O site passou a estar publicado em
+>   `dizquedisse.martamadeira.pt` (Cloudflare Pages) e lê a instância **nova** — cabeçalho a
+>   mostrar 10/08/2026, confirmado no browser. **Mas o preview do Lovable continua a apontar
+>   para a antiga** e continua a mostrar Abril como actual.
+>   **Enquanto os dois endereços existirem há duas versões do site a dizer coisas
+>   diferentes — e a errada é a que tem o endereço mais antigo e mais divulgado.** É mais um
+>   motivo para o Crítico nº 5 não esperar.
 >
 > `news_items` não é afectada em nenhuma das duas — mantém-se real e contínua.
 
@@ -500,7 +537,35 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
    O que NÃO resolve: pôr um ecrã de login no frontend. Enquanto as políticas forem para o
    role `public`, uma sessão autenticada tem exactamente os mesmos poderes que um anónimo.
-   A password actual (`Admin.tsx:463`) é comparada no cliente e vai no bundle.
+   A password (`Admin.tsx:26` e `:463`) é comparada no cliente e ia no bundle.
+
+   **ROTA `/admin` REMOVIDA a 15/09/2026, e não foi por a password ser fraca.** O que
+   mudou nesse dia foi o contexto: o deploy no Cloudflare deu ao painel um endereço **novo e
+   permanente**, e a decisão de 07/09 — não mexer, porque o painel sai com o Lovable —
+   assentava num pressuposto que deixou de valer. O painel não saiu; ganhou uma segunda
+   porta.
+
+   Três razões, por ordem de peso:
+   1. **O custo de remover é perto de zero.** O `/admin` não escreve desde 09/09/2026 e a
+      gestão de conteúdos já passou para o painel Supabase. Não se perde nada que esteja a
+      ser usado.
+   2. **Mudar a password não protegia nada.** É comparada no cliente e viajava no bundle —
+      qualquer pessoa com o ficheiro a lê. Uma password nova seria uma password nova
+      publicada.
+   3. **O risco não é hoje, é no dia do Crítico nº 2.** Hoje as políticas de escrita são só
+      `service_role`, logo a porta aberta dá acesso a um painel que não escreve. **No dia em
+      que este pendente repuser escrita, essa porta passaria a dar para uma casa com as
+      luzes acesas** — e nada no plano obrigava a fechá-la primeiro.
+
+   **O que foi removido, exactamente:** a `<Route>` **e o `import`** em `src/App.tsx`. O
+   `import` teve de sair com a rota — mantê-lo deixaria o `Admin.tsx` no bundle, com a
+   password lá dentro, apenas inalcançável por URL. **Provado, não presumido:** o literal da
+   password tinha **1 ocorrência** em `dist/assets/index-DNndhXC6.js` antes e **0** depois,
+   com o bundle a passar de 1752,31 kB para 1642,12 kB.
+
+   **O `Admin.tsx` NÃO foi apagado**, nem nada à volta dele. Fica em disco, fora do bundle,
+   e **volta quando os cinco passos abaixo estiverem feitos** — é essa a condição de
+   regresso, e é por isso que ela está escrita aqui e não noutro sítio.
 
    O que resolve, por esta ordem:
    1. Supabase Auth com utilizador real para a Marta
@@ -528,11 +593,33 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    e `npm run build` correram. O bundle publicado contém
    `https://ijpxjpbjudaddfatibfl.supabase.co` e **zero ocorrências de `cyjwhmuakmiytypewwfw`**.
    É prova mais forte do que o teste REST: não é a API que responde certo, é o ficheiro
-   compilado que tem lá a instância certa. Falta só abrir no browser.
+   compilado que tem lá a instância certa.
+   **Fechado a 15/09/2026.** O site publicado no Cloudflare mostra no cabeçalho
+   **"ACTUALIZADO 10/08/2026 — 09:27"** — a data em que a série de trends parou, e **não**
+   Abril. É a confirmação no browser que faltava, e o Crítico nº 3 fica integralmente
+   fechado: bundle, REST e browser dizem os três a mesma coisa.
 
 4. [ ] **Instância antiga `cyjwhmuakmiytypewwfw` — apagar os dados pessoais, e depois a
    instância inteira.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**.
    Apagar as linhas primeiro é para não ficar exposto no intervalo.
+
+   **ACTUALIZADO a 15/09/2026 — a instância não está inerte, e isso muda o item.** Tem dois
+   `pg_cron` internos, criados no dashboard e invisíveis no repositório. O **job 1 está
+   activo** e invoca `fetch-rss-feeds` todos os dias às 06:00 UTC: **191 execuções em 191
+   dias** desde 09/03/2026, das quais 156 depois de o projecto já ter migrado. `news_items`
+   cresceu de 1994 para 2128 entre 09/09 e 15/09. O **job 2 está inactivo** — e é essa a
+   razão de `historical_snapshots` estar parada, que até aqui se tratava como avaria.
+
+   **Nada foi apagado nem desactivado a 15/09**, deliberadamente: a decisão entre
+   **desactivar o job 1** e **apagar a instância inteira** ainda não está tomada, e apagar
+   destrói a prova. A prova foi guardada primeiro, em
+   `docs/evidencia/2026-09-15-cron-instancia-antiga/` — três CSV com `sha256` conferido e um
+   `README.md`. O SQL de apagar dados pessoais continua válido se a decisão for faseada.
+
+   **O acesso administrativo a esta instância é o SQL editor do Lovable Cloud** — o MCP
+   responde "You do not have permission" e a chave `anon` não lê o schema `cron`. Logo
+   **cortar o Lovable antes de decidir isto fecha a única porta** por onde os jobs se
+   desactivam. A ordem entre o Crítico nº 4 e o nº 5 deixou de ser indiferente.
 
    **SQL pronto:** `docs/operacoes/2026-09-09-instancia-antiga-apagar-dados-pessoais.sql`.
    Corre no SQL Editor do painel, projecto `cyjwhmuakmiytypewwfw`. Não é migração deste

@@ -11,7 +11,6 @@ import Guioes from "./pages/Guioes";
 import RevisaoPares from "./pages/RevisaoPares";
 import Mural from "./pages/Mural";
 import Plataforma from "./pages/Plataforma";
-import Admin from "./pages/Admin";
 import Bookmarks from "./pages/Bookmarks";
 import Benchmark from "./pages/BenchmarkWrapper";
 import NotFound from "./pages/NotFound";
@@ -37,7 +36,11 @@ const App = () => (
           <Route path="/plataforma" element={<Plataforma />} />
           <Route path="/editorial/bookmarks" element={<Bookmarks />} />
           <Route path="/editorial/benchmark" element={<Benchmark />} />
-          <Route path="/admin" element={<Admin />} />
+          {/* Rota /admin removida a 15/09/2026 — ver CONTEXT.md, Crítico nº 2.
+              O Admin.tsx NÃO foi apagado: volta quando houver autenticação
+              Supabase a sério. O import saiu com a rota de propósito — mantê-lo
+              deixaria o ficheiro no bundle, com a password lá dentro, apenas
+              inalcançável por URL. */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
