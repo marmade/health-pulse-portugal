@@ -788,6 +788,25 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    - séries longas em vez de pontos isolados; `geo=PT`; grupos com keyword-âncora
    - `NULL` + `collection_status` nas falhas, nunca `0`
 
+   **Justificação nova, de 15/09/2026 — e é mais forte do que a que o item tinha.** Até aqui
+   este pendente justificava-se por qualidade: *a série não é defensável na tese*. Passa a
+   justificar-se por **objecto**: **sem série diária por keyword, o projecto não consegue
+   observar o mecanismo que diz estudar.**
+
+   O que o faz aparecer é um caso concreto. `azia` produziu uma correspondência **correcta** —
+   *"Pepa: «Acabei o jogo com azia»"* — em que a palavra está no sentido certo e o sujeito é
+   um treinador de futebol. Levanta-se a hipótese de que uma notícia assim **gere** procura de
+   literacia em saúde; e se gerar, **é objecto do projecto e não ruído**.
+
+   **Não é testável com os dados actuais.** O `pytrends` usa janela de três meses e não isola
+   um dia; o autocomplete tem `growth_percent = 0` em **100% das 3634 linhas**. O que
+   responderia é exactamente uma série diária por keyword.
+
+   Ou seja: o cruzamento notícia→procura, que é o que distingue este projecto de um
+   agregador, **depende deste item**. Ver
+   `docs/evidencia/2026-09-15-rotulagem-news-items/decisoes-2026-09-15.md`, ponto 4 dos
+   pendentes.
+
    Calibração entre grupos de 5 keywords: West, R. (2020), *Calibration of Google Trends
    Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
 
@@ -819,6 +838,60 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **O Mural mantém-se; o que muda é o caminho de escrita do `expandir_mural()`.**
+      `[declarado]` **Decisão da Marta, 15/09/2026: o Mural fica.** É output próprio do
+      projecto e a forma visível da hipótese do vocabulário — a lista curada como termo de
+      comparação, os termos detectados ao lado, e a zona onde não coincidem como objecto.
+      A objecção inicial da sessão confundia o Mural com o mecanismo que o alimenta, e foi
+      retirada.
+
+      **Os quatro defeitos do caminho de escrita** `[sessão 14][ficheiro]`
+      `scripts/6_fetch_health_questions.py:288-338`:
+      1. **`is_active: True` no payload (l.323).** Um termo detectado entra imediatamente na
+         lista que **rotula as notícias** (`fetch-rss-feeds/index.ts:157` selecciona
+         `is_active=true`). **Estar no Mural e rotular notícias são hoje o mesmo campo, e têm
+         de ser dois.**
+      2. **Não há coluna de proveniência.** Depois de inserido, um termo detectado é
+         indistinguível de um curado — e é **isto**, não a inserção, que apagaria a afirmação
+         `[declarado]` de que a lista vem do SNS 24 e da DGS. Com `origem` + data, a lista
+         original continua recuperável e o Mural **mostra** a distinção em vez de a apagar.
+      3. **Escreve volumes fabricados** (l.325-327): `previous_volume: 0`, `trend: "up"` fixo,
+         `current_volume` igual ao `relative_volume` inventado. Contradiz a regra de que
+         nenhuma falha de recolha se escreve como valor.
+      4. **A selecção dos 20 não é um ranking** (l.307-308). Ordena por `growth_percent` e
+         corta nos 20 primeiros, mas **36,3% dos valores estão empatados no tecto de 9999** —
+         o grupo do tecto vem todo à frente e os 20 são arbitrários dentro dele.
+
+      **ORDEM, e é o ponto do item: decidir os quatro pontos ANTES de religar o `400`.** Não
+      porque a função não deva existir, mas porque **no minuto em que voltar a funcionar
+      começa a escrever com o desenho actual**. Diagnosticar é barato e pode ser feito em
+      paralelo; **religar é que não.** Detalhe em
+      `docs/evidencia/2026-09-15-rotulagem-news-items/pendente-mural.md`.
+- [ ] **Fonte institucional comprometida — `spesf.pt`.** `[sessão 14][ficheiro]` A Sociedade
+      Portuguesa de Enfermagem de Saúde Familiar **serve spam de casino em finlandês**, e uma
+      dessas páginas **está no corpus com `source_type = institucional`** — a marca de
+      credibilidade que o dashboard mostra ao leitor. Registo de 19/03/2026, título
+      *"5 Vinkkiä Jackpottien Valloittamiseen Rizk Casinolla"*, rotulado
+      `síndrome de intestino irritável`.
+      **Verificado a partir do corpus exportado, não por visitar o site** — e visitar é
+      precisamente o que não se deve fazer sem cuidado. **Acção da Marta:** verificar o
+      estado do site e provavelmente **remover a fonte** de `fetch-rss-feeds` (está na lista
+      `FEEDS`). Mostra que `source_type` é atribuído pela **origem do feed**, não por
+      qualquer verificação do conteúdo.
+- [ ] **Guardar as categorias RSS e o texto que produziu o rótulo.** `[sessão 14][ficheiro]`
+      Os feeds trazem habitualmente `<category>`, e o `extractItems`
+      (`fetch-rss-feeds/index.ts:117-135`) extrai título, link, data e descrição — **nunca lê
+      as categorias**. Guardá-las, e guardar o excerto que accionou a correspondência, é o que
+      **torna decidível uma regra por secção** em vez de uma lista de palavras escrita à mão.
+      **É também o que fecha o buraco de diagnóstico que esta sessão encontrou:** a recolha
+      procura no título **mais 200 caracteres da descrição**, e a descrição **não é guardada**
+      — logo **30,0% dos rótulos actuais não têm vestígio nenhum no que ficou** e não são
+      auditáveis.
+      **Sinal independente que já existe:** a secção no URL. Dos 310, **124 (40,0%)** vêm de
+      secções que o próprio jornal não considera saúde — mundo, desporto, fama, cultura,
+      política, economia, opinião. **Mas 125 (40,3%) não têm secção nenhuma no URL.**
+      *Ressalva: a divisão saúde/não-saúde é juízo de quem escreveu o script de diagnóstico,
+      sobre nomes de secção que são dos jornais.*
 - [ ] **`expandir_mural()` falha com HTTP 400 todas as semanas, sem diagnóstico — e corrigi-lo
       tem uma consequência que só apareceu a 15/09/2026.** Achado na sessão 11, registado na
       12 (`docs/sessoes/2026-09-09.md:143`), e **só entra nesta lista a 15/09/2026**: até aqui
@@ -829,7 +902,14 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       por isso que a ordem física das linhas não muda. **Corrigi-lo activa a variação da
       rotulagem de `news_items`** (ver a linha da tabela de Verificações e
       `docs/evidencia/2026-09-15-rotulagem-news-items/`). Não é razão para não o corrigir; é
-      razão para **pôr o `ORDER BY` determinista primeiro**.
+      razão para o fazer **por esta ordem**.
+      **Duas precondições, e são de naturezas diferentes:**
+      1. **`ORDER BY` determinista** na consulta às keywords — técnica, barata, e sem ela as
+         inserções tornam a rotulagem variável entre corridas;
+      2. **decidir os quatro pontos do caminho de escrita** — item do Mural, acima. **No
+         minuto em que o `400` for corrigido, a função começa a escrever com o desenho
+         actual.**
+      **Diagnosticar o `400` é barato e pode ser feito já; religar é que não.**
 - [ ] **`<![CDATA[` nos títulos e a má rotulagem — uma só intervenção, decidida para
       quinta 17/09/2026.** Os dois defeitos estão no mesmo ficheiro,
       `supabase/functions/fetch-rss-feeds/index.ts`, e corrigem-se no mesmo redeploy. Estado
