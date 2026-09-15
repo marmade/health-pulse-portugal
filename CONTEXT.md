@@ -8,12 +8,14 @@
 > Na instância nova **já não há contactos pessoais legíveis**: `contactos_projecto` está
 > fechada ao anónimo e os e-mails e telefones de `revisao_pares` foram esvaziados a
 > 09/09/2026 (sessão 12), sem apagar linhas nem esvaziar a página.
-> **Fica uma exposição, e é maior do que este documento dizia até 15/09/2026:** os mesmos
-> dados na instância antiga `cyjwhmuakmiytypewwfw`, que responde, não está protegida **e
-> escreve todos os dias às 06:00 UTC**. Um `pg_cron` interno, invisível no repositório,
-> corre desde 09/03/2026 sem falhar um dia. **"Congelada" era falso.** SQL pronto em
-> `docs/operacoes/`; a instância vai ser apagada por inteiro. Ver Pendentes Críticos nº 4 e
-> `docs/evidencia/2026-09-15-cron-instancia-antiga/`.
+> **A exposição da instância antiga fechou a 15/09/2026, 12:07–12:10 UTC.** Durante o dia
+> soube-se que ela não estava congelada — escrevia todos os dias às 06:00 por um `pg_cron`
+> interno invisível no repositório, desde 09/03/2026 — e no mesmo dia **os dois jobs foram
+> postos inactivos e as duas tabelas de dados pessoais apagadas**. Verificado por fora com a
+> chave `anon`: `contactos_projecto` e `revisao_pares` devolvem `[]`. **A instância continua
+> a existir e a responder**, com os dados não pessoais; apagá-la por inteiro passou de
+> urgência a arrumação. Ver Crítico nº 4, `docs/evidencia/2026-09-15-cron-instancia-antiga/`
+> e o arquivo em `docs/arquivo/2026-09-15-instancia-antiga/`.
 > **Publicado desde 15/09/2026** em `dizquedisse.martamadeira.pt` (Cloudflare Pages), a ler
 > a instância nova. A rota `/admin` foi removida no mesmo dia — ver Crítico nº 2.
 
@@ -37,6 +39,8 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| Instância antiga — escrita parada e dados pessoais apagados | 15/09/2026 | `[sessão 14][painel]` `cron.alter_job(1, active := false)` e dois `DELETE`, no SQL editor do Lovable Cloud, 12:07–12:10 UTC · `[sessão 14][bd]` confirmação **por fora**, no terminal, com a chave `anon` | `cron.job`: **os dois jobs com `active = false`** — nenhum apagado, o registo mantém-se `[painel]`. `contactos_projecto` e `revisao_pares`: **`[]` e `count=0`** com a chave `anon`, confirmado no terminal. **As 14 tabelas não pessoais estão intactas** — contagens idênticas às dos CSV de `docs/arquivo/2026-09-15-instancia-antiga/`, verificadas uma a uma: nada foi apagado por arrasto. **Custo assumido:** os e-mails e telefones dos revisores só existiam aqui (na instância nova foram esvaziados a 09/09) e a decisão foi perdê-los; nomes, especialidade, link e bios continuam na nova |
+| Job 1 inactivo — prova pelo efeito, **por fazer** | — | `[por testar]` `news_items` da instância antiga está em **2128**. Se o job 1 estiver mesmo parado, **não cresce** a 16/09 às 06:00 UTC; se crescer (~+22), a desactivação não pegou | A desactivação está confirmada `[painel]` mas **não pelo efeito** — a chave `anon` não lê o schema `cron`. **Verificar a 16/09/2026.** É a diferença entre o estado que a ferramenta reporta e o que se observa, e este documento já foi mordido por ela três vezes |
 | A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
 | O `succeeded` do `pg_cron` não prova escrita | 15/09/2026 | `[sessão 14][bd]` Duração de cada execução em `cron.job_run_details` | ~**100 ms** por execução (06:00:00.214546 → .313409, a 15/09). Recolher 44 feeds RSS não se faz em décimo de segundo: o `net.http_post` **despacha** o pedido e devolve. **É a mesma armadilha do `success` do GitHub Actions** (`AUDIT.md` secções 2 e 3) — duas ferramentas, o mesmo erro de leitura. O que prova escrita é o crescimento de `news_items`, não o verde |
 | A instância nova não tem agendador interno | 15/09/2026 | `[sessão 14][bd]` `select count(*) from cron.job` por MCP Supabase, re-corrido no terminal antes do commit | **0 linhas.** Toda a automação da instância viva passa pelo `youtube-trends.yml`, que está versionado. **É a diferença que interessa:** na antiga a automação era invisível e ninguém a podia auditar; na nova lê-se num ficheiro |
@@ -64,7 +68,7 @@
 | O que o bot do Lovable fez ao `.env`, e o que o desencadeia | 09/09/2026 | `[nesta sessão]` `git fetch --all --prune`, `git log --all -m -- .env`, `git show 5246597` | **Dois commits, não um:** `5246597` (21/05 07:35:53 UTC) é a alteração, `e22227d` (07:36:47) é o merge — `git log -- .env` omitia o segundo. A alteração **repôs a instância antiga** (`ijpxjpbjudaddfatibfl` → `cyjwhmuakmiytypewwfw`) e não tocou em mais nada. Traz `Co-authored-by: marmade`: foi sessão interactiva, não o bot sozinho. **Contraprova:** a 09/09 a Marta abriu o Lovable só para ver créditos e o fetch não trouxe nada, em nenhum ramo |
 | `client.ts` não tem instância hardcoded | 09/09/2026 | `[nesta sessão]` Leitura de `src/integrations/supabase/client.ts` e `grep` por `VITE_SUPABASE` em todo o repositório | Lê `import.meta.env.VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY`, substituídos pelo Vite **em tempo de compilação**. Não há `define` no `vite.config.ts` nem outro `.env*`. **Corrigir o `.env` chega** — e o que estiver no `.env` no momento do build é o que o site usa |
 | `.env` a apontar para a instância nova | 09/09/2026 | `[nesta sessão]` Valores restaurados de `5246597^`; depois, pedido REST com as credenciais do próprio ficheiro | `news_items` devolve **288**, a contagem da instância nova. A chave do ficheiro é byte a byte a mesma que o workflow usa. **A verificação no browser NÃO foi feita:** não há Node nesta máquina |
-| A instância antiga não está fora do ar, e expõe os mesmos dados | 09/09/2026 | `[nesta sessão]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave `anon` do histórico do git | Responde a tudo. `news_items` 1994, `health_questions` 3362, `guioes_semanais` 5. **`contactos_projecto`: 4 linhas legíveis, 4 nomes, 3 e-mails, 3 telefones** — impressão dos nomes idêntica à da instância nova. `revisao_pares`: 4 linhas, com `bio_a`/`bio_b`/`afiliacao` que **não existem na nova**. "Congelada a 30/04" quer dizer sem escritas, não offline: se o site apontasse para lá não dava erro, mostrava dados errados |
+| A instância antiga não está fora do ar, e expõe os mesmos dados | 09/09/2026 | `[nesta sessão]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave `anon` do histórico do git | Responde a tudo. `news_items` 1994, `health_questions` 3362, `guioes_semanais` 5. **`contactos_projecto`: 4 linhas legíveis, 4 nomes, 3 e-mails, 3 telefones** — impressão dos nomes idêntica à da instância nova. `revisao_pares`: 4 linhas, com `bio_a`/`bio_b`/`afiliacao` que **não existem na nova**. "Congelada a 30/04" quer dizer sem escritas, não offline: se o site apontasse para lá não dava erro, mostrava dados errados. **SUPERADA a 15/09/2026 em dois pontos:** a instância **escrevia** todos os dias (não estava congelada) e as duas tabelas pessoais **foram apagadas** — hoje devolvem `[]`. A afirmação sobre `bio_a`/`bio_b` já tinha sido corrigida a 09/09 na linha CORRECÇÃO desta tabela |
 | Chave `anon` da instância nova em código versionado | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/6_…py:26` e `scripts/7_…py:29` | A chave `anon` de `ijpxjpbjudaddfatibfl` estava **hardcoded** nos dois scripts, além do `.env`. **`git rm --cached .env` não a remove do repositório** — o que fecha o risco é o RLS, não o ficheiro. *Estado a 09/09/2026: os 7 scripts passaram a ler do ambiente; os números de linha desta coluna são anteriores a essa alteração* |
 | `.env` aponta para a instância errada | 13/08/2026 | `[sessão anterior]` Leitura do ficheiro | Aponta para `cyjwhmuakmiytypewwfw` (antiga, congelada a 30/04). A oficial é `ijpxjpbjudaddfatibfl` |
 | Valores fabricados no script 7 (autocomplete) | 07/09/2026 | `[nesta sessão]` Leitura de `scripts/7_fetch_autocomplete_questions.py` | **Confirmado.** `relative_volume = max(10, 100 - pos*5)` (l.142) — a posição na lista gravada como se fosse volume; `growth_percent` fixo a `0` (l.146); `is_question` fixo a `True` (l.151), mesmo para termos que não são perguntas. **Acrescento:** `pos` acumula ao longo dos 10 seeds, logo a partir da 19ª sugestão o valor é sempre `10`. O pedido usa `gl=pt` (l.112), parâmetro sem efeito |
@@ -74,7 +78,7 @@
 | `refresh-trends` copia `current_volume` sem validar | 14/08/2026 | `[sessão anterior]` Leitura de `supabase/functions/refresh-trends/index.ts` | Confirmado; insert único e atómico, resposta 200 conta linhas preparadas, não gravadas |
 | Escrita anónima via REST bloqueada por RLS | 13/08/2026 | `[sessão anterior]` POST com chave anon a duas tabelas | HTTP 401, Postgres 42501. **Só duas tabelas testadas — e `contactos_projecto` não era nenhuma delas** |
 | RLS das restantes tabelas | 09/09/2026 | `[nesta sessão]` `pg_policies` cruzado com leitura REST tabela a tabela usando a chave anon | 19 tabelas, **todas com RLS activo — o que não protege nada por si só**. `contactos_projecto` devolve 0 linhas; todas as outras devolvem conteúdo à anon |
-| `revisao_pares` expõe dados pessoais | 09/09/2026 | `[nesta sessão]` `pg_policies` + leitura REST com a chave anon | Políticas `public` `true` em SELECT, INSERT e UPDATE. **4 linhas, 4 com nome, 4 com e-mail, 3 com telefone** (dois perfis por linha). Lidas e reescritas por quem tenha a chave. O `hideContact` de `RevisaoPares.tsx` esconde no ecrã, não impede o envio |
+| `revisao_pares` expõe dados pessoais | 09/09/2026 | `[nesta sessão]` `pg_policies` + leitura REST com a chave anon | Políticas `public` `true` em SELECT, INSERT e UPDATE. **4 linhas, 4 com nome, 4 com e-mail, 3 com telefone** (dois perfis por linha). Lidas e reescritas por quem tenha a chave. O `hideContact` de `RevisaoPares.tsx` esconde no ecrã, não impede o envio. **Na instância NOVA isto foi fechado a 09/09/2026** (campos esvaziados, escrita fechada); **na ANTIGA, a 15/09/2026, a tabela foi apagada** |
 | `revisao_pares` sem contactos, sem perder a página | 09/09/2026 | `[sessão 12]` Migração `20260909200000`; depois, leitura REST com a chave anon | `email_a`, `email_b`, `telefone_a` e `telefone_b` esvaziados. **Nenhuma linha apagada.** Com a anon: 4 linhas devolvidas, **0 e-mails, 0 telefones**. Ficam nome (4), especialidade (4), link (4), bio (2) e sumário (2). Fechar o SELECT teria esvaziado a página; limpar os campos não |
 | EFEITO COLATERAL não registado na sessão 11 | 09/09/2026 | `[sessão 12]` Leitura de `RevisaoPares.tsx:80` e `:169-170`, cruzada com o resultado da chave anon | Fechar `contactos_projecto` ao anónimo a 09/09 fez a secção de contactos de `/revisao-pares` passar a mostrar **"Sem contactos registados"**. O código faz `if (ctRes.data) setContactos(ctRes.data)`: o RLS devolve `[]`, não erro, logo a lista fica vazia e a página degrada em silêncio. **A sessão 11 fechou a tabela sem registar que isto acontecia** |
 | CORRECÇÃO à sessão 11 — as bios não se perdem | 09/09/2026 | `[sessão 12]` `information_schema.columns` na instância nova + `md5(trim(...))` das bios nas duas instâncias | A sessão 11 afirmou que `bio_a`, `bio_b` e `afiliacao` **não existiam** na instância nova. **É falso.** Existem, e o `md5` do texto depois de `trim` é **idêntico** nas duas (`1270eee4…`, `2a5cd574…`) — a diferença de 1 caractere era espaço no fim. **Não há 174 caracteres a perder.** O erro foi ter inferido o schema do ficheiro de migração em vez de consultar a base de dados |
@@ -599,9 +603,34 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Abril. É a confirmação no browser que faltava, e o Crítico nº 3 fica integralmente
    fechado: bundle, REST e browser dizem os três a mesma coisa.
 
-4. [ ] **Instância antiga `cyjwhmuakmiytypewwfw` — apagar os dados pessoais, e depois a
-   instância inteira.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**.
-   Apagar as linhas primeiro é para não ficar exposto no intervalo.
+4. [ ] **Instância antiga `cyjwhmuakmiytypewwfw` — o urgente está feito; falta apagar a
+   instância.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**. Apagar as
+   linhas primeiro era para não ficar exposto no intervalo.
+
+   **FECHADO O QUE ERA URGENTE, a 15/09/2026 entre as 12:07 e as 12:10 UTC**, no SQL editor
+   do Lovable Cloud:
+   1. **`cron.alter_job(1, active := false)`** — os dois jobs ficaram com `active = false`.
+      **Nenhum foi apagado:** o registo mantém-se, e com ele a prova.
+   2. **`delete from public.contactos_projecto`** e **`delete from public.revisao_pares`** —
+      0 e 0 no painel, e **confirmado por fora** no terminal com a chave `anon`: as duas
+      devolvem `[]` e `count=0`.
+   3. **As 14 tabelas não pessoais estão intactas**, verificadas contagem a contagem contra
+      os CSV de `docs/arquivo/2026-09-15-instancia-antiga/`. Nada foi apagado por arrasto.
+
+   **Custo assumido, e não escondido:** os e-mails e telefones dos revisores **só existiam
+   aqui** — na instância nova esses campos foram esvaziados a 09/09/2026 — e a decisão foi
+   **perdê-los**, tomada com o custo à vista. Nomes, especialidade, link e bios continuam na
+   instância nova.
+
+   **O que resta é arrumação, não urgência.** A instância não escreve e não expõe dados
+   pessoais. Continua a existir, a responder e a ser legível com a chave `anon`, com os dados
+   não pessoais que estão todos arquivados neste repositório. Apagá-la é higiene: fecha a
+   pergunta "que instância é esta?" para quem vier depois, e tira uma base a responder sem
+   dono funcional.
+
+   **Falta uma confirmação, e é pelo efeito:** a desactivação do job 1 está confirmada no
+   painel mas **não observada** — a chave `anon` não lê o schema `cron`. `news_items` está em
+   **2128**. Se o job estiver mesmo parado, **não cresce a 16/09 às 06:00 UTC**. Verificar.
 
    **ACTUALIZADO a 15/09/2026 — a instância não está inerte, e isso muda o item.** Tem dois
    `pg_cron` internos, criados no dashboard e invisíveis no repositório. O **job 1 está
@@ -628,32 +657,22 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    `cyjwhmuakmiytypewwfw`**. É isto que explica o "You do not have permission" do MCP, e é
    isto que torna a ordem irreversível. **Não estava registado em lado nenhum até 15/09/2026.**
 
-   **Consequência, e é a razão de este parágrafo existir:** quem ler o Crítico nº 5 sem ler
-   isto pode cortar o Lovable e ficar **sem forma nenhuma** de administrar esta instância.
-   Não é perder uma conveniência — é perder as três únicas capacidades que existem sobre ela:
+   **Esta assimetria travou o Crítico nº 5 durante algumas horas de 15/09/2026, e o bloqueio
+   foi levantado no mesmo dia** — não por mudar de opinião, mas por se fazer primeiro o que
+   dependia deste acesso. Fica registada porque explica a ordem em que as coisas aconteceram,
+   e porque o que dela resta continua a valer:
 
-   1. **apagar os dados pessoais** (o SQL de `docs/operacoes/` corre nesse editor);
-   2. **desactivar o job 1**, que continuaria a escrever todos os dias, indefinidamente;
-   3. **apagar a instância**, que não está na conta dela.
+   **O que já não se perde ao cortar o Lovable.** Os dados pessoais estão apagados e os dois
+   jobs estão inactivos. As duas capacidades urgentes foram exercidas antes de a porta se
+   fechar, e é por isso que a ordem importava.
 
-   O que ficaria: **8 linhas de dados pessoais legíveis com a chave `anon`** — verificado a
-   15/09/2026: `contactos_projecto` 4 linhas com 4 nomes, 3 e-mails e 3 telefones;
-   `revisao_pares` 4 linhas com 7 nomes, 6 e-mails e 5 telefones —, **com essa chave no
-   histórico público do git** e ninguém com poder para as remover. Cortar o Lovable **não
-   reduz a exposição: remove a capacidade de lhe pôr fim.**
+   **O que ainda se perde, e é permanente:** a capacidade de **apagar a instância**. Ela não
+   está na conta da Marta, logo sem o painel do Lovable fica a existir e a responder para
+   sempre, com os dados não pessoais — todos arquivados aqui. **Não é exposição, é uma base
+   órfã a responder sem dono funcional.** Aceitável, se for decidido e não descoberto.
 
-   ### Ordem decidida a 15/09/2026
-
-   1. **Desactivar o job 1** (`cron.alter_job`, fica inactivo como o job 2).
-   2. **Correr o SQL** de `docs/operacoes/2026-09-09-instancia-antiga-apagar-dados-pessoais.sql`.
-   3. **Confirmar as duas coisas** — 0 linhas legíveis com a chave `anon`, job 1 inactivo em
-      `cron.job`. Confirmar pelo efeito, não pelo código de estado devolvido.
-   4. **Só então** investigar o que faz o botão `Remove Lovable Cloud`, e depois o Crítico nº 5.
-
-   **Porque é que os passos 1 e 2 vêm antes de saber o que o botão faz:** custam um minuto e
-   fecham um risco permanente. Se o botão apagar a instância inteira, foram dispensáveis — e
-   um minuto é um preço barato por não depender disso. Se não apagar, foram a única
-   oportunidade de os fazer. A assimetria decide sozinha.
+   **A confirmação pendente não depende do Lovable:** a contagem de `news_items` lê-se com a
+   chave `anon`, logo o teste de 16/09 funciona com o Lovable já cortado.
 
    **SQL pronto:** `docs/operacoes/2026-09-09-instancia-antiga-apagar-dados-pessoais.sql`.
    Corre no SQL Editor do painel, projecto `cyjwhmuakmiytypewwfw`. Não é migração deste
@@ -702,16 +721,17 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    2-bis. ~~publicar~~ — **FEITO a 15/09/2026.** `dizquedisse.martamadeira.pt`, commit
       `87dc741`. O `/admin` saiu do bundle no mesmo dia (Crítico nº 2). **Por confirmar:** a
       versão de Node que o Cloudflare usou — o log do build não foi consultado
-   3. **PARAR AQUI E LER O CRÍTICO Nº 4 ANTES DE DESLIGAR O LOVABLE.** A razão original
-      deste passo — não ficar sem publicação no intervalo — **já está resolvida**: o site
-      está publicado no Cloudflare desde 15/09/2026. **Mas apareceu uma razão nova e mais
-      séria, e é de sentido único:** a instância antiga está na **organização do Lovable**,
-      não na conta Supabase da Marta (`list_projects` verificado a 15/09/2026), e o SQL
-      editor do Lovable Cloud é o **único** acesso administrativo que existe a ela.
-      **Desligar o Lovable antes de fechar o Crítico nº 4 deixa 8 linhas de dados pessoais
-      legíveis para sempre, com a chave `anon` que está no histórico público do git, e
-      ninguém com poder para as apagar.** Os passos 1 e 2 do nº 4 custam um minuto. Fazer
-      esses primeiro, confirmar, e só então voltar aqui
+   3. **desligar o Lovable — desbloqueado a 15/09/2026, 12:10 UTC.** Este passo esteve
+      travado durante algumas horas desse dia, e a razão vale a pena não esquecer: a
+      instância antiga está na **organização do Lovable**, não na conta Supabase da Marta
+      (`list_projects`, 15/09/2026), e o SQL editor do Lovable Cloud é o **único** acesso
+      administrativo a ela. Cortar antes de a limpar teria deixado 8 linhas de dados pessoais
+      legíveis para sempre. **Foi limpa primeiro** — jobs inactivos, tabelas apagadas,
+      confirmado por fora com a chave `anon`. Ver Crítico nº 4.
+      **O que ainda se perde ao cortar:** a capacidade de **apagar a instância**, que fica a
+      existir e a responder com os dados não pessoais, todos arquivados aqui. Isso é para
+      **decidir**, não para descobrir depois — e é a única razão que resta para investigar o
+      botão `Remove Lovable Cloud` antes de cortar a ligação
    4. **remover o `lovable-tagger`** — não foi tocado no commit `fedd760` de propósito: é
       importado no topo do `vite.config.ts`, fora da condição de modo, e o build parte se o
       pacote sair sem a linha sair também. Sai a linha e a dependência ao mesmo tempo
