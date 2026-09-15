@@ -11,6 +11,12 @@ As regras de decisão estão escritas **dentro de cada ficheiro, antes de correr
 | 1 | `teste_1_janela_24m.py` — granularidade e cobertura de uma descarga de 24 meses | sim (`pytrends`) | **por correr** |
 | 2 | `teste_2_vocabulario.py` — institucional vs linguagem corrente, no mesmo pedido | sim (`pytrends`) | **por correr** |
 | 3 | `teste_3_distancia.sql` — distância entre as 83 keywords e as 4626 perguntas | não | **CORRIDO a 09/09** |
+| 4 | `teste_4_granularidade.py` — granularidade real de uma janela e comportamento da âncora | **não** | **por correr** |
+
+O teste 4 foi escrito a 15/09/2026 e **não depende de nada** — nem de rede, nem de conta, nem
+do `pytrends`. Lê CSV descarregados do próprio Google Trends. Faz a mesma pergunta do teste 1,
+que continua por correr por depender do `pytrends`, arquivado desde Abril de 2025.
+Ver `docs/operacoes/2026-09-15-resposta-script5-google-trends.md`.
 
 ## Antes de correr os testes 1 e 2
 
