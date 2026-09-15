@@ -52,6 +52,14 @@ def main():
     if not os.path.isdir(ENTRADA):
         sys.exit("ERRO: nao existe %s" % ENTRADA)
     series = []
+    porpasta = collections.defaultdict(list)
+    for p in sorted(glob.glob(os.path.join(ENTRADA, "*", "multiTimeline*.csv"))):
+        porpasta[os.path.basename(os.path.dirname(p))].append(p)
+    for pasta, fichs in porpasta.items():
+        if len(fichs) > 1:
+            print("  AVISO: %s tem %d ficheiros de serie. Sao series DIFERENTES se o termo"
+                  % (pasta, len(fichs)))
+            print("         diferir (ex.: acento), e duplicados se nao diferir. Verificar.")
     for p in sorted(glob.glob(os.path.join(ENTRADA, "*", "multiTimeline*.csv"))):
         s = ler(p)
         if not s or not s["pontos"]:
