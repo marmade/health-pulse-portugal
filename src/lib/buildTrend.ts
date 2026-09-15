@@ -80,7 +80,8 @@ function build12m(
     return {
       week: label,
       current: current as unknown as number,
-      previous: (previous ?? 0) as number,
+      // Sem recolha nao e zero: fica indefinido para o grafico desenhar lacuna.
+      previous: previous as unknown as number,
     };
   });
 }
@@ -126,7 +127,7 @@ function build30d(
   return weekLabels.map((label, i) => ({
     week: label,
     current: (avg(currentBuckets[i]) ?? undefined) as unknown as number,
-    previous: avg(previousBuckets[i]) ?? 0,
+    previous: avg(previousBuckets[i]) as unknown as number,
   }));
 }
 
@@ -174,7 +175,7 @@ function build7d(
   return dayLabels.map(label => ({
     week: label,
     current: (avg(currentByDay[label] || []) ?? undefined) as unknown as number,
-    previous: avg(previousByDay[label] || []) ?? 0,
+    previous: avg(previousByDay[label] || []) as unknown as number,
   }));
 }
 

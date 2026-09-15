@@ -225,7 +225,8 @@ const Briefing = () => {
       generatedAt: new Date(archive.created_at),
       topGrowing: (archive.top_emerging || []).map((e: any) => ({
         ...e,
-        current_volume: 0,
+        // O arquivo nao guarda volume. Nao se escreve 0 — o PDF omite.
+        current_volume: null,
       })),
       emergent: archive.top_emerging || [],
       topVolume: archive.top_questions || [],

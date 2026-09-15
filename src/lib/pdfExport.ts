@@ -258,7 +258,7 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
       addNewPageIfNeeded(6);
       pdf.setTextColor(BLACK);
       setFont("normal", 7.5);
-      pdf.text(`${em.term} (${em.axis})  —  +${em.change.toFixed(1)}%`, MARGIN + 2, yPos);
+      pdf.text(`${em.term} (${em.axis})  —  ${em.change > 0 ? "+" : ""}${em.change.toFixed(1)}%`, MARGIN + 2, yPos);
       yPos += 4.5;
     }
   }
@@ -458,7 +458,7 @@ export async function generatePdfReport(data: ExportData): Promise<void> {
       pdf.text(rankText, MARGIN + 2, yPos);
 
       setFont("normal", 7);
-      pdf.text(`${g.keyword} (${g.axis})  —  ${g.from} → ${g.to}  |  +${g.growth.toFixed(1)}%`, MARGIN + 2 + pdf.getTextWidth(rankText), yPos);
+      pdf.text(`${g.keyword} (${g.axis})  —  ${g.from} → ${g.to}  |  ${g.growth > 0 ? "+" : ""}${g.growth.toFixed(1)}%`, MARGIN + 2 + pdf.getTextWidth(rankText), yPos);
       yPos += 5;
     }
     yPos += 6;

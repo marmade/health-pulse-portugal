@@ -8,7 +8,7 @@ const MARGIN = 20;
 type BriefingPdfData = {
   weekLabel: string;
   generatedAt: Date;
-  topGrowing: { term: string; axis: string; change_percent: number; current_volume: number }[];
+  topGrowing: { term: string; axis: string; change_percent: number; current_volume: number | null }[];
   emergent: { term: string; axis: string; change_percent: number }[];
   topVolume: { term: string; current_volume: number }[];
   news: { title: string; outlet: string; date: string; source_type: string }[];
@@ -17,6 +17,10 @@ type BriefingPdfData = {
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
   youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
 };
+
+// Sinal correcto: "+" so quando o valor e positivo. Antes um negativo saia "+-50%".
+const fmtPct = (v: number | null | undefined) =>
+  v == null ? "—" : `${Number(v) > 0 ? "+" : ""}${Number(v).toFixed(0)}%`;
 
 const axisLabels: Record<string, string> = {
   "saude-mental": "Saúde Mental",
@@ -138,10 +142,12 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     pdf.text(axisLabels[kw.axis] || kw.axis, MARGIN + 80, y);
     setFont("bold", 9);
     pdf.setTextColor(BLACK);
-    pdf.text(`+${Number(kw.change_percent).toFixed(0)}%`, pageWidth - MARGIN - 20, y, { align: "right" });
-    setFont("normal", 8);
-    pdf.setTextColor(GREY);
-    pdf.text(`vol. ${kw.current_volume}`, pageWidth - MARGIN, y, { align: "right" });
+    pdf.text(fmtPct(kw.change_percent), pageWidth - MARGIN - 20, y, { align: "right" });
+    if (kw.current_volume != null) {
+      setFont("normal", 8);
+      pdf.setTextColor(GREY);
+      pdf.text(`vol. ${kw.current_volume}`, pageWidth - MARGIN, y, { align: "right" });
+    }
     y += 6;
   });
   y += 4;
@@ -167,7 +173,7 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
       pdf.setTextColor(BLACK);
       pdf.text(kw.term, MARGIN + 26, y);
       setFont("bold", 9);
-      pdf.text(`+${Number(kw.change_percent).toFixed(0)}%`, pageWidth - MARGIN, y, { align: "right" });
+      pdf.text(fmtPct(kw.change_percent), pageWidth - MARGIN, y, { align: "right" });
       y += 7;
     });
   }
@@ -203,7 +209,7 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
       pdf.setTextColor(BLUE);
       pdf.setDrawColor(BLUE);
       pdf.setLineWidth(0.3);
-      const badge = item.source_type === "institucional" ? "INST" : item.source_type === "fact-check" ? "FC" : "MEDIA";
+      const badge = item.source_type === "institucional" ? "INST" : (item.source_type === "factcheck" || item.source_type === "fact-check") ? "FC" : "MEDIA";
       const bw = pdf.getTextWidth(badge) + 3;
       pdf.rect(MARGIN, y - 3, bw, 5);
       pdf.text(badge, MARGIN + 1.5, y);
@@ -282,8 +288,8 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     setFont("normal", 9);
     pdf.setTextColor(BLACK);
     const suggestion = data.topEmergent.is_emergent
-      ? `Esta semana vale a pena falar sobre ${data.topEmergent.term} — sinal emergente com crescimento de +${Number(data.topEmergent.change_percent).toFixed(0)}%.`
-      : `Esta semana vale a pena falar sobre ${data.topEmergent.term} — crescimento de +${Number(data.topEmergent.change_percent).toFixed(0)}% no volume de pesquisa.`;
+      ? `Esta semana vale a pena falar sobre ${data.topEmergent.term} — sinal emergente com crescimento de ${fmtPct(data.topEmergent.change_percent)}.`
+      : `Esta semana vale a pena falar sobre ${data.topEmergent.term} — crescimento de ${fmtPct(data.topEmergent.change_percent)} no volume de pesquisa.`;
     const lines = pdf.splitTextToSize(suggestion, pageWidth - 2 * MARGIN);
     pdf.text(lines, MARGIN, y);
     y += lines.length * 4 + 4;

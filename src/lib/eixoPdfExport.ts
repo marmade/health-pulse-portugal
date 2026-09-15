@@ -97,7 +97,7 @@ export async function generateEixoPdf(entry: {
     entry.top_keywords.forEach((k: any, i: number) => {
       checkPage(7);
       const num = String(i + 1).padStart(2, "0");
-      const change = k.change_percent != null ? `+${Number(k.change_percent).toFixed(0)}%` : "";
+      const change = k.change_percent != null ? `${Number(k.change_percent) > 0 ? "+" : ""}${Number(k.change_percent).toFixed(0)}%` : "";
       pdf.setFontSize(8);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(BLACK);

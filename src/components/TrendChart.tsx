@@ -17,8 +17,12 @@ const monthFull = [
 ];
 const currentMonthLabel = monthLabels[new Date().getMonth()];
 
+// Os anos eram literais: em Janeiro o grafico comparava 2027 com 2026 e continuava
+// a dizer 2025/2026.
+const thisYear = new Date().getFullYear();
+
 const periodLabels: Record<string, { current: string; previous: string; comparison: string }> = {
-  "12m": { current: "2026", previous: "2025", comparison: "vs ano anterior" },
+  "12m": { current: String(thisYear), previous: String(thisYear - 1), comparison: "vs ano anterior" },
   "30d": { current: "Últimos 30d", previous: "30d anteriores", comparison: "vs 30d anteriores" },
   "7d": { current: "Últimos 7d", previous: "7d anteriores", comparison: "vs 7d anteriores" },
 };
@@ -173,6 +177,7 @@ const TrendChart = ({ data, label, period = "12m" }: Props) => {
                 dot={false}
                 opacity={0.3}
                 name={pLabels.previous}
+                connectNulls={false}
               />
             )}
           </LineChart>
