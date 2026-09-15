@@ -39,6 +39,8 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| A rotulagem de `news_items` **não é reproduzível** | 15/09/2026 | `[sessão 14][ficheiro]` Leitura de `supabase/functions/fetch-rss-feeds/index.ts:138-144` e `:154-157` · `[sessão 14][bd]` colisões de chave na tabela `keywords` e escritores do workflow | `matchesKeyword` devolve o **primeiro** termo da lista que apareça no texto, e a consulta que constrói a lista **não tem `ORDER BY`**. Logo "primeiro a casar" **não é critério — é a ordem física da tabela**, e duas corridas sobre a mesma notícia podem dar rótulos diferentes sem nada mudar. **Segunda indeterminação, esta nos dados:** `stress` é termo canónico **e** sinónimo de `ansiedade`; `doença celíaca` é termo **e** sinónimo de `intolerância ao glúten` — o `Map` de resolução é *last-write-wins*, logo o rótulo gravado pode **discordar do termo que casou**. **Não observado a mudar:** é propriedade do PostgreSQL, não medição; nenhuma re-corrida foi feita. Evidência em `docs/evidencia/2026-09-15-rotulagem-news-items/` |
+| A estabilidade actual da ordem assenta num *bug* | 15/09/2026 | `[sessão 14][ficheiro]` `scripts/6_fetch_health_questions.py:330-334` cruzado com `.github/workflows/youtube-trends.yml:62` e com o achado do `400` (`docs/sessoes/2026-09-09.md:143`) | O `5_fetch_google_trends.py`, que faz UPDATE a `keywords`, está comentado desde 14/08/2026 — mas **não é o único escritor.** O `expandir_mural()` do script 6 faz **POST a `/rest/v1/keywords`**, e o script 6 é o **passo 2, activo**, todas as segundas. Só não mexe na ordem porque **falha com HTTP 400 há semanas, sem diagnóstico**. **Corrigir esse `400` activa a variação da rotulagem** — nada no repositório ligava as duas coisas até hoje |
 | O botão `Remove Lovable Cloud` **destrói a instância**, não a desassocia | 15/09/2026 | `[sessão 14][documento]` Documentação do Lovable, `docs.lovable.dev/integrations/cloud` | Citação: **"This permanently deletes your Cloud instance and cannot be undone."** Não é desassociação — é **eliminação definitiva**. Logo o botão **fecha o Crítico nº 4** e é o **último** passo do Crítico nº 5, não um passo a meio. Era esta a pergunta marcada como "a que manda" na ordem de 15/09, e está respondida |
 | `lovable-tagger` removido — e nunca estava no build de produção | 15/09/2026 | `[sessão 14][ficheiro]` Linha do `vite.config.ts` e dependência removidas ao mesmo tempo; `npm run build` de raiz, `tsc`, `eslint`, e `vite` em modo *development* | Build **✓ em 2,26s**. **O nome do bundle não mudou — `index-2tjWbBoE.js` antes e depois** —, o que prova que o `componentTagger` **nunca entrava no build de produção**: era só de modo `development`, como o código dizia. O modo *development* arranca limpo (73 ms, `index.html` e `src/main.tsx` a 200), que é onde ele corria de facto. `tsc` e `eslint` sem avisos. O parâmetro `mode` saiu com ele: só existia para o alimentar |
 | Instância antiga — escrita parada e dados pessoais apagados | 15/09/2026 | `[sessão 14][painel]` `cron.alter_job(1, active := false)` e dois `DELETE`, no SQL editor do Lovable Cloud, 12:07–12:10 UTC · `[sessão 14][bd]` confirmação **por fora**, no terminal, com a chave `anon` | `cron.job`: **os dois jobs com `active = false`** — nenhum apagado, o registo mantém-se `[painel]`. `contactos_projecto` e `revisao_pares`: **`[]` e `count=0`** com a chave `anon`, confirmado no terminal. **As 14 tabelas não pessoais estão intactas** — contagens idênticas às dos CSV de `docs/arquivo/2026-09-15-instancia-antiga/`, verificadas uma a uma: nada foi apagado por arrasto. **Custo assumido:** os e-mails e telefones dos revisores só existiam aqui (na instância nova foram esvaziados a 09/09) e a decisão foi perdê-los; nomes, especialidade, link e bios continuam na nova |
@@ -817,6 +819,17 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **`expandir_mural()` falha com HTTP 400 todas as semanas, sem diagnóstico — e corrigi-lo
+      tem uma consequência que só apareceu a 15/09/2026.** Achado na sessão 11, registado na
+      12 (`docs/sessoes/2026-09-09.md:143`), e **só entra nesta lista a 15/09/2026**: até aqui
+      vivia num registo de sessão, que é onde os pendentes se perdem.
+      `scripts/6_fetch_health_questions.py:288-338` faz `POST` a `/rest/v1/keywords` e devolve
+      400. O script é o **passo 2 do workflow, activo**, logo isto corre todas as segundas.
+      **A consequência nova:** é este `400` que mantém a tabela `keywords` sem inserções — e é
+      por isso que a ordem física das linhas não muda. **Corrigi-lo activa a variação da
+      rotulagem de `news_items`** (ver a linha da tabela de Verificações e
+      `docs/evidencia/2026-09-15-rotulagem-news-items/`). Não é razão para não o corrigir; é
+      razão para **pôr o `ORDER BY` determinista primeiro**.
 - [ ] **`<![CDATA[` nos títulos e a má rotulagem — uma só intervenção, decidida para
       quinta 17/09/2026.** Os dois defeitos estão no mesmo ficheiro,
       `supabase/functions/fetch-rss-feeds/index.ts`, e corrigem-se no mesmo redeploy. Estado
@@ -847,6 +860,19 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       4. **`depressão` não se resolve com fronteiras nenhumas.** Depressão clínica e
          depressão meteorológica são a mesma palavra. Isto exige desambiguação por contexto,
          ou aceitar o ruído e declará-lo.
+      5. **`ORDER BY` determinista na consulta às `keywords`** — acrescentado a 15/09/2026, e
+         é a mais simples da lista. Sem ele, "primeiro a casar" é a ordem física da tabela e a
+         rotulagem **não é reproduzível**. Ver `docs/evidencia/2026-09-15-rotulagem-news-items/`.
+         **Mas não chega:** `stress` é termo canónico **e** sinónimo de `ansiedade`, e
+         `doença celíaca` é termo **e** sinónimo de `intolerância ao glúten`. Com ordem fixa
+         passam a resolver sempre para o mesmo lado, mas **arbitrariamente**. Decidir se
+         `stress` é eixo próprio ou sinónimo é **editorial, não técnico** — não pode ser as
+         duas coisas.
+
+      **Uma dependência que não era visível:** corrigir o `400` do `expandir_mural()` — item
+      próprio nos Restantes, acima — **activa** a variação da rotulagem, porque as inserções
+      passam a mudar a ordem do *heap*. Fazer o `ORDER BY` **antes** desse diagnóstico, não
+      depois.
 
       **Isto é desenho de método e sai do varrimento de quinta, não antes dele.** Decidir a
       regra antes de olhar para as 100 classificadas à mão seria escolher o critério sem ver
