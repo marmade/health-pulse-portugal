@@ -1,0 +1,2 @@
+content_type;error_msg;id;inicio_do_conteudo;status_code;timed_out
+;Timeout of 5000 ms reached. Total time: 5001.281000 ms (DNS time: 178.884000 ms, TCP/SSL handshake time: 99.029000 ms, HTTP Request/Response time: 4722.418000 ms);333;;;

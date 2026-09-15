@@ -107,3 +107,123 @@ todas as manhãs às 06:00 UTC.
 
 Apagar a instância (Crítico nº 4) destrói esta prova. É essa a razão de esta pasta existir
 antes da decisão, e não depois.
+
+---
+
+# Acrescento de 15/09/2026, 11:42 — a escrita fica provada, e quantificada
+
+`[sessão 14][bd][agregado]` `select count(*), count(*) filter (where created_at >=
+'2026-04-12'), min(created_at), max(created_at) from news_items`, no SQL editor do Lovable
+Cloud. Ficheiro `news-items-antes-depois-migracao-2026-09-15.csv`, sha256
+`6239b4490ff5a0fdeca010d78634cd0a4d7382f8f0a680a014fb030980f925f5`.
+
+| | |
+|---|---|
+| total | **2128** |
+| criadas em ou depois de 12/04/2026 | **1975** |
+| mais antiga | 2026-03-08 11:08:46 UTC |
+| mais recente | **2026-09-15 06:00:54 UTC** |
+
+## 1. A ressalva dos 100 ms fica levantada — houve escrita, e sabe-se a que horas
+
+A execução do cron de hoje arrancou às **06:00:00.214546** e a linha mais recente de
+`news_items` tem `created_at` **06:00:54.130258**. *Aritmética minha:* **53,9 segundos**
+depois.
+
+A cadeia fecha-se inteira: o `pg_cron` despacha, a Edge Function corre, a linha aparece. O
+que antes era "o pedido saiu" passa a ser **"o pedido saiu e a escrita chegou"**, com a
+distância entre os dois medida.
+
+Isto não invalida a ressalva geral — `succeeded` continua a não provar escrita, e 100 ms
+continua a ser tempo de despacho. O que se provou foi **esta** execução, pelo efeito e não
+pelo estado.
+
+## 2. 93% do conteúdo foi escrito depois do abandono
+
+*Aritmética minha:* 2128 − 1975 = **153** linhas anteriores a 12/04/2026, e **1975**
+posteriores — **92,8% do total**.
+
+A instância foi abandonada a 12/04/2026 e produziu, depois disso, treze vezes mais conteúdo
+do que tinha produzido antes. O que o projecto deixou para trás não era um arquivo parado:
+era um sistema em funcionamento, a acumular material que ninguém lia, em cima de dados
+pessoais que ninguém tinha fechado.
+
+*Nota:* as 153 linhas anteriores são compatíveis com as "158 notícias migradas do Lovable"
+registadas no `CONTEXT.md`, secção Estado do Admin, mas **não são o mesmo número** e a
+diferença não foi investigada. O filtro põe o próprio dia 12 do lado de "depois".
+
+## 3. Para o apêndice metodológico
+
+É o caso mais limpo de falha silenciosa que este projecto produziu, e distingue-se dos
+outros num ponto: os outros são erros de leitura de estado — um `success` que não prova
+escrita, um documento que se contradiz. Este é **infraestrutura que a ferramenta criou e não
+registou em lado nenhum**, a correr durante 191 dias, 156 deles depois de o projecto ter
+mudado de casa.
+
+Não houve engano de ninguém. Houve uma automação que não deixou rasto no sítio onde se
+procura rasto.
+
+---
+
+# Acrescento de 15/09/2026, 11:56 — o mesmo evento, três estados que se contradizem
+
+`[sessão 14][bd]` `select count(*), min(created), max(created) from net._http_response` e
+depois `select id, status_code, content_type, timed_out, error_msg, left(content,500) from
+net._http_response`, no SQL editor do Lovable Cloud.
+
+Ficheiros: `net-http-response-contagem-2026-09-15.csv` (sha256
+`2fc0b99b2a1f532568bf48771b115e6f0eeb02db6981f4e9afd4dacb149823f1`) e
+`net-http-response-detalhe-2026-09-15.csv` (sha256
+`23a2d2524c5199bccb5c49ac8ef43288bbdc15f28433baad1f6c5070f94f8470`).
+
+## O registo existe, e é um erro
+
+O `pg_net` guarda **uma** resposta — o `created` é de hoje, 06:00:00.320625 UTC. As
+anteriores foram purgadas pela própria extensão. Essa única entrada (`id` 333) tem
+`status_code` **vazio**, `content` **vazio**, e `error_msg`:
+
+> `Timeout of 5000 ms reached. Total time: 5001.281000 ms (DNS time: 178.884000 ms,
+> TCP/SSL handshake time: 99.029000 ms, HTTP Request/Response time: 4722.418000 ms)`
+
+O cliente esperou cinco segundos pela Edge Function, desistiu, e registou falha.
+
+## E a escrita aconteceu
+
+A linha mais recente de `news_items` tem `created_at` **06:00:54** — 54 segundos depois do
+despacho. A função continuou a correr depois de o cliente ter deixado de a ouvir.
+
+## Três estados para o mesmo evento
+
+| onde | o que diz | o que realmente observa |
+|---|---|---|
+| `cron.job_run_details` | `succeeded` | que o `select net.http_post(...)` executou sem erro de SQL |
+| `net._http_response` | timeout, falhou | que a resposta HTTP não chegou em 5 s |
+| `news_items` | linha escrita às 06:00:54 | o efeito |
+
+**Nenhum dos dois estados registados corresponde ao que aconteceu.** O verde afirma sucesso
+sobre uma coisa que não observa; o vermelho afirma falha sobre uma execução que funcionou. O
+único sítio onde está a verdade é o efeito.
+
+Isto é mais forte, para o apêndice metodológico, do que o achado dos `pg_cron` em si: não é
+um sistema que falha em silêncio, é um sistema que **reporta em três direcções diferentes**
+sobre o mesmo acontecimento.
+
+## Uma inconsistência por explicar, deixada por explicar
+
+A entrada tem `created` = 06:00:00.320625, isto é **106 ms** depois do arranque do cron
+(06:00:00.214546), mas a mensagem de erro fala em **5001 ms** de tempo total. Os dois valores
+não podem estar ambos certos para o mesmo instante.
+
+*Não foi apurado* o que a coluna `created` marca no `pg_net` — se o momento do registo da
+resposta, se o da criação da entrada no despacho. **Fica assinalado e não resolvido.** A
+leitura de que "houve timeout" assenta no `error_msg`, não nesta coluna.
+
+## O que isto NÃO prova
+
+- **Não prova que as outras 190 execuções deram timeout.** O `pg_net` purga, e só existe a
+  de hoje. Que o padrão se repita é plausível e **não está medido**.
+- **Não prova que a função escreveu por causa desta invocação.** A coincidência temporal
+  (despacho 06:00:00, escrita 06:00:54, uma só invocação nesse dia) é forte, mas é
+  coincidência temporal.
+- Não se sabe qual o *timeout* configurado na chamada nem se é o valor por omissão do
+  `pg_net`.
