@@ -333,3 +333,86 @@ barato e decidido do caro e indeciso trava os dois.
   ramo dos snapshots depende de haver dados nos **dois** sub-períodos, o que a mesma
   truncatura torna improvável. **Continua por observar no browser**, mas deixou de ser
   suposição solta.
+
+---
+
+# Apêndice — a régua é o ficheiro (15/09/2026)
+
+> Achado ao montar as séries reais do Google Trends no dashboard. Não é sobre o código do
+> dashboard: é sobre **como se descarregam os dados**, e tem consequência directa no que se
+> pode afirmar.
+
+## A regra
+
+**Uma descarga = uma régua.** O Google normaliza 0–100 ao máximo **do pedido**. Séries que
+vieram no **mesmo** ficheiro comparam-se entre si; séries de ficheiros **diferentes** não,
+mesmo que sejam do mesmo termo, da mesma janela e da mesma região.
+
+É a mesma regra que o brief do script 5 estabelece — nunca colar descargas — vista do lado
+de quem lê o gráfico.
+
+## E há um custo que não é óbvio: a série pequena é esmagada
+
+`[sessão 14][ficheiro]` Medido sobre o mesmo tópico, `Clinical depression`, Portugal, 5 anos,
+categoria Saúde, descarregado de duas maneiras:
+
+| | valores distintos | desvio-padrão | máximo |
+|---|---|---|---|
+| ao lado de `Depression (Mood)` | **29** | 7,3 | 50 |
+| **sozinha** | **49** | **14,5** | 100 |
+
+**A resolução quase duplica quando está sozinha.** No período 2023–2026, que no gráfico
+comparado parece um "chão plano", há **15** valores distintos quando esmagada e **24** quando
+medida sozinha.
+
+**O chão plano era artefacto.** Uma série com picos grandes ao lado empurra a outra contra o
+zero e apaga-lhe a estrutura.
+
+**Consequência prática:** se uma série interessa por si, descarrega-se **sozinha**. Pôr duas
+no mesmo pedido só se justifica quando a comparação **entre elas** é a pergunta — e paga-se
+em resolução.
+
+## O caso que originou isto, e duas hipóteses minhas que caíram
+
+O termo de pesquisa `depressão` tem o maior pico da série a **2026-02-01**.
+
+**Primeira hipótese, minha: era meteorologia** — em português "depressão" também é um sistema
+de baixas pressões. **Falsa.**
+
+**Segunda hipótese, minha, depois de ver os dois tópicos: era estado emocional e não
+clínico.** Também **falsa**.
+
+`[sessão 14][ficheiro]` O que os dados mostram:
+
+| | semana do pico | o outro tópico nessa semana |
+|---|---|---|
+| `Depression / Mood` | **2025-03-16** (100) | `Clinical` = 3 |
+| `Clinical depression` | **2026-02-01** (100) | `Mood` = 11 |
+
+Os dois tópicos **têm picos em semanas diferentes e são quase cegos um ao outro**. E o pico
+do termo de pesquisa `depressão` — 2026-02-01 — **coincide com o do tópico clínico**, não com
+o do estado emocional.
+
+**O acontecimento de Fevereiro de 2026 era sobre a doença.** E não foi um dia de notícia: as
+três maiores semanas da série clínica são **25/01, 01/02 e 08/02 de 2026, consecutivas** — o
+feitio de uma campanha ou de um debate público, não de um título.
+
+## A limitação que isto revela no corpus de notícias
+
+`[sessão 14][ficheiro]` **Não é possível cruzar este pico com o `news_items`.** A recolha de
+notícias só começa a **08/03/2026** (`created_at` mais antigo das 310 linhas) — **um mês
+depois**. Entre 20/01 e 15/02 de 2026 há **4 notícias** no corpus, todas de recolha
+retroactiva.
+
+**O acontecimento mais forte que a série de pesquisas mostra é invisível para o corpus de
+notícias.** Não é falha da série nem do corpus: é a data em que a recolha começou. Fica
+escrito para que ninguém tente o cruzamento e conclua que "não houve notícias".
+
+## O que isto decide
+
+- **Para a tese, sobre depressão: usar o tópico `Clinical depression`, descarregado sozinho.**
+  Sem homónimo, sem esmagamento, com o dobro da resolução.
+- **Nunca descarregar uma série pequena ao lado de uma com picos grandes.**
+- **O painel do dashboard agrupa as séries por régua** e diz, em cada uma, com quais se
+  compara e com quais não — porque a alternativa é o leitor supor que todas as linhas do
+  mesmo painel são comparáveis, e não são.
