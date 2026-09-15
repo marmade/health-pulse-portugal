@@ -27,3 +27,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Cópias de trabalho do Numbers. O registo é sempre o CSV ao lado:
+# binário, não diffável, e ilegível sem macOS. Ver
+# docs/evidencia/2026-09-15-rotulagem-news-items/classificacao-100-resultados.md
+*.numbers

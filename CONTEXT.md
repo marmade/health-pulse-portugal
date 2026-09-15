@@ -243,11 +243,17 @@ como passar a recolhê-lo.
 
 ### Hipótese do vocabulário — 09/09/2026
 
-> **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
-> "A lista de 83 keywords vem do SNS 24 e da DGS", "38 de 82 keywords não têm resolução na
-> própria série" e "CORRECÇÃO — zero emergentes com valor não se confirma", na tabela de
-> Verificações. A explicação abaixo é uma **leitura** desses números e mantém-se por
-> confirmar até o teste ser corrido.
+> **Estatuto a 15/09/2026: HIPÓTESE COM PROVA CONVERGENTE NOS DOIS MAPAS — o teste decisivo
+> continua por correr.** Até 14/09 a prova estava toda de um lado, o das pesquisas. A 15/09
+> apareceu do lado das notícias, por um caminho independente e com dados que não foram
+> recolhidos para isto. **Duas falhas em mapas diferentes, pelo mesmo motivo** — ver a
+> subsecção "O segundo mapa" no fim desta secção.
+>
+> O que continua verificado são os números das linhas "A lista de 83 keywords vem do SNS 24 e
+> da DGS", "38 de 82 keywords não têm resolução na própria série" e "CORRECÇÃO — zero
+> emergentes com valor não se confirma". **O que continua por fazer é o teste da
+> reformulação**, descrito no fim: convergência não é demonstração, e duas falhas compatíveis
+> com a hipótese não excluem outra explicação que as produzisse às duas.
 
 As keywords sem sinal no Google Trends não são necessariamente temas que ninguém procura.
 Podem ser temas que ninguém **formula assim**.
@@ -294,6 +300,47 @@ reformulação do mesmo conceito em linguagem corrente:
 
 Fazer esta distinção com método, e documentá-la, é o que separa uma limitação declarada de um
 achado.
+
+### O segundo mapa — a mesma lista falha nas notícias, e pelo mesmo motivo (15/09/2026)
+
+`[sessão 14][ficheiro][agregado]` Classificação humana de 100 notícias e simulação da regra
+nova. Reproduzível por `docs/evidencia/2026-09-15-rotulagem-news-items/analise-classificacao.py`;
+números conferidos linha a linha contra a saída guardada.
+
+Até 15/09/2026 a hipótese tinha prova **só do lado das pesquisas**: 38 de 82 keywords sem
+resolução na própria série do Google Trends. **Agora tem do lado das notícias.**
+
+Ao simular a regra corrigida — fronteira de palavra, só no título, sem as siglas de três
+letras — ela resolve **52 dos 53 rótulos errados (98%)**, mas **deita fora 18 das 52 notícias
+que pertencem ao corpus (35%)**. E **9 dessas 18 têm o rótulo certo**: caem porque a lista
+escreve o assunto de uma maneira e a imprensa de outra.
+
+| o que o título diz | o que a lista tem |
+|---|---|
+| "gripe **das aves**" | `gripe aviária H5N1` |
+| "**Mpox**" | `mpox portugal` |
+| "**poluição do ar**" | `poluição e saúde` |
+| "**antibióticos**" | `resistência antibióticos` |
+
+`[sessão 14][bd]` **58 dos 82 termos canónicos (71%) têm mais do que uma palavra**, e **13
+não têm sinónimo nenhum**.
+
+**O motivo é o mesmo dos dois lados, e é mais específico do que "vocabulário
+institucional":** `mpox portugal`, `poluição e saúde` e `gripe aviária H5N1` **não são nomes
+de coisas — são *strings* de pesquisa**, herdadas de a lista ter sido construída como
+sementes do Google Trends. A imprensa escreve o **conceito**; a lista escreve a **consulta**.
+
+**Porque é que isto vale mais do que um segundo exemplo da mesma coisa:** os dois mapas
+falham por razões que, à partida, não tinham de estar relacionadas — um por ausência de sinal
+numa API, outro por não-correspondência de cadeias num rotulador. **A explicação que os une é
+a mesma, e não foi construída para os unir.** Deixa de ser limitação técnica de rodapé e passa
+a achado sobre o método, obtido com dados do próprio protótipo.
+
+**O que isto NÃO é.** Não é o teste da reformulação, que continua por correr — e é esse que
+distingue "vocabulário" de "volume genuinamente baixo". Convergência de dois indícios não é
+demonstração: uma lista mal construída por qualquer outra razão produziria as duas falhas
+igualmente. Sai daqui uma **decisão de curadoria** (ver Restantes, a sexta decisão), não uma
+conclusão.
 
 **Segundo teste, com dados que já existem e sem recolha nova.** Estão na base de dados duas
 listas de vocabulário sobre os mesmos temas, com proveniência conhecida:
@@ -838,6 +885,28 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **SEXTA DECISÃO — separar, na lista de keywords, o nome do conceito da consulta de
+      pesquisa.** `[sessão 14][bd][agregado]` Saiu da classificação das 100 a 15/09/2026.
+      **Um termo tem de poder ser as duas coisas sem ser a mesma:** `mpox` é o **conceito**,
+      `mpox portugal` é a **consulta**. Só o primeiro serve para rotular notícias; o segundo
+      serve para pedir ao Google Trends.
+
+      **O que o mede:** **58 dos 82 termos canónicos (71%) têm mais do que uma palavra**, e
+      **13 não têm sinónimo nenhum** — `prevenção suicídio`, `reabilitação psicossocial`,
+      `saúde mental jovens`, `literacia em saúde mental`, `desinstitucionalização saúde
+      mental`, `equipas comunitárias saúde mental`, `saúde mental escolar`, `saúde mental
+      ensino superior`, `competências socioemocionais`, `candida auris`, `incontinência
+      urinária`, `intolerância à lactose`, `saúde mental sem-abrigo`.
+
+      **A consequência medida:** a regra nova resolve **52 dos 53 rótulos errados (98%)** mas
+      deita fora **18 das 52 notícias que pertencem (35%)** — e **9 dessas 18 têm o rótulo
+      certo**. Caem porque o título diz "gripe das aves" e a lista tem `gripe aviária H5N1`.
+      **O custo não é da regra, é da lista.**
+
+      **É curadoria, não implementação, e é da Marta — não do Claude Code.** Não entra na
+      quinta: a quinta corrige o rotulador, isto corrige o vocabulário, e são trabalhos
+      diferentes com autores diferentes. Detalhe em
+      `docs/evidencia/2026-09-15-rotulagem-news-items/classificacao-100-resultados.md`.
 - [ ] **O Mural mantém-se; o que muda é o caminho de escrita do `expandir_mural()`.**
       `[declarado]` **Decisão da Marta, 15/09/2026: o Mural fica.** É output próprio do
       projecto e a forma visível da hipótese do vocabulário — a lista curada como termo de

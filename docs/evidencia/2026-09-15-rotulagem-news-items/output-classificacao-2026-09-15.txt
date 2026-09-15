@@ -1,0 +1,91 @@
+========================================================================
+CLASSIFICACAO HUMANA DAS 100 — 15/09/2026
+========================================================================
+amostra-100-TRABALHO-v2.csv  sha256 70b403c3098db4bfc3ca46ac3ce5419826eec197279c6ff6692661c7afd936da
+keywords-2026-09-15.json     sha256 d5a9c2d9ba6937e32bb1b83b3aed52f99184980da758f9502749c329d541e052
+linhas: 100
+
+[1] AS DUAS MEDIDAS, SEPARADAS
+    rotulo ERRADO             53/100  IC95% [43.3% ; 62.5%]   (S=45, D=2)
+    NAO pertence ao corpus    39/100  IC95% [30.0% ; 48.8%]   (S=52, D=9)
+    1a passagem (mistura)     38/100   <- media das duas perguntas, nao mede nenhuma
+
+[2] OS QUATRO QUADRANTES
+                           pertence S   pertence N   pertence D
+    rotulo certo                   43            0            2
+    rotulo errado                   9           39            5
+    rotulo duvidoso                 0            0            2
+
+    certo + pertence (fica) .............. 43
+    ERRADO + pertence (re-rotular) ....... 9
+    errado + nao pertence (sai) .......... 39
+    certo + NAO pertence ("caso Pepa") ... 0
+
+[3] POR TIPO DE FONTE
+    media          n= 78 | rotulo errado  41 (  53%) IC[42;63] | nao pertence  39 (  50%) IC[39;61] | pertence=D 2
+    institucional  n= 20 | rotulo errado  12 (  60%) IC[39;78] | nao pertence   0 (   0%) IC[0;16] | pertence=D 7
+    factcheck      n=  2 | rotulo errado   0 (   0%) IC[0;66] | nao pertence   0 (   0%) IC[0;66] | pertence=D 0
+
+[4] O QUE A REGRA NOVA FAZ
+    dos 53 com rotulo errado, resolve 52 (98%)
+    das 52 que pertencem, deita fora 18 (35%)
+
+[5] AS QUE PERTENCEM E CAEM — e porque
+    [media] Gripe das aves volta a ser detetada em Torres Vedras
+            rotulo 'gripe aviária H5N1' (certo)
+    [insti] Ordem dos Médicos alerta para falta de psiquiatras no SNS
+            rotulo 'depressão' (certo)
+    [media] DGS lança campanha contra uso excessivo de antibióticos
+            rotulo 'resistência antibióticos' (certo)
+    [insti] Instituto Ricardo Jorge assinala Dia Mundial das Doenças Raras 202
+            rotulo 'perturbações do espectro do autismo' (errado)
+    [media] Perguntar para uma amiga
+            rotulo 'avc' (errado)
+    [insti] Young Talents Contest 2027: Oportunidade Internacional para Intern
+            rotulo 'candidíase' (errado)
+    [insti] CathStart -Curso de Simulação em Coronariografia Diagnóstica
+            rotulo 'terapia hormonal' (errado)
+    [insti] A epidemia silenciosa das dores da coluna: um olhar de quem opera,
+            rotulo 'doenças cardiovasculares' (errado)
+    [insti] Dia Mundial da Obesidade: O impacto do excesso de peso na saúde da
+            rotulo 'diabetes tipo 2' (certo)
+    [insti] “Vamos ficar de olhos abertos”: Comissão Europeia promove campanha
+            rotulo 'síndrome do ovário poliquístico' (errado)
+    [insti] DGS publica novas orientações sobre saúde mental
+            rotulo 'ansiedade' (certo)
+    [media] Poluição do ar em Lisboa ultrapassa limites da OMS
+            rotulo 'poluição e saúde' (certo)
+    [insti] SPPCV lança Bolsa de Investigação 2026 com prémio de cinco mil eur
+            rotulo 'candidíase' (errado)
+    [media] Gravidez. "Descobri mutação genética. Fazia com que o sangue coagu
+            rotulo 'refluxo gastroesofágico' (certo)
+    [insti] Abertura de concurso a financiamento público para projetos na área
+            rotulo 'candidíase' (errado)
+    [media] Aumentam os casos de Mpox: Portugal com 40 novas infeções
+            rotulo 'mpox portugal' (certo)
+    [insti] Fase de Apresentação de Candidaturas do SAD 2026/176 – Cadeiras de
+            rotulo 'candidíase' (errado)
+    [factc] Mpox transmite-se pelo ar? Verificação de factos
+            rotulo 'mpox portugal' (certo)
+
+[6] A LISTA: quantas palavras tem cada termo canonico
+    1 palavra(s):  24
+    2 palavra(s):  37
+    3 palavra(s):  13
+    4 palavra(s):   7
+    5 palavra(s):   1
+    multi-palavra: 58 de 82 (71%)
+    multi-palavra SEM sinonimo nenhum: 13
+      - candida auris
+      - competências socioemocionais
+      - desinstitucionalização saúde mental
+      - equipas comunitárias saúde mental
+      - incontinência urinária
+      - intolerância à lactose
+      - literacia em saúde mental
+      - prevenção suicídio
+      - reabilitação psicossocial
+      - saúde mental ensino superior
+      - saúde mental escolar
+      - saúde mental jovens
+      - saúde mental sem-abrigo
