@@ -8,6 +8,7 @@ import MediaTable from "@/components/MediaTable";
 import SearchAlerts from "@/components/SearchAlerts";
 import HealthQuestionsPanel from "@/components/HealthQuestionsPanel";
 import YouTubeTrendsPanel from "@/components/YouTubeTrendsPanel";
+import GoogleTrendsPanel from "@/components/GoogleTrendsPanel";
 import Filters from "@/components/Filters";
 import { detectAlerts } from "@/lib/detectAlerts";
 import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData";
@@ -313,6 +314,8 @@ const Index = () => {
                 />
               </>
             )}
+            <div className="section-divider mb-6 mt-10" />
+            <GoogleTrendsPanel />
             <div className="section-divider mb-6 mt-10" />
             <YouTubeTrendsPanel axis={activeAxis} />
             <div className="section-divider mb-6 mt-10" />

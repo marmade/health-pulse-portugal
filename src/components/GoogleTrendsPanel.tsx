@@ -1,0 +1,167 @@
+import { useMemo, useState } from "react";
+import TrendChart from "@/components/TrendChart";
+import type { TrendPoint } from "@/data/mockData";
+import dados from "@/data/googleTrends.json";
+
+/**
+ * Série real do Google Trends, descarregada à mão e convertida por
+ * scripts/converter_trends_csv.py. Ao contrário de `historical_snapshots`, estes
+ * pontos estão todos na mesma régua — vêm de uma só descarga.
+ *
+ * A leitura por baixo do gráfico é CALCULADA a partir dos pontos, não escrita à
+ * mão: se a série mudar, a leitura muda com ela.
+ */
+
+const MES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+const MES_LONGO = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+type Ponto = { data: string; valor: number };
+type Serie = {
+  termo: string; geo: string; categoria: string | null; granularidade: string;
+  pontos: Ponto[]; inicio: string; fim: string; maximo: number; pico_em: string;
+  zeros: number; descarregado_em: string; ficheiro: string;
+};
+
+const media = (a: number[]) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+
+function analisar(s: Serie) {
+  const porAnoMes = new Map<string, number[]>();
+  for (const p of s.pontos) {
+    const k = `${p.data.slice(0, 4)}-${p.data.slice(5, 7)}`;
+    if (!porAnoMes.has(k)) porAnoMes.set(k, []);
+    porAnoMes.get(k)!.push(p.valor);
+  }
+  const anoDe = (d: string) => +d.slice(0, 4);
+  const anos = [...new Set(s.pontos.map(p => anoDe(p.data)))].sort();
+  const corrente = anos[anos.length - 1];
+  const anterior = corrente - 1;
+
+  // pontos para o TrendChart: mês a mês, ano corrente vs anterior
+  const pontos: TrendPoint[] = MES.map((lab, i) => {
+    const mm = String(i + 1).padStart(2, "0");
+    const c = porAnoMes.get(`${corrente}-${mm}`);
+    const p = porAnoMes.get(`${anterior}-${mm}`);
+    return {
+      week: lab,
+      current: (c ? Math.round(media(c)) : undefined) as unknown as number,
+      previous: (p ? Math.round(media(p)) : undefined) as unknown as number,
+    };
+  });
+  const sobrepostos = pontos.filter(p => p.current != null && p.previous != null).length;
+
+  // anos civis completos, para tendência e sazonalidade
+  const completos = anos.filter(a => new Set(
+    s.pontos.filter(p => anoDe(p.data) === a).map(p => p.data.slice(5, 7))).size === 12);
+  const mediasAnuais = completos.map(a => ({
+    ano: a, m: media(s.pontos.filter(p => anoDe(p.data) === a).map(p => p.valor)),
+  }));
+  const sazonal = MES.map((_, i) => {
+    const mm = String(i + 1).padStart(2, "0");
+    const v = completos.flatMap(a => porAnoMes.get(`${a}-${mm}`) || []);
+    return { mes: i, m: media(v) };
+  }).filter(x => x.m > 0);
+  const alto = sazonal.length ? sazonal.reduce((a, b) => (b.m > a.m ? b : a)) : null;
+  const baixo = sazonal.length ? sazonal.reduce((a, b) => (b.m < a.m ? b : a)) : null;
+
+  return { pontos, sobrepostos, corrente, anterior, mediasAnuais, alto, baixo };
+}
+
+const GoogleTrendsPanel = () => {
+  const series = (dados as any).series as Serie[];
+  const [activa, setActiva] = useState(0);
+  const s = series[activa];
+  const a = useMemo(() => analisar(s), [s]);
+
+  const primeira = a.mediasAnuais[0];
+  const ultima = a.mediasAnuais[a.mediasAnuais.length - 1];
+  const variacao = primeira && ultima && primeira.m > 0
+    ? Math.round((ultima.m - primeira.m) / primeira.m * 100) : null;
+
+  return (
+    <section>
+      <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+        <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50">
+          Interesse de pesquisa — série real do Google Trends
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {series.map((x, i) => (
+            <button
+              key={x.termo}
+              onClick={() => setActiva(i)}
+              className={`text-[9px] font-bold uppercase tracking-wider px-2 py-1 border transition-colors ${
+                i === activa ? "bg-foreground text-background border-foreground"
+                             : "border-foreground/20 hover:bg-foreground/5"}`}
+            >
+              {x.termo}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <TrendChart data={a.pontos} label={s.termo} period="12m" />
+
+      {/* ── A leitura ─────────────────────────────────────────────── */}
+      <div className="mt-4 border-t border-foreground/10 pt-3 space-y-2">
+        <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50">
+          O que estamos a ver
+        </p>
+
+        <p className="text-[11px] leading-relaxed">
+          Interesse de pesquisa por <strong>{s.termo}</strong> no Google, em{" "}
+          <strong>{s.geo}</strong>
+          {s.categoria ? <> e restringido à categoria <strong>{s.categoria}</strong></> : null}.
+          Série <strong>{s.granularidade}</strong> de {s.pontos.length} pontos, de{" "}
+          {s.inicio} a {s.fim}.{" "}
+          {a.sobrepostos > 0
+            ? <>As duas linhas comparam <strong>{a.corrente}</strong> com{" "}
+               <strong>{a.anterior}</strong>, mês a mês, e sobrepõem-se em{" "}
+               <strong>{a.sobrepostos} meses</strong>.</>
+            : <>Não há meses com dados nos dois anos, logo <strong>a comparação
+               ano-a-ano não é possível</strong> com esta série.</>}
+        </p>
+
+        {variacao !== null && a.mediasAnuais.length >= 2 && (
+          <p className="text-[11px] leading-relaxed">
+            <strong>Tendência.</strong> Média anual de{" "}
+            {a.mediasAnuais.map(x => `${x.ano}: ${x.m.toFixed(1)}`).join(" · ")} —{" "}
+            {variacao > 0 ? "uma subida" : variacao < 0 ? "uma descida" : "estabilidade"} de{" "}
+            <strong>{variacao > 0 ? "+" : ""}{variacao}%</strong> entre {primeira.ano} e{" "}
+            {ultima.ano}, contando só anos civis completos.
+          </p>
+        )}
+
+        {a.alto && a.baixo && (
+          <p className="text-[11px] leading-relaxed">
+            <strong>Sazonalidade.</strong> Nos anos completos, o mês mais alto é{" "}
+            <strong>{MES_LONGO[a.alto.mes]}</strong> ({a.alto.m.toFixed(1)}) e o mais baixo{" "}
+            <strong>{MES_LONGO[a.baixo.mes]}</strong> ({a.baixo.m.toFixed(1)}).
+          </p>
+        )}
+
+        <p className="text-[10px] leading-relaxed text-foreground/60">
+          <strong>Como ler a escala.</strong> O Google não publica número de pesquisas: publica
+          um índice de 0 a 100 <strong>normalizado ao valor mais alto desta descarga</strong>,
+          que é {s.maximo} em {s.pico_em}. Os valores são comparáveis <strong>entre si dentro
+          deste gráfico</strong>, porque vêm todos do mesmo pedido — mas não são contagens, e
+          não se comparam com os de outra descarga. Uma subida de {variacao !== null ? `${variacao}%` : "X%"} é
+          de <em>interesse relativo</em>, não de volume de pesquisas.
+        </p>
+
+        <p className="text-[10px] leading-relaxed text-foreground/60">
+          <strong>Proveniência.</strong> Descarga manual do painel “Interesse ao longo do
+          tempo” do Google Trends, a <strong>{s.descarregado_em}</strong>. O ficheiro está no
+          repositório em <code className="text-[9px]">{s.ficheiro}</code> e a conversão é feita
+          por <code className="text-[9px]">scripts/converter_trends_csv.py</code>.{" "}
+          <strong>Não actualiza sozinha</strong>: o que está no gráfico é o que foi
+          descarregado nessa data.
+          {s.zeros === 0
+            ? <> Nenhum dos {s.pontos.length} pontos é zero — não há falhas de medição nesta série.</>
+            : <> {s.zeros} dos {s.pontos.length} pontos são zero.</>}
+        </p>
+      </div>
+    </section>
+  );
+};
+
+export default GoogleTrendsPanel;
