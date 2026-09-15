@@ -1,0 +1,85 @@
+========================================================================
+DIAGNOSTICO DA ROTULAGEM — news_items da instancia viva
+========================================================================
+keywords-2026-09-15.json  sha256 d5a9c2d9ba6937e32bb1b83b3aed52f99184980da758f9502749c329d541e052
+news_items_viva.csv       sha256 9b543697078242e27d033c6acf46360b0483ea8f6e973f79e46a36e6f277564d
+
+[1] INVENTARIO
+    keywords activas ............ 82
+    sinonimos ................... 99
+    entradas na lista de busca .. 181
+    noticias .................... 310
+
+[2] O ROTULO ACTUAL TEM APOIO NO TITULO?
+      97   31.3%  A_palavra_inteira
+     120   38.7%  B_so_subcadeia
+      93   30.0%  C_sem_vestigio
+    (C = rotulado por texto da descricao, que nao foi guardado)
+
+[3] OS DOIS ROTULOS QUE DOMINAM O CORPUS
+    candidíase                             n= 79 (25.5%)  palavra-inteira=  0 so-subcadeia= 63 sem-vestigio= 16
+    perturbação obsessivo-compulsiva       n= 47 (15.2%)  palavra-inteira=  0 so-subcadeia= 33 sem-vestigio= 14
+    avc                                    n= 20 ( 6.5%)  palavra-inteira= 11 so-subcadeia=  0 sem-vestigio=  9
+    perturbações do espectro do autismo    n= 18 ( 5.8%)  palavra-inteira=  3 so-subcadeia=  4 sem-vestigio= 11
+    síndrome do ovário poliquístico        n= 13 ( 4.2%)  palavra-inteira=  0 so-subcadeia= 11 sem-vestigio=  2
+    candidíase + perturbacao obsessivo-compulsiva = 126 de 310 (40.6%), zero com palavra inteira
+
+[4] SIGLAS E TERMOS CURTOS — correspondencias COM fronteira, no titulo
+    POC            0   <- corta
+    OCD            0   <- corta
+    PEA            0   <- corta
+    AMR            0   <- corta
+    SII            0   <- corta
+    SOP            0   <- corta
+    THS            0   <- corta
+    PTSD           0
+    DRGE           0
+    TDAH           2
+                 ex: Diagnósticos de TDAH em adultos triplicam em Portugal
+                 ex: TDAH em adultos: o diagnóstico que muitos portugueses desconhece
+    avc            9
+                 ex: 20º Congresso Português do AVC
+                 ex: <![CDATA[Em Portugal, marido de Kelly Key recebe alta hospitalar
+    azia           1
+                 ex: <![CDATA[Pepa: "Acabei o jogo com azia, senti que poderíamos ter
+    candida        0
+    candidíase     0
+
+[5] COLISOES NO MAP DE RESOLUCAO (termToKeyword.set sobrescreve)
+    total: 2
+    'doença celíaca'
+        TERMO     de -> doença celíaca
+        sinonimo  de -> intolerância ao glúten
+    'stress'
+        sinonimo  de -> ansiedade
+        TERMO     de -> stress
+
+[6] SIMULACAO — fronteiras de palavra, so no titulo
+    titulos SEM correspondencia .. 210 de 310 (67.7%)
+    titulos COM correspondencia .. 100
+    nº de temas distintos por titulo: {1: 91, 2: 9}
+    (limite inferior — a descricao nao foi guardada)
+
+[7] O HOMONIMO — "depressao"
+    titulos com "depressão" como palavra inteira: 6 de 310
+      [depressão] O caso da depressão que escondia outra doença
+      [depressão] <![CDATA[Mãe em depressão matou três filhos. Nas redes sociais, há outra
+      [depressão] <![CDATA[Mãe que matou filhos durante depressão pós-parto considerada in
+      [depressão] <![CDATA[Adeptos do Inter Miami declaram-se a Messi: "Salvaste-me da dep
+      [depressão] Depressão em jovens atinge máximos históricos em Portugal
+      [depressão] <![CDATA[Harrison Ford revela a sua luta contra a depressão: "Estava doe
+    com marcador meteorologico no titulo: 0
+    (os dois casos meteorologicos conhecidos entraram pela DESCRICAO)
+
+[8] A SECCAO NO URL — sinal independente, ja guardado
+     124   40.0%  nao-saude
+       7    2.3%  saude
+      54   17.4%  ambiguo
+     125   40.3%  sem-seccao
+    RESSALVA: a divisao saude/nao-saude e juizo de quem escreveu este script
+    sobre nomes de seccao que sao dos jornais. "opiniao" e forma, nao tema.
+
+[9] FONTE COMPROMETIDA
+    2026-03-19 | SP Enfermagem de Saúde Familiar | source_type=institucional | rotulo=síndrome de intestino irritável
+      5 Vinkkiä Jackpottien Valloittamiseen Rizk Casinolla
+      https://spesf.pt/5-vinkkia-jackpottien-valloittamiseen-rizk-casinolla/
