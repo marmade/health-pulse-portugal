@@ -227,3 +227,51 @@ leitura de que "houve timeout" assenta no `error_msg`, não nesta coluna.
   coincidência temporal.
 - Não se sabe qual o *timeout* configurado na chamada nem se é o valor por omissão do
   `pg_net`.
+
+---
+
+# Acrescento de 15/09/2026 — a coluna `timed_out` está vazia
+
+> Achado na **vistoria feita no terminal** (Claude Code) ao commitar esta pasta, por leitura
+> do `net-http-response-detalhe-2026-09-15.csv` com um leitor de CSV. Não é do Cowork e não
+> veio de consulta nova à base: está no ficheiro que já cá estava.
+
+A linha `id` 333 de `net._http_response` tem `error_msg` a descrever um *timeout* de
+5001,281 ms — e a coluna **`timed_out` vazia**, não `t`.
+
+| coluna | valor |
+|---|---|
+| `id` | `333` |
+| `status_code` | vazio |
+| `content_type` | vazio |
+| `timed_out` | **vazio** |
+| `inicio_do_conteudo` | vazio |
+| `error_msg` | `Timeout of 5000 ms reached. Total time: 5001.281000 ms …` |
+
+## Porque é que isto importa, e não é só um detalhe
+
+A secção acima descreve **três** sítios a contradizerem-se sobre o mesmo evento. Com isto, a
+contradição deixa de ser só entre sítios e passa a existir **dentro de um deles**: a coluna
+cuja função é sinalizar *timeout* **não o sinaliza**, enquanto o campo de texto da mesma
+linha o descreve com precisão de microssegundos.
+
+Se alguém for verificar isto por consulta — e a consulta natural é
+`where timed_out is true` ou `where status_code >= 400` — **esta linha não aparece em
+nenhuma das duas**. O registo existe, contradiz o `succeeded` do `cron`, e é invisível ao
+filtro que o iria procurar.
+
+É o mesmo padrão que o `AUDIT.md` 6.1 e a secção Stack do `CONTEXT.md` descrevem — **uma
+fonte que se contradiz a si própria** —, aqui em infraestrutura em vez de documentação. Para
+o apêndice metodológico é o exemplo mais afiado da série, por não precisar de duas
+ferramentas para acontecer.
+
+## O que isto NÃO prova
+
+- **Não prova que o `pg_net` esteja avariado.** Pode ser semântica da extensão — por
+  exemplo, `timed_out` só preenchido em certos modos de falha. **Não foi apurado**, e a
+  documentação da extensão não foi consultada.
+- **Não altera a leitura da secção acima.** Continua a assentar no `error_msg`, que é
+  explícito. O que este acrescento mostra é que essa escolha de campo **não era indiferente**:
+  ler pelo `timed_out` teria dado "sem falha registada".
+- **Não é uma medição nova.** É leitura do CSV já guardado. Nenhuma consulta foi corrida à
+  instância antiga para o escrever.

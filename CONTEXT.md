@@ -617,9 +617,43 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    `README.md`. O SQL de apagar dados pessoais continua válido se a decisão for faseada.
 
    **O acesso administrativo a esta instância é o SQL editor do Lovable Cloud** — o MCP
-   responde "You do not have permission" e a chave `anon` não lê o schema `cron`. Logo
-   **cortar o Lovable antes de decidir isto fecha a única porta** por onde os jobs se
-   desactivam. A ordem entre o Crítico nº 4 e o nº 5 deixou de ser indiferente.
+   responde "You do not have permission" e a chave `anon` não lê o schema `cron`.
+
+   ### A ordem entre o nº 4 e o nº 5 é de SENTIDO ÚNICO
+
+   **A instância antiga não está na conta Supabase da Marta. Está na organização do Lovable.**
+   `[sessão 14][bd]` Verificado a 15/09/2026 por `list_projects` com as credenciais dela: a
+   conta devolve **dois** projectos — `ijpxjpbjudaddfatibfl` (Reportagem Viva) e
+   `hypztdsgzuykoksrurto` (o descartável de 14/09, pausado) — e **não devolve
+   `cyjwhmuakmiytypewwfw`**. É isto que explica o "You do not have permission" do MCP, e é
+   isto que torna a ordem irreversível. **Não estava registado em lado nenhum até 15/09/2026.**
+
+   **Consequência, e é a razão de este parágrafo existir:** quem ler o Crítico nº 5 sem ler
+   isto pode cortar o Lovable e ficar **sem forma nenhuma** de administrar esta instância.
+   Não é perder uma conveniência — é perder as três únicas capacidades que existem sobre ela:
+
+   1. **apagar os dados pessoais** (o SQL de `docs/operacoes/` corre nesse editor);
+   2. **desactivar o job 1**, que continuaria a escrever todos os dias, indefinidamente;
+   3. **apagar a instância**, que não está na conta dela.
+
+   O que ficaria: **8 linhas de dados pessoais legíveis com a chave `anon`** — verificado a
+   15/09/2026: `contactos_projecto` 4 linhas com 4 nomes, 3 e-mails e 3 telefones;
+   `revisao_pares` 4 linhas com 7 nomes, 6 e-mails e 5 telefones —, **com essa chave no
+   histórico público do git** e ninguém com poder para as remover. Cortar o Lovable **não
+   reduz a exposição: remove a capacidade de lhe pôr fim.**
+
+   ### Ordem decidida a 15/09/2026
+
+   1. **Desactivar o job 1** (`cron.alter_job`, fica inactivo como o job 2).
+   2. **Correr o SQL** de `docs/operacoes/2026-09-09-instancia-antiga-apagar-dados-pessoais.sql`.
+   3. **Confirmar as duas coisas** — 0 linhas legíveis com a chave `anon`, job 1 inactivo em
+      `cron.job`. Confirmar pelo efeito, não pelo código de estado devolvido.
+   4. **Só então** investigar o que faz o botão `Remove Lovable Cloud`, e depois o Crítico nº 5.
+
+   **Porque é que os passos 1 e 2 vêm antes de saber o que o botão faz:** custam um minuto e
+   fecham um risco permanente. Se o botão apagar a instância inteira, foram dispensáveis — e
+   um minuto é um preço barato por não depender disso. Se não apagar, foram a única
+   oportunidade de os fazer. A assimetria decide sozinha.
 
    **SQL pronto:** `docs/operacoes/2026-09-09-instancia-antiga-apagar-dados-pessoais.sql`.
    Corre no SQL Editor do painel, projecto `cyjwhmuakmiytypewwfw`. Não é migração deste
@@ -656,14 +690,28 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    `VITE_SUPABASE_URL` ou `VITE_SUPABASE_PUBLISHABLE_KEY`.
 
    **Por fazer, e por esta ordem:**
-   1. definir as duas variáveis no painel do Cloudflare, **para produção E para preview** —
-      não vêm do `.env`, que não está versionado
+   1. ~~definir as duas variáveis no painel do Cloudflare, **para produção E para preview**~~
+      — **FEITO a 15/09/2026.** O primeiro deployment correu **sem** elas: o build passou e o
+      site abriu em branco, exactamente como o `client.ts` prevê. Corrigido com as duas em
+      Production e Preview, mais *Retry deployment* — as variáveis só entram num build novo
    2. ~~correr o primeiro build~~ — **FEITO a 09/09/2026**, localmente: `✓ built in 2.31s`,
       3808 módulos. Sai um aviso de chunk acima de 500 kB (1,75 MB, 519 kB gzipped): é aviso,
       não erro. Verificado no output que `dist/_redirects` existe e que o bundle aponta para a
       instância certa. **Cuidado:** o build foi feito com Node 24 e o `.nvmrc` diz 20 — o
       Cloudflare vai usar 20, que o `vite` 5.4 suporta, mas isso é documentação, não teste
-   3. só depois desligar o Lovable, para não ficar sem publicação nenhuma no intervalo
+   2-bis. ~~publicar~~ — **FEITO a 15/09/2026.** `dizquedisse.martamadeira.pt`, commit
+      `87dc741`. O `/admin` saiu do bundle no mesmo dia (Crítico nº 2). **Por confirmar:** a
+      versão de Node que o Cloudflare usou — o log do build não foi consultado
+   3. **PARAR AQUI E LER O CRÍTICO Nº 4 ANTES DE DESLIGAR O LOVABLE.** A razão original
+      deste passo — não ficar sem publicação no intervalo — **já está resolvida**: o site
+      está publicado no Cloudflare desde 15/09/2026. **Mas apareceu uma razão nova e mais
+      séria, e é de sentido único:** a instância antiga está na **organização do Lovable**,
+      não na conta Supabase da Marta (`list_projects` verificado a 15/09/2026), e o SQL
+      editor do Lovable Cloud é o **único** acesso administrativo que existe a ela.
+      **Desligar o Lovable antes de fechar o Crítico nº 4 deixa 8 linhas de dados pessoais
+      legíveis para sempre, com a chave `anon` que está no histórico público do git, e
+      ninguém com poder para as apagar.** Os passos 1 e 2 do nº 4 custam um minuto. Fazer
+      esses primeiro, confirmar, e só então voltar aqui
    4. **remover o `lovable-tagger`** — não foi tocado no commit `fedd760` de propósito: é
       importado no topo do `vite.config.ts`, fora da condição de modo, e o build parte se o
       pacote sair sem a linha sair também. Sai a linha e a dependência ao mesmo tempo
