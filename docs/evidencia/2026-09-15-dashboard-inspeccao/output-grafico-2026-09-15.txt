@@ -1,0 +1,93 @@
+==========================================================================
+GRAFICO "VS ANO ANTERIOR" — reproducao
+==========================================================================
+historical-snapshots-2026-09-15.csv  sha256 2f4e287ad3556e4926e753fae641295b92649d533a0fde1a844d5b9151b00a5b
+data de referencia fixa: 2026-09-15
+
+[1] O QUE EXISTE vs O QUE CHEGA AO BROWSER
+    linhas na tabela ................. 3462
+    limite por omissao do PostgREST .. 1000
+    linhas que chegam ................ 1000  (29%)
+    nunca chegam ..................... 2462
+    janela que chega ................. 2025-10-01 a 2026-03-20
+    janela que existe ................ 2025-10-01 a 2026-08-10
+    O hook ordena por snapshot_date ASCENDENTE, logo o corte guarda as MAIS
+    ANTIGAS e deita fora as mais recentes.
+
+[2] POR MES, o que chega (todos os eixos)
+    2025-10    40
+    2025-11    40
+    2025-12    40
+    2026-01    40
+    2026-02    40
+    2026-03   800
+
+[3] O QUE O GRAFICO DESENHA — saude-mental  (287 linhas)
+    mes    current(2026)  previous(2025)
+    Jan    48             0   <- ?? 0, nao e lacuna
+    Fev    50             0   <- ?? 0, nao e lacuna
+    Mar    26             0   <- ?? 0, nao e lacuna
+    Abr    undefined      0   <- ?? 0, nao e lacuna
+    Mai    undefined      0   <- ?? 0, nao e lacuna
+    Jun    undefined      0   <- ?? 0, nao e lacuna
+    Jul    undefined      0   <- ?? 0, nao e lacuna
+    Ago    undefined      0   <- ?? 0, nao e lacuna
+    Set    undefined      0   <- ?? 0, nao e lacuna
+    Out    — futuro       40
+    Nov    — futuro       42
+    Dez    — futuro       44
+    MESES COM AS DUAS LINHAS: NENHUM
+
+[3] O QUE O GRAFICO DESENHA — menopausa  (232 linhas)
+    mes    current(2026)  previous(2025)
+    Jan    38             0   <- ?? 0, nao e lacuna
+    Fev    40             0   <- ?? 0, nao e lacuna
+    Mar    26             0   <- ?? 0, nao e lacuna
+    Abr    undefined      0   <- ?? 0, nao e lacuna
+    Mai    undefined      0   <- ?? 0, nao e lacuna
+    Jun    undefined      0   <- ?? 0, nao e lacuna
+    Jul    undefined      0   <- ?? 0, nao e lacuna
+    Ago    undefined      0   <- ?? 0, nao e lacuna
+    Set    undefined      0   <- ?? 0, nao e lacuna
+    Out    — futuro       32
+    Nov    — futuro       34
+    Dez    — futuro       37
+    MESES COM AS DUAS LINHAS: NENHUM
+
+[3] O QUE O GRAFICO DESENHA — alimentacao  (252 linhas)
+    mes    current(2026)  previous(2025)
+    Jan    43             0   <- ?? 0, nao e lacuna
+    Fev    46             0   <- ?? 0, nao e lacuna
+    Mar    30             0   <- ?? 0, nao e lacuna
+    Abr    undefined      0   <- ?? 0, nao e lacuna
+    Mai    undefined      0   <- ?? 0, nao e lacuna
+    Jun    undefined      0   <- ?? 0, nao e lacuna
+    Jul    undefined      0   <- ?? 0, nao e lacuna
+    Ago    undefined      0   <- ?? 0, nao e lacuna
+    Set    undefined      0   <- ?? 0, nao e lacuna
+    Out    — futuro       37
+    Nov    — futuro       40
+    Dez    — futuro       41
+    MESES COM AS DUAS LINHAS: NENHUM
+
+[3] O QUE O GRAFICO DESENHA — emergentes  (229 linhas)
+    mes    current(2026)  previous(2025)
+    Jan    41             0   <- ?? 0, nao e lacuna
+    Fev    43             0   <- ?? 0, nao e lacuna
+    Mar    32             0   <- ?? 0, nao e lacuna
+    Abr    undefined      0   <- ?? 0, nao e lacuna
+    Mai    undefined      0   <- ?? 0, nao e lacuna
+    Jun    undefined      0   <- ?? 0, nao e lacuna
+    Jul    undefined      0   <- ?? 0, nao e lacuna
+    Ago    undefined      0   <- ?? 0, nao e lacuna
+    Set    undefined      0   <- ?? 0, nao e lacuna
+    Out    — futuro       36
+    Nov    — futuro       38
+    Dez    — futuro       40
+    MESES COM AS DUAS LINHAS: NENHUM
+
+[4] A CONCLUSAO, para qualquer eixo
+    meses com dados de 2026 (current) .. ['Jan', 'Fev', 'Mar']
+    meses com dados de 2025 (previous) . ['Out', 'Nov', 'Dez']
+    interseccao ........................ VAZIA
+    Uma comparacao ano-a-ano precisa de sobreposicao. Nao ha nenhuma.

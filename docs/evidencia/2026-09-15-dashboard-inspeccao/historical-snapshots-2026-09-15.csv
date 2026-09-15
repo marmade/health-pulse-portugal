@@ -1,0 +1,3463 @@
+snapshot_date,axis,keyword,search_index
+2025-10-01,alimentacao,açúcar e saúde,28
+2025-10-01,alimentacao,alergias alimentares,30
+2025-10-01,alimentacao,alimentação plant-based,29
+2025-10-01,saude-mental,ansiedade,63
+2025-10-01,saude-mental,automutilação,32
+2025-10-01,emergentes,bactérias carnívoras,16
+2025-10-01,saude-mental,burnout,51
+2025-10-01,emergentes,dengue europa,32
+2025-10-01,saude-mental,depressão,59
+2025-10-01,alimentacao,dieta cetogénica,21
+2025-10-01,alimentacao,dieta mediterrânica,60
+2025-10-01,menopausa,fitoterapia menopausa,32
+2025-10-01,emergentes,gripe aviária H5N1,48
+2025-10-01,saude-mental,insónia,45
+2025-10-01,alimentacao,intolerância ao glúten,49
+2025-10-01,alimentacao,jejum intermitente,58
+2025-10-01,menopausa,libido menopausa,21
+2025-10-01,emergentes,long covid,40
+2025-10-01,menopausa,menopausa masculina,18
+2025-10-01,menopausa,menopausa precoce,33
+2025-10-01,menopausa,menopausa sintomas,59
+2025-10-01,emergentes,microplásticos sangue,23
+2025-10-01,emergentes,mpox portugal,77
+2025-10-01,alimentacao,obesidade infantil,34
+2025-10-01,menopausa,osteoporose,37
+2025-10-01,saude-mental,pânico,38
+2025-10-01,menopausa,peso na menopausa,25
+2025-10-01,emergentes,poluição e saúde,35
+2025-10-01,saude-mental,PTSD,32
+2025-10-01,emergentes,resistência antibióticos,39
+2025-10-01,emergentes,sarampo surto,28
+2025-10-01,menopausa,secura vaginal,25
+2025-10-01,saude-mental,solidão,28
+2025-10-01,menopausa,suores noturnos,24
+2025-10-01,alimentacao,suplementos alimentares,31
+2025-10-01,saude-mental,TDAH adulto,27
+2025-10-01,menopausa,terapia hormonal,51
+2025-10-01,saude-mental,terapia online,23
+2025-10-01,alimentacao,ultraprocessados,26
+2025-10-01,emergentes,vírus nipah,19
+2025-11-01,alimentacao,açúcar e saúde,33
+2025-11-01,alimentacao,alergias alimentares,28
+2025-11-01,alimentacao,alimentação plant-based,35
+2025-11-01,saude-mental,ansiedade,73
+2025-11-01,saude-mental,automutilação,30
+2025-11-01,emergentes,bactérias carnívoras,18
+2025-11-01,saude-mental,burnout,49
+2025-11-01,emergentes,dengue europa,29
+2025-11-01,saude-mental,depressão,57
+2025-11-01,alimentacao,dieta cetogénica,24
+2025-11-01,alimentacao,dieta mediterrânica,74
+2025-11-01,menopausa,fitoterapia menopausa,31
+2025-11-01,emergentes,gripe aviária H5N1,56
+2025-11-01,saude-mental,insónia,46
+2025-11-01,alimentacao,intolerância ao glúten,49
+2025-11-01,alimentacao,jejum intermitente,56
+2025-11-01,menopausa,libido menopausa,22
+2025-11-01,emergentes,long covid,39
+2025-11-01,menopausa,menopausa masculina,18
+2025-11-01,menopausa,menopausa precoce,37
+2025-11-01,menopausa,menopausa sintomas,60
+2025-11-01,emergentes,microplásticos sangue,25
+2025-11-01,emergentes,mpox portugal,75
+2025-11-01,alimentacao,obesidade infantil,40
+2025-11-01,menopausa,osteoporose,42
+2025-11-01,saude-mental,pânico,43
+2025-11-01,menopausa,peso na menopausa,27
+2025-11-01,emergentes,poluição e saúde,38
+2025-11-01,saude-mental,PTSD,32
+2025-11-01,emergentes,resistência antibióticos,49
+2025-11-01,emergentes,sarampo surto,29
+2025-11-01,menopausa,secura vaginal,30
+2025-11-01,saude-mental,solidão,30
+2025-11-01,menopausa,suores noturnos,26
+2025-11-01,alimentacao,suplementos alimentares,33
+2025-11-01,saude-mental,TDAH adulto,29
+2025-11-01,menopausa,terapia hormonal,50
+2025-11-01,saude-mental,terapia online,26
+2025-11-01,alimentacao,ultraprocessados,27
+2025-11-01,emergentes,vírus nipah,19
+2025-12-01,alimentacao,açúcar e saúde,30
+2025-12-01,alimentacao,alergias alimentares,29
+2025-12-01,alimentacao,alimentação plant-based,36
+2025-12-01,saude-mental,ansiedade,71
+2025-12-01,saude-mental,automutilação,33
+2025-12-01,emergentes,bactérias carnívoras,17
+2025-12-01,saude-mental,burnout,54
+2025-12-01,emergentes,dengue europa,35
+2025-12-01,saude-mental,depressão,69
+2025-12-01,alimentacao,dieta cetogénica,23
+2025-12-01,alimentacao,dieta mediterrânica,69
+2025-12-01,menopausa,fitoterapia menopausa,33
+2025-12-01,emergentes,gripe aviária H5N1,54
+2025-12-01,saude-mental,insónia,50
+2025-12-01,alimentacao,intolerância ao glúten,51
+2025-12-01,alimentacao,jejum intermitente,63
+2025-12-01,menopausa,libido menopausa,24
+2025-12-01,emergentes,long covid,43
+2025-12-01,menopausa,menopausa masculina,21
+2025-12-01,menopausa,menopausa precoce,38
+2025-12-01,menopausa,menopausa sintomas,69
+2025-12-01,emergentes,microplásticos sangue,26
+2025-12-01,emergentes,mpox portugal,85
+2025-12-01,alimentacao,obesidade infantil,42
+2025-12-01,menopausa,osteoporose,48
+2025-12-01,saude-mental,pânico,42
+2025-12-01,menopausa,peso na menopausa,28
+2025-12-01,emergentes,poluição e saúde,38
+2025-12-01,saude-mental,PTSD,38
+2025-12-01,emergentes,resistência antibióticos,50
+2025-12-01,emergentes,sarampo surto,33
+2025-12-01,menopausa,secura vaginal,28
+2025-12-01,saude-mental,solidão,34
+2025-12-01,menopausa,suores noturnos,27
+2025-12-01,alimentacao,suplementos alimentares,42
+2025-12-01,saude-mental,TDAH adulto,27
+2025-12-01,menopausa,terapia hormonal,58
+2025-12-01,saude-mental,terapia online,26
+2025-12-01,alimentacao,ultraprocessados,27
+2025-12-01,emergentes,vírus nipah,23
+2026-01-01,alimentacao,açúcar e saúde,33
+2026-01-01,alimentacao,alergias alimentares,35
+2026-01-01,alimentacao,alimentação plant-based,35
+2026-01-01,saude-mental,ansiedade,81
+2026-01-01,saude-mental,automutilação,35
+2026-01-01,emergentes,bactérias carnívoras,18
+2026-01-01,saude-mental,burnout,58
+2026-01-01,emergentes,dengue europa,36
+2026-01-01,saude-mental,depressão,74
+2026-01-01,alimentacao,dieta cetogénica,28
+2026-01-01,alimentacao,dieta mediterrânica,78
+2026-01-01,menopausa,fitoterapia menopausa,34
+2026-01-01,emergentes,gripe aviária H5N1,62
+2026-01-01,saude-mental,insónia,48
+2026-01-01,alimentacao,intolerância ao glúten,53
+2026-01-01,alimentacao,jejum intermitente,62
+2026-01-01,menopausa,libido menopausa,24
+2026-01-01,emergentes,long covid,46
+2026-01-01,menopausa,menopausa masculina,19
+2026-01-01,menopausa,menopausa precoce,41
+2026-01-01,menopausa,menopausa sintomas,69
+2026-01-01,emergentes,microplásticos sangue,26
+2026-01-01,emergentes,mpox portugal,83
+2026-01-01,alimentacao,obesidade infantil,40
+2026-01-01,menopausa,osteoporose,48
+2026-01-01,saude-mental,pânico,46
+2026-01-01,menopausa,peso na menopausa,30
+2026-01-01,emergentes,poluição e saúde,36
+2026-01-01,saude-mental,PTSD,39
+2026-01-01,emergentes,resistência antibióticos,47
+2026-01-01,emergentes,sarampo surto,32
+2026-01-01,menopausa,secura vaginal,31
+2026-01-01,saude-mental,solidão,35
+2026-01-01,menopausa,suores noturnos,31
+2026-01-01,alimentacao,suplementos alimentares,41
+2026-01-01,saude-mental,TDAH adulto,31
+2026-01-01,menopausa,terapia hormonal,58
+2026-01-01,saude-mental,terapia online,29
+2026-01-01,alimentacao,ultraprocessados,28
+2026-01-01,emergentes,vírus nipah,22
+2026-02-01,alimentacao,açúcar e saúde,35
+2026-02-01,alimentacao,alergias alimentares,33
+2026-02-01,alimentacao,alimentação plant-based,40
+2026-02-01,saude-mental,ansiedade,91
+2026-02-01,saude-mental,automutilação,38
+2026-02-01,emergentes,bactérias carnívoras,20
+2026-02-01,saude-mental,burnout,65
+2026-02-01,emergentes,dengue europa,36
+2026-02-01,saude-mental,depressão,76
+2026-02-01,alimentacao,dieta cetogénica,27
+2026-02-01,alimentacao,dieta mediterrânica,79
+2026-02-01,menopausa,fitoterapia menopausa,38
+2026-02-01,emergentes,gripe aviária H5N1,63
+2026-02-01,saude-mental,insónia,51
+2026-02-01,alimentacao,intolerância ao glúten,58
+2026-02-01,alimentacao,jejum intermitente,68
+2026-02-01,menopausa,libido menopausa,28
+2026-02-01,emergentes,long covid,46
+2026-02-01,menopausa,menopausa masculina,22
+2026-02-01,menopausa,menopausa precoce,40
+2026-02-01,menopausa,menopausa sintomas,69
+2026-02-01,emergentes,microplásticos sangue,30
+2026-02-01,emergentes,mpox portugal,87
+2026-02-01,alimentacao,obesidade infantil,45
+2026-02-01,menopausa,osteoporose,50
+2026-02-01,saude-mental,pânico,45
+2026-02-01,menopausa,peso na menopausa,31
+2026-02-01,emergentes,poluição e saúde,42
+2026-02-01,saude-mental,PTSD,41
+2026-02-01,emergentes,resistência antibióticos,51
+2026-02-01,emergentes,sarampo surto,33
+2026-02-01,menopausa,secura vaginal,34
+2026-02-01,saude-mental,solidão,34
+2026-02-01,menopausa,suores noturnos,30
+2026-02-01,alimentacao,suplementos alimentares,42
+2026-02-01,saude-mental,TDAH adulto,32
+2026-02-01,menopausa,terapia hormonal,60
+2026-02-01,saude-mental,terapia online,29
+2026-02-01,alimentacao,ultraprocessados,31
+2026-02-01,emergentes,vírus nipah,23
+2026-03-01,alimentacao,açúcar e saúde,37
+2026-03-01,alimentacao,alergias alimentares,35
+2026-03-01,alimentacao,alimentação plant-based,40
+2026-03-01,saude-mental,ansiedade,89
+2026-03-01,saude-mental,automutilação,39
+2026-03-01,emergentes,bactérias carnívoras,20
+2026-03-01,saude-mental,burnout,65
+2026-03-01,emergentes,dengue europa,38
+2026-03-01,saude-mental,depressão,76
+2026-03-01,alimentacao,dieta cetogénica,29
+2026-03-01,alimentacao,dieta mediterrânica,82
+2026-03-01,menopausa,fitoterapia menopausa,38
+2026-03-01,emergentes,gripe aviária H5N1,67
+2026-03-01,saude-mental,insónia,54
+2026-03-01,alimentacao,intolerância ao glúten,58
+2026-03-01,alimentacao,jejum intermitente,71
+2026-03-01,menopausa,libido menopausa,28
+2026-03-01,emergentes,long covid,49
+2026-03-01,menopausa,menopausa masculina,22
+2026-03-01,menopausa,menopausa precoce,43
+2026-03-01,menopausa,menopausa sintomas,74
+2026-03-01,emergentes,microplásticos sangue,30
+2026-03-01,emergentes,mpox portugal,91
+2026-03-01,alimentacao,obesidade infantil,47
+2026-03-01,menopausa,osteoporose,51
+2026-03-01,saude-mental,pânico,48
+2026-03-01,menopausa,peso na menopausa,33
+2026-03-01,emergentes,poluição e saúde,42
+2026-03-01,saude-mental,PTSD,42
+2026-03-01,emergentes,resistência antibióticos,55
+2026-03-01,emergentes,sarampo surto,35
+2026-03-01,menopausa,secura vaginal,35
+2026-03-01,saude-mental,solidão,36
+2026-03-01,menopausa,suores noturnos,31
+2026-03-01,alimentacao,suplementos alimentares,44
+2026-03-01,saude-mental,TDAH adulto,33
+2026-03-01,menopausa,terapia hormonal,62
+2026-03-01,saude-mental,terapia online,30
+2026-03-01,alimentacao,ultraprocessados,32
+2026-03-01,emergentes,vírus nipah,25
+2026-03-08,alimentacao,açúcar e saúde,42
+2026-03-08,alimentacao,alergias alimentares,30
+2026-03-08,alimentacao,alimentação plant-based,43
+2026-03-08,saude-mental,ansiedade,87
+2026-03-08,saude-mental,automutilação,41
+2026-03-08,emergentes,bactérias carnívoras,20
+2026-03-08,saude-mental,burnout,57
+2026-03-08,emergentes,dengue europa,43
+2026-03-08,saude-mental,depressão,78
+2026-03-08,alimentacao,dieta cetogénica,32
+2026-03-08,alimentacao,dieta mediterrânica,83
+2026-03-08,menopausa,fitoterapia menopausa,39
+2026-03-08,emergentes,gripe aviária H5N1,66
+2026-03-08,saude-mental,insónia,61
+2026-03-08,alimentacao,intolerância ao glúten,65
+2026-03-08,alimentacao,jejum intermitente,61
+2026-03-08,menopausa,libido menopausa,24
+2026-03-08,emergentes,long covid,56
+2026-03-08,menopausa,menopausa masculina,24
+2026-03-08,menopausa,menopausa precoce,47
+2026-03-08,menopausa,menopausa sintomas,73
+2026-03-08,emergentes,microplásticos sangue,28
+2026-03-08,emergentes,mpox portugal,87
+2026-03-08,alimentacao,obesidade infantil,51
+2026-03-08,menopausa,osteoporose,56
+2026-03-08,saude-mental,pânico,49
+2026-03-08,menopausa,peso na menopausa,30
+2026-03-08,emergentes,poluição e saúde,48
+2026-03-08,saude-mental,PTSD,42
+2026-03-08,emergentes,resistência antibióticos,49
+2026-03-08,emergentes,sarampo surto,33
+2026-03-08,menopausa,secura vaginal,34
+2026-03-08,saude-mental,solidão,37
+2026-03-08,menopausa,suores noturnos,27
+2026-03-08,alimentacao,suplementos alimentares,49
+2026-03-08,saude-mental,TDAH adulto,37
+2026-03-08,menopausa,terapia hormonal,54
+2026-03-08,saude-mental,terapia online,32
+2026-03-08,alimentacao,ultraprocessados,32
+2026-03-08,emergentes,vírus nipah,22
+2026-03-09,alimentacao,açúcar e saúde,42
+2026-03-09,alimentacao,alergias alimentares,28
+2026-03-09,alimentacao,alimentação plant-based,41
+2026-03-09,saude-mental,ansiedade,95
+2026-03-09,saude-mental,automutilação,44
+2026-03-09,emergentes,bactérias carnívoras,20
+2026-03-09,saude-mental,burnout,57
+2026-03-09,emergentes,dengue europa,48
+2026-03-09,saude-mental,depressão,68
+2026-03-09,alimentacao,dieta cetogénica,31
+2026-03-09,alimentacao,dieta mediterrânica,71
+2026-03-09,menopausa,fitoterapia menopausa,36
+2026-03-09,emergentes,gripe aviária H5N1,70
+2026-03-09,saude-mental,insónia,59
+2026-03-09,alimentacao,intolerância ao glúten,62
+2026-03-09,alimentacao,jejum intermitente,62
+2026-03-09,menopausa,libido menopausa,27
+2026-03-09,emergentes,long covid,56
+2026-03-09,menopausa,menopausa masculina,27
+2026-03-09,menopausa,menopausa precoce,47
+2026-03-09,menopausa,menopausa sintomas,69
+2026-03-09,emergentes,microplásticos sangue,28
+2026-03-09,emergentes,mpox portugal,86
+2026-03-09,alimentacao,obesidade infantil,55
+2026-03-09,menopausa,osteoporose,48
+2026-03-09,saude-mental,pânico,43
+2026-03-09,menopausa,peso na menopausa,29
+2026-03-09,emergentes,poluição e saúde,53
+2026-03-09,saude-mental,PTSD,37
+2026-03-09,emergentes,resistência antibióticos,46
+2026-03-09,emergentes,sarampo surto,29
+2026-03-09,menopausa,secura vaginal,31
+2026-03-09,saude-mental,solidão,32
+2026-03-09,menopausa,suores noturnos,30
+2026-03-09,alimentacao,suplementos alimentares,51
+2026-03-09,saude-mental,TDAH adulto,35
+2026-03-09,menopausa,terapia hormonal,60
+2026-03-09,saude-mental,terapia online,29
+2026-03-09,alimentacao,ultraprocessados,33
+2026-03-09,emergentes,vírus nipah,20
+2026-03-10,alimentacao,açúcar e saúde,42
+2026-03-10,alimentacao,alergias alimentares,31
+2026-03-10,alimentacao,alimentação plant-based,46
+2026-03-10,saude-mental,ansiedade,101
+2026-03-10,saude-mental,automutilação,40
+2026-03-10,emergentes,bactérias carnívoras,21
+2026-03-10,saude-mental,burnout,49
+2026-03-10,emergentes,dengue europa,42
+2026-03-10,saude-mental,depressão,61
+2026-03-10,alimentacao,dieta cetogénica,34
+2026-03-10,alimentacao,dieta mediterrânica,63
+2026-03-10,menopausa,fitoterapia menopausa,35
+2026-03-10,emergentes,gripe aviária H5N1,62
+2026-03-10,saude-mental,insónia,52
+2026-03-10,alimentacao,intolerância ao glúten,67
+2026-03-10,alimentacao,jejum intermitente,67
+2026-03-10,menopausa,libido menopausa,30
+2026-03-10,emergentes,long covid,60
+2026-03-10,menopausa,menopausa masculina,25
+2026-03-10,menopausa,menopausa precoce,50
+2026-03-10,menopausa,menopausa sintomas,62
+2026-03-10,emergentes,microplásticos sangue,25
+2026-03-10,emergentes,mpox portugal,96
+2026-03-10,alimentacao,obesidade infantil,57
+2026-03-10,menopausa,osteoporose,44
+2026-03-10,saude-mental,pânico,42
+2026-03-10,menopausa,peso na menopausa,27
+2026-03-10,emergentes,poluição e saúde,48
+2026-03-10,saude-mental,PTSD,37
+2026-03-10,emergentes,resistência antibióticos,45
+2026-03-10,emergentes,sarampo surto,33
+2026-03-10,menopausa,secura vaginal,30
+2026-03-10,saude-mental,solidão,35
+2026-03-10,menopausa,suores noturnos,27
+2026-03-10,alimentacao,suplementos alimentares,54
+2026-03-10,saude-mental,TDAH adulto,30
+2026-03-10,menopausa,terapia hormonal,62
+2026-03-10,saude-mental,terapia online,32
+2026-03-10,alimentacao,ultraprocessados,34
+2026-03-10,emergentes,vírus nipah,22
+2026-03-11,alimentacao,açúcar e saúde,37
+2026-03-11,saude-mental,alcoolismo,1
+2026-03-11,alimentacao,alergias alimentares,34
+2026-03-11,alimentacao,alimentação plant-based,40
+2026-03-11,saude-mental,alzheimer,1
+2026-03-11,alimentacao,anemia,1
+2026-03-11,saude-mental,anorexia nervosa,1
+2026-03-11,saude-mental,ansiedade,100
+2026-03-11,saude-mental,automutilação,39
+2026-03-11,emergentes,avc,1
+2026-03-11,emergentes,bactérias carnívoras,22
+2026-03-11,saude-mental,burnout,44
+2026-03-11,emergentes,calor extremo e saúde,1
+2026-03-11,menopausa,cancro da mama,1
+2026-03-11,emergentes,candida auris,1
+2026-03-11,menopausa,candidíase,1
+2026-03-11,alimentacao,colesterol alto,1
+2026-03-11,saude-mental,demência,1
+2026-03-11,emergentes,dengue europa,38
+2026-03-11,saude-mental,dependências,1
+2026-03-11,saude-mental,depressão,64
+2026-03-11,alimentacao,diabetes tipo 2,1
+2026-03-11,alimentacao,dieta cetogénica,31
+2026-03-11,alimentacao,dieta mediterrânica,56
+2026-03-11,alimentacao,doença celíaca,1
+2026-03-11,emergentes,doenças cardiovasculares,1
+2026-03-11,menopausa,doenças da tiroide,1
+2026-03-11,menopausa,endometriose,1
+2026-03-11,saude-mental,enxaqueca,1
+2026-03-11,menopausa,fitoterapia menopausa,33
+2026-03-11,saude-mental,fobia social,1
+2026-03-11,emergentes,gripe aviária H5N1,63
+2026-03-11,menopausa,incontinência urinária,1
+2026-03-11,saude-mental,insónia,44
+2026-03-11,alimentacao,intolerância à lactose,1
+2026-03-11,alimentacao,intolerância ao glúten,64
+2026-03-11,alimentacao,jejum intermitente,60
+2026-03-11,menopausa,libido menopausa,31
+2026-03-11,emergentes,long covid,57
+2026-03-11,emergentes,lúpus,1
+2026-03-11,menopausa,menopausa masculina,23
+2026-03-11,menopausa,menopausa precoce,57
+2026-03-11,menopausa,menopausa sintomas,70
+2026-03-11,emergentes,microplásticos sangue,25
+2026-03-11,emergentes,mpox portugal,108
+2026-03-11,alimentacao,obesidade infantil,58
+2026-03-11,menopausa,osteoporose,40
+2026-03-11,saude-mental,pânico,45
+2026-03-11,saude-mental,perturbação bipolar,1
+2026-03-11,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-11,saude-mental,perturbações do espectro do autismo,1
+2026-03-11,menopausa,peso na menopausa,29
+2026-03-11,emergentes,poluição e saúde,43
+2026-03-11,alimentacao,pré-diabetes,1
+2026-03-11,saude-mental,PTSD,42
+2026-03-11,alimentacao,refluxo gastroesofágico,1
+2026-03-11,emergentes,resistência antibióticos,47
+2026-03-11,emergentes,sarampo surto,30
+2026-03-11,saude-mental,saúde mental no trabalho,1
+2026-03-11,menopausa,secura vaginal,28
+2026-03-11,emergentes,sepsis,1
+2026-03-11,alimentacao,síndrome de intestino irritável,1
+2026-03-11,menopausa,síndrome do ovário poliquístico,1
+2026-03-11,saude-mental,solidão,37
+2026-03-11,saude-mental,stress,1
+2026-03-11,saude-mental,suicídio,1
+2026-03-11,menopausa,suores noturnos,23
+2026-03-11,alimentacao,suplementos alimentares,51
+2026-03-11,saude-mental,TDAH adulto,32
+2026-03-11,menopausa,terapia hormonal,54
+2026-03-11,saude-mental,terapia online,33
+2026-03-11,alimentacao,ultraprocessados,38
+2026-03-11,emergentes,vírus nipah,22
+2026-03-12,alimentacao,açúcar e saúde,40
+2026-03-12,saude-mental,alcoolismo,1
+2026-03-12,alimentacao,alergias alimentares,33
+2026-03-12,alimentacao,alimentação plant-based,44
+2026-03-12,saude-mental,alzheimer,1
+2026-03-12,alimentacao,anemia,1
+2026-03-12,saude-mental,anorexia nervosa,1
+2026-03-12,saude-mental,ansiedade,102
+2026-03-12,saude-mental,automutilação,42
+2026-03-12,emergentes,avc,1
+2026-03-12,emergentes,bactérias carnívoras,21
+2026-03-12,saude-mental,burnout,47
+2026-03-12,emergentes,calor extremo e saúde,1
+2026-03-12,menopausa,cancro da mama,1
+2026-03-12,emergentes,candida auris,1
+2026-03-12,menopausa,candidíase,1
+2026-03-12,alimentacao,colesterol alto,1
+2026-03-12,saude-mental,demência,1
+2026-03-12,emergentes,dengue europa,41
+2026-03-12,saude-mental,dependências,1
+2026-03-12,saude-mental,depressão,56
+2026-03-12,alimentacao,diabetes tipo 2,1
+2026-03-12,alimentacao,dieta cetogénica,28
+2026-03-12,alimentacao,dieta mediterrânica,64
+2026-03-12,alimentacao,doença celíaca,1
+2026-03-12,emergentes,doenças cardiovasculares,1
+2026-03-12,menopausa,doenças da tiroide,1
+2026-03-12,menopausa,endometriose,1
+2026-03-12,saude-mental,enxaqueca,1
+2026-03-12,menopausa,fitoterapia menopausa,33
+2026-03-12,saude-mental,fobia social,1
+2026-03-12,emergentes,gripe aviária H5N1,70
+2026-03-12,menopausa,incontinência urinária,1
+2026-03-12,saude-mental,insónia,47
+2026-03-12,alimentacao,intolerância à lactose,1
+2026-03-12,alimentacao,intolerância ao glúten,63
+2026-03-12,alimentacao,jejum intermitente,65
+2026-03-12,menopausa,libido menopausa,28
+2026-03-12,emergentes,long covid,59
+2026-03-12,emergentes,lúpus,1
+2026-03-12,menopausa,menopausa masculina,23
+2026-03-12,menopausa,menopausa precoce,56
+2026-03-12,menopausa,menopausa sintomas,65
+2026-03-12,emergentes,microplásticos sangue,28
+2026-03-12,emergentes,mpox portugal,121
+2026-03-12,alimentacao,obesidade infantil,55
+2026-03-12,menopausa,osteoporose,35
+2026-03-12,saude-mental,pânico,51
+2026-03-12,saude-mental,perturbação bipolar,1
+2026-03-12,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-12,saude-mental,perturbações do espectro do autismo,1
+2026-03-12,menopausa,peso na menopausa,31
+2026-03-12,emergentes,poluição e saúde,41
+2026-03-12,alimentacao,pré-diabetes,1
+2026-03-12,saude-mental,PTSD,38
+2026-03-12,alimentacao,refluxo gastroesofágico,1
+2026-03-12,emergentes,resistência antibióticos,42
+2026-03-12,emergentes,sarampo surto,26
+2026-03-12,saude-mental,saúde mental no trabalho,1
+2026-03-12,menopausa,secura vaginal,32
+2026-03-12,emergentes,sepsis,1
+2026-03-12,alimentacao,síndrome de intestino irritável,1
+2026-03-12,menopausa,síndrome do ovário poliquístico,1
+2026-03-12,saude-mental,solidão,42
+2026-03-12,saude-mental,stress,1
+2026-03-12,saude-mental,suicídio,1
+2026-03-12,menopausa,suores noturnos,26
+2026-03-12,alimentacao,suplementos alimentares,58
+2026-03-12,saude-mental,TDAH adulto,31
+2026-03-12,menopausa,terapia hormonal,53
+2026-03-12,saude-mental,terapia online,36
+2026-03-12,alimentacao,ultraprocessados,44
+2026-03-12,emergentes,vírus nipah,25
+2026-03-16,alimentacao,açúcar e saúde,38
+2026-03-16,saude-mental,alcoolismo,40
+2026-03-16,alimentacao,alergias alimentares,2
+2026-03-16,alimentacao,alimentação plant-based,41
+2026-03-16,saude-mental,alzheimer,32
+2026-03-16,alimentacao,anemia,53
+2026-03-16,saude-mental,anorexia nervosa,29
+2026-03-16,saude-mental,ansiedade,62
+2026-03-16,saude-mental,automutilação,1
+2026-03-16,emergentes,avc,7
+2026-03-16,emergentes,bactérias carnívoras,18
+2026-03-16,saude-mental,burnout,38
+2026-03-16,emergentes,calor extremo e saúde,1
+2026-03-16,menopausa,cancro da mama,44
+2026-03-16,emergentes,candida auris,1
+2026-03-16,menopausa,candidíase,25
+2026-03-16,alimentacao,colesterol alto,35
+2026-03-16,saude-mental,demência,39
+2026-03-16,emergentes,dengue europa,47
+2026-03-16,saude-mental,dependências,1
+2026-03-16,saude-mental,depressão,7
+2026-03-16,alimentacao,diabetes tipo 2,91
+2026-03-16,alimentacao,dieta cetogénica,1
+2026-03-16,alimentacao,dieta mediterrânica,38
+2026-03-16,alimentacao,doença celíaca,45
+2026-03-16,emergentes,doenças cardiovasculares,21
+2026-03-16,menopausa,doenças da tiroide,1
+2026-03-16,menopausa,endometriose,44
+2026-03-16,saude-mental,enxaqueca,46
+2026-03-16,menopausa,fitoterapia menopausa,30
+2026-03-16,saude-mental,fobia social,27
+2026-03-16,emergentes,gripe aviária H5N1,75
+2026-03-16,menopausa,incontinência urinária,73
+2026-03-16,saude-mental,insónia,40
+2026-03-16,alimentacao,intolerância à lactose,1
+2026-03-16,alimentacao,intolerância ao glúten,1
+2026-03-16,alimentacao,jejum intermitente,23
+2026-03-16,menopausa,libido menopausa,26
+2026-03-16,emergentes,long covid,53
+2026-03-16,emergentes,lúpus,10
+2026-03-16,menopausa,menopausa masculina,22
+2026-03-16,menopausa,menopausa precoce,1
+2026-03-16,menopausa,menopausa sintomas,13
+2026-03-16,emergentes,microplásticos sangue,1
+2026-03-16,emergentes,mpox portugal,114
+2026-03-16,alimentacao,obesidade infantil,1
+2026-03-16,menopausa,osteoporose,41
+2026-03-16,saude-mental,pânico,34
+2026-03-16,saude-mental,perturbação bipolar,1
+2026-03-16,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-16,saude-mental,perturbações do espectro do autismo,1
+2026-03-16,menopausa,peso na menopausa,26
+2026-03-16,emergentes,poluição e saúde,41
+2026-03-16,alimentacao,pré-diabetes,1
+2026-03-16,saude-mental,PTSD,15
+2026-03-16,alimentacao,refluxo gastroesofágico,9
+2026-03-16,emergentes,resistência antibióticos,45
+2026-03-16,emergentes,sarampo surto,30
+2026-03-16,saude-mental,saúde mental no trabalho,1
+2026-03-16,menopausa,secura vaginal,5
+2026-03-16,emergentes,sepsis,21
+2026-03-16,alimentacao,síndrome de intestino irritável,1
+2026-03-16,menopausa,síndrome do ovário poliquístico,1
+2026-03-16,saude-mental,solidão,25
+2026-03-16,saude-mental,stress,1
+2026-03-16,saude-mental,suicídio,19
+2026-03-16,menopausa,suores noturnos,1
+2026-03-16,alimentacao,suplementos alimentares,74
+2026-03-16,saude-mental,TDAH adulto,1
+2026-03-16,menopausa,terapia hormonal,30
+2026-03-16,saude-mental,terapia online,44
+2026-03-16,alimentacao,ultraprocessados,46
+2026-03-16,emergentes,vírus nipah,1
+2026-03-17,alimentacao,açúcar e saúde,33
+2026-03-17,alimentacao,açúcar e saúde,38
+2026-03-17,saude-mental,alcoolismo,9
+2026-03-17,saude-mental,alcoolismo,39
+2026-03-17,alimentacao,alergias alimentares,1
+2026-03-17,alimentacao,alergias alimentares,2
+2026-03-17,alimentacao,alimentação plant-based,43
+2026-03-17,alimentacao,alimentação plant-based,45
+2026-03-17,saude-mental,alzheimer,27
+2026-03-17,saude-mental,alzheimer,38
+2026-03-17,alimentacao,anemia,49
+2026-03-17,alimentacao,anemia,64
+2026-03-17,saude-mental,anorexia nervosa,18
+2026-03-17,saude-mental,anorexia nervosa,28
+2026-03-17,saude-mental,ansiedade,57
+2026-03-17,saude-mental,ansiedade,76
+2026-03-17,saude-mental,automutilação,1
+2026-03-17,saude-mental,automutilação,1
+2026-03-17,emergentes,avc,6
+2026-03-17,emergentes,avc,8
+2026-03-17,emergentes,bactérias carnívoras,17
+2026-03-17,saude-mental,burnout,34
+2026-03-17,saude-mental,burnout,39
+2026-03-17,emergentes,calor extremo e saúde,1
+2026-03-17,emergentes,calor extremo e saúde,1
+2026-03-17,menopausa,cancro da mama,32
+2026-03-17,menopausa,cancro da mama,42
+2026-03-17,emergentes,candida auris,1
+2026-03-17,emergentes,candida auris,1
+2026-03-17,menopausa,candidíase,15
+2026-03-17,menopausa,candidíase,25
+2026-03-17,alimentacao,colesterol alto,39
+2026-03-17,alimentacao,colesterol alto,40
+2026-03-17,saude-mental,demência,30
+2026-03-17,saude-mental,demência,42
+2026-03-17,emergentes,dengue europa,46
+2026-03-17,emergentes,dengue europa,48
+2026-03-17,saude-mental,dependências,1
+2026-03-17,saude-mental,dependências,1
+2026-03-17,saude-mental,depressão,7
+2026-03-17,saude-mental,depressão,8
+2026-03-17,alimentacao,diabetes tipo 2,89
+2026-03-17,alimentacao,diabetes tipo 2,96
+2026-03-17,alimentacao,dieta cetogénica,1
+2026-03-17,alimentacao,dieta cetogénica,1
+2026-03-17,alimentacao,dieta mediterrânica,6
+2026-03-17,alimentacao,dieta mediterrânica,41
+2026-03-17,alimentacao,doença celíaca,3
+2026-03-17,alimentacao,doença celíaca,49
+2026-03-17,emergentes,doenças cardiovasculares,20
+2026-03-17,emergentes,doenças cardiovasculares,45
+2026-03-17,menopausa,doenças da tiroide,1
+2026-03-17,menopausa,doenças da tiroide,1
+2026-03-17,menopausa,endometriose,39
+2026-03-17,menopausa,endometriose,45
+2026-03-17,saude-mental,enxaqueca,38
+2026-03-17,saude-mental,enxaqueca,42
+2026-03-17,menopausa,fitoterapia menopausa,1
+2026-03-17,menopausa,fitoterapia menopausa,32
+2026-03-17,saude-mental,fobia social,1
+2026-03-17,saude-mental,fobia social,28
+2026-03-17,emergentes,gripe aviária H5N1,1
+2026-03-17,emergentes,gripe aviária H5N1,73
+2026-03-17,menopausa,incontinência urinária,73
+2026-03-17,menopausa,incontinência urinária,87
+2026-03-17,saude-mental,insónia,7
+2026-03-17,saude-mental,insónia,40
+2026-03-17,alimentacao,intolerância à lactose,1
+2026-03-17,alimentacao,intolerância à lactose,18
+2026-03-17,alimentacao,intolerância ao glúten,1
+2026-03-17,alimentacao,intolerância ao glúten,27
+2026-03-17,alimentacao,jejum intermitente,21
+2026-03-17,alimentacao,jejum intermitente,24
+2026-03-17,menopausa,libido menopausa,1
+2026-03-17,menopausa,libido menopausa,29
+2026-03-17,emergentes,long covid,7
+2026-03-17,emergentes,long covid,61
+2026-03-17,emergentes,lúpus,10
+2026-03-17,emergentes,lúpus,69
+2026-03-17,menopausa,menopausa masculina,21
+2026-03-17,menopausa,menopausa masculina,22
+2026-03-17,menopausa,menopausa precoce,1
+2026-03-17,menopausa,menopausa precoce,1
+2026-03-17,menopausa,menopausa sintomas,12
+2026-03-17,menopausa,menopausa sintomas,34
+2026-03-17,emergentes,microplásticos sangue,1
+2026-03-17,emergentes,microplásticos sangue,1
+2026-03-17,emergentes,mpox portugal,104
+2026-03-17,emergentes,mpox portugal,106
+2026-03-17,alimentacao,obesidade infantil,1
+2026-03-17,alimentacao,obesidade infantil,1
+2026-03-17,menopausa,osteoporose,35
+2026-03-17,menopausa,osteoporose,39
+2026-03-17,saude-mental,pânico,37
+2026-03-17,saude-mental,pânico,43
+2026-03-17,saude-mental,perturbação bipolar,1
+2026-03-17,saude-mental,perturbação bipolar,1
+2026-03-17,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-17,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-17,saude-mental,perturbações do espectro do autismo,1
+2026-03-17,saude-mental,perturbações do espectro do autismo,1
+2026-03-17,menopausa,peso na menopausa,29
+2026-03-17,menopausa,peso na menopausa,33
+2026-03-17,emergentes,poluição e saúde,39
+2026-03-17,emergentes,poluição e saúde,43
+2026-03-17,alimentacao,pré-diabetes,1
+2026-03-17,alimentacao,pré-diabetes,1
+2026-03-17,saude-mental,PTSD,13
+2026-03-17,saude-mental,PTSD,15
+2026-03-17,alimentacao,refluxo gastroesofágico,9
+2026-03-17,alimentacao,refluxo gastroesofágico,11
+2026-03-17,emergentes,resistência antibióticos,43
+2026-03-17,emergentes,resistência antibióticos,47
+2026-03-17,emergentes,sarampo surto,26
+2026-03-17,emergentes,sarampo surto,29
+2026-03-17,saude-mental,saúde mental no trabalho,1
+2026-03-17,saude-mental,saúde mental no trabalho,1
+2026-03-17,menopausa,secura vaginal,5
+2026-03-17,menopausa,secura vaginal,7
+2026-03-17,emergentes,sepsis,18
+2026-03-17,emergentes,sepsis,26
+2026-03-17,alimentacao,síndrome de intestino irritável,1
+2026-03-17,alimentacao,síndrome de intestino irritável,1
+2026-03-17,menopausa,síndrome do ovário poliquístico,1
+2026-03-17,menopausa,síndrome do ovário poliquístico,1
+2026-03-17,saude-mental,solidão,15
+2026-03-17,saude-mental,solidão,25
+2026-03-17,saude-mental,stress,1
+2026-03-17,saude-mental,stress,34
+2026-03-17,saude-mental,suicídio,15
+2026-03-17,saude-mental,suicídio,19
+2026-03-17,menopausa,suores noturnos,1
+2026-03-17,menopausa,suores noturnos,2
+2026-03-17,alimentacao,suplementos alimentares,61
+2026-03-17,alimentacao,suplementos alimentares,82
+2026-03-17,saude-mental,TDAH adulto,1
+2026-03-17,saude-mental,TDAH adulto,1
+2026-03-17,menopausa,terapia hormonal,33
+2026-03-17,menopausa,terapia hormonal,33
+2026-03-17,saude-mental,terapia online,4
+2026-03-17,saude-mental,terapia online,45
+2026-03-17,alimentacao,ultraprocessados,1
+2026-03-17,alimentacao,ultraprocessados,48
+2026-03-17,emergentes,vírus nipah,1
+2026-03-17,emergentes,vírus nipah,1
+2026-03-18,alimentacao,açúcar e saúde,33
+2026-03-18,saude-mental,alcoolismo,8
+2026-03-18,alimentacao,alergias alimentares,1
+2026-03-18,alimentacao,alimentação plant-based,39
+2026-03-18,saude-mental,alzheimer,36
+2026-03-18,alimentacao,anemia,71
+2026-03-18,saude-mental,anorexia nervosa,18
+2026-03-18,saude-mental,ansiedade,72
+2026-03-18,saude-mental,automutilação,1
+2026-03-18,emergentes,avc,7
+2026-03-18,saude-mental,burnout,34
+2026-03-18,emergentes,calor extremo e saúde,1
+2026-03-18,menopausa,cancro da mama,33
+2026-03-18,emergentes,candida auris,1
+2026-03-18,menopausa,candidíase,15
+2026-03-18,alimentacao,colesterol alto,43
+2026-03-18,saude-mental,demência,30
+2026-03-18,emergentes,dengue europa,43
+2026-03-18,saude-mental,dependências,1
+2026-03-18,saude-mental,depressão,7
+2026-03-18,alimentacao,diabetes tipo 2,98
+2026-03-18,alimentacao,dieta cetogénica,1
+2026-03-18,alimentacao,dieta mediterrânica,5
+2026-03-18,alimentacao,doença celíaca,3
+2026-03-18,emergentes,doenças cardiovasculares,41
+2026-03-18,menopausa,doenças da tiroide,1
+2026-03-18,menopausa,endometriose,50
+2026-03-18,saude-mental,enxaqueca,43
+2026-03-18,menopausa,fitoterapia menopausa,1
+2026-03-18,saude-mental,fobia social,1
+2026-03-18,emergentes,gripe aviária H5N1,1
+2026-03-18,menopausa,incontinência urinária,78
+2026-03-18,saude-mental,insónia,7
+2026-03-18,alimentacao,intolerância à lactose,18
+2026-03-18,alimentacao,intolerância ao glúten,23
+2026-03-18,alimentacao,jejum intermitente,18
+2026-03-18,menopausa,libido menopausa,1
+2026-03-18,emergentes,long covid,7
+2026-03-18,emergentes,lúpus,61
+2026-03-18,menopausa,menopausa masculina,23
+2026-03-18,menopausa,menopausa precoce,1
+2026-03-18,menopausa,menopausa sintomas,31
+2026-03-18,emergentes,microplásticos sangue,1
+2026-03-18,emergentes,mpox portugal,121
+2026-03-18,alimentacao,obesidade infantil,1
+2026-03-18,menopausa,osteoporose,36
+2026-03-18,saude-mental,pânico,38
+2026-03-18,saude-mental,perturbação bipolar,1
+2026-03-18,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-18,saude-mental,perturbações do espectro do autismo,1
+2026-03-18,menopausa,peso na menopausa,34
+2026-03-18,emergentes,poluição e saúde,40
+2026-03-18,alimentacao,pré-diabetes,1
+2026-03-18,saude-mental,PTSD,15
+2026-03-18,alimentacao,refluxo gastroesofágico,12
+2026-03-18,emergentes,resistência antibióticos,44
+2026-03-18,emergentes,sarampo surto,32
+2026-03-18,saude-mental,saúde mental no trabalho,1
+2026-03-18,menopausa,secura vaginal,6
+2026-03-18,emergentes,sepsis,29
+2026-03-18,alimentacao,síndrome de intestino irritável,1
+2026-03-18,menopausa,síndrome do ovário poliquístico,1
+2026-03-18,saude-mental,solidão,15
+2026-03-18,saude-mental,stress,33
+2026-03-18,saude-mental,suicídio,14
+2026-03-18,menopausa,suores noturnos,2
+2026-03-18,alimentacao,suplementos alimentares,68
+2026-03-18,saude-mental,TDAH adulto,1
+2026-03-18,menopausa,terapia hormonal,29
+2026-03-18,saude-mental,terapia online,4
+2026-03-18,alimentacao,ultraprocessados,1
+2026-03-18,emergentes,vírus nipah,1
+2026-03-19,alimentacao,açúcar e saúde,37
+2026-03-19,saude-mental,alcoolismo,7
+2026-03-19,alimentacao,alergias alimentares,1
+2026-03-19,alimentacao,alimentação plant-based,39
+2026-03-19,saude-mental,alzheimer,37
+2026-03-19,alimentacao,anemia,72
+2026-03-19,saude-mental,anorexia nervosa,20
+2026-03-19,saude-mental,ansiedade,68
+2026-03-19,saude-mental,automutilação,1
+2026-03-19,emergentes,avc,7
+2026-03-19,saude-mental,burnout,33
+2026-03-19,emergentes,calor extremo e saúde,1
+2026-03-19,menopausa,cancro da mama,30
+2026-03-19,emergentes,candida auris,1
+2026-03-19,menopausa,candidíase,16
+2026-03-19,alimentacao,colesterol alto,41
+2026-03-19,saude-mental,demência,31
+2026-03-19,emergentes,dengue europa,43
+2026-03-19,saude-mental,dependências,1
+2026-03-19,saude-mental,depressão,8
+2026-03-19,alimentacao,diabetes tipo 2,102
+2026-03-19,alimentacao,dieta cetogénica,1
+2026-03-19,alimentacao,dieta mediterrânica,5
+2026-03-19,alimentacao,doença celíaca,3
+2026-03-19,emergentes,doenças cardiovasculares,40
+2026-03-19,menopausa,doenças da tiroide,1
+2026-03-19,menopausa,endometriose,55
+2026-03-19,saude-mental,enxaqueca,39
+2026-03-19,menopausa,fitoterapia menopausa,1
+2026-03-19,saude-mental,fobia social,1
+2026-03-19,emergentes,gripe aviária H5N1,1
+2026-03-19,menopausa,incontinência urinária,82
+2026-03-19,saude-mental,insónia,7
+2026-03-19,alimentacao,intolerância à lactose,17
+2026-03-19,alimentacao,intolerância ao glúten,23
+2026-03-19,alimentacao,jejum intermitente,19
+2026-03-19,menopausa,libido menopausa,1
+2026-03-19,emergentes,long covid,8
+2026-03-19,emergentes,lúpus,67
+2026-03-19,menopausa,menopausa masculina,20
+2026-03-19,menopausa,menopausa precoce,1
+2026-03-19,menopausa,menopausa sintomas,28
+2026-03-19,emergentes,microplásticos sangue,1
+2026-03-19,emergentes,mpox portugal,119
+2026-03-19,alimentacao,obesidade infantil,1
+2026-03-19,menopausa,osteoporose,33
+2026-03-19,saude-mental,pânico,33
+2026-03-19,saude-mental,perturbação bipolar,1
+2026-03-19,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-19,saude-mental,perturbações do espectro do autismo,1
+2026-03-19,menopausa,peso na menopausa,37
+2026-03-19,emergentes,poluição e saúde,42
+2026-03-19,alimentacao,pré-diabetes,1
+2026-03-19,saude-mental,PTSD,16
+2026-03-19,alimentacao,refluxo gastroesofágico,12
+2026-03-19,emergentes,resistência antibióticos,48
+2026-03-19,emergentes,sarampo surto,33
+2026-03-19,saude-mental,saúde mental no trabalho,1
+2026-03-19,menopausa,secura vaginal,7
+2026-03-19,emergentes,sepsis,27
+2026-03-19,alimentacao,síndrome de intestino irritável,1
+2026-03-19,menopausa,síndrome do ovário poliquístico,1
+2026-03-19,saude-mental,solidão,16
+2026-03-19,saude-mental,stress,35
+2026-03-19,saude-mental,suicídio,13
+2026-03-19,menopausa,suores noturnos,2
+2026-03-19,alimentacao,suplementos alimentares,63
+2026-03-19,saude-mental,TDAH adulto,1
+2026-03-19,menopausa,terapia hormonal,32
+2026-03-19,saude-mental,terapia online,4
+2026-03-19,alimentacao,ultraprocessados,1
+2026-03-19,emergentes,vírus nipah,1
+2026-03-20,alimentacao,açúcar e saúde,1
+2026-03-20,alimentacao,açúcar e saúde,1
+2026-03-20,alimentacao,açúcar e saúde,37
+2026-03-20,saude-mental,alcoolismo,8
+2026-03-20,saude-mental,alcoolismo,59
+2026-03-20,saude-mental,alcoolismo,65
+2026-03-20,alimentacao,alergias alimentares,1
+2026-03-20,alimentacao,alergias alimentares,1
+2026-03-20,alimentacao,alergias alimentares,1
+2026-03-20,alimentacao,alimentação plant-based,29
+2026-03-20,alimentacao,alimentação plant-based,31
+2026-03-20,alimentacao,alimentação plant-based,34
+2026-03-20,saude-mental,alzheimer,35
+2026-03-20,saude-mental,alzheimer,56
+2026-03-20,saude-mental,alzheimer,57
+2026-03-20,alimentacao,anemia,54
+2026-03-20,alimentacao,anemia,54
+2026-03-20,alimentacao,anemia,77
+2026-03-20,saude-mental,anorexia nervosa,3
+2026-03-20,saude-mental,anorexia nervosa,5
+2026-03-20,saude-mental,anorexia nervosa,22
+2026-03-20,saude-mental,ansiedade,63
+2026-03-20,saude-mental,ansiedade,69
+2026-03-20,saude-mental,ansiedade,76
+2026-03-20,saude-mental,automutilação,1
+2026-03-20,saude-mental,automutilação,1
+2026-03-20,saude-mental,automutilação,1
+2026-03-20,emergentes,avc,6
+2026-03-20,emergentes,avc,9
+2026-03-20,emergentes,avc,9
+2026-03-20,saude-mental,burnout,28
+2026-03-20,saude-mental,burnout,46
+2026-03-20,saude-mental,burnout,46
+2026-03-20,emergentes,calor extremo e saúde,1
+2026-03-20,emergentes,calor extremo e saúde,1
+2026-03-20,emergentes,calor extremo e saúde,1
+2026-03-20,menopausa,cancro da mama,29
+2026-03-20,menopausa,cancro da mama,36
+2026-03-20,menopausa,cancro da mama,38
+2026-03-20,emergentes,candida auris,1
+2026-03-20,emergentes,candida auris,1
+2026-03-20,emergentes,candida auris,1
+2026-03-20,menopausa,candidíase,16
+2026-03-20,menopausa,candidíase,25
+2026-03-20,menopausa,candidíase,27
+2026-03-20,alimentacao,colesterol alto,22
+2026-03-20,alimentacao,colesterol alto,25
+2026-03-20,alimentacao,colesterol alto,44
+2026-03-20,saude-mental,demência,19
+2026-03-20,saude-mental,demência,22
+2026-03-20,saude-mental,demência,35
+2026-03-20,emergentes,dengue europa,37
+2026-03-20,emergentes,dengue europa,38
+2026-03-20,emergentes,dengue europa,40
+2026-03-20,saude-mental,dependências,1
+2026-03-20,saude-mental,dependências,33
+2026-03-20,saude-mental,dependências,39
+2026-03-20,saude-mental,depressão,9
+2026-03-20,saude-mental,depressão,21
+2026-03-20,saude-mental,depressão,23
+2026-03-20,alimentacao,diabetes tipo 2,15
+2026-03-20,alimentacao,diabetes tipo 2,16
+2026-03-20,alimentacao,diabetes tipo 2,98
+2026-03-20,alimentacao,dieta cetogénica,1
+2026-03-20,alimentacao,dieta cetogénica,1
+2026-03-20,alimentacao,dieta cetogénica,1
+2026-03-20,alimentacao,dieta mediterrânica,5
+2026-03-20,alimentacao,dieta mediterrânica,48
+2026-03-20,alimentacao,dieta mediterrânica,56
+2026-03-20,alimentacao,doença celíaca,3
+2026-03-20,alimentacao,doença celíaca,32
+2026-03-20,alimentacao,doença celíaca,36
+2026-03-20,emergentes,doenças cardiovasculares,6
+2026-03-20,emergentes,doenças cardiovasculares,6
+2026-03-20,emergentes,doenças cardiovasculares,34
+2026-03-20,menopausa,doenças da tiroide,1
+2026-03-20,menopausa,doenças da tiroide,1
+2026-03-20,menopausa,doenças da tiroide,1
+2026-03-20,menopausa,endometriose,54
+2026-03-20,menopausa,endometriose,55
+2026-03-20,menopausa,endometriose,59
+2026-03-20,saude-mental,enxaqueca,40
+2026-03-20,saude-mental,enxaqueca,46
+2026-03-20,saude-mental,enxaqueca,57
+2026-03-20,menopausa,fitoterapia menopausa,1
+2026-03-20,menopausa,fitoterapia menopausa,1
+2026-03-20,menopausa,fitoterapia menopausa,1
+2026-03-20,saude-mental,fobia social,1
+2026-03-20,saude-mental,fobia social,1
+2026-03-20,saude-mental,fobia social,1
+2026-03-20,emergentes,gripe aviária H5N1,1
+2026-03-20,emergentes,gripe aviária H5N1,1
+2026-03-20,emergentes,gripe aviária H5N1,1
+2026-03-20,menopausa,incontinência urinária,9
+2026-03-20,menopausa,incontinência urinária,11
+2026-03-20,menopausa,incontinência urinária,83
+2026-03-20,saude-mental,insónia,8
+2026-03-20,saude-mental,insónia,51
+2026-03-20,saude-mental,insónia,52
+2026-03-20,alimentacao,intolerância à lactose,1
+2026-03-20,alimentacao,intolerância à lactose,1
+2026-03-20,alimentacao,intolerância à lactose,18
+2026-03-20,alimentacao,intolerância ao glúten,1
+2026-03-20,alimentacao,intolerância ao glúten,1
+2026-03-20,alimentacao,intolerância ao glúten,25
+2026-03-20,alimentacao,jejum intermitente,21
+2026-03-20,alimentacao,jejum intermitente,25
+2026-03-20,alimentacao,jejum intermitente,28
+2026-03-20,menopausa,libido menopausa,1
+2026-03-20,menopausa,libido menopausa,1
+2026-03-20,menopausa,libido menopausa,1
+2026-03-20,emergentes,long covid,4
+2026-03-20,emergentes,long covid,7
+2026-03-20,emergentes,long covid,7
+2026-03-20,emergentes,lúpus,60
+2026-03-20,emergentes,lúpus,64
+2026-03-20,emergentes,lúpus,71
+2026-03-20,menopausa,menopausa masculina,16
+2026-03-20,menopausa,menopausa masculina,18
+2026-03-20,menopausa,menopausa masculina,19
+2026-03-20,menopausa,menopausa precoce,1
+2026-03-20,menopausa,menopausa precoce,1
+2026-03-20,menopausa,menopausa precoce,1
+2026-03-20,menopausa,menopausa sintomas,17
+2026-03-20,menopausa,menopausa sintomas,18
+2026-03-20,menopausa,menopausa sintomas,29
+2026-03-20,emergentes,microplásticos sangue,1
+2026-03-20,emergentes,microplásticos sangue,1
+2026-03-20,emergentes,microplásticos sangue,1
+2026-03-20,emergentes,mpox portugal,112
+2026-03-20,emergentes,mpox portugal,114
+2026-03-20,emergentes,mpox portugal,121
+2026-03-20,alimentacao,obesidade infantil,1
+2026-03-20,alimentacao,obesidade infantil,1
+2026-03-20,alimentacao,obesidade infantil,1
+2026-03-20,menopausa,osteoporose,36
+2026-03-20,menopausa,osteoporose,38
+2026-03-20,menopausa,osteoporose,42
+2026-03-20,saude-mental,pânico,19
+2026-03-20,saude-mental,pânico,24
+2026-03-20,saude-mental,pânico,30
+2026-03-20,saude-mental,perturbação bipolar,1
+2026-03-20,saude-mental,perturbação bipolar,1
+2026-03-20,saude-mental,perturbação bipolar,1
+2026-03-20,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-20,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-20,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-20,saude-mental,perturbações do espectro do autismo,1
+2026-03-20,saude-mental,perturbações do espectro do autismo,1
+2026-03-20,saude-mental,perturbações do espectro do autismo,1
+2026-03-20,menopausa,peso na menopausa,1
+2026-03-20,menopausa,peso na menopausa,1
+2026-03-20,menopausa,peso na menopausa,37
+2026-03-20,emergentes,poluição e saúde,1
+2026-03-20,emergentes,poluição e saúde,40
+2026-03-20,emergentes,poluição e saúde,43
+2026-03-20,alimentacao,pré-diabetes,1
+2026-03-20,alimentacao,pré-diabetes,1
+2026-03-20,alimentacao,pré-diabetes,1
+2026-03-20,saude-mental,PTSD,14
+2026-03-20,saude-mental,PTSD,15
+2026-03-20,saude-mental,PTSD,17
+2026-03-20,alimentacao,refluxo gastroesofágico,11
+2026-03-20,alimentacao,refluxo gastroesofágico,12
+2026-03-20,alimentacao,refluxo gastroesofágico,66
+2026-03-20,emergentes,resistência antibióticos,1
+2026-03-20,emergentes,resistência antibióticos,1
+2026-03-20,emergentes,resistência antibióticos,51
+2026-03-20,emergentes,sarampo surto,36
+2026-03-20,emergentes,sarampo surto,40
+2026-03-20,emergentes,sarampo surto,42
+2026-03-20,saude-mental,saúde mental no trabalho,1
+2026-03-20,saude-mental,saúde mental no trabalho,1
+2026-03-20,saude-mental,saúde mental no trabalho,1
+2026-03-20,menopausa,secura vaginal,3
+2026-03-20,menopausa,secura vaginal,7
+2026-03-20,menopausa,secura vaginal,31
+2026-03-20,emergentes,sepsis,19
+2026-03-20,emergentes,sepsis,24
+2026-03-20,emergentes,sepsis,31
+2026-03-20,alimentacao,síndrome de intestino irritável,1
+2026-03-20,alimentacao,síndrome de intestino irritável,1
+2026-03-20,alimentacao,síndrome de intestino irritável,2
+2026-03-20,menopausa,síndrome do ovário poliquístico,1
+2026-03-20,menopausa,síndrome do ovário poliquístico,1
+2026-03-20,menopausa,síndrome do ovário poliquístico,1
+2026-03-20,saude-mental,solidão,16
+2026-03-20,saude-mental,solidão,16
+2026-03-20,saude-mental,solidão,18
+2026-03-20,saude-mental,stress,32
+2026-03-20,saude-mental,stress,34
+2026-03-20,saude-mental,stress,36
+2026-03-20,saude-mental,suicídio,11
+2026-03-20,saude-mental,suicídio,17
+2026-03-20,saude-mental,suicídio,17
+2026-03-20,menopausa,suores noturnos,2
+2026-03-20,menopausa,suores noturnos,4
+2026-03-20,menopausa,suores noturnos,4
+2026-03-20,alimentacao,suplementos alimentares,54
+2026-03-20,alimentacao,suplementos alimentares,55
+2026-03-20,alimentacao,suplementos alimentares,71
+2026-03-20,saude-mental,TDAH adulto,1
+2026-03-20,saude-mental,TDAH adulto,24
+2026-03-20,saude-mental,TDAH adulto,48
+2026-03-20,menopausa,terapia hormonal,2
+2026-03-20,menopausa,terapia hormonal,33
+2026-03-20,menopausa,terapia hormonal,42
+2026-03-20,saude-mental,terapia online,4
+2026-03-20,saude-mental,terapia online,33
+2026-03-20,saude-mental,terapia online,36
+2026-03-20,alimentacao,ultraprocessados,1
+2026-03-20,alimentacao,ultraprocessados,24
+2026-03-20,alimentacao,ultraprocessados,26
+2026-03-20,emergentes,vírus nipah,1
+2026-03-20,emergentes,vírus nipah,1
+2026-03-20,emergentes,vírus nipah,1
+2026-03-21,alimentacao,açúcar e saúde,1
+2026-03-21,saude-mental,alcoolismo,53
+2026-03-21,alimentacao,alergias alimentares,1
+2026-03-21,alimentacao,alimentação plant-based,25
+2026-03-21,saude-mental,alzheimer,63
+2026-03-21,alimentacao,anemia,56
+2026-03-21,saude-mental,anorexia nervosa,5
+2026-03-21,saude-mental,ansiedade,83
+2026-03-21,saude-mental,automutilação,1
+2026-03-21,emergentes,avc,10
+2026-03-21,saude-mental,burnout,43
+2026-03-21,emergentes,calor extremo e saúde,1
+2026-03-21,menopausa,cancro da mama,32
+2026-03-21,emergentes,candida auris,1
+2026-03-21,menopausa,candidíase,27
+2026-03-21,alimentacao,colesterol alto,24
+2026-03-21,saude-mental,competências socioemocionais,1
+2026-03-21,saude-mental,demência,22
+2026-03-21,emergentes,dengue europa,39
+2026-03-21,saude-mental,dependências,30
+2026-03-21,saude-mental,depressão,25
+2026-03-21,saude-mental,desinstitucionalização saúde mental,1
+2026-03-21,alimentacao,diabetes tipo 2,16
+2026-03-21,alimentacao,dieta cetogénica,1
+2026-03-21,alimentacao,dieta mediterrânica,55
+2026-03-21,alimentacao,doença celíaca,30
+2026-03-21,emergentes,doenças cardiovasculares,6
+2026-03-21,menopausa,doenças da tiroide,1
+2026-03-21,menopausa,endometriose,50
+2026-03-21,saude-mental,enxaqueca,41
+2026-03-21,saude-mental,equipas comunitárias saúde mental,1
+2026-03-21,menopausa,fitoterapia menopausa,1
+2026-03-21,saude-mental,fobia social,1
+2026-03-21,emergentes,gripe aviária H5N1,1
+2026-03-21,menopausa,incontinência urinária,8
+2026-03-21,saude-mental,insónia,54
+2026-03-21,alimentacao,intolerância à lactose,1
+2026-03-21,alimentacao,intolerância ao glúten,1
+2026-03-21,alimentacao,jejum intermitente,29
+2026-03-21,menopausa,libido menopausa,1
+2026-03-21,saude-mental,literacia em saúde mental,1
+2026-03-21,emergentes,long covid,4
+2026-03-21,emergentes,lúpus,76
+2026-03-21,menopausa,menopausa masculina,17
+2026-03-21,menopausa,menopausa precoce,1
+2026-03-21,menopausa,menopausa sintomas,15
+2026-03-21,emergentes,microplásticos sangue,1
+2026-03-21,emergentes,mpox portugal,108
+2026-03-21,alimentacao,obesidade infantil,1
+2026-03-21,menopausa,osteoporose,31
+2026-03-21,saude-mental,pânico,21
+2026-03-21,saude-mental,perturbação bipolar,1
+2026-03-21,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-21,saude-mental,perturbações do espectro do autismo,1
+2026-03-21,menopausa,peso na menopausa,1
+2026-03-21,emergentes,poluição e saúde,1
+2026-03-21,alimentacao,pré-diabetes,1
+2026-03-21,saude-mental,prevenção suicídio,1
+2026-03-21,saude-mental,PTSD,14
+2026-03-21,saude-mental,reabilitação psicossocial,1
+2026-03-21,alimentacao,refluxo gastroesofágico,76
+2026-03-21,emergentes,resistência antibióticos,1
+2026-03-21,emergentes,sarampo surto,40
+2026-03-21,saude-mental,saúde mental ensino superior,1
+2026-03-21,saude-mental,saúde mental escolar,1
+2026-03-21,saude-mental,saúde mental jovens,1
+2026-03-21,saude-mental,saúde mental no trabalho,1
+2026-03-21,saude-mental,saúde mental sem-abrigo,1
+2026-03-21,menopausa,secura vaginal,29
+2026-03-21,emergentes,sepsis,23
+2026-03-21,alimentacao,síndrome de intestino irritável,2
+2026-03-21,menopausa,síndrome do ovário poliquístico,1
+2026-03-21,saude-mental,solidão,18
+2026-03-21,saude-mental,stress,35
+2026-03-21,saude-mental,suicídio,15
+2026-03-21,menopausa,suores noturnos,4
+2026-03-21,alimentacao,suplementos alimentares,57
+2026-03-21,saude-mental,TDAH adulto,23
+2026-03-21,menopausa,terapia hormonal,45
+2026-03-21,saude-mental,terapia online,37
+2026-03-21,alimentacao,ultraprocessados,23
+2026-03-21,emergentes,vírus nipah,1
+2026-03-22,alimentacao,açúcar e saúde,1
+2026-03-22,saude-mental,alcoolismo,52
+2026-03-22,alimentacao,alergias alimentares,1
+2026-03-22,alimentacao,alimentação plant-based,23
+2026-03-22,saude-mental,alzheimer,54
+2026-03-22,alimentacao,anemia,58
+2026-03-22,saude-mental,anorexia nervosa,5
+2026-03-22,saude-mental,ansiedade,79
+2026-03-22,saude-mental,automutilação,1
+2026-03-22,emergentes,avc,10
+2026-03-22,saude-mental,burnout,49
+2026-03-22,emergentes,calor extremo e saúde,1
+2026-03-22,menopausa,cancro da mama,32
+2026-03-22,emergentes,candida auris,1
+2026-03-22,menopausa,candidíase,31
+2026-03-22,alimentacao,colesterol alto,27
+2026-03-22,saude-mental,competências socioemocionais,1
+2026-03-22,saude-mental,demência,20
+2026-03-22,emergentes,dengue europa,44
+2026-03-22,saude-mental,dependências,31
+2026-03-22,saude-mental,depressão,25
+2026-03-22,saude-mental,desinstitucionalização saúde mental,1
+2026-03-22,alimentacao,diabetes tipo 2,16
+2026-03-22,alimentacao,dieta cetogénica,1
+2026-03-22,alimentacao,dieta mediterrânica,47
+2026-03-22,alimentacao,doença celíaca,31
+2026-03-22,emergentes,doenças cardiovasculares,6
+2026-03-22,menopausa,doenças da tiroide,1
+2026-03-22,menopausa,endometriose,48
+2026-03-22,saude-mental,enxaqueca,43
+2026-03-22,saude-mental,equipas comunitárias saúde mental,1
+2026-03-22,menopausa,fitoterapia menopausa,1
+2026-03-22,saude-mental,fobia social,1
+2026-03-22,emergentes,gripe aviária H5N1,1
+2026-03-22,menopausa,incontinência urinária,8
+2026-03-22,saude-mental,insónia,52
+2026-03-22,alimentacao,intolerância à lactose,1
+2026-03-22,alimentacao,intolerância ao glúten,1
+2026-03-22,alimentacao,jejum intermitente,33
+2026-03-22,menopausa,libido menopausa,1
+2026-03-22,saude-mental,literacia em saúde mental,1
+2026-03-22,emergentes,long covid,4
+2026-03-22,emergentes,lúpus,84
+2026-03-22,menopausa,menopausa masculina,17
+2026-03-22,menopausa,menopausa precoce,1
+2026-03-22,menopausa,menopausa sintomas,17
+2026-03-22,emergentes,microplásticos sangue,1
+2026-03-22,emergentes,mpox portugal,108
+2026-03-22,alimentacao,obesidade infantil,1
+2026-03-22,menopausa,osteoporose,31
+2026-03-22,saude-mental,pânico,23
+2026-03-22,saude-mental,perturbação bipolar,1
+2026-03-22,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-22,saude-mental,perturbações do espectro do autismo,1
+2026-03-22,menopausa,peso na menopausa,1
+2026-03-22,emergentes,poluição e saúde,1
+2026-03-22,alimentacao,pré-diabetes,1
+2026-03-22,saude-mental,prevenção suicídio,1
+2026-03-22,saude-mental,PTSD,15
+2026-03-22,saude-mental,reabilitação psicossocial,1
+2026-03-22,alimentacao,refluxo gastroesofágico,71
+2026-03-22,emergentes,resistência antibióticos,1
+2026-03-22,emergentes,sarampo surto,38
+2026-03-22,saude-mental,saúde mental ensino superior,1
+2026-03-22,saude-mental,saúde mental escolar,1
+2026-03-22,saude-mental,saúde mental jovens,1
+2026-03-22,saude-mental,saúde mental no trabalho,1
+2026-03-22,saude-mental,saúde mental sem-abrigo,1
+2026-03-22,menopausa,secura vaginal,28
+2026-03-22,emergentes,sepsis,22
+2026-03-22,alimentacao,síndrome de intestino irritável,2
+2026-03-22,menopausa,síndrome do ovário poliquístico,1
+2026-03-22,saude-mental,solidão,19
+2026-03-22,saude-mental,stress,37
+2026-03-22,saude-mental,suicídio,14
+2026-03-22,menopausa,suores noturnos,4
+2026-03-22,alimentacao,suplementos alimentares,53
+2026-03-22,saude-mental,TDAH adulto,25
+2026-03-22,menopausa,terapia hormonal,47
+2026-03-22,saude-mental,terapia online,37
+2026-03-22,alimentacao,ultraprocessados,23
+2026-03-22,emergentes,vírus nipah,1
+2026-03-23,alimentacao,açúcar e saúde,1
+2026-03-23,alimentacao,açúcar e saúde,25
+2026-03-23,saude-mental,alcoolismo,48
+2026-03-23,saude-mental,alcoolismo,65
+2026-03-23,alimentacao,alergias alimentares,1
+2026-03-23,alimentacao,alergias alimentares,1
+2026-03-23,alimentacao,alimentação plant-based,21
+2026-03-23,alimentacao,alimentação plant-based,24
+2026-03-23,saude-mental,alzheimer,50
+2026-03-23,saude-mental,alzheimer,56
+2026-03-23,alimentacao,anemia,45
+2026-03-23,alimentacao,anemia,60
+2026-03-23,saude-mental,anorexia nervosa,2
+2026-03-23,saude-mental,anorexia nervosa,5
+2026-03-23,saude-mental,ansiedade,56
+2026-03-23,saude-mental,ansiedade,69
+2026-03-23,saude-mental,automutilação,1
+2026-03-23,saude-mental,automutilação,1
+2026-03-23,emergentes,avc,9
+2026-03-23,emergentes,avc,14
+2026-03-23,saude-mental,burnout,43
+2026-03-23,saude-mental,burnout,53
+2026-03-23,emergentes,calor extremo e saúde,1
+2026-03-23,emergentes,calor extremo e saúde,1
+2026-03-23,menopausa,cancro da mama,36
+2026-03-23,menopausa,cancro da mama,38
+2026-03-23,emergentes,candida auris,1
+2026-03-23,emergentes,candida auris,1
+2026-03-23,menopausa,candidíase,25
+2026-03-23,menopausa,candidíase,32
+2026-03-23,alimentacao,colesterol alto,29
+2026-03-23,alimentacao,colesterol alto,33
+2026-03-23,saude-mental,competências socioemocionais,1
+2026-03-23,saude-mental,competências socioemocionais,28
+2026-03-23,saude-mental,demência,20
+2026-03-23,saude-mental,demência,36
+2026-03-23,emergentes,dengue europa,35
+2026-03-23,emergentes,dengue europa,40
+2026-03-23,saude-mental,dependências,28
+2026-03-23,saude-mental,dependências,33
+2026-03-23,saude-mental,depressão,9
+2026-03-23,saude-mental,depressão,28
+2026-03-23,saude-mental,desinstitucionalização saúde mental,1
+2026-03-23,saude-mental,desinstitucionalização saúde mental,1
+2026-03-23,alimentacao,diabetes tipo 2,16
+2026-03-23,alimentacao,diabetes tipo 2,76
+2026-03-23,alimentacao,dieta cetogénica,1
+2026-03-23,alimentacao,dieta cetogénica,1
+2026-03-23,alimentacao,dieta mediterrânica,2
+2026-03-23,alimentacao,dieta mediterrânica,41
+2026-03-23,alimentacao,doença celíaca,27
+2026-03-23,alimentacao,doença celíaca,39
+2026-03-23,emergentes,doenças cardiovasculares,5
+2026-03-23,emergentes,doenças cardiovasculares,6
+2026-03-23,menopausa,doenças da tiroide,1
+2026-03-23,menopausa,doenças da tiroide,1
+2026-03-23,menopausa,endometriose,37
+2026-03-23,menopausa,endometriose,55
+2026-03-23,saude-mental,enxaqueca,40
+2026-03-23,saude-mental,enxaqueca,47
+2026-03-23,saude-mental,equipas comunitárias saúde mental,1
+2026-03-23,saude-mental,equipas comunitárias saúde mental,1
+2026-03-23,menopausa,fitoterapia menopausa,1
+2026-03-23,menopausa,fitoterapia menopausa,1
+2026-03-23,saude-mental,fobia social,1
+2026-03-23,saude-mental,fobia social,1
+2026-03-23,emergentes,gripe aviária H5N1,1
+2026-03-23,emergentes,gripe aviária H5N1,1
+2026-03-23,menopausa,incontinência urinária,6
+2026-03-23,menopausa,incontinência urinária,8
+2026-03-23,saude-mental,insónia,37
+2026-03-23,saude-mental,insónia,48
+2026-03-23,alimentacao,intolerância à lactose,1
+2026-03-23,alimentacao,intolerância à lactose,1
+2026-03-23,alimentacao,intolerância ao glúten,1
+2026-03-23,alimentacao,intolerância ao glúten,1
+2026-03-23,alimentacao,jejum intermitente,36
+2026-03-23,alimentacao,jejum intermitente,58
+2026-03-23,menopausa,libido menopausa,1
+2026-03-23,menopausa,libido menopausa,25
+2026-03-23,saude-mental,literacia em saúde mental,1
+2026-03-23,saude-mental,literacia em saúde mental,1
+2026-03-23,emergentes,long covid,5
+2026-03-23,emergentes,long covid,63
+2026-03-23,emergentes,lúpus,73
+2026-03-23,emergentes,lúpus,74
+2026-03-23,menopausa,menopausa masculina,13
+2026-03-23,menopausa,menopausa masculina,15
+2026-03-23,menopausa,menopausa precoce,1
+2026-03-23,menopausa,menopausa precoce,1
+2026-03-23,menopausa,menopausa sintomas,11
+2026-03-23,menopausa,menopausa sintomas,15
+2026-03-23,emergentes,microplásticos sangue,1
+2026-03-23,emergentes,microplásticos sangue,1
+2026-03-23,emergentes,mpox portugal,1
+2026-03-23,emergentes,mpox portugal,109
+2026-03-23,alimentacao,obesidade infantil,1
+2026-03-23,alimentacao,obesidade infantil,1
+2026-03-23,menopausa,osteoporose,27
+2026-03-23,menopausa,osteoporose,33
+2026-03-23,saude-mental,pânico,24
+2026-03-23,saude-mental,pânico,26
+2026-03-23,saude-mental,perturbação bipolar,1
+2026-03-23,saude-mental,perturbação bipolar,1
+2026-03-23,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-23,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-23,saude-mental,perturbações do espectro do autismo,1
+2026-03-23,saude-mental,perturbações do espectro do autismo,1
+2026-03-23,menopausa,peso na menopausa,1
+2026-03-23,menopausa,peso na menopausa,1
+2026-03-23,emergentes,poluição e saúde,1
+2026-03-23,emergentes,poluição e saúde,1
+2026-03-23,alimentacao,pré-diabetes,1
+2026-03-23,alimentacao,pré-diabetes,1
+2026-03-23,saude-mental,prevenção suicídio,1
+2026-03-23,saude-mental,prevenção suicídio,1
+2026-03-23,saude-mental,PTSD,15
+2026-03-23,saude-mental,PTSD,18
+2026-03-23,saude-mental,reabilitação psicossocial,1
+2026-03-23,saude-mental,reabilitação psicossocial,1
+2026-03-23,alimentacao,refluxo gastroesofágico,5
+2026-03-23,alimentacao,refluxo gastroesofágico,67
+2026-03-23,emergentes,resistência antibióticos,1
+2026-03-23,emergentes,resistência antibióticos,1
+2026-03-23,emergentes,sarampo surto,1
+2026-03-23,emergentes,sarampo surto,35
+2026-03-23,saude-mental,saúde mental ensino superior,1
+2026-03-23,saude-mental,saúde mental ensino superior,1
+2026-03-23,saude-mental,saúde mental escolar,1
+2026-03-23,saude-mental,saúde mental escolar,1
+2026-03-23,saude-mental,saúde mental jovens,1
+2026-03-23,saude-mental,saúde mental jovens,1
+2026-03-23,saude-mental,saúde mental no trabalho,1
+2026-03-23,saude-mental,saúde mental no trabalho,1
+2026-03-23,saude-mental,saúde mental sem-abrigo,1
+2026-03-23,saude-mental,saúde mental sem-abrigo,1
+2026-03-23,menopausa,secura vaginal,27
+2026-03-23,menopausa,secura vaginal,67
+2026-03-23,emergentes,sepsis,20
+2026-03-23,emergentes,sepsis,22
+2026-03-23,alimentacao,síndrome de intestino irritável,1
+2026-03-23,alimentacao,síndrome de intestino irritável,2
+2026-03-23,menopausa,síndrome do ovário poliquístico,1
+2026-03-23,menopausa,síndrome do ovário poliquístico,1
+2026-03-23,saude-mental,solidão,19
+2026-03-23,saude-mental,solidão,29
+2026-03-23,saude-mental,stress,30
+2026-03-23,saude-mental,stress,37
+2026-03-23,saude-mental,suicídio,13
+2026-03-23,saude-mental,suicídio,23
+2026-03-23,menopausa,suores noturnos,4
+2026-03-23,menopausa,suores noturnos,46
+2026-03-23,alimentacao,suplementos alimentares,48
+2026-03-23,alimentacao,suplementos alimentares,53
+2026-03-23,saude-mental,TDAH adulto,1
+2026-03-23,saude-mental,TDAH adulto,27
+2026-03-23,menopausa,terapia hormonal,42
+2026-03-23,menopausa,terapia hormonal,43
+2026-03-23,saude-mental,terapia online,15
+2026-03-23,saude-mental,terapia online,33
+2026-03-23,alimentacao,ultraprocessados,22
+2026-03-23,alimentacao,ultraprocessados,22
+2026-03-23,emergentes,vírus nipah,1
+2026-03-23,emergentes,vírus nipah,1
+2026-03-24,alimentacao,açúcar e saúde,29
+2026-03-24,saude-mental,alcoolismo,64
+2026-03-24,alimentacao,alergias alimentares,1
+2026-03-24,alimentacao,alimentação plant-based,19
+2026-03-24,saude-mental,alzheimer,50
+2026-03-24,alimentacao,anemia,48
+2026-03-24,saude-mental,anorexia nervosa,2
+2026-03-24,saude-mental,ansiedade,53
+2026-03-24,saude-mental,automutilação,1
+2026-03-24,emergentes,avc,12
+2026-03-24,saude-mental,burnout,38
+2026-03-24,emergentes,calor extremo e saúde,1
+2026-03-24,menopausa,cancro da mama,42
+2026-03-24,emergentes,candida auris,1
+2026-03-24,menopausa,candidíase,24
+2026-03-24,alimentacao,colesterol alto,31
+2026-03-24,saude-mental,competências socioemocionais,32
+2026-03-24,saude-mental,demência,35
+2026-03-24,emergentes,dengue europa,30
+2026-03-24,saude-mental,dependências,28
+2026-03-24,saude-mental,depressão,10
+2026-03-24,saude-mental,desinstitucionalização saúde mental,1
+2026-03-24,alimentacao,diabetes tipo 2,68
+2026-03-24,alimentacao,dieta cetogénica,1
+2026-03-24,alimentacao,dieta mediterrânica,2
+2026-03-24,alimentacao,doença celíaca,38
+2026-03-24,emergentes,doenças cardiovasculares,5
+2026-03-24,menopausa,doenças da tiroide,1
+2026-03-24,menopausa,endometriose,34
+2026-03-24,saude-mental,enxaqueca,52
+2026-03-24,saude-mental,equipas comunitárias saúde mental,1
+2026-03-24,menopausa,fitoterapia menopausa,1
+2026-03-24,saude-mental,fobia social,1
+2026-03-24,emergentes,gripe aviária H5N1,1
+2026-03-24,menopausa,incontinência urinária,6
+2026-03-24,saude-mental,insónia,42
+2026-03-24,alimentacao,intolerância à lactose,1
+2026-03-24,alimentacao,intolerância ao glúten,1
+2026-03-24,alimentacao,jejum intermitente,62
+2026-03-24,menopausa,libido menopausa,26
+2026-03-24,saude-mental,literacia em saúde mental,1
+2026-03-24,emergentes,long covid,67
+2026-03-24,emergentes,lúpus,80
+2026-03-24,menopausa,menopausa masculina,14
+2026-03-24,menopausa,menopausa precoce,1
+2026-03-24,menopausa,menopausa sintomas,10
+2026-03-24,emergentes,microplásticos sangue,1
+2026-03-24,emergentes,mpox portugal,1
+2026-03-24,alimentacao,obesidade infantil,1
+2026-03-24,menopausa,osteoporose,23
+2026-03-24,saude-mental,pânico,23
+2026-03-24,saude-mental,perturbação bipolar,1
+2026-03-24,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-24,saude-mental,perturbações do espectro do autismo,1
+2026-03-24,menopausa,peso na menopausa,1
+2026-03-24,emergentes,poluição e saúde,1
+2026-03-24,alimentacao,pré-diabetes,1
+2026-03-24,saude-mental,prevenção suicídio,1
+2026-03-24,saude-mental,PTSD,19
+2026-03-24,saude-mental,reabilitação psicossocial,1
+2026-03-24,alimentacao,refluxo gastroesofágico,5
+2026-03-24,emergentes,resistência antibióticos,1
+2026-03-24,emergentes,sarampo surto,1
+2026-03-24,saude-mental,saúde mental ensino superior,1
+2026-03-24,saude-mental,saúde mental escolar,1
+2026-03-24,saude-mental,saúde mental jovens,1
+2026-03-24,saude-mental,saúde mental no trabalho,1
+2026-03-24,saude-mental,saúde mental sem-abrigo,1
+2026-03-24,menopausa,secura vaginal,65
+2026-03-24,emergentes,sepsis,19
+2026-03-24,alimentacao,síndrome de intestino irritável,1
+2026-03-24,menopausa,síndrome do ovário poliquístico,1
+2026-03-24,saude-mental,solidão,28
+2026-03-24,saude-mental,stress,33
+2026-03-24,saude-mental,suicídio,22
+2026-03-24,menopausa,suores noturnos,42
+2026-03-24,alimentacao,suplementos alimentares,60
+2026-03-24,saude-mental,TDAH adulto,1
+2026-03-24,menopausa,terapia hormonal,41
+2026-03-24,saude-mental,terapia online,16
+2026-03-24,alimentacao,ultraprocessados,20
+2026-03-24,emergentes,vírus nipah,1
+2026-03-25,alimentacao,açúcar e saúde,28
+2026-03-25,saude-mental,alcoolismo,68
+2026-03-25,alimentacao,alergias alimentares,1
+2026-03-25,alimentacao,alimentação plant-based,17
+2026-03-25,saude-mental,alzheimer,44
+2026-03-25,alimentacao,anemia,41
+2026-03-25,saude-mental,anorexia nervosa,2
+2026-03-25,saude-mental,ansiedade,60
+2026-03-25,saude-mental,automutilação,1
+2026-03-25,emergentes,avc,13
+2026-03-25,saude-mental,burnout,32
+2026-03-25,emergentes,calor extremo e saúde,1
+2026-03-25,menopausa,cancro da mama,45
+2026-03-25,emergentes,candida auris,1
+2026-03-25,menopausa,candidíase,21
+2026-03-25,alimentacao,colesterol alto,28
+2026-03-25,saude-mental,competências socioemocionais,35
+2026-03-25,saude-mental,demência,35
+2026-03-25,emergentes,dengue europa,32
+2026-03-25,saude-mental,dependências,25
+2026-03-25,saude-mental,depressão,10
+2026-03-25,saude-mental,desinstitucionalização saúde mental,1
+2026-03-25,alimentacao,diabetes tipo 2,70
+2026-03-25,alimentacao,dieta cetogénica,1
+2026-03-25,alimentacao,dieta mediterrânica,2
+2026-03-25,alimentacao,doença celíaca,43
+2026-03-25,emergentes,doenças cardiovasculares,4
+2026-03-25,menopausa,doenças da tiroide,1
+2026-03-25,menopausa,endometriose,29
+2026-03-25,saude-mental,enxaqueca,56
+2026-03-25,saude-mental,equipas comunitárias saúde mental,1
+2026-03-25,menopausa,fitoterapia menopausa,1
+2026-03-25,saude-mental,fobia social,1
+2026-03-25,emergentes,gripe aviária H5N1,1
+2026-03-25,menopausa,incontinência urinária,6
+2026-03-25,saude-mental,insónia,46
+2026-03-25,alimentacao,intolerância à lactose,1
+2026-03-25,alimentacao,intolerância ao glúten,1
+2026-03-25,alimentacao,jejum intermitente,68
+2026-03-25,menopausa,libido menopausa,29
+2026-03-25,saude-mental,literacia em saúde mental,1
+2026-03-25,emergentes,long covid,68
+2026-03-25,emergentes,lúpus,78
+2026-03-25,menopausa,menopausa masculina,13
+2026-03-25,menopausa,menopausa precoce,1
+2026-03-25,menopausa,menopausa sintomas,10
+2026-03-25,emergentes,microplásticos sangue,1
+2026-03-25,emergentes,mpox portugal,1
+2026-03-25,alimentacao,obesidade infantil,1
+2026-03-25,menopausa,osteoporose,24
+2026-03-25,saude-mental,pânico,21
+2026-03-25,saude-mental,perturbação bipolar,1
+2026-03-25,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-25,saude-mental,perturbações do espectro do autismo,1
+2026-03-25,menopausa,peso na menopausa,1
+2026-03-25,emergentes,poluição e saúde,1
+2026-03-25,alimentacao,pré-diabetes,1
+2026-03-25,saude-mental,prevenção suicídio,1
+2026-03-25,saude-mental,PTSD,17
+2026-03-25,saude-mental,reabilitação psicossocial,1
+2026-03-25,alimentacao,refluxo gastroesofágico,5
+2026-03-25,emergentes,resistência antibióticos,1
+2026-03-25,emergentes,sarampo surto,1
+2026-03-25,saude-mental,saúde mental ensino superior,1
+2026-03-25,saude-mental,saúde mental escolar,1
+2026-03-25,saude-mental,saúde mental jovens,1
+2026-03-25,saude-mental,saúde mental no trabalho,1
+2026-03-25,saude-mental,saúde mental sem-abrigo,1
+2026-03-25,menopausa,secura vaginal,73
+2026-03-25,emergentes,sepsis,21
+2026-03-25,alimentacao,síndrome de intestino irritável,1
+2026-03-25,menopausa,síndrome do ovário poliquístico,1
+2026-03-25,saude-mental,solidão,26
+2026-03-25,saude-mental,stress,30
+2026-03-25,saude-mental,suicídio,22
+2026-03-25,menopausa,suores noturnos,48
+2026-03-25,alimentacao,suplementos alimentares,66
+2026-03-25,saude-mental,TDAH adulto,1
+2026-03-25,menopausa,terapia hormonal,42
+2026-03-25,saude-mental,terapia online,16
+2026-03-25,alimentacao,ultraprocessados,20
+2026-03-25,emergentes,vírus nipah,1
+2026-03-26,alimentacao,açúcar e saúde,26
+2026-03-26,saude-mental,alcoolismo,78
+2026-03-26,alimentacao,alergias alimentares,1
+2026-03-26,alimentacao,alimentação plant-based,19
+2026-03-26,saude-mental,alzheimer,39
+2026-03-26,alimentacao,anemia,45
+2026-03-26,saude-mental,anorexia nervosa,2
+2026-03-26,saude-mental,ansiedade,57
+2026-03-26,saude-mental,automutilação,1
+2026-03-26,emergentes,avc,12
+2026-03-26,saude-mental,burnout,28
+2026-03-26,emergentes,calor extremo e saúde,1
+2026-03-26,menopausa,cancro da mama,43
+2026-03-26,emergentes,candida auris,1
+2026-03-26,menopausa,candidíase,20
+2026-03-26,alimentacao,colesterol alto,24
+2026-03-26,saude-mental,competências socioemocionais,33
+2026-03-26,saude-mental,demência,33
+2026-03-26,emergentes,dengue europa,37
+2026-03-26,saude-mental,dependências,28
+2026-03-26,saude-mental,depressão,9
+2026-03-26,saude-mental,desinstitucionalização saúde mental,1
+2026-03-26,alimentacao,diabetes tipo 2,67
+2026-03-26,alimentacao,dieta cetogénica,1
+2026-03-26,alimentacao,dieta mediterrânica,2
+2026-03-26,alimentacao,doença celíaca,38
+2026-03-26,emergentes,doenças cardiovasculares,4
+2026-03-26,menopausa,doenças da tiroide,1
+2026-03-26,menopausa,endometriose,29
+2026-03-26,saude-mental,enxaqueca,54
+2026-03-26,saude-mental,equipas comunitárias saúde mental,1
+2026-03-26,menopausa,fitoterapia menopausa,1
+2026-03-26,saude-mental,fobia social,1
+2026-03-26,emergentes,gripe aviária H5N1,1
+2026-03-26,menopausa,incontinência urinária,5
+2026-03-26,saude-mental,insónia,45
+2026-03-26,alimentacao,intolerância à lactose,1
+2026-03-26,alimentacao,intolerância ao glúten,1
+2026-03-26,alimentacao,jejum intermitente,66
+2026-03-26,menopausa,libido menopausa,26
+2026-03-26,saude-mental,literacia em saúde mental,1
+2026-03-26,emergentes,long covid,71
+2026-03-26,emergentes,lúpus,75
+2026-03-26,menopausa,menopausa masculina,12
+2026-03-26,menopausa,menopausa precoce,1
+2026-03-26,menopausa,menopausa sintomas,10
+2026-03-26,emergentes,microplásticos sangue,1
+2026-03-26,emergentes,mpox portugal,1
+2026-03-26,alimentacao,obesidade infantil,1
+2026-03-26,menopausa,osteoporose,26
+2026-03-26,saude-mental,pânico,21
+2026-03-26,saude-mental,perturbação bipolar,1
+2026-03-26,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-26,saude-mental,perturbações do espectro do autismo,1
+2026-03-26,menopausa,peso na menopausa,1
+2026-03-26,emergentes,poluição e saúde,1
+2026-03-26,alimentacao,pré-diabetes,1
+2026-03-26,saude-mental,prevenção suicídio,1
+2026-03-26,saude-mental,PTSD,19
+2026-03-26,saude-mental,reabilitação psicossocial,1
+2026-03-26,alimentacao,refluxo gastroesofágico,4
+2026-03-26,emergentes,resistência antibióticos,1
+2026-03-26,emergentes,sarampo surto,1
+2026-03-26,saude-mental,saúde mental ensino superior,1
+2026-03-26,saude-mental,saúde mental escolar,1
+2026-03-26,saude-mental,saúde mental jovens,1
+2026-03-26,saude-mental,saúde mental no trabalho,1
+2026-03-26,saude-mental,saúde mental sem-abrigo,1
+2026-03-26,menopausa,secura vaginal,80
+2026-03-26,emergentes,sepsis,19
+2026-03-26,alimentacao,síndrome de intestino irritável,1
+2026-03-26,menopausa,síndrome do ovário poliquístico,1
+2026-03-26,saude-mental,solidão,22
+2026-03-26,saude-mental,stress,32
+2026-03-26,saude-mental,suicídio,23
+2026-03-26,menopausa,suores noturnos,52
+2026-03-26,alimentacao,suplementos alimentares,60
+2026-03-26,saude-mental,TDAH adulto,1
+2026-03-26,menopausa,terapia hormonal,43
+2026-03-26,saude-mental,terapia online,17
+2026-03-26,alimentacao,ultraprocessados,18
+2026-03-26,emergentes,vírus nipah,1
+2026-03-27,alimentacao,açúcar e saúde,29
+2026-03-27,saude-mental,alcoolismo,84
+2026-03-27,alimentacao,alergias alimentares,1
+2026-03-27,alimentacao,alimentação plant-based,18
+2026-03-27,saude-mental,alzheimer,44
+2026-03-27,alimentacao,anemia,38
+2026-03-27,saude-mental,anorexia nervosa,2
+2026-03-27,saude-mental,ansiedade,63
+2026-03-27,saude-mental,automutilação,1
+2026-03-27,emergentes,avc,13
+2026-03-27,saude-mental,burnout,27
+2026-03-27,emergentes,calor extremo e saúde,1
+2026-03-27,menopausa,cancro da mama,40
+2026-03-27,emergentes,candida auris,1
+2026-03-27,menopausa,candidíase,18
+2026-03-27,alimentacao,colesterol alto,23
+2026-03-27,saude-mental,competências socioemocionais,30
+2026-03-27,saude-mental,demência,34
+2026-03-27,emergentes,dengue europa,36
+2026-03-27,saude-mental,dependências,25
+2026-03-27,saude-mental,depressão,8
+2026-03-27,saude-mental,desinstitucionalização saúde mental,1
+2026-03-27,alimentacao,diabetes tipo 2,58
+2026-03-27,alimentacao,dieta cetogénica,1
+2026-03-27,alimentacao,dieta mediterrânica,2
+2026-03-27,alimentacao,doença celíaca,36
+2026-03-27,emergentes,doenças cardiovasculares,4
+2026-03-27,menopausa,doenças da tiroide,1
+2026-03-27,menopausa,endometriose,30
+2026-03-27,saude-mental,enxaqueca,61
+2026-03-27,saude-mental,equipas comunitárias saúde mental,1
+2026-03-27,menopausa,fitoterapia menopausa,1
+2026-03-27,saude-mental,fobia social,1
+2026-03-27,emergentes,gripe aviária H5N1,1
+2026-03-27,menopausa,incontinência urinária,5
+2026-03-27,saude-mental,insónia,44
+2026-03-27,alimentacao,intolerância à lactose,1
+2026-03-27,alimentacao,intolerância ao glúten,1
+2026-03-27,alimentacao,jejum intermitente,60
+2026-03-27,menopausa,libido menopausa,26
+2026-03-27,saude-mental,literacia em saúde mental,1
+2026-03-27,emergentes,long covid,72
+2026-03-27,emergentes,lúpus,75
+2026-03-27,menopausa,menopausa masculina,13
+2026-03-27,menopausa,menopausa precoce,1
+2026-03-27,menopausa,menopausa sintomas,10
+2026-03-27,emergentes,microplásticos sangue,1
+2026-03-27,emergentes,mpox portugal,1
+2026-03-27,alimentacao,obesidade infantil,1
+2026-03-27,menopausa,osteoporose,25
+2026-03-27,saude-mental,pânico,23
+2026-03-27,saude-mental,perturbação bipolar,1
+2026-03-27,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-27,saude-mental,perturbações do espectro do autismo,1
+2026-03-27,menopausa,peso na menopausa,1
+2026-03-27,emergentes,poluição e saúde,1
+2026-03-27,alimentacao,pré-diabetes,1
+2026-03-27,saude-mental,prevenção suicídio,1
+2026-03-27,saude-mental,PTSD,17
+2026-03-27,saude-mental,reabilitação psicossocial,1
+2026-03-27,alimentacao,refluxo gastroesofágico,4
+2026-03-27,emergentes,resistência antibióticos,1
+2026-03-27,emergentes,sarampo surto,1
+2026-03-27,saude-mental,saúde mental ensino superior,1
+2026-03-27,saude-mental,saúde mental escolar,1
+2026-03-27,saude-mental,saúde mental jovens,1
+2026-03-27,saude-mental,saúde mental no trabalho,1
+2026-03-27,saude-mental,saúde mental sem-abrigo,1
+2026-03-27,menopausa,secura vaginal,83
+2026-03-27,emergentes,sepsis,17
+2026-03-27,alimentacao,síndrome de intestino irritável,1
+2026-03-27,menopausa,síndrome do ovário poliquístico,1
+2026-03-27,saude-mental,solidão,20
+2026-03-27,saude-mental,stress,33
+2026-03-27,saude-mental,suicídio,26
+2026-03-27,menopausa,suores noturnos,47
+2026-03-27,alimentacao,suplementos alimentares,69
+2026-03-27,saude-mental,TDAH adulto,1
+2026-03-27,menopausa,terapia hormonal,37
+2026-03-27,saude-mental,terapia online,16
+2026-03-27,alimentacao,ultraprocessados,16
+2026-03-27,emergentes,vírus nipah,1
+2026-03-28,alimentacao,açúcar e saúde,31
+2026-03-28,alimentacao,açúcar e saúde,35
+2026-03-28,saude-mental,alcoolismo,60
+2026-03-28,saude-mental,alcoolismo,65
+2026-03-28,alimentacao,alergias alimentares,1
+2026-03-28,alimentacao,alergias alimentares,1
+2026-03-28,alimentacao,alimentação plant-based,1
+2026-03-28,alimentacao,alimentação plant-based,1
+2026-03-28,saude-mental,alzheimer,45
+2026-03-28,saude-mental,alzheimer,48
+2026-03-28,alimentacao,anemia,53
+2026-03-28,alimentacao,anemia,60
+2026-03-28,saude-mental,anorexia nervosa,2
+2026-03-28,saude-mental,anorexia nervosa,2
+2026-03-28,saude-mental,ansiedade,53
+2026-03-28,saude-mental,ansiedade,53
+2026-03-28,saude-mental,automutilação,22
+2026-03-28,saude-mental,automutilação,24
+2026-03-28,emergentes,avc,45
+2026-03-28,emergentes,avc,46
+2026-03-28,saude-mental,burnout,27
+2026-03-28,saude-mental,burnout,31
+2026-03-28,emergentes,calor extremo e saúde,1
+2026-03-28,emergentes,calor extremo e saúde,1
+2026-03-28,menopausa,cancro da mama,62
+2026-03-28,menopausa,cancro da mama,66
+2026-03-28,emergentes,candida auris,1
+2026-03-28,emergentes,candida auris,1
+2026-03-28,menopausa,candidíase,28
+2026-03-28,menopausa,candidíase,29
+2026-03-28,alimentacao,colesterol alto,34
+2026-03-28,alimentacao,colesterol alto,34
+2026-03-28,saude-mental,competências socioemocionais,28
+2026-03-28,saude-mental,competências socioemocionais,30
+2026-03-28,saude-mental,demência,30
+2026-03-28,saude-mental,demência,32
+2026-03-28,emergentes,dengue europa,40
+2026-03-28,emergentes,dengue europa,42
+2026-03-28,saude-mental,dependências,1
+2026-03-28,saude-mental,dependências,1
+2026-03-28,saude-mental,depressão,6
+2026-03-28,saude-mental,depressão,7
+2026-03-28,saude-mental,desinstitucionalização saúde mental,1
+2026-03-28,saude-mental,desinstitucionalização saúde mental,1
+2026-03-28,alimentacao,diabetes tipo 2,82
+2026-03-28,alimentacao,diabetes tipo 2,88
+2026-03-28,alimentacao,dieta cetogénica,1
+2026-03-28,alimentacao,dieta cetogénica,1
+2026-03-28,alimentacao,dieta mediterrânica,5
+2026-03-28,alimentacao,dieta mediterrânica,6
+2026-03-28,alimentacao,doença celíaca,13
+2026-03-28,alimentacao,doença celíaca,14
+2026-03-28,emergentes,doenças cardiovasculares,13
+2026-03-28,emergentes,doenças cardiovasculares,13
+2026-03-28,menopausa,doenças da tiroide,1
+2026-03-28,menopausa,doenças da tiroide,1
+2026-03-28,menopausa,endometriose,38
+2026-03-28,menopausa,endometriose,44
+2026-03-28,saude-mental,enxaqueca,56
+2026-03-28,saude-mental,enxaqueca,58
+2026-03-28,saude-mental,equipas comunitárias saúde mental,1
+2026-03-28,saude-mental,equipas comunitárias saúde mental,1
+2026-03-28,menopausa,fitoterapia menopausa,1
+2026-03-28,menopausa,fitoterapia menopausa,1
+2026-03-28,saude-mental,fobia social,1
+2026-03-28,saude-mental,fobia social,1
+2026-03-28,emergentes,gripe aviária H5N1,1
+2026-03-28,emergentes,gripe aviária H5N1,1
+2026-03-28,menopausa,incontinência urinária,63
+2026-03-28,menopausa,incontinência urinária,66
+2026-03-28,saude-mental,insónia,79
+2026-03-28,saude-mental,insónia,85
+2026-03-28,alimentacao,intolerância à lactose,1
+2026-03-28,alimentacao,intolerância à lactose,1
+2026-03-28,alimentacao,intolerância ao glúten,1
+2026-03-28,alimentacao,intolerância ao glúten,1
+2026-03-28,alimentacao,jejum intermitente,28
+2026-03-28,alimentacao,jejum intermitente,33
+2026-03-28,menopausa,libido menopausa,1
+2026-03-28,menopausa,libido menopausa,1
+2026-03-28,saude-mental,literacia em saúde mental,1
+2026-03-28,saude-mental,literacia em saúde mental,1
+2026-03-28,emergentes,long covid,11
+2026-03-28,emergentes,long covid,12
+2026-03-28,emergentes,lúpus,10
+2026-03-28,emergentes,lúpus,10
+2026-03-28,menopausa,menopausa masculina,9
+2026-03-28,menopausa,menopausa masculina,11
+2026-03-28,menopausa,menopausa precoce,1
+2026-03-28,menopausa,menopausa precoce,1
+2026-03-28,menopausa,menopausa sintomas,20
+2026-03-28,menopausa,menopausa sintomas,22
+2026-03-28,emergentes,microplásticos sangue,1
+2026-03-28,emergentes,microplásticos sangue,1
+2026-03-28,emergentes,mpox portugal,1
+2026-03-28,emergentes,mpox portugal,1
+2026-03-28,alimentacao,obesidade infantil,1
+2026-03-28,alimentacao,obesidade infantil,1
+2026-03-28,menopausa,osteoporose,52
+2026-03-28,menopausa,osteoporose,54
+2026-03-28,saude-mental,pânico,34
+2026-03-28,saude-mental,pânico,35
+2026-03-28,saude-mental,perturbação bipolar,1
+2026-03-28,saude-mental,perturbação bipolar,1
+2026-03-28,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-28,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-28,saude-mental,perturbações do espectro do autismo,1
+2026-03-28,saude-mental,perturbações do espectro do autismo,1
+2026-03-28,menopausa,peso na menopausa,1
+2026-03-28,menopausa,peso na menopausa,1
+2026-03-28,emergentes,poluição e saúde,1
+2026-03-28,emergentes,poluição e saúde,1
+2026-03-28,alimentacao,pré-diabetes,1
+2026-03-28,alimentacao,pré-diabetes,1
+2026-03-28,saude-mental,prevenção suicídio,1
+2026-03-28,saude-mental,prevenção suicídio,1
+2026-03-28,saude-mental,PTSD,15
+2026-03-28,saude-mental,PTSD,15
+2026-03-28,saude-mental,reabilitação psicossocial,1
+2026-03-28,saude-mental,reabilitação psicossocial,1
+2026-03-28,alimentacao,refluxo gastroesofágico,44
+2026-03-28,alimentacao,refluxo gastroesofágico,47
+2026-03-28,emergentes,resistência antibióticos,27
+2026-03-28,emergentes,resistência antibióticos,28
+2026-03-28,emergentes,sarampo surto,1
+2026-03-28,emergentes,sarampo surto,1
+2026-03-28,saude-mental,saúde mental ensino superior,1
+2026-03-28,saude-mental,saúde mental ensino superior,1
+2026-03-28,saude-mental,saúde mental escolar,1
+2026-03-28,saude-mental,saúde mental escolar,1
+2026-03-28,saude-mental,saúde mental jovens,1
+2026-03-28,saude-mental,saúde mental jovens,1
+2026-03-28,saude-mental,saúde mental no trabalho,1
+2026-03-28,saude-mental,saúde mental no trabalho,1
+2026-03-28,saude-mental,saúde mental sem-abrigo,1
+2026-03-28,saude-mental,saúde mental sem-abrigo,1
+2026-03-28,menopausa,secura vaginal,58
+2026-03-28,menopausa,secura vaginal,64
+2026-03-28,emergentes,sepsis,41
+2026-03-28,emergentes,sepsis,45
+2026-03-28,alimentacao,síndrome de intestino irritável,1
+2026-03-28,alimentacao,síndrome de intestino irritável,1
+2026-03-28,menopausa,síndrome do ovário poliquístico,1
+2026-03-28,menopausa,síndrome do ovário poliquístico,1
+2026-03-28,saude-mental,solidão,25
+2026-03-28,saude-mental,solidão,25
+2026-03-28,saude-mental,stress,41
+2026-03-28,saude-mental,stress,42
+2026-03-28,saude-mental,suicídio,21
+2026-03-28,saude-mental,suicídio,22
+2026-03-28,menopausa,suores noturnos,7
+2026-03-28,menopausa,suores noturnos,7
+2026-03-28,alimentacao,suplementos alimentares,11
+2026-03-28,alimentacao,suplementos alimentares,12
+2026-03-28,saude-mental,TDAH adulto,2
+2026-03-28,saude-mental,TDAH adulto,2
+2026-03-28,menopausa,terapia hormonal,48
+2026-03-28,menopausa,terapia hormonal,49
+2026-03-28,saude-mental,terapia online,29
+2026-03-28,saude-mental,terapia online,34
+2026-03-28,alimentacao,ultraprocessados,1
+2026-03-28,alimentacao,ultraprocessados,1
+2026-03-28,emergentes,vírus nipah,1
+2026-03-28,emergentes,vírus nipah,1
+2026-03-29,alimentacao,açúcar e saúde,38
+2026-03-29,saude-mental,alcoolismo,53
+2026-03-29,alimentacao,alergias alimentares,1
+2026-03-29,alimentacao,alimentação plant-based,1
+2026-03-29,saude-mental,alzheimer,52
+2026-03-29,alimentacao,anemia,57
+2026-03-29,saude-mental,anorexia nervosa,2
+2026-03-29,saude-mental,ansiedade,56
+2026-03-29,saude-mental,automutilação,19
+2026-03-29,emergentes,avc,50
+2026-03-29,saude-mental,burnout,25
+2026-03-29,emergentes,calor extremo e saúde,1
+2026-03-29,menopausa,cancro da mama,58
+2026-03-29,emergentes,candida auris,1
+2026-03-29,menopausa,candidíase,28
+2026-03-29,alimentacao,colesterol alto,35
+2026-03-29,saude-mental,competências socioemocionais,28
+2026-03-29,saude-mental,demência,27
+2026-03-29,emergentes,dengue europa,43
+2026-03-29,saude-mental,dependências,1
+2026-03-29,saude-mental,depressão,8
+2026-03-29,saude-mental,desinstitucionalização saúde mental,1
+2026-03-29,alimentacao,diabetes tipo 2,74
+2026-03-29,alimentacao,dieta cetogénica,1
+2026-03-29,alimentacao,dieta mediterrânica,5
+2026-03-29,alimentacao,doença celíaca,12
+2026-03-29,emergentes,doenças cardiovasculares,14
+2026-03-29,menopausa,doenças da tiroide,1
+2026-03-29,menopausa,endometriose,44
+2026-03-29,saude-mental,enxaqueca,61
+2026-03-29,saude-mental,equipas comunitárias saúde mental,1
+2026-03-29,menopausa,fitoterapia menopausa,1
+2026-03-29,saude-mental,fobia social,1
+2026-03-29,emergentes,gripe aviária H5N1,1
+2026-03-29,menopausa,incontinência urinária,67
+2026-03-29,saude-mental,insónia,83
+2026-03-29,alimentacao,intolerância à lactose,1
+2026-03-29,alimentacao,intolerância ao glúten,1
+2026-03-29,alimentacao,jejum intermitente,24
+2026-03-29,menopausa,libido menopausa,1
+2026-03-29,saude-mental,literacia em saúde mental,1
+2026-03-29,emergentes,long covid,10
+2026-03-29,emergentes,lúpus,9
+2026-03-29,menopausa,menopausa masculina,8
+2026-03-29,menopausa,menopausa precoce,1
+2026-03-29,menopausa,menopausa sintomas,18
+2026-03-29,emergentes,microplásticos sangue,1
+2026-03-29,emergentes,mpox portugal,1
+2026-03-29,alimentacao,obesidade infantil,1
+2026-03-29,menopausa,osteoporose,55
+2026-03-29,saude-mental,pânico,32
+2026-03-29,saude-mental,perturbação bipolar,1
+2026-03-29,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-29,saude-mental,perturbações do espectro do autismo,1
+2026-03-29,menopausa,peso na menopausa,1
+2026-03-29,emergentes,poluição e saúde,1
+2026-03-29,alimentacao,pré-diabetes,1
+2026-03-29,saude-mental,prevenção suicídio,1
+2026-03-29,saude-mental,PTSD,17
+2026-03-29,saude-mental,reabilitação psicossocial,1
+2026-03-29,alimentacao,refluxo gastroesofágico,42
+2026-03-29,emergentes,resistência antibióticos,24
+2026-03-29,emergentes,sarampo surto,1
+2026-03-29,saude-mental,saúde mental ensino superior,1
+2026-03-29,saude-mental,saúde mental escolar,1
+2026-03-29,saude-mental,saúde mental jovens,1
+2026-03-29,saude-mental,saúde mental no trabalho,1
+2026-03-29,saude-mental,saúde mental sem-abrigo,1
+2026-03-29,menopausa,secura vaginal,57
+2026-03-29,emergentes,sepsis,43
+2026-03-29,alimentacao,síndrome de intestino irritável,1
+2026-03-29,menopausa,síndrome do ovário poliquístico,1
+2026-03-29,saude-mental,solidão,23
+2026-03-29,saude-mental,stress,44
+2026-03-29,saude-mental,suicídio,18
+2026-03-29,menopausa,suores noturnos,8
+2026-03-29,alimentacao,suplementos alimentares,13
+2026-03-29,saude-mental,TDAH adulto,2
+2026-03-29,menopausa,terapia hormonal,51
+2026-03-29,saude-mental,terapia online,30
+2026-03-29,alimentacao,ultraprocessados,1
+2026-03-29,emergentes,vírus nipah,1
+2026-03-30,alimentacao,açúcar e saúde,33
+2026-03-30,alimentacao,açúcar e saúde,38
+2026-03-30,saude-mental,alcoolismo,56
+2026-03-30,saude-mental,alcoolismo,67
+2026-03-30,alimentacao,alergias alimentares,1
+2026-03-30,alimentacao,alergias alimentares,2
+2026-03-30,alimentacao,alimentação plant-based,1
+2026-03-30,alimentacao,alimentação plant-based,1
+2026-03-30,saude-mental,alzheimer,45
+2026-03-30,saude-mental,alzheimer,57
+2026-03-30,alimentacao,anemia,46
+2026-03-30,alimentacao,anemia,61
+2026-03-30,saude-mental,anorexia nervosa,1
+2026-03-30,saude-mental,anorexia nervosa,2
+2026-03-30,saude-mental,ansiedade,62
+2026-03-30,saude-mental,ansiedade,71
+2026-03-30,saude-mental,automutilação,18
+2026-03-30,saude-mental,automutilação,19
+2026-03-30,emergentes,avc,42
+2026-03-30,emergentes,avc,48
+2026-03-30,saude-mental,burnout,22
+2026-03-30,saude-mental,burnout,31
+2026-03-30,emergentes,calor extremo e saúde,1
+2026-03-30,emergentes,calor extremo e saúde,1
+2026-03-30,menopausa,cancro da mama,48
+2026-03-30,menopausa,cancro da mama,64
+2026-03-30,emergentes,candida auris,1
+2026-03-30,emergentes,candida auris,1
+2026-03-30,menopausa,candidíase,28
+2026-03-30,menopausa,candidíase,36
+2026-03-30,alimentacao,colesterol alto,24
+2026-03-30,alimentacao,colesterol alto,31
+2026-03-30,saude-mental,competências socioemocionais,30
+2026-03-30,saude-mental,competências socioemocionais,31
+2026-03-30,saude-mental,demência,26
+2026-03-30,saude-mental,demência,29
+2026-03-30,emergentes,dengue europa,37
+2026-03-30,emergentes,dengue europa,39
+2026-03-30,saude-mental,dependências,1
+2026-03-30,saude-mental,dependências,1
+2026-03-30,saude-mental,depressão,6
+2026-03-30,saude-mental,depressão,8
+2026-03-30,saude-mental,desinstitucionalização saúde mental,1
+2026-03-30,saude-mental,desinstitucionalização saúde mental,1
+2026-03-30,alimentacao,diabetes tipo 2,21
+2026-03-30,alimentacao,diabetes tipo 2,83
+2026-03-30,alimentacao,dieta cetogénica,1
+2026-03-30,alimentacao,dieta cetogénica,1
+2026-03-30,alimentacao,dieta mediterrânica,5
+2026-03-30,alimentacao,dieta mediterrânica,23
+2026-03-30,alimentacao,doença celíaca,1
+2026-03-30,alimentacao,doença celíaca,12
+2026-03-30,emergentes,doenças cardiovasculares,1
+2026-03-30,emergentes,doenças cardiovasculares,15
+2026-03-30,menopausa,doenças da tiroide,1
+2026-03-30,menopausa,doenças da tiroide,1
+2026-03-30,menopausa,endometriose,28
+2026-03-30,menopausa,endometriose,42
+2026-03-30,saude-mental,enxaqueca,56
+2026-03-30,saude-mental,enxaqueca,68
+2026-03-30,saude-mental,equipas comunitárias saúde mental,1
+2026-03-30,saude-mental,equipas comunitárias saúde mental,1
+2026-03-30,menopausa,fitoterapia menopausa,1
+2026-03-30,menopausa,fitoterapia menopausa,1
+2026-03-30,saude-mental,fobia social,1
+2026-03-30,saude-mental,fobia social,1
+2026-03-30,emergentes,gripe aviária H5N1,1
+2026-03-30,emergentes,gripe aviária H5N1,1
+2026-03-30,menopausa,incontinência urinária,30
+2026-03-30,menopausa,incontinência urinária,63
+2026-03-30,saude-mental,insónia,52
+2026-03-30,saude-mental,insónia,89
+2026-03-30,alimentacao,intolerância à lactose,1
+2026-03-30,alimentacao,intolerância à lactose,22
+2026-03-30,alimentacao,intolerância ao glúten,1
+2026-03-30,alimentacao,intolerância ao glúten,24
+2026-03-30,alimentacao,jejum intermitente,26
+2026-03-30,alimentacao,jejum intermitente,27
+2026-03-30,menopausa,libido menopausa,1
+2026-03-30,menopausa,libido menopausa,1
+2026-03-30,saude-mental,literacia em saúde mental,1
+2026-03-30,saude-mental,literacia em saúde mental,1
+2026-03-30,emergentes,long covid,10
+2026-03-30,emergentes,long covid,50
+2026-03-30,emergentes,lúpus,8
+2026-03-30,emergentes,lúpus,10
+2026-03-30,menopausa,menopausa masculina,7
+2026-03-30,menopausa,menopausa masculina,7
+2026-03-30,menopausa,menopausa precoce,1
+2026-03-30,menopausa,menopausa precoce,1
+2026-03-30,menopausa,menopausa sintomas,20
+2026-03-30,menopausa,menopausa sintomas,77
+2026-03-30,emergentes,microplásticos sangue,1
+2026-03-30,emergentes,microplásticos sangue,1
+2026-03-30,emergentes,mpox portugal,1
+2026-03-30,emergentes,mpox portugal,1
+2026-03-30,alimentacao,obesidade infantil,1
+2026-03-30,alimentacao,obesidade infantil,1
+2026-03-30,menopausa,osteoporose,30
+2026-03-30,menopausa,osteoporose,59
+2026-03-30,saude-mental,pânico,30
+2026-03-30,saude-mental,pânico,34
+2026-03-30,saude-mental,perturbação bipolar,1
+2026-03-30,saude-mental,perturbação bipolar,1
+2026-03-30,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-30,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-30,saude-mental,perturbações do espectro do autismo,1
+2026-03-30,saude-mental,perturbações do espectro do autismo,1
+2026-03-30,menopausa,peso na menopausa,1
+2026-03-30,menopausa,peso na menopausa,1
+2026-03-30,emergentes,poluição e saúde,1
+2026-03-30,emergentes,poluição e saúde,1
+2026-03-30,alimentacao,pré-diabetes,1
+2026-03-30,alimentacao,pré-diabetes,1
+2026-03-30,saude-mental,prevenção suicídio,1
+2026-03-30,saude-mental,prevenção suicídio,1
+2026-03-30,saude-mental,PTSD,18
+2026-03-30,saude-mental,PTSD,20
+2026-03-30,saude-mental,reabilitação psicossocial,1
+2026-03-30,saude-mental,reabilitação psicossocial,1
+2026-03-30,alimentacao,refluxo gastroesofágico,35
+2026-03-30,alimentacao,refluxo gastroesofágico,44
+2026-03-30,emergentes,resistência antibióticos,24
+2026-03-30,emergentes,resistência antibióticos,24
+2026-03-30,emergentes,sarampo surto,1
+2026-03-30,emergentes,sarampo surto,1
+2026-03-30,saude-mental,saúde mental ensino superior,1
+2026-03-30,saude-mental,saúde mental ensino superior,1
+2026-03-30,saude-mental,saúde mental escolar,1
+2026-03-30,saude-mental,saúde mental escolar,1
+2026-03-30,saude-mental,saúde mental jovens,1
+2026-03-30,saude-mental,saúde mental jovens,1
+2026-03-30,saude-mental,saúde mental no trabalho,1
+2026-03-30,saude-mental,saúde mental no trabalho,1
+2026-03-30,saude-mental,saúde mental sem-abrigo,1
+2026-03-30,saude-mental,saúde mental sem-abrigo,1
+2026-03-30,menopausa,secura vaginal,29
+2026-03-30,menopausa,secura vaginal,54
+2026-03-30,emergentes,sepsis,33
+2026-03-30,emergentes,sepsis,40
+2026-03-30,alimentacao,síndrome de intestino irritável,1
+2026-03-30,alimentacao,síndrome de intestino irritável,1
+2026-03-30,menopausa,síndrome do ovário poliquístico,1
+2026-03-30,menopausa,síndrome do ovário poliquístico,2
+2026-03-30,saude-mental,solidão,25
+2026-03-30,saude-mental,solidão,28
+2026-03-30,saude-mental,stress,34
+2026-03-30,saude-mental,stress,47
+2026-03-30,saude-mental,suicídio,19
+2026-03-30,saude-mental,suicídio,32
+2026-03-30,menopausa,suores noturnos,2
+2026-03-30,menopausa,suores noturnos,9
+2026-03-30,alimentacao,suplementos alimentares,11
+2026-03-30,alimentacao,suplementos alimentares,13
+2026-03-30,saude-mental,TDAH adulto,1
+2026-03-30,saude-mental,TDAH adulto,2
+2026-03-30,menopausa,terapia hormonal,1
+2026-03-30,menopausa,terapia hormonal,50
+2026-03-30,saude-mental,terapia online,3
+2026-03-30,saude-mental,terapia online,34
+2026-03-30,alimentacao,ultraprocessados,1
+2026-03-30,alimentacao,ultraprocessados,1
+2026-03-30,emergentes,vírus nipah,1
+2026-03-30,emergentes,vírus nipah,1
+2026-03-31,alimentacao,açúcar e saúde,38
+2026-03-31,saude-mental,alcoolismo,64
+2026-03-31,alimentacao,alergias alimentares,2
+2026-03-31,alimentacao,alimentação plant-based,1
+2026-03-31,saude-mental,alzheimer,50
+2026-03-31,alimentacao,anemia,45
+2026-03-31,saude-mental,anorexia nervosa,1
+2026-03-31,saude-mental,ansiedade,63
+2026-03-31,saude-mental,automutilação,19
+2026-03-31,emergentes,avc,46
+2026-03-31,saude-mental,burnout,32
+2026-03-31,emergentes,calor extremo e saúde,1
+2026-03-31,menopausa,cancro da mama,43
+2026-03-31,emergentes,candida auris,1
+2026-03-31,menopausa,candidíase,36
+2026-03-31,alimentacao,colesterol alto,27
+2026-03-31,saude-mental,competências socioemocionais,34
+2026-03-31,saude-mental,demência,30
+2026-03-31,emergentes,dengue europa,42
+2026-03-31,saude-mental,dependências,1
+2026-03-31,saude-mental,depressão,6
+2026-03-31,saude-mental,desinstitucionalização saúde mental,1
+2026-03-31,alimentacao,diabetes tipo 2,18
+2026-03-31,alimentacao,dieta cetogénica,1
+2026-03-31,alimentacao,dieta mediterrânica,22
+2026-03-31,alimentacao,doença celíaca,1
+2026-03-31,emergentes,doenças cardiovasculares,1
+2026-03-31,menopausa,doenças da tiroide,1
+2026-03-31,menopausa,endometriose,26
+2026-03-31,saude-mental,enxaqueca,54
+2026-03-31,saude-mental,equipas comunitárias saúde mental,1
+2026-03-31,menopausa,fitoterapia menopausa,1
+2026-03-31,saude-mental,fobia social,1
+2026-03-31,emergentes,gripe aviária H5N1,1
+2026-03-31,menopausa,incontinência urinária,32
+2026-03-31,saude-mental,insónia,49
+2026-03-31,alimentacao,intolerância à lactose,21
+2026-03-31,alimentacao,intolerância ao glúten,21
+2026-03-31,alimentacao,jejum intermitente,25
+2026-03-31,menopausa,libido menopausa,1
+2026-03-31,saude-mental,literacia em saúde mental,1
+2026-03-31,emergentes,long covid,52
+2026-03-31,emergentes,lúpus,9
+2026-03-31,menopausa,menopausa masculina,6
+2026-03-31,menopausa,menopausa precoce,1
+2026-03-31,menopausa,menopausa sintomas,88
+2026-03-31,emergentes,microplásticos sangue,1
+2026-03-31,emergentes,mpox portugal,1
+2026-03-31,alimentacao,obesidade infantil,1
+2026-03-31,menopausa,osteoporose,30
+2026-03-31,saude-mental,pânico,29
+2026-03-31,saude-mental,perturbação bipolar,1
+2026-03-31,saude-mental,perturbação obsessivo-compulsiva,1
+2026-03-31,saude-mental,perturbações do espectro do autismo,1
+2026-03-31,menopausa,peso na menopausa,1
+2026-03-31,emergentes,poluição e saúde,1
+2026-03-31,alimentacao,pré-diabetes,1
+2026-03-31,saude-mental,prevenção suicídio,1
+2026-03-31,saude-mental,PTSD,20
+2026-03-31,saude-mental,reabilitação psicossocial,1
+2026-03-31,alimentacao,refluxo gastroesofágico,38
+2026-03-31,emergentes,resistência antibióticos,23
+2026-03-31,emergentes,sarampo surto,1
+2026-03-31,saude-mental,saúde mental ensino superior,1
+2026-03-31,saude-mental,saúde mental escolar,1
+2026-03-31,saude-mental,saúde mental jovens,1
+2026-03-31,saude-mental,saúde mental no trabalho,1
+2026-03-31,saude-mental,saúde mental sem-abrigo,1
+2026-03-31,menopausa,secura vaginal,25
+2026-03-31,emergentes,sepsis,35
+2026-03-31,alimentacao,síndrome de intestino irritável,1
+2026-03-31,menopausa,síndrome do ovário poliquístico,2
+2026-03-31,saude-mental,solidão,24
+2026-03-31,saude-mental,stress,31
+2026-03-31,saude-mental,suicídio,35
+2026-03-31,menopausa,suores noturnos,2
+2026-03-31,alimentacao,suplementos alimentares,11
+2026-03-31,saude-mental,TDAH adulto,1
+2026-03-31,menopausa,terapia hormonal,1
+2026-03-31,saude-mental,terapia online,3
+2026-03-31,alimentacao,ultraprocessados,1
+2026-03-31,emergentes,vírus nipah,1
+2026-04-01,alimentacao,açúcar e saúde,44
+2026-04-01,saude-mental,alcoolismo,69
+2026-04-01,alimentacao,alergias alimentares,2
+2026-04-01,alimentacao,alimentação plant-based,1
+2026-04-01,saude-mental,alzheimer,49
+2026-04-01,alimentacao,anemia,46
+2026-04-01,saude-mental,anorexia nervosa,1
+2026-04-01,saude-mental,ansiedade,67
+2026-04-01,saude-mental,automutilação,21
+2026-04-01,emergentes,avc,49
+2026-04-01,saude-mental,burnout,33
+2026-04-01,emergentes,calor extremo e saúde,1
+2026-04-01,menopausa,cancro da mama,40
+2026-04-01,emergentes,candida auris,1
+2026-04-01,menopausa,candidíase,41
+2026-04-01,alimentacao,colesterol alto,31
+2026-04-01,saude-mental,competências socioemocionais,30
+2026-04-01,saude-mental,demência,31
+2026-04-01,emergentes,dengue europa,43
+2026-04-01,saude-mental,dependências,1
+2026-04-01,saude-mental,depressão,6
+2026-04-01,saude-mental,desinstitucionalização saúde mental,1
+2026-04-01,alimentacao,diabetes tipo 2,19
+2026-04-01,alimentacao,dieta cetogénica,1
+2026-04-01,alimentacao,dieta mediterrânica,21
+2026-04-01,alimentacao,doença celíaca,1
+2026-04-01,emergentes,doenças cardiovasculares,1
+2026-04-01,menopausa,doenças da tiroide,1
+2026-04-01,menopausa,endometriose,27
+2026-04-01,saude-mental,enxaqueca,49
+2026-04-01,saude-mental,equipas comunitárias saúde mental,1
+2026-04-01,menopausa,fitoterapia menopausa,1
+2026-04-01,saude-mental,fobia social,1
+2026-04-01,emergentes,gripe aviária H5N1,1
+2026-04-01,menopausa,incontinência urinária,35
+2026-04-01,saude-mental,insónia,46
+2026-04-01,alimentacao,intolerância à lactose,19
+2026-04-01,alimentacao,intolerância ao glúten,23
+2026-04-01,alimentacao,jejum intermitente,24
+2026-04-01,menopausa,libido menopausa,1
+2026-04-01,saude-mental,literacia em saúde mental,1
+2026-04-01,emergentes,long covid,52
+2026-04-01,emergentes,lúpus,9
+2026-04-01,menopausa,menopausa masculina,7
+2026-04-01,menopausa,menopausa precoce,1
+2026-04-01,menopausa,menopausa sintomas,90
+2026-04-01,emergentes,microplásticos sangue,1
+2026-04-01,emergentes,mpox portugal,1
+2026-04-01,alimentacao,obesidade infantil,1
+2026-04-01,menopausa,osteoporose,34
+2026-04-01,saude-mental,pânico,32
+2026-04-01,saude-mental,perturbação bipolar,1
+2026-04-01,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-01,saude-mental,perturbações do espectro do autismo,1
+2026-04-01,menopausa,peso na menopausa,1
+2026-04-01,emergentes,poluição e saúde,1
+2026-04-01,alimentacao,pré-diabetes,1
+2026-04-01,saude-mental,prevenção suicídio,1
+2026-04-01,saude-mental,PTSD,23
+2026-04-01,saude-mental,reabilitação psicossocial,1
+2026-04-01,alimentacao,refluxo gastroesofágico,43
+2026-04-01,emergentes,resistência antibióticos,22
+2026-04-01,emergentes,sarampo surto,1
+2026-04-01,saude-mental,saúde mental ensino superior,1
+2026-04-01,saude-mental,saúde mental escolar,1
+2026-04-01,saude-mental,saúde mental jovens,1
+2026-04-01,saude-mental,saúde mental no trabalho,1
+2026-04-01,saude-mental,saúde mental sem-abrigo,1
+2026-04-01,menopausa,secura vaginal,21
+2026-04-01,emergentes,sepsis,33
+2026-04-01,alimentacao,síndrome de intestino irritável,1
+2026-04-01,menopausa,síndrome do ovário poliquístico,2
+2026-04-01,saude-mental,solidão,24
+2026-04-01,saude-mental,stress,27
+2026-04-01,saude-mental,suicídio,31
+2026-04-01,menopausa,suores noturnos,2
+2026-04-01,alimentacao,suplementos alimentares,12
+2026-04-01,saude-mental,TDAH adulto,1
+2026-04-01,menopausa,terapia hormonal,1
+2026-04-01,saude-mental,terapia online,3
+2026-04-01,alimentacao,ultraprocessados,1
+2026-04-01,emergentes,vírus nipah,1
+2026-04-02,alimentacao,açúcar e saúde,48
+2026-04-02,saude-mental,alcoolismo,60
+2026-04-02,alimentacao,alergias alimentares,2
+2026-04-02,alimentacao,alimentação plant-based,1
+2026-04-02,saude-mental,alzheimer,52
+2026-04-02,alimentacao,anemia,52
+2026-04-02,saude-mental,anorexia nervosa,1
+2026-04-02,saude-mental,ansiedade,70
+2026-04-02,saude-mental,automutilação,19
+2026-04-02,emergentes,avc,50
+2026-04-02,saude-mental,burnout,31
+2026-04-02,emergentes,calor extremo e saúde,1
+2026-04-02,menopausa,cancro da mama,35
+2026-04-02,emergentes,candida auris,1
+2026-04-02,menopausa,candidíase,40
+2026-04-02,alimentacao,colesterol alto,32
+2026-04-02,saude-mental,competências socioemocionais,33
+2026-04-02,saude-mental,demência,33
+2026-04-02,emergentes,dengue europa,44
+2026-04-02,saude-mental,dependências,1
+2026-04-02,saude-mental,depressão,6
+2026-04-02,saude-mental,desinstitucionalização saúde mental,1
+2026-04-02,alimentacao,diabetes tipo 2,20
+2026-04-02,alimentacao,dieta cetogénica,1
+2026-04-02,alimentacao,dieta mediterrânica,18
+2026-04-02,alimentacao,doença celíaca,1
+2026-04-02,emergentes,doenças cardiovasculares,1
+2026-04-02,menopausa,doenças da tiroide,1
+2026-04-02,menopausa,endometriose,31
+2026-04-02,saude-mental,enxaqueca,52
+2026-04-02,saude-mental,equipas comunitárias saúde mental,1
+2026-04-02,menopausa,fitoterapia menopausa,1
+2026-04-02,saude-mental,fobia social,1
+2026-04-02,emergentes,gripe aviária H5N1,1
+2026-04-02,menopausa,incontinência urinária,32
+2026-04-02,saude-mental,insónia,40
+2026-04-02,alimentacao,intolerância à lactose,19
+2026-04-02,alimentacao,intolerância ao glúten,25
+2026-04-02,alimentacao,jejum intermitente,27
+2026-04-02,menopausa,libido menopausa,1
+2026-04-02,saude-mental,literacia em saúde mental,1
+2026-04-02,emergentes,long covid,55
+2026-04-02,emergentes,lúpus,9
+2026-04-02,menopausa,menopausa masculina,8
+2026-04-02,menopausa,menopausa precoce,1
+2026-04-02,menopausa,menopausa sintomas,100
+2026-04-02,emergentes,microplásticos sangue,1
+2026-04-02,emergentes,mpox portugal,1
+2026-04-02,alimentacao,obesidade infantil,1
+2026-04-02,menopausa,osteoporose,31
+2026-04-02,saude-mental,pânico,31
+2026-04-02,saude-mental,perturbação bipolar,1
+2026-04-02,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-02,saude-mental,perturbações do espectro do autismo,1
+2026-04-02,menopausa,peso na menopausa,1
+2026-04-02,emergentes,poluição e saúde,1
+2026-04-02,alimentacao,pré-diabetes,1
+2026-04-02,saude-mental,prevenção suicídio,1
+2026-04-02,saude-mental,PTSD,25
+2026-04-02,saude-mental,reabilitação psicossocial,1
+2026-04-02,alimentacao,refluxo gastroesofágico,37
+2026-04-02,emergentes,resistência antibióticos,24
+2026-04-02,emergentes,sarampo surto,1
+2026-04-02,saude-mental,saúde mental ensino superior,1
+2026-04-02,saude-mental,saúde mental escolar,1
+2026-04-02,saude-mental,saúde mental jovens,1
+2026-04-02,saude-mental,saúde mental no trabalho,1
+2026-04-02,saude-mental,saúde mental sem-abrigo,1
+2026-04-02,menopausa,secura vaginal,22
+2026-04-02,emergentes,sepsis,36
+2026-04-02,alimentacao,síndrome de intestino irritável,1
+2026-04-02,menopausa,síndrome do ovário poliquístico,2
+2026-04-02,saude-mental,solidão,22
+2026-04-02,saude-mental,stress,28
+2026-04-02,saude-mental,suicídio,28
+2026-04-02,menopausa,suores noturnos,2
+2026-04-02,alimentacao,suplementos alimentares,14
+2026-04-02,saude-mental,TDAH adulto,1
+2026-04-02,menopausa,terapia hormonal,1
+2026-04-02,saude-mental,terapia online,3
+2026-04-02,alimentacao,ultraprocessados,1
+2026-04-02,emergentes,vírus nipah,1
+2026-04-03,alimentacao,açúcar e saúde,42
+2026-04-03,saude-mental,alcoolismo,60
+2026-04-03,alimentacao,alergias alimentares,2
+2026-04-03,alimentacao,alimentação plant-based,1
+2026-04-03,saude-mental,alzheimer,55
+2026-04-03,alimentacao,anemia,55
+2026-04-03,saude-mental,anorexia nervosa,1
+2026-04-03,saude-mental,ansiedade,80
+2026-04-03,saude-mental,automutilação,18
+2026-04-03,emergentes,avc,48
+2026-04-03,saude-mental,burnout,35
+2026-04-03,emergentes,calor extremo e saúde,1
+2026-04-03,menopausa,cancro da mama,36
+2026-04-03,emergentes,candida auris,1
+2026-04-03,menopausa,candidíase,41
+2026-04-03,alimentacao,colesterol alto,37
+2026-04-03,saude-mental,competências socioemocionais,35
+2026-04-03,saude-mental,demência,30
+2026-04-03,emergentes,dengue europa,38
+2026-04-03,saude-mental,dependências,1
+2026-04-03,saude-mental,depressão,5
+2026-04-03,saude-mental,desinstitucionalização saúde mental,1
+2026-04-03,alimentacao,diabetes tipo 2,23
+2026-04-03,alimentacao,dieta cetogénica,1
+2026-04-03,alimentacao,dieta mediterrânica,18
+2026-04-03,alimentacao,doença celíaca,1
+2026-04-03,emergentes,doenças cardiovasculares,1
+2026-04-03,menopausa,doenças da tiroide,1
+2026-04-03,menopausa,endometriose,29
+2026-04-03,saude-mental,enxaqueca,48
+2026-04-03,saude-mental,equipas comunitárias saúde mental,1
+2026-04-03,menopausa,fitoterapia menopausa,1
+2026-04-03,saude-mental,fobia social,1
+2026-04-03,emergentes,gripe aviária H5N1,1
+2026-04-03,menopausa,incontinência urinária,33
+2026-04-03,saude-mental,insónia,36
+2026-04-03,alimentacao,intolerância à lactose,17
+2026-04-03,alimentacao,intolerância ao glúten,22
+2026-04-03,alimentacao,jejum intermitente,26
+2026-04-03,menopausa,libido menopausa,1
+2026-04-03,saude-mental,literacia em saúde mental,1
+2026-04-03,emergentes,long covid,49
+2026-04-03,emergentes,lúpus,8
+2026-04-03,menopausa,menopausa masculina,9
+2026-04-03,menopausa,menopausa precoce,1
+2026-04-03,menopausa,menopausa sintomas,86
+2026-04-03,emergentes,microplásticos sangue,1
+2026-04-03,emergentes,mpox portugal,1
+2026-04-03,alimentacao,obesidade infantil,1
+2026-04-03,menopausa,osteoporose,27
+2026-04-03,saude-mental,pânico,29
+2026-04-03,saude-mental,perturbação bipolar,1
+2026-04-03,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-03,saude-mental,perturbações do espectro do autismo,1
+2026-04-03,menopausa,peso na menopausa,1
+2026-04-03,emergentes,poluição e saúde,1
+2026-04-03,alimentacao,pré-diabetes,1
+2026-04-03,saude-mental,prevenção suicídio,1
+2026-04-03,saude-mental,PTSD,22
+2026-04-03,saude-mental,reabilitação psicossocial,1
+2026-04-03,alimentacao,refluxo gastroesofágico,40
+2026-04-03,emergentes,resistência antibióticos,23
+2026-04-03,emergentes,sarampo surto,1
+2026-04-03,saude-mental,saúde mental ensino superior,1
+2026-04-03,saude-mental,saúde mental escolar,1
+2026-04-03,saude-mental,saúde mental jovens,1
+2026-04-03,saude-mental,saúde mental no trabalho,1
+2026-04-03,saude-mental,saúde mental sem-abrigo,1
+2026-04-03,menopausa,secura vaginal,23
+2026-04-03,emergentes,sepsis,32
+2026-04-03,alimentacao,síndrome de intestino irritável,1
+2026-04-03,menopausa,síndrome do ovário poliquístico,2
+2026-04-03,saude-mental,solidão,20
+2026-04-03,saude-mental,stress,30
+2026-04-03,saude-mental,suicídio,31
+2026-04-03,menopausa,suores noturnos,2
+2026-04-03,alimentacao,suplementos alimentares,13
+2026-04-03,saude-mental,TDAH adulto,1
+2026-04-03,menopausa,terapia hormonal,1
+2026-04-03,saude-mental,terapia online,3
+2026-04-03,alimentacao,ultraprocessados,1
+2026-04-03,emergentes,vírus nipah,1
+2026-04-04,alimentacao,açúcar e saúde,40
+2026-04-04,saude-mental,alcoolismo,53
+2026-04-04,alimentacao,alergias alimentares,2
+2026-04-04,alimentacao,alimentação plant-based,1
+2026-04-04,saude-mental,alzheimer,53
+2026-04-04,alimentacao,anemia,59
+2026-04-04,saude-mental,anorexia nervosa,1
+2026-04-04,saude-mental,ansiedade,71
+2026-04-04,saude-mental,automutilação,19
+2026-04-04,emergentes,avc,48
+2026-04-04,saude-mental,burnout,38
+2026-04-04,emergentes,calor extremo e saúde,1
+2026-04-04,menopausa,cancro da mama,40
+2026-04-04,emergentes,candida auris,1
+2026-04-04,menopausa,candidíase,45
+2026-04-04,alimentacao,colesterol alto,34
+2026-04-04,saude-mental,competências socioemocionais,35
+2026-04-04,saude-mental,demência,30
+2026-04-04,emergentes,dengue europa,33
+2026-04-04,saude-mental,dependências,1
+2026-04-04,saude-mental,depressão,5
+2026-04-04,saude-mental,desinstitucionalização saúde mental,1
+2026-04-04,alimentacao,diabetes tipo 2,21
+2026-04-04,alimentacao,dieta cetogénica,1
+2026-04-04,alimentacao,dieta mediterrânica,20
+2026-04-04,alimentacao,doença celíaca,1
+2026-04-04,emergentes,doenças cardiovasculares,1
+2026-04-04,menopausa,doenças da tiroide,1
+2026-04-04,menopausa,endometriose,32
+2026-04-04,saude-mental,enxaqueca,53
+2026-04-04,saude-mental,equipas comunitárias saúde mental,1
+2026-04-04,menopausa,fitoterapia menopausa,1
+2026-04-04,saude-mental,fobia social,1
+2026-04-04,emergentes,gripe aviária H5N1,1
+2026-04-04,menopausa,incontinência urinária,31
+2026-04-04,saude-mental,insónia,41
+2026-04-04,alimentacao,intolerância à lactose,16
+2026-04-04,alimentacao,intolerância ao glúten,19
+2026-04-04,alimentacao,jejum intermitente,30
+2026-04-04,menopausa,libido menopausa,1
+2026-04-04,saude-mental,literacia em saúde mental,1
+2026-04-04,emergentes,long covid,48
+2026-04-04,emergentes,lúpus,8
+2026-04-04,menopausa,menopausa masculina,10
+2026-04-04,menopausa,menopausa precoce,1
+2026-04-04,menopausa,menopausa sintomas,74
+2026-04-04,emergentes,microplásticos sangue,1
+2026-04-04,emergentes,mpox portugal,1
+2026-04-04,alimentacao,obesidade infantil,1
+2026-04-04,menopausa,osteoporose,28
+2026-04-04,saude-mental,pânico,27
+2026-04-04,saude-mental,perturbação bipolar,1
+2026-04-04,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-04,saude-mental,perturbações do espectro do autismo,1
+2026-04-04,menopausa,peso na menopausa,1
+2026-04-04,emergentes,poluição e saúde,1
+2026-04-04,alimentacao,pré-diabetes,1
+2026-04-04,saude-mental,prevenção suicídio,1
+2026-04-04,saude-mental,PTSD,21
+2026-04-04,saude-mental,reabilitação psicossocial,1
+2026-04-04,alimentacao,refluxo gastroesofágico,42
+2026-04-04,emergentes,resistência antibióticos,21
+2026-04-04,emergentes,sarampo surto,1
+2026-04-04,saude-mental,saúde mental ensino superior,1
+2026-04-04,saude-mental,saúde mental escolar,1
+2026-04-04,saude-mental,saúde mental jovens,1
+2026-04-04,saude-mental,saúde mental no trabalho,1
+2026-04-04,saude-mental,saúde mental sem-abrigo,1
+2026-04-04,menopausa,secura vaginal,22
+2026-04-04,emergentes,sepsis,33
+2026-04-04,alimentacao,síndrome de intestino irritável,1
+2026-04-04,menopausa,síndrome do ovário poliquístico,2
+2026-04-04,saude-mental,solidão,23
+2026-04-04,saude-mental,stress,33
+2026-04-04,saude-mental,suicídio,32
+2026-04-04,menopausa,suores noturnos,2
+2026-04-04,alimentacao,suplementos alimentares,14
+2026-04-04,saude-mental,TDAH adulto,1
+2026-04-04,menopausa,terapia hormonal,1
+2026-04-04,saude-mental,terapia online,3
+2026-04-04,alimentacao,ultraprocessados,1
+2026-04-04,emergentes,vírus nipah,1
+2026-04-05,alimentacao,açúcar e saúde,44
+2026-04-05,saude-mental,alcoolismo,45
+2026-04-05,alimentacao,alergias alimentares,2
+2026-04-05,alimentacao,alimentação plant-based,1
+2026-04-05,saude-mental,alzheimer,53
+2026-04-05,alimentacao,anemia,58
+2026-04-05,saude-mental,anorexia nervosa,1
+2026-04-05,saude-mental,ansiedade,64
+2026-04-05,saude-mental,automutilação,17
+2026-04-05,emergentes,avc,53
+2026-04-05,saude-mental,burnout,40
+2026-04-05,emergentes,calor extremo e saúde,1
+2026-04-05,menopausa,cancro da mama,35
+2026-04-05,emergentes,candida auris,1
+2026-04-05,menopausa,candidíase,41
+2026-04-05,alimentacao,colesterol alto,36
+2026-04-05,saude-mental,competências socioemocionais,33
+2026-04-05,saude-mental,demência,27
+2026-04-05,emergentes,dengue europa,37
+2026-04-05,saude-mental,dependências,1
+2026-04-05,saude-mental,depressão,6
+2026-04-05,saude-mental,desinstitucionalização saúde mental,1
+2026-04-05,alimentacao,diabetes tipo 2,24
+2026-04-05,alimentacao,dieta cetogénica,1
+2026-04-05,alimentacao,dieta mediterrânica,21
+2026-04-05,alimentacao,doença celíaca,1
+2026-04-05,emergentes,doenças cardiovasculares,1
+2026-04-05,menopausa,doenças da tiroide,1
+2026-04-05,menopausa,endometriose,27
+2026-04-05,saude-mental,enxaqueca,51
+2026-04-05,saude-mental,equipas comunitárias saúde mental,1
+2026-04-05,menopausa,fitoterapia menopausa,1
+2026-04-05,saude-mental,fobia social,1
+2026-04-05,emergentes,gripe aviária H5N1,1
+2026-04-05,menopausa,incontinência urinária,30
+2026-04-05,saude-mental,insónia,45
+2026-04-05,alimentacao,intolerância à lactose,18
+2026-04-05,alimentacao,intolerância ao glúten,21
+2026-04-05,alimentacao,jejum intermitente,31
+2026-04-05,menopausa,libido menopausa,1
+2026-04-05,saude-mental,literacia em saúde mental,1
+2026-04-05,emergentes,long covid,47
+2026-04-05,emergentes,lúpus,7
+2026-04-05,menopausa,menopausa masculina,11
+2026-04-05,menopausa,menopausa precoce,1
+2026-04-05,menopausa,menopausa sintomas,79
+2026-04-05,emergentes,microplásticos sangue,1
+2026-04-05,emergentes,mpox portugal,1
+2026-04-05,alimentacao,obesidade infantil,1
+2026-04-05,menopausa,osteoporose,32
+2026-04-05,saude-mental,pânico,28
+2026-04-05,saude-mental,perturbação bipolar,1
+2026-04-05,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-05,saude-mental,perturbações do espectro do autismo,1
+2026-04-05,menopausa,peso na menopausa,1
+2026-04-05,emergentes,poluição e saúde,1
+2026-04-05,alimentacao,pré-diabetes,1
+2026-04-05,saude-mental,prevenção suicídio,1
+2026-04-05,saude-mental,PTSD,21
+2026-04-05,saude-mental,reabilitação psicossocial,1
+2026-04-05,alimentacao,refluxo gastroesofágico,47
+2026-04-05,emergentes,resistência antibióticos,20
+2026-04-05,emergentes,sarampo surto,1
+2026-04-05,saude-mental,saúde mental ensino superior,1
+2026-04-05,saude-mental,saúde mental escolar,1
+2026-04-05,saude-mental,saúde mental jovens,1
+2026-04-05,saude-mental,saúde mental no trabalho,1
+2026-04-05,saude-mental,saúde mental sem-abrigo,1
+2026-04-05,menopausa,secura vaginal,24
+2026-04-05,emergentes,sepsis,36
+2026-04-05,alimentacao,síndrome de intestino irritável,1
+2026-04-05,menopausa,síndrome do ovário poliquístico,2
+2026-04-05,saude-mental,solidão,22
+2026-04-05,saude-mental,stress,30
+2026-04-05,saude-mental,suicídio,29
+2026-04-05,menopausa,suores noturnos,2
+2026-04-05,alimentacao,suplementos alimentares,12
+2026-04-05,saude-mental,TDAH adulto,1
+2026-04-05,menopausa,terapia hormonal,1
+2026-04-05,saude-mental,terapia online,3
+2026-04-05,alimentacao,ultraprocessados,1
+2026-04-05,emergentes,vírus nipah,1
+2026-04-06,alimentacao,açúcar e saúde,42
+2026-04-06,alimentacao,açúcar e saúde,48
+2026-04-06,saude-mental,alcoolismo,44
+2026-04-06,saude-mental,alcoolismo,59
+2026-04-06,alimentacao,alergias alimentares,1
+2026-04-06,alimentacao,alergias alimentares,2
+2026-04-06,alimentacao,alimentação plant-based,1
+2026-04-06,alimentacao,alimentação plant-based,1
+2026-04-06,saude-mental,alzheimer,46
+2026-04-06,saude-mental,alzheimer,53
+2026-04-06,alimentacao,anemia,42
+2026-04-06,alimentacao,anemia,56
+2026-04-06,saude-mental,anorexia nervosa,1
+2026-04-06,saude-mental,anorexia nervosa,23
+2026-04-06,saude-mental,ansiedade,50
+2026-04-06,saude-mental,ansiedade,58
+2026-04-06,saude-mental,automutilação,16
+2026-04-06,saude-mental,automutilação,16
+2026-04-06,emergentes,avc,48
+2026-04-06,emergentes,avc,48
+2026-04-06,saude-mental,burnout,26
+2026-04-06,saude-mental,burnout,46
+2026-04-06,emergentes,calor extremo e saúde,1
+2026-04-06,emergentes,calor extremo e saúde,1
+2026-04-06,menopausa,cancro da mama,38
+2026-04-06,menopausa,cancro da mama,40
+2026-04-06,emergentes,candida auris,1
+2026-04-06,emergentes,candida auris,1
+2026-04-06,menopausa,candidíase,24
+2026-04-06,menopausa,candidíase,37
+2026-04-06,alimentacao,colesterol alto,13
+2026-04-06,alimentacao,colesterol alto,33
+2026-04-06,saude-mental,competências socioemocionais,1
+2026-04-06,saude-mental,competências socioemocionais,35
+2026-04-06,saude-mental,demência,25
+2026-04-06,saude-mental,demência,30
+2026-04-06,emergentes,dengue europa,40
+2026-04-06,emergentes,dengue europa,42
+2026-04-06,saude-mental,dependências,1
+2026-04-06,saude-mental,dependências,1
+2026-04-06,saude-mental,depressão,4
+2026-04-06,saude-mental,depressão,6
+2026-04-06,saude-mental,desinstitucionalização saúde mental,1
+2026-04-06,saude-mental,desinstitucionalização saúde mental,1
+2026-04-06,alimentacao,diabetes tipo 2,16
+2026-04-06,alimentacao,diabetes tipo 2,24
+2026-04-06,alimentacao,dieta cetogénica,1
+2026-04-06,alimentacao,dieta cetogénica,1
+2026-04-06,alimentacao,dieta mediterrânica,1
+2026-04-06,alimentacao,dieta mediterrânica,22
+2026-04-06,alimentacao,doença celíaca,1
+2026-04-06,alimentacao,doença celíaca,2
+2026-04-06,emergentes,doenças cardiovasculares,1
+2026-04-06,emergentes,doenças cardiovasculares,1
+2026-04-06,menopausa,doenças da tiroide,1
+2026-04-06,menopausa,doenças da tiroide,1
+2026-04-06,menopausa,endometriose,24
+2026-04-06,menopausa,endometriose,30
+2026-04-06,saude-mental,enxaqueca,40
+2026-04-06,saude-mental,enxaqueca,51
+2026-04-06,saude-mental,equipas comunitárias saúde mental,1
+2026-04-06,saude-mental,equipas comunitárias saúde mental,1
+2026-04-06,menopausa,fitoterapia menopausa,1
+2026-04-06,menopausa,fitoterapia menopausa,1
+2026-04-06,saude-mental,fobia social,1
+2026-04-06,saude-mental,fobia social,1
+2026-04-06,emergentes,gripe aviária H5N1,1
+2026-04-06,emergentes,gripe aviária H5N1,1
+2026-04-06,menopausa,incontinência urinária,6
+2026-04-06,menopausa,incontinência urinária,28
+2026-04-06,saude-mental,insónia,6
+2026-04-06,saude-mental,insónia,43
+2026-04-06,alimentacao,intolerância à lactose,1
+2026-04-06,alimentacao,intolerância à lactose,15
+2026-04-06,alimentacao,intolerância ao glúten,1
+2026-04-06,alimentacao,intolerância ao glúten,23
+2026-04-06,alimentacao,jejum intermitente,21
+2026-04-06,alimentacao,jejum intermitente,31
+2026-04-06,menopausa,libido menopausa,1
+2026-04-06,menopausa,libido menopausa,1
+2026-04-06,saude-mental,literacia em saúde mental,1
+2026-04-06,saude-mental,literacia em saúde mental,1
+2026-04-06,emergentes,long covid,42
+2026-04-06,emergentes,long covid,63
+2026-04-06,emergentes,lúpus,7
+2026-04-06,emergentes,lúpus,64
+2026-04-06,menopausa,menopausa masculina,10
+2026-04-06,menopausa,menopausa masculina,11
+2026-04-06,menopausa,menopausa precoce,1
+2026-04-06,menopausa,menopausa precoce,1
+2026-04-06,menopausa,menopausa sintomas,57
+2026-04-06,menopausa,menopausa sintomas,75
+2026-04-06,emergentes,microplásticos sangue,1
+2026-04-06,emergentes,microplásticos sangue,1
+2026-04-06,emergentes,mpox portugal,1
+2026-04-06,emergentes,mpox portugal,1
+2026-04-06,alimentacao,obesidade infantil,1
+2026-04-06,alimentacao,obesidade infantil,1
+2026-04-06,menopausa,osteoporose,17
+2026-04-06,menopausa,osteoporose,30
+2026-04-06,saude-mental,pânico,24
+2026-04-06,saude-mental,pânico,32
+2026-04-06,saude-mental,perturbação bipolar,1
+2026-04-06,saude-mental,perturbação bipolar,1
+2026-04-06,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-06,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-06,saude-mental,perturbações do espectro do autismo,1
+2026-04-06,saude-mental,perturbações do espectro do autismo,1
+2026-04-06,menopausa,peso na menopausa,1
+2026-04-06,menopausa,peso na menopausa,1
+2026-04-06,emergentes,poluição e saúde,1
+2026-04-06,emergentes,poluição e saúde,1
+2026-04-06,alimentacao,pré-diabetes,1
+2026-04-06,alimentacao,pré-diabetes,1
+2026-04-06,saude-mental,prevenção suicídio,1
+2026-04-06,saude-mental,prevenção suicídio,1
+2026-04-06,saude-mental,PTSD,19
+2026-04-06,saude-mental,PTSD,21
+2026-04-06,saude-mental,reabilitação psicossocial,1
+2026-04-06,saude-mental,reabilitação psicossocial,1
+2026-04-06,alimentacao,refluxo gastroesofágico,41
+2026-04-06,alimentacao,refluxo gastroesofágico,46
+2026-04-06,emergentes,resistência antibióticos,1
+2026-04-06,emergentes,resistência antibióticos,22
+2026-04-06,emergentes,sarampo surto,1
+2026-04-06,emergentes,sarampo surto,1
+2026-04-06,saude-mental,saúde mental ensino superior,1
+2026-04-06,saude-mental,saúde mental ensino superior,1
+2026-04-06,saude-mental,saúde mental escolar,1
+2026-04-06,saude-mental,saúde mental escolar,1
+2026-04-06,saude-mental,saúde mental jovens,1
+2026-04-06,saude-mental,saúde mental jovens,1
+2026-04-06,saude-mental,saúde mental no trabalho,1
+2026-04-06,saude-mental,saúde mental no trabalho,1
+2026-04-06,saude-mental,saúde mental sem-abrigo,1
+2026-04-06,saude-mental,saúde mental sem-abrigo,1
+2026-04-06,menopausa,secura vaginal,2
+2026-04-06,menopausa,secura vaginal,26
+2026-04-06,emergentes,sepsis,22
+2026-04-06,emergentes,sepsis,36
+2026-04-06,alimentacao,síndrome de intestino irritável,1
+2026-04-06,alimentacao,síndrome de intestino irritável,1
+2026-04-06,menopausa,síndrome do ovário poliquístico,2
+2026-04-06,menopausa,síndrome do ovário poliquístico,2
+2026-04-06,saude-mental,solidão,20
+2026-04-06,saude-mental,solidão,21
+2026-04-06,saude-mental,stress,27
+2026-04-06,saude-mental,stress,32
+2026-04-06,saude-mental,suicídio,29
+2026-04-06,saude-mental,suicídio,47
+2026-04-06,menopausa,suores noturnos,2
+2026-04-06,menopausa,suores noturnos,3
+2026-04-06,alimentacao,suplementos alimentares,5
+2026-04-06,alimentacao,suplementos alimentares,13
+2026-04-06,saude-mental,TDAH adulto,1
+2026-04-06,saude-mental,TDAH adulto,2
+2026-04-06,menopausa,terapia hormonal,1
+2026-04-06,menopausa,terapia hormonal,1
+2026-04-06,saude-mental,terapia online,3
+2026-04-06,saude-mental,terapia online,47
+2026-04-06,alimentacao,ultraprocessados,1
+2026-04-06,alimentacao,ultraprocessados,1
+2026-04-06,emergentes,vírus nipah,1
+2026-04-06,emergentes,vírus nipah,1
+2026-04-07,alimentacao,açúcar e saúde,47
+2026-04-07,saude-mental,alcoolismo,58
+2026-04-07,alimentacao,alergias alimentares,1
+2026-04-07,alimentacao,alimentação plant-based,1
+2026-04-07,saude-mental,alzheimer,51
+2026-04-07,alimentacao,anemia,43
+2026-04-07,saude-mental,anorexia nervosa,20
+2026-04-07,saude-mental,ansiedade,45
+2026-04-07,saude-mental,automutilação,18
+2026-04-07,emergentes,avc,45
+2026-04-07,saude-mental,burnout,27
+2026-04-07,emergentes,calor extremo e saúde,1
+2026-04-07,menopausa,cancro da mama,41
+2026-04-07,emergentes,candida auris,1
+2026-04-07,menopausa,candidíase,25
+2026-04-07,alimentacao,colesterol alto,14
+2026-04-07,saude-mental,competências socioemocionais,1
+2026-04-07,saude-mental,demência,31
+2026-04-07,emergentes,dengue europa,40
+2026-04-07,saude-mental,dependências,1
+2026-04-07,saude-mental,depressão,4
+2026-04-07,saude-mental,desinstitucionalização saúde mental,1
+2026-04-07,alimentacao,diabetes tipo 2,18
+2026-04-07,alimentacao,dieta cetogénica,1
+2026-04-07,alimentacao,dieta mediterrânica,1
+2026-04-07,alimentacao,doença celíaca,2
+2026-04-07,emergentes,doenças cardiovasculares,1
+2026-04-07,menopausa,doenças da tiroide,1
+2026-04-07,menopausa,endometriose,32
+2026-04-07,saude-mental,enxaqueca,40
+2026-04-07,saude-mental,equipas comunitárias saúde mental,1
+2026-04-07,menopausa,fitoterapia menopausa,1
+2026-04-07,saude-mental,fobia social,1
+2026-04-07,emergentes,gripe aviária H5N1,1
+2026-04-07,menopausa,incontinência urinária,5
+2026-04-07,saude-mental,insónia,5
+2026-04-07,alimentacao,intolerância à lactose,1
+2026-04-07,alimentacao,intolerância ao glúten,1
+2026-04-07,alimentacao,jejum intermitente,18
+2026-04-07,menopausa,libido menopausa,1
+2026-04-07,saude-mental,literacia em saúde mental,1
+2026-04-07,emergentes,long covid,58
+2026-04-07,emergentes,lúpus,73
+2026-04-07,menopausa,menopausa masculina,11
+2026-04-07,menopausa,menopausa precoce,1
+2026-04-07,menopausa,menopausa sintomas,51
+2026-04-07,emergentes,microplásticos sangue,1
+2026-04-07,emergentes,mpox portugal,1
+2026-04-07,alimentacao,obesidade infantil,1
+2026-04-07,menopausa,osteoporose,18
+2026-04-07,saude-mental,pânico,31
+2026-04-07,saude-mental,perturbação bipolar,1
+2026-04-07,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-07,saude-mental,perturbações do espectro do autismo,1
+2026-04-07,menopausa,peso na menopausa,1
+2026-04-07,emergentes,poluição e saúde,1
+2026-04-07,alimentacao,pré-diabetes,1
+2026-04-07,saude-mental,prevenção suicídio,1
+2026-04-07,saude-mental,PTSD,24
+2026-04-07,saude-mental,reabilitação psicossocial,1
+2026-04-07,alimentacao,refluxo gastroesofágico,51
+2026-04-07,emergentes,resistência antibióticos,1
+2026-04-07,emergentes,sarampo surto,1
+2026-04-07,saude-mental,saúde mental ensino superior,1
+2026-04-07,saude-mental,saúde mental escolar,1
+2026-04-07,saude-mental,saúde mental jovens,1
+2026-04-07,saude-mental,saúde mental no trabalho,1
+2026-04-07,saude-mental,saúde mental sem-abrigo,1
+2026-04-07,menopausa,secura vaginal,2
+2026-04-07,emergentes,sepsis,21
+2026-04-07,alimentacao,síndrome de intestino irritável,1
+2026-04-07,menopausa,síndrome do ovário poliquístico,2
+2026-04-07,saude-mental,solidão,19
+2026-04-07,saude-mental,stress,26
+2026-04-07,saude-mental,suicídio,44
+2026-04-07,menopausa,suores noturnos,3
+2026-04-07,alimentacao,suplementos alimentares,4
+2026-04-07,saude-mental,TDAH adulto,2
+2026-04-07,menopausa,terapia hormonal,1
+2026-04-07,saude-mental,terapia online,49
+2026-04-07,alimentacao,ultraprocessados,1
+2026-04-07,emergentes,vírus nipah,1
+2026-04-08,alimentacao,açúcar e saúde,52
+2026-04-08,saude-mental,alcoolismo,50
+2026-04-08,alimentacao,alergias alimentares,1
+2026-04-08,alimentacao,alimentação plant-based,1
+2026-04-08,saude-mental,alzheimer,50
+2026-04-08,alimentacao,anemia,45
+2026-04-08,saude-mental,anorexia nervosa,21
+2026-04-08,saude-mental,ansiedade,50
+2026-04-08,saude-mental,automutilação,16
+2026-04-08,emergentes,avc,47
+2026-04-08,saude-mental,burnout,26
+2026-04-08,emergentes,calor extremo e saúde,1
+2026-04-08,menopausa,cancro da mama,42
+2026-04-08,emergentes,candida auris,1
+2026-04-08,menopausa,candidíase,22
+2026-04-08,alimentacao,colesterol alto,15
+2026-04-08,saude-mental,competências socioemocionais,1
+2026-04-08,saude-mental,demência,33
+2026-04-08,emergentes,dengue europa,41
+2026-04-08,saude-mental,dependências,1
+2026-04-08,saude-mental,depressão,4
+2026-04-08,saude-mental,desinstitucionalização saúde mental,1
+2026-04-08,alimentacao,diabetes tipo 2,16
+2026-04-08,alimentacao,dieta cetogénica,1
+2026-04-08,alimentacao,dieta mediterrânica,1
+2026-04-08,alimentacao,doença celíaca,2
+2026-04-08,emergentes,doenças cardiovasculares,1
+2026-04-08,menopausa,doenças da tiroide,1
+2026-04-08,menopausa,endometriose,34
+2026-04-08,saude-mental,enxaqueca,44
+2026-04-08,saude-mental,equipas comunitárias saúde mental,1
+2026-04-08,menopausa,fitoterapia menopausa,1
+2026-04-08,saude-mental,fobia social,1
+2026-04-08,emergentes,gripe aviária H5N1,1
+2026-04-08,menopausa,incontinência urinária,5
+2026-04-08,saude-mental,insónia,5
+2026-04-08,alimentacao,intolerância à lactose,1
+2026-04-08,alimentacao,intolerância ao glúten,1
+2026-04-08,alimentacao,jejum intermitente,16
+2026-04-08,menopausa,libido menopausa,1
+2026-04-08,saude-mental,literacia em saúde mental,1
+2026-04-08,emergentes,long covid,64
+2026-04-08,emergentes,lúpus,69
+2026-04-08,menopausa,menopausa masculina,11
+2026-04-08,menopausa,menopausa precoce,1
+2026-04-08,menopausa,menopausa sintomas,46
+2026-04-08,emergentes,microplásticos sangue,1
+2026-04-08,emergentes,mpox portugal,1
+2026-04-08,alimentacao,obesidade infantil,1
+2026-04-08,menopausa,osteoporose,19
+2026-04-08,saude-mental,pânico,30
+2026-04-08,saude-mental,perturbação bipolar,1
+2026-04-08,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-08,saude-mental,perturbações do espectro do autismo,1
+2026-04-08,menopausa,peso na menopausa,1
+2026-04-08,emergentes,poluição e saúde,1
+2026-04-08,alimentacao,pré-diabetes,1
+2026-04-08,saude-mental,prevenção suicídio,1
+2026-04-08,saude-mental,PTSD,26
+2026-04-08,saude-mental,reabilitação psicossocial,1
+2026-04-08,alimentacao,refluxo gastroesofágico,53
+2026-04-08,emergentes,resistência antibióticos,1
+2026-04-08,emergentes,sarampo surto,1
+2026-04-08,saude-mental,saúde mental ensino superior,1
+2026-04-08,saude-mental,saúde mental escolar,1
+2026-04-08,saude-mental,saúde mental jovens,1
+2026-04-08,saude-mental,saúde mental no trabalho,1
+2026-04-08,saude-mental,saúde mental sem-abrigo,1
+2026-04-08,menopausa,secura vaginal,2
+2026-04-08,emergentes,sepsis,22
+2026-04-08,alimentacao,síndrome de intestino irritável,1
+2026-04-08,menopausa,síndrome do ovário poliquístico,2
+2026-04-08,saude-mental,solidão,20
+2026-04-08,saude-mental,stress,22
+2026-04-08,saude-mental,suicídio,47
+2026-04-08,menopausa,suores noturnos,3
+2026-04-08,alimentacao,suplementos alimentares,4
+2026-04-08,saude-mental,TDAH adulto,2
+2026-04-08,menopausa,terapia hormonal,1
+2026-04-08,saude-mental,terapia online,54
+2026-04-08,alimentacao,ultraprocessados,1
+2026-04-08,emergentes,vírus nipah,1
+2026-04-09,alimentacao,açúcar e saúde,54
+2026-04-09,saude-mental,alcoolismo,53
+2026-04-09,alimentacao,alergias alimentares,1
+2026-04-09,alimentacao,alimentação plant-based,1
+2026-04-09,saude-mental,alzheimer,55
+2026-04-09,alimentacao,anemia,41
+2026-04-09,saude-mental,anorexia nervosa,24
+2026-04-09,saude-mental,ansiedade,52
+2026-04-09,saude-mental,automutilação,18
+2026-04-09,emergentes,avc,41
+2026-04-09,saude-mental,burnout,28
+2026-04-09,emergentes,calor extremo e saúde,1
+2026-04-09,menopausa,cancro da mama,48
+2026-04-09,emergentes,candida auris,1
+2026-04-09,menopausa,candidíase,21
+2026-04-09,alimentacao,colesterol alto,14
+2026-04-09,saude-mental,competências socioemocionais,1
+2026-04-09,saude-mental,demência,37
+2026-04-09,emergentes,dengue europa,47
+2026-04-09,saude-mental,dependências,1
+2026-04-09,saude-mental,depressão,4
+2026-04-09,saude-mental,desinstitucionalização saúde mental,1
+2026-04-09,alimentacao,diabetes tipo 2,15
+2026-04-09,alimentacao,dieta cetogénica,1
+2026-04-09,alimentacao,dieta mediterrânica,1
+2026-04-09,alimentacao,doença celíaca,2
+2026-04-09,emergentes,doenças cardiovasculares,1
+2026-04-09,menopausa,doenças da tiroide,1
+2026-04-09,menopausa,endometriose,30
+2026-04-09,saude-mental,enxaqueca,42
+2026-04-09,saude-mental,equipas comunitárias saúde mental,1
+2026-04-09,menopausa,fitoterapia menopausa,1
+2026-04-09,saude-mental,fobia social,1
+2026-04-09,emergentes,gripe aviária H5N1,1
+2026-04-09,menopausa,incontinência urinária,5
+2026-04-09,saude-mental,insónia,5
+2026-04-09,alimentacao,intolerância à lactose,1
+2026-04-09,alimentacao,intolerância ao glúten,1
+2026-04-09,alimentacao,jejum intermitente,14
+2026-04-09,menopausa,libido menopausa,1
+2026-04-09,saude-mental,literacia em saúde mental,1
+2026-04-09,emergentes,long covid,72
+2026-04-09,emergentes,lúpus,62
+2026-04-09,menopausa,menopausa masculina,12
+2026-04-09,menopausa,menopausa precoce,1
+2026-04-09,menopausa,menopausa sintomas,41
+2026-04-09,emergentes,microplásticos sangue,1
+2026-04-09,emergentes,mpox portugal,1
+2026-04-09,alimentacao,obesidade infantil,1
+2026-04-09,menopausa,osteoporose,20
+2026-04-09,saude-mental,pânico,32
+2026-04-09,saude-mental,perturbação bipolar,1
+2026-04-09,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-09,saude-mental,perturbações do espectro do autismo,1
+2026-04-09,menopausa,peso na menopausa,1
+2026-04-09,emergentes,poluição e saúde,1
+2026-04-09,alimentacao,pré-diabetes,1
+2026-04-09,saude-mental,prevenção suicídio,1
+2026-04-09,saude-mental,PTSD,24
+2026-04-09,saude-mental,reabilitação psicossocial,1
+2026-04-09,alimentacao,refluxo gastroesofágico,51
+2026-04-09,emergentes,resistência antibióticos,1
+2026-04-09,emergentes,sarampo surto,1
+2026-04-09,saude-mental,saúde mental ensino superior,1
+2026-04-09,saude-mental,saúde mental escolar,1
+2026-04-09,saude-mental,saúde mental jovens,1
+2026-04-09,saude-mental,saúde mental no trabalho,1
+2026-04-09,saude-mental,saúde mental sem-abrigo,1
+2026-04-09,menopausa,secura vaginal,2
+2026-04-09,emergentes,sepsis,20
+2026-04-09,alimentacao,síndrome de intestino irritável,1
+2026-04-09,menopausa,síndrome do ovário poliquístico,2
+2026-04-09,saude-mental,solidão,22
+2026-04-09,saude-mental,stress,21
+2026-04-09,saude-mental,suicídio,47
+2026-04-09,menopausa,suores noturnos,3
+2026-04-09,alimentacao,suplementos alimentares,4
+2026-04-09,saude-mental,TDAH adulto,2
+2026-04-09,menopausa,terapia hormonal,1
+2026-04-09,saude-mental,terapia online,49
+2026-04-09,alimentacao,ultraprocessados,1
+2026-04-09,emergentes,vírus nipah,1
+2026-04-10,alimentacao,açúcar e saúde,55
+2026-04-10,saude-mental,alcoolismo,56
+2026-04-10,alimentacao,alergias alimentares,1
+2026-04-10,alimentacao,alimentação plant-based,1
+2026-04-10,saude-mental,alzheimer,55
+2026-04-10,alimentacao,anemia,41
+2026-04-10,saude-mental,anorexia nervosa,23
+2026-04-10,saude-mental,ansiedade,46
+2026-04-10,saude-mental,automutilação,17
+2026-04-10,emergentes,avc,45
+2026-04-10,saude-mental,burnout,27
+2026-04-10,emergentes,calor extremo e saúde,1
+2026-04-10,menopausa,cancro da mama,53
+2026-04-10,emergentes,candida auris,1
+2026-04-10,menopausa,candidíase,18
+2026-04-10,alimentacao,colesterol alto,12
+2026-04-10,saude-mental,competências socioemocionais,1
+2026-04-10,saude-mental,demência,41
+2026-04-10,emergentes,dengue europa,50
+2026-04-10,saude-mental,dependências,1
+2026-04-10,saude-mental,depressão,4
+2026-04-10,saude-mental,desinstitucionalização saúde mental,1
+2026-04-10,alimentacao,diabetes tipo 2,14
+2026-04-10,alimentacao,dieta cetogénica,1
+2026-04-10,alimentacao,dieta mediterrânica,1
+2026-04-10,alimentacao,doença celíaca,2
+2026-04-10,emergentes,doenças cardiovasculares,1
+2026-04-10,menopausa,doenças da tiroide,1
+2026-04-10,menopausa,endometriose,34
+2026-04-10,saude-mental,enxaqueca,42
+2026-04-10,saude-mental,equipas comunitárias saúde mental,1
+2026-04-10,menopausa,fitoterapia menopausa,1
+2026-04-10,saude-mental,fobia social,1
+2026-04-10,emergentes,gripe aviária H5N1,1
+2026-04-10,menopausa,incontinência urinária,6
+2026-04-10,saude-mental,insónia,5
+2026-04-10,alimentacao,intolerância à lactose,1
+2026-04-10,alimentacao,intolerância ao glúten,1
+2026-04-10,alimentacao,jejum intermitente,15
+2026-04-10,menopausa,libido menopausa,1
+2026-04-10,saude-mental,literacia em saúde mental,1
+2026-04-10,emergentes,long covid,65
+2026-04-10,emergentes,lúpus,64
+2026-04-10,menopausa,menopausa masculina,12
+2026-04-10,menopausa,menopausa precoce,1
+2026-04-10,menopausa,menopausa sintomas,35
+2026-04-10,emergentes,microplásticos sangue,1
+2026-04-10,emergentes,mpox portugal,1
+2026-04-10,alimentacao,obesidade infantil,1
+2026-04-10,menopausa,osteoporose,23
+2026-04-10,saude-mental,pânico,29
+2026-04-10,saude-mental,perturbação bipolar,1
+2026-04-10,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-10,saude-mental,perturbações do espectro do autismo,1
+2026-04-10,menopausa,peso na menopausa,1
+2026-04-10,emergentes,poluição e saúde,1
+2026-04-10,alimentacao,pré-diabetes,1
+2026-04-10,saude-mental,prevenção suicídio,1
+2026-04-10,saude-mental,PTSD,20
+2026-04-10,saude-mental,reabilitação psicossocial,1
+2026-04-10,alimentacao,refluxo gastroesofágico,50
+2026-04-10,emergentes,resistência antibióticos,1
+2026-04-10,emergentes,sarampo surto,1
+2026-04-10,saude-mental,saúde mental ensino superior,1
+2026-04-10,saude-mental,saúde mental escolar,1
+2026-04-10,saude-mental,saúde mental jovens,1
+2026-04-10,saude-mental,saúde mental no trabalho,1
+2026-04-10,saude-mental,saúde mental sem-abrigo,1
+2026-04-10,menopausa,secura vaginal,2
+2026-04-10,emergentes,sepsis,19
+2026-04-10,alimentacao,síndrome de intestino irritável,1
+2026-04-10,menopausa,síndrome do ovário poliquístico,2
+2026-04-10,saude-mental,solidão,25
+2026-04-10,saude-mental,stress,22
+2026-04-10,saude-mental,suicídio,52
+2026-04-10,menopausa,suores noturnos,3
+2026-04-10,alimentacao,suplementos alimentares,4
+2026-04-10,saude-mental,TDAH adulto,2
+2026-04-10,menopausa,terapia hormonal,1
+2026-04-10,saude-mental,terapia online,54
+2026-04-10,alimentacao,ultraprocessados,1
+2026-04-10,emergentes,vírus nipah,1
+2026-04-11,alimentacao,açúcar e saúde,53
+2026-04-11,saude-mental,alcoolismo,53
+2026-04-11,alimentacao,alergias alimentares,1
+2026-04-11,alimentacao,alimentação plant-based,1
+2026-04-11,saude-mental,alzheimer,48
+2026-04-11,alimentacao,anemia,42
+2026-04-11,saude-mental,anorexia nervosa,20
+2026-04-11,saude-mental,ansiedade,51
+2026-04-11,saude-mental,automutilação,19
+2026-04-11,emergentes,avc,42
+2026-04-11,saude-mental,burnout,27
+2026-04-11,emergentes,calor extremo e saúde,1
+2026-04-11,menopausa,cancro da mama,50
+2026-04-11,emergentes,candida auris,1
+2026-04-11,menopausa,candidíase,18
+2026-04-11,alimentacao,colesterol alto,11
+2026-04-11,saude-mental,competências socioemocionais,1
+2026-04-11,saude-mental,demência,47
+2026-04-11,emergentes,dengue europa,56
+2026-04-11,saude-mental,dependências,1
+2026-04-11,saude-mental,depressão,4
+2026-04-11,saude-mental,desinstitucionalização saúde mental,1
+2026-04-11,alimentacao,diabetes tipo 2,12
+2026-04-11,alimentacao,dieta cetogénica,1
+2026-04-11,alimentacao,dieta mediterrânica,1
+2026-04-11,alimentacao,doença celíaca,2
+2026-04-11,emergentes,doenças cardiovasculares,1
+2026-04-11,menopausa,doenças da tiroide,1
+2026-04-11,menopausa,endometriose,38
+2026-04-11,saude-mental,enxaqueca,37
+2026-04-11,saude-mental,equipas comunitárias saúde mental,1
+2026-04-11,menopausa,fitoterapia menopausa,1
+2026-04-11,saude-mental,fobia social,1
+2026-04-11,emergentes,gripe aviária H5N1,1
+2026-04-11,menopausa,incontinência urinária,5
+2026-04-11,saude-mental,insónia,5
+2026-04-11,alimentacao,intolerância à lactose,1
+2026-04-11,alimentacao,intolerância ao glúten,1
+2026-04-11,alimentacao,jejum intermitente,17
+2026-04-11,menopausa,libido menopausa,1
+2026-04-11,saude-mental,literacia em saúde mental,1
+2026-04-11,emergentes,long covid,60
+2026-04-11,emergentes,lúpus,59
+2026-04-11,menopausa,menopausa masculina,13
+2026-04-11,menopausa,menopausa precoce,1
+2026-04-11,menopausa,menopausa sintomas,39
+2026-04-11,emergentes,microplásticos sangue,1
+2026-04-11,emergentes,mpox portugal,1
+2026-04-11,alimentacao,obesidade infantil,1
+2026-04-11,menopausa,osteoporose,20
+2026-04-11,saude-mental,pânico,29
+2026-04-11,saude-mental,perturbação bipolar,1
+2026-04-11,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-11,saude-mental,perturbações do espectro do autismo,1
+2026-04-11,menopausa,peso na menopausa,1
+2026-04-11,emergentes,poluição e saúde,1
+2026-04-11,alimentacao,pré-diabetes,1
+2026-04-11,saude-mental,prevenção suicídio,1
+2026-04-11,saude-mental,PTSD,21
+2026-04-11,saude-mental,reabilitação psicossocial,1
+2026-04-11,alimentacao,refluxo gastroesofágico,46
+2026-04-11,emergentes,resistência antibióticos,1
+2026-04-11,emergentes,sarampo surto,1
+2026-04-11,saude-mental,saúde mental ensino superior,1
+2026-04-11,saude-mental,saúde mental escolar,1
+2026-04-11,saude-mental,saúde mental jovens,1
+2026-04-11,saude-mental,saúde mental no trabalho,1
+2026-04-11,saude-mental,saúde mental sem-abrigo,1
+2026-04-11,menopausa,secura vaginal,2
+2026-04-11,emergentes,sepsis,16
+2026-04-11,alimentacao,síndrome de intestino irritável,1
+2026-04-11,menopausa,síndrome do ovário poliquístico,2
+2026-04-11,saude-mental,solidão,23
+2026-04-11,saude-mental,stress,25
+2026-04-11,saude-mental,suicídio,57
+2026-04-11,menopausa,suores noturnos,3
+2026-04-11,alimentacao,suplementos alimentares,4
+2026-04-11,saude-mental,TDAH adulto,2
+2026-04-11,menopausa,terapia hormonal,1
+2026-04-11,saude-mental,terapia online,51
+2026-04-11,alimentacao,ultraprocessados,1
+2026-04-11,emergentes,vírus nipah,1
+2026-04-12,alimentacao,açúcar e saúde,57
+2026-04-12,saude-mental,alcoolismo,45
+2026-04-12,alimentacao,alergias alimentares,1
+2026-04-12,alimentacao,alimentação plant-based,1
+2026-04-12,saude-mental,alzheimer,46
+2026-04-12,alimentacao,anemia,40
+2026-04-12,saude-mental,anorexia nervosa,21
+2026-04-12,saude-mental,ansiedade,48
+2026-04-12,saude-mental,automutilação,16
+2026-04-12,emergentes,avc,38
+2026-04-12,saude-mental,burnout,23
+2026-04-12,emergentes,calor extremo e saúde,1
+2026-04-12,menopausa,cancro da mama,43
+2026-04-12,emergentes,candida auris,1
+2026-04-12,menopausa,candidíase,21
+2026-04-12,alimentacao,colesterol alto,11
+2026-04-12,saude-mental,competências socioemocionais,1
+2026-04-12,saude-mental,demência,48
+2026-04-12,emergentes,dengue europa,54
+2026-04-12,saude-mental,dependências,1
+2026-04-12,saude-mental,depressão,4
+2026-04-12,saude-mental,desinstitucionalização saúde mental,1
+2026-04-12,alimentacao,diabetes tipo 2,14
+2026-04-12,alimentacao,dieta cetogénica,1
+2026-04-12,alimentacao,dieta mediterrânica,1
+2026-04-12,alimentacao,doença celíaca,2
+2026-04-12,emergentes,doenças cardiovasculares,1
+2026-04-12,menopausa,doenças da tiroide,1
+2026-04-12,menopausa,endometriose,34
+2026-04-12,saude-mental,enxaqueca,35
+2026-04-12,saude-mental,equipas comunitárias saúde mental,1
+2026-04-12,menopausa,fitoterapia menopausa,1
+2026-04-12,saude-mental,fobia social,1
+2026-04-12,emergentes,gripe aviária H5N1,1
+2026-04-12,menopausa,incontinência urinária,6
+2026-04-12,saude-mental,insónia,5
+2026-04-12,alimentacao,intolerância à lactose,1
+2026-04-12,alimentacao,intolerância ao glúten,1
+2026-04-12,alimentacao,jejum intermitente,15
+2026-04-12,menopausa,libido menopausa,1
+2026-04-12,saude-mental,literacia em saúde mental,1
+2026-04-12,emergentes,long covid,69
+2026-04-12,emergentes,lúpus,61
+2026-04-12,menopausa,menopausa masculina,12
+2026-04-12,menopausa,menopausa precoce,1
+2026-04-12,menopausa,menopausa sintomas,44
+2026-04-12,emergentes,microplásticos sangue,1
+2026-04-12,emergentes,mpox portugal,1
+2026-04-12,alimentacao,obesidade infantil,1
+2026-04-12,menopausa,osteoporose,23
+2026-04-12,saude-mental,pânico,30
+2026-04-12,saude-mental,perturbação bipolar,1
+2026-04-12,saude-mental,perturbação obsessivo-compulsiva,1
+2026-04-12,saude-mental,perturbações do espectro do autismo,1
+2026-04-12,menopausa,peso na menopausa,1
+2026-04-12,emergentes,poluição e saúde,1
+2026-04-12,alimentacao,pré-diabetes,1
+2026-04-12,saude-mental,prevenção suicídio,1
+2026-04-12,saude-mental,PTSD,19
+2026-04-12,saude-mental,reabilitação psicossocial,1
+2026-04-12,alimentacao,refluxo gastroesofágico,47
+2026-04-12,emergentes,resistência antibióticos,1
+2026-04-12,emergentes,sarampo surto,1
+2026-04-12,saude-mental,saúde mental ensino superior,1
+2026-04-12,saude-mental,saúde mental escolar,1
+2026-04-12,saude-mental,saúde mental jovens,1
+2026-04-12,saude-mental,saúde mental no trabalho,1
+2026-04-12,saude-mental,saúde mental sem-abrigo,1
+2026-04-12,menopausa,secura vaginal,2
+2026-04-12,emergentes,sepsis,18
+2026-04-12,alimentacao,síndrome de intestino irritável,1
+2026-04-12,menopausa,síndrome do ovário poliquístico,2
+2026-04-12,saude-mental,solidão,25
+2026-04-12,saude-mental,stress,28
+2026-04-12,saude-mental,suicídio,51
+2026-04-12,menopausa,suores noturnos,3
+2026-04-12,alimentacao,suplementos alimentares,5
+2026-04-12,saude-mental,TDAH adulto,2
+2026-04-12,menopausa,terapia hormonal,1
+2026-04-12,saude-mental,terapia online,48
+2026-04-12,alimentacao,ultraprocessados,1
+2026-04-12,emergentes,vírus nipah,1
+2026-08-03,alimentacao,açúcar e saúde,0
+2026-08-03,saude-mental,alcoolismo,9
+2026-08-03,alimentacao,alergias alimentares,25
+2026-08-03,alimentacao,alimentação plant-based,0
+2026-08-03,saude-mental,alzheimer,16
+2026-08-03,alimentacao,anemia,37
+2026-08-03,saude-mental,anorexia nervosa,2
+2026-08-03,saude-mental,ansiedade,65
+2026-08-03,saude-mental,automutilação,0
+2026-08-03,emergentes,avc,59
+2026-08-03,saude-mental,burnout,40
+2026-08-03,emergentes,calor extremo e saúde,0
+2026-08-03,menopausa,cancro da mama,30
+2026-08-03,emergentes,candida auris,2
+2026-08-03,menopausa,candidíase,31
+2026-08-03,alimentacao,colesterol alto,18
+2026-08-03,saude-mental,competências socioemocionais,0
+2026-08-03,saude-mental,demência,27
+2026-08-03,emergentes,dengue europa,0
+2026-08-03,saude-mental,dependências,23
+2026-08-03,saude-mental,depressão,38
+2026-08-03,saude-mental,desinstitucionalização saúde mental,0
+2026-08-03,alimentacao,diabetes tipo 2,4
+2026-08-03,alimentacao,dieta cetogénica,0
+2026-08-03,alimentacao,dieta mediterrânica,25
+2026-08-03,alimentacao,doença celíaca,1
+2026-08-03,emergentes,doenças cardiovasculares,0
+2026-08-03,menopausa,doenças da tiroide,0
+2026-08-03,menopausa,endometriose,40
+2026-08-03,saude-mental,enxaqueca,39
+2026-08-03,saude-mental,equipas comunitárias saúde mental,0
+2026-08-03,menopausa,fitoterapia menopausa,0
+2026-08-03,saude-mental,fobia social,0
+2026-08-03,emergentes,gripe aviária H5N1,0
+2026-08-03,menopausa,incontinência urinária,42
+2026-08-03,saude-mental,insónia,64
+2026-08-03,alimentacao,intolerância à lactose,1
+2026-08-03,alimentacao,intolerância ao glúten,0
+2026-08-03,alimentacao,jejum intermitente,14
+2026-08-03,menopausa,libido menopausa,0
+2026-08-03,saude-mental,literacia em saúde mental,0
+2026-08-03,emergentes,long covid,64
+2026-08-03,emergentes,lúpus,32
+2026-08-03,menopausa,menopausa masculina,0
+2026-08-03,menopausa,menopausa precoce,0
+2026-08-03,menopausa,menopausa sintomas,49
+2026-08-03,emergentes,microplásticos sangue,0
+2026-08-03,emergentes,mpox portugal,0
+2026-08-03,alimentacao,obesidade infantil,0
+2026-08-03,menopausa,osteoporose,24
+2026-08-03,saude-mental,pânico,10
+2026-08-03,saude-mental,perturbação bipolar,0
+2026-08-03,saude-mental,perturbação obsessivo-compulsiva,0
+2026-08-03,saude-mental,perturbações do espectro do autismo,0
+2026-08-03,menopausa,peso na menopausa,0
+2026-08-03,emergentes,poluição e saúde,0
+2026-08-03,alimentacao,pré-diabetes,1
+2026-08-03,saude-mental,prevenção suicídio,0
+2026-08-03,saude-mental,PTSD,16
+2026-08-03,saude-mental,reabilitação psicossocial,0
+2026-08-03,alimentacao,refluxo gastroesofágico,13
+2026-08-03,emergentes,resistência antibióticos,0
+2026-08-03,emergentes,sarampo surto,0
+2026-08-03,saude-mental,saúde mental ensino superior,0
+2026-08-03,saude-mental,saúde mental escolar,0
+2026-08-03,saude-mental,saúde mental jovens,0
+2026-08-03,saude-mental,saúde mental no trabalho,0
+2026-08-03,saude-mental,saúde mental sem-abrigo,0
+2026-08-03,menopausa,secura vaginal,30
+2026-08-03,emergentes,sepsis,15
+2026-08-03,alimentacao,síndrome de intestino irritável,0
+2026-08-03,menopausa,síndrome do ovário poliquístico,0
+2026-08-03,saude-mental,solidão,8
+2026-08-03,saude-mental,stress,24
+2026-08-03,saude-mental,suicídio,18
+2026-08-03,menopausa,suores noturnos,0
+2026-08-03,alimentacao,suplementos alimentares,62
+2026-08-03,saude-mental,TDAH adulto,0
+2026-08-03,menopausa,terapia hormonal,2
+2026-08-03,saude-mental,terapia online,46
+2026-08-03,alimentacao,ultraprocessados,0
+2026-08-03,emergentes,vírus nipah,1
+2026-08-10,alimentacao,açúcar e saúde,0
+2026-08-10,saude-mental,alcoolismo,9
+2026-08-10,alimentacao,alergias alimentares,25
+2026-08-10,alimentacao,alimentação plant-based,0
+2026-08-10,saude-mental,alzheimer,16
+2026-08-10,alimentacao,anemia,37
+2026-08-10,saude-mental,anorexia nervosa,2
+2026-08-10,saude-mental,ansiedade,65
+2026-08-10,saude-mental,automutilação,0
+2026-08-10,emergentes,avc,59
+2026-08-10,saude-mental,burnout,40
+2026-08-10,emergentes,calor extremo e saúde,0
+2026-08-10,menopausa,cancro da mama,30
+2026-08-10,emergentes,candida auris,2
+2026-08-10,menopausa,candidíase,31
+2026-08-10,alimentacao,colesterol alto,18
+2026-08-10,saude-mental,competências socioemocionais,0
+2026-08-10,saude-mental,demência,27
+2026-08-10,emergentes,dengue europa,0
+2026-08-10,saude-mental,dependências,25
+2026-08-10,saude-mental,depressão,38
+2026-08-10,saude-mental,desinstitucionalização saúde mental,0
+2026-08-10,alimentacao,diabetes tipo 2,4
+2026-08-10,alimentacao,dieta cetogénica,0
+2026-08-10,alimentacao,dieta mediterrânica,25
+2026-08-10,alimentacao,doença celíaca,1
+2026-08-10,emergentes,doenças cardiovasculares,0
+2026-08-10,menopausa,doenças da tiroide,0
+2026-08-10,menopausa,endometriose,40
+2026-08-10,saude-mental,enxaqueca,39
+2026-08-10,saude-mental,equipas comunitárias saúde mental,0
+2026-08-10,menopausa,fitoterapia menopausa,0
+2026-08-10,saude-mental,fobia social,0
+2026-08-10,emergentes,gripe aviária H5N1,0
+2026-08-10,menopausa,incontinência urinária,1
+2026-08-10,saude-mental,insónia,2
+2026-08-10,alimentacao,intolerância à lactose,1
+2026-08-10,alimentacao,intolerância ao glúten,0
+2026-08-10,alimentacao,jejum intermitente,21
+2026-08-10,menopausa,libido menopausa,0
+2026-08-10,saude-mental,literacia em saúde mental,0
+2026-08-10,emergentes,long covid,0
+2026-08-10,emergentes,lúpus,32
+2026-08-10,menopausa,menopausa masculina,0
+2026-08-10,menopausa,menopausa precoce,2
+2026-08-10,menopausa,menopausa sintomas,49
+2026-08-10,emergentes,microplásticos sangue,0
+2026-08-10,emergentes,mpox portugal,0
+2026-08-10,alimentacao,obesidade infantil,0
+2026-08-10,menopausa,osteoporose,24
+2026-08-10,saude-mental,pânico,6
+2026-08-10,saude-mental,perturbação bipolar,0
+2026-08-10,saude-mental,perturbação obsessivo-compulsiva,0
+2026-08-10,saude-mental,perturbações do espectro do autismo,0
+2026-08-10,menopausa,peso na menopausa,0
+2026-08-10,emergentes,poluição e saúde,0
+2026-08-10,alimentacao,pré-diabetes,0
+2026-08-10,saude-mental,prevenção suicídio,0
+2026-08-10,saude-mental,PTSD,14
+2026-08-10,saude-mental,reabilitação psicossocial,0
+2026-08-10,alimentacao,refluxo gastroesofágico,13
+2026-08-10,emergentes,resistência antibióticos,0
+2026-08-10,emergentes,sarampo surto,0
+2026-08-10,saude-mental,saúde mental ensino superior,0
+2026-08-10,saude-mental,saúde mental escolar,0
+2026-08-10,saude-mental,saúde mental jovens,0
+2026-08-10,saude-mental,saúde mental no trabalho,0
+2026-08-10,saude-mental,saúde mental sem-abrigo,0
+2026-08-10,menopausa,secura vaginal,30
+2026-08-10,emergentes,sepsis,22
+2026-08-10,alimentacao,síndrome de intestino irritável,0
+2026-08-10,menopausa,síndrome do ovário poliquístico,0
+2026-08-10,saude-mental,solidão,8
+2026-08-10,saude-mental,stress,22
+2026-08-10,saude-mental,suicídio,18
+2026-08-10,menopausa,suores noturnos,0
+2026-08-10,alimentacao,suplementos alimentares,62
+2026-08-10,saude-mental,TDAH adulto,0
+2026-08-10,menopausa,terapia hormonal,0
+2026-08-10,saude-mental,terapia online,46
+2026-08-10,alimentacao,ultraprocessados,0
+2026-08-10,emergentes,vírus nipah,1

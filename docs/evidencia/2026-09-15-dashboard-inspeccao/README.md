@@ -15,6 +15,9 @@
 | `keywords-volumes-2026-09-15.json` | as 83 keywords com `current_volume`, `previous_volume`, `change_percent` |
 | `app-settings-2026-09-15.json` | o `last_refreshed` que o cabeçalho mostra |
 | `output-ranking-2026-09-15.txt` | saída do script, com `sha256` da entrada à cabeça |
+| `grafico-12m.py` | reimplementa o gráfico "vs ano anterior", incluindo o corte das 1000 linhas |
+| `historical-snapshots-2026-09-15.csv` | as **3462** linhas da série, 4 colunas (a série que o gráfico desenha) |
+| `output-grafico-2026-09-15.txt` | saída do script do gráfico |
 
 O script **não toca na base de dados** — lê o instantâneo versionado.
 
@@ -163,6 +166,84 @@ Um único carimbo não pode descrever isto, e o que ele descreve é o fluxo mais
 
 ---
 
+## Achado 5 — o gráfico "vs ano anterior" não tem sobreposição nenhuma
+
+> **Origem:** a Marta perguntou por que não conseguia ler o gráfico. A resposta é que **não
+> tem leitura possível** — e a causa principal não é a qualidade dos dados, é que as duas
+> linhas **nunca coexistem no mesmo mês**.
+
+**Primeiro, uma correcção de premissa.** A expectativa era uma comparação ano-a-ano *"com
+base no Google Analytics"*. `[sessão 14][ficheiro]` **Não existe Google Analytics no
+projecto** — nem `gtag`, nem `G-`/`UA-`, nem `analytics.js`, em `src/`, `supabase/`,
+`scripts/`, `index.html` ou `package.json`. As fontes do Google são `pytrends` e
+`trends.google.com` (Google **Trends**) e `suggestqueries` (autocomplete).
+
+A distinção decide o que é possível: **Analytics** mede quem visita **este site**; **Trends**
+mede o que se procura no Google, num índice 0–100 **normalizado à janela pedida**. Uma
+comparação ano-a-ano de tráfego próprio nunca foi possível, porque esses dados nunca
+existiram.
+
+**A intenção do gráfico está correcta.** `src/lib/buildTrend.ts:57-86` separa por ano civil —
+`current` = ano corrente, `previous` = anterior — e `src/components/TrendChart.tsx:21`
+rotula-o **"vs ano anterior"**. Reproduzido por `grafico-12m.py`.
+
+### O que ele desenha, para saúde mental
+
+| | Jan | Fev | Mar | Abr–Set | Out | Nov | Dez |
+|---|---|---|---|---|---|---|---|
+| **2026** (`current`) | 48 | 50 | 26 | `undefined` | — | — | — |
+| **2025** (`previous`) | **0** | **0** | **0** | **0** | 40 | 42 | 44 |
+
+**`MESES COM AS DUAS LINHAS: NENHUM`** — e o mesmo nos quatro eixos. 2026 só tem Janeiro a
+Março; 2025 só tem Outubro a Dezembro. **Conjuntos disjuntos.** Uma comparação ano-a-ano
+precisa de sobreposição e não há nenhuma.
+
+### Quatro causas, e só duas são bugs
+
+**1. O browser recebe 1000 das 3462 linhas.** `src/hooks/useHistoricalData.ts:20-33` faz
+`select('*')` **sem limite**, e o PostgREST corta nas 1000 por omissão. Cabeçalho observado a
+15/09/2026:
+
+```
+content-range: 0-999/3462
+```
+
+Como o hook ordena por `snapshot_date` **ascendente**, o corte guarda as **mais antigas**.
+A janela que chega é **2025-10-01 a 2026-03-20**; a que existe vai até **2026-08-10**.
+**2462 linhas — 71% da série, e todo o período de Abril em diante — nunca chegam à página.**
+
+**2. A ausência é desenhada como zero.** `buildTrend.ts:82` faz `previous ?? 0`. Os meses sem
+dados de 2025 viram **0**, não lacuna: a linha do ano anterior fica **colada ao chão durante
+nove meses** e sobe de repente no fim. Lê-se como *"no ano passado não houve procura até
+Outubro"* — e o que houve foi **ausência de recolha**.
+
+**3. O `12m` não é uma janela de 12 meses.** O hook **não aplica filtro de data nenhum** para
+esse período (`:33`, comentário `// "12m" → no date filter`): pede tudo e agrupa por ano
+civil. Em Setembro, compara nove meses contra doze.
+
+**4. A linha de 2025 é inteiramente fabricada.** Os valores 40/42/44 são as 200 linhas de
+10/2025 a 02/2026 já registadas como ***seed* retrodatado** — todas escritas no mesmo minuto,
+`2026-03-08T11:44` (`CONTEXT.md`, Verificações, 07/09/2026). **A única linha de "ano anterior"
+que o gráfico tem nunca foi recolhida.**
+
+**Extra, e é uma bomba-relógio pequena:** os anos em `TrendChart.tsx:21` estão **escritos à
+mão** — `{ current: "2026", previous: "2025" }`. Em Janeiro o gráfico passa a comparar 2027
+com 2026 e continua a rotular 2025/2026.
+
+### Leitura
+
+**As causas 1 e 2 são bugs reais e baratos** — paginação e um `??` que confunde ausência com
+zero. Valem a pena corrigir **mesmo sabendo que não resolvem o gráfico**, e a razão é a desta
+inspecção toda: enquanto lá estiverem, **escondem o problema verdadeiro**. Um gráfico que
+mostra `0` afirma que não houve procura; um que mostra lacuna admite que não houve recolha.
+
+**As causas 3 e 4 não se corrigem no frontend.** Uma comparação ano-a-ano exige **doze meses
+de recolha diária contínua**, e o que existe são cinco meses com um buraco em Abril e a série
+parada desde 10/08/2026. **É o Crítico nº 6 visto do lado do leitor** — e sustenta a
+justificação nova desse item: sem série diária, não há o que comparar.
+
+---
+
 ## O que está genuinamente bem, e não é cortesia
 
 - **Não há dados de demonstração.** `Index.tsx:31` — *"Use only real DB data — no mock
@@ -225,6 +306,10 @@ barato e decidido do caro e indeciso trava os dois.
    comum.
 3. **Desempate determinista no painel de perguntas**, pela mesma razão do `ORDER BY` dos
    rótulos: 263 empates e 15 lugares.
+4. **Paginar o `useHistoricalData` e trocar `previous ?? 0` por lacuna.** São os dois bugs do
+   achado 5, baratos e independentes de tudo o resto. **Não resolvem o gráfico** — resolvem o
+   facto de ele esconder porque é que não funciona.
+5. **Tirar os anos escritos à mão do `TrendChart.tsx:21`**, antes de Janeiro.
 
 ---
 
@@ -240,5 +325,11 @@ barato e decidido do caro e indeciso trava os dois.
   `csvExport.ts`. **São provavelmente o que vai para a tese**, e merecem a mesma passagem
   que a página principal levou aqui.
 - **O comportamento no browser.** Tudo acima é leitura de código cruzada com dados. **Nada
-  foi observado a correr**, e o ramo dos `historical_snapshots` em `useAxisData.ts:104-111`
-  não foi exercitado.
+  foi observado a correr.**
+  Sobre o ramo dos `historical_snapshots` em `useAxisData.ts:104-111` — que o achado 1
+  assumia não estar a correr — o achado 5 torna a assunção **verificável em vez de assumida**:
+  as linhas que chegam ao browser param a **2026-03-20**, logo para `7d` e `30d` o
+  `snaps.current` vem **sempre vazio** e o ramo da base de dados é o que corre. Para `12m` o
+  ramo dos snapshots depende de haver dados nos **dois** sub-períodos, o que a mesma
+  truncatura torna improvável. **Continua por observar no browser**, mas deixou de ser
+  suposição solta.
