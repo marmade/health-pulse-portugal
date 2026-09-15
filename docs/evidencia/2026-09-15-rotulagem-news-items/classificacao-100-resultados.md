@@ -115,7 +115,26 @@ desses não têm sinónimo nenhum: `prevenção suicídio`, `reabilitação psic
 strings de pesquisa**, herdadas de a lista ter sido construída como sementes do Google
 Trends. A imprensa escreve o conceito; a lista escreve a consulta.
 
-### Isto é a hipótese do vocabulário, medida no segundo mapa
+### ~~Isto é a hipótese do vocabulário, medida no segundo mapa~~ — CORRIGIDO no mesmo dia
+
+> ⚠️ **O título e a leitura desta subsecção estão errados, e foram corrigidos a 15/09/2026,
+> horas depois.** `[sessão 14][ficheiro]` A verificação que os desfaz: **os conceitos simples
+> não existem na lista** — nem `mpox`, nem `obesidade`, nem `poluição`, nem `antibióticos`,
+> nem `gripe`; `saúde mental` aparece em 8 termos e **nunca sozinho**.
+>
+> `mpox portugal` **não é como ninguém nomeia o mpox**, nem a instituição nem a rua: o
+> `portugal` é um restritor de consulta. Logo isto **não é** a hipótese do vocabulário medida
+> noutro mapa — é um **defeito de construção da lista**, achado distinto e **mais forte**,
+> porque se verifica por leitura e não depende de hipótese nenhuma sobre como se pesquisa.
+>
+> **Do lado das notícias a hipótese do vocabulário tem um caso genuíno:** `gripe aviária`
+> (e `influenza aviária`) contra "gripe das aves" — aí a lista nomeia mesmo o conceito, em
+> registo técnico, e a forma corrente falta. **Um caso não é demonstração.**
+>
+> **As duas coisas partilham a origem** — a lista nasceu como sementes do Trends — **e
+> partilhar origem não é confirmar-se uma à outra.** Ver `CONTEXT.md`, secção da hipótese do
+> vocabulário. O texto abaixo fica como estava, porque o registo não se falsifica.
+
 
 Até 15/09/2026 a prova estava só no lado das pesquisas: 38 de 82 keywords sem resolução na
 própria série do Google Trends (`CONTEXT.md`, Verificações, 09/09/2026). **Agora existe

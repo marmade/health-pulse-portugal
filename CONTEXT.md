@@ -243,17 +243,19 @@ como passar a recolhê-lo.
 
 ### Hipótese do vocabulário — 09/09/2026
 
-> **Estatuto a 15/09/2026: HIPÓTESE COM PROVA CONVERGENTE NOS DOIS MAPAS — o teste decisivo
-> continua por correr.** Até 14/09 a prova estava toda de um lado, o das pesquisas. A 15/09
-> apareceu do lado das notícias, por um caminho independente e com dados que não foram
-> recolhidos para isto. **Duas falhas em mapas diferentes, pelo mesmo motivo** — ver a
-> subsecção "O segundo mapa" no fim desta secção.
+> **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
+> "A lista de 83 keywords vem do SNS 24 e da DGS", "38 de 82 keywords não têm resolução na
+> própria série" e "CORRECÇÃO — zero emergentes com valor não se confirma", na tabela de
+> Verificações. A explicação abaixo é uma **leitura** desses números e mantém-se por
+> confirmar até o teste da reformulação ser corrido.
 >
-> O que continua verificado são os números das linhas "A lista de 83 keywords vem do SNS 24 e
-> da DGS", "38 de 82 keywords não têm resolução na própria série" e "CORRECÇÃO — zero
-> emergentes com valor não se confirma". **O que continua por fazer é o teste da
-> reformulação**, descrito no fim: convergência não é demonstração, e duas falhas compatíveis
-> com a hipótese não excluem outra explicação que as produzisse às duas.
+> **CORRECÇÃO de 15/09/2026, feita no próprio dia.** Esta secção chegou a afirmar que a
+> hipótese tinha passado a ter **"prova convergente nos dois mapas"**, com o mapa das
+> notícias ao lado do das pesquisas. **É falso, e a verificação que o desfaz está abaixo,
+> em "O que o mapa das notícias demonstra".** O mapa das notícias demonstra um **defeito de
+> construção da lista** — coisa diferente, registada à parte. Do lado das notícias a hipótese
+> do vocabulário tem **um caso genuíno**, `gripe aviária` contra "gripe das aves". **Um caso
+> não é demonstração.**
 
 As keywords sem sinal no Google Trends não são necessariamente temas que ninguém procura.
 Podem ser temas que ninguém **formula assim**.
@@ -301,46 +303,65 @@ reformulação do mesmo conceito em linguagem corrente:
 Fazer esta distinção com método, e documentá-la, é o que separa uma limitação declarada de um
 achado.
 
-### O segundo mapa — a mesma lista falha nas notícias, e pelo mesmo motivo (15/09/2026)
+### O caso genuíno do lado das notícias — um, e é este (15/09/2026)
 
-`[sessão 14][ficheiro][agregado]` Classificação humana de 100 notícias e simulação da regra
-nova. Reproduzível por `docs/evidencia/2026-09-15-rotulagem-news-items/analise-classificacao.py`;
-números conferidos linha a linha contra a saída guardada.
+`[sessão 14][ficheiro]` A lista tem `gripe aviária H5N1`, com os sinónimos `gripe aviária` e
+`influenza aviária`. **Os três nomeiam o conceito** — nenhum é uma consulta de pesquisa. E
+os três são registo técnico. A imprensa escreveu **"gripe das aves"**, e a notícia caiu.
 
-Até 15/09/2026 a hipótese tinha prova **só do lado das pesquisas**: 38 de 82 keywords sem
-resolução na própria série do Google Trends. **Agora tem do lado das notícias.**
+É exactamente o que a hipótese prevê: o conceito existe na lista, está nomeado como a
+instituição o nomeia, e a forma corrente falta. **É um caso.** Não sustenta sozinho a
+hipótese, e está aqui para não se perder — não como prova.
 
-Ao simular a regra corrigida — fronteira de palavra, só no título, sem as siglas de três
-letras — ela resolve **52 dos 53 rótulos errados (98%)**, mas **deita fora 18 das 52 notícias
-que pertencem ao corpus (35%)**. E **9 dessas 18 têm o rótulo certo**: caem porque a lista
-escreve o assunto de uma maneira e a imprensa de outra.
+**O que os outros oito casos mostram é outra coisa, e está registado à parte, a seguir.**
 
-| o que o título diz | o que a lista tem |
+---
+
+## O que o mapa das notícias demonstra — defeito de construção da lista (15/09/2026)
+
+> **Achado distinto da hipótese do vocabulário, e mais forte do que ela.** Não depende de
+> nenhuma hipótese sobre como as pessoas pesquisam: verifica-se por leitura da própria lista.
+
+`[sessão 14][ficheiro]` Reproduzível sobre
+`docs/evidencia/2026-09-15-rotulagem-news-items/keywords-2026-09-15.json`.
+
+**Os conceitos simples não existem na lista.** Nenhum destes existe como termo nem como
+sinónimo:
+
+| conceito | o que a lista tem em vez dele |
 |---|---|
-| "gripe **das aves**" | `gripe aviária H5N1` |
-| "**Mpox**" | `mpox portugal` |
-| "**poluição do ar**" | `poluição e saúde` |
-| "**antibióticos**" | `resistência antibióticos` |
+| `mpox` | só `mpox portugal` |
+| `obesidade` | só `obesidade infantil` |
+| `poluição` | só `poluição e saúde` |
+| `antibióticos` | só `resistência antibióticos` |
+| `gripe` | só `gripe aviária H5N1` |
+| `saúde mental` | **em 8 termos, nunca sozinho** — `saúde mental jovens`, `escolar`, `no trabalho`, `sem-abrigo`, `ensino superior`, `literacia em…`, `desinstitucionalização…`, `equipas comunitárias…` |
 
-`[sessão 14][bd]` **58 dos 82 termos canónicos (71%) têm mais do que uma palavra**, e **13
-não têm sinónimo nenhum**.
+**`mpox portugal` não é como alguém nomeia o mpox — em lado nenhum, nem na instituição nem
+na rua.** O `portugal` é um **restritor geográfico de consulta**. Do mesmo modo, `poluição e
+saúde` não é o nome de um assunto: é um emparelhamento de dois, feito para pedir a uma API.
 
-**O motivo é o mesmo dos dois lados, e é mais específico do que "vocabulário
-institucional":** `mpox portugal`, `poluição e saúde` e `gripe aviária H5N1` **não são nomes
-de coisas — são *strings* de pesquisa**, herdadas de a lista ter sido construída como
-sementes do Google Trends. A imprensa escreve o **conceito**; a lista escreve a **consulta**.
+**Conclusão, e não precisa da hipótese do vocabulário para se sustentar:** a lista foi
+construída como **sementes do Google Trends** e está a ser usada como **vocabulário de
+indexação**. São dois usos com requisitos opostos — uma consulta quer restringir, um nome
+quer identificar. É isto que o mapa das notícias demonstra, e é a base da **sexta decisão**
+(ver Restantes).
 
-**Porque é que isto vale mais do que um segundo exemplo da mesma coisa:** os dois mapas
-falham por razões que, à partida, não tinham de estar relacionadas — um por ausência de sinal
-numa API, outro por não-correspondência de cadeias num rotulador. **A explicação que os une é
-a mesma, e não foi construída para os unir.** Deixa de ser limitação técnica de rodapé e passa
-a achado sobre o método, obtido com dados do próprio protótipo.
+### As duas coisas partilham a origem, e isso não as confirma uma à outra
 
-**O que isto NÃO é.** Não é o teste da reformulação, que continua por correr — e é esse que
-distingue "vocabulário" de "volume genuinamente baixo". Convergência de dois indícios não é
-demonstração: uma lista mal construída por qualquer outra razão produziria as duas falhas
-igualmente. Sai daqui uma **decisão de curadoria** (ver Restantes, a sexta decisão), não uma
-conclusão.
+Ambas remontam a a lista ter nascido como sementes do Trends. **Partilhar origem não é
+confirmar-se mutuamente** — é ter a mesma causa possível, que é precisamente o que falta
+demonstrar num dos casos.
+
+- **Defeito de construção:** verificado por leitura da lista. Não precisa de nada mais.
+- **Hipótese do vocabulário:** continua a assentar nas 38 de 82 keywords sem resolução no
+  Trends, e continua a precisar do **teste da reformulação**. O mapa das notícias
+  acrescenta-lhe **um caso**, não uma segunda prova.
+
+Escrever isto como "convergência" — como esta secção chegou a fazer, durante algumas horas de
+15/09/2026 — **emprestava à hipótese a força do achado que não precisa dela.** É uma
+instância da família B do apêndice metodológico: uma verificação verdadeira, o mapa das
+notícias, colocada a sustentar uma conclusão que ela não sustenta.
 
 **Segundo teste, com dados que já existem e sem recolha nova.** Estão na base de dados duas
 listas de vocabulário sobre os mesmos temas, com proveniência conhecida:
@@ -902,6 +923,13 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       deita fora **18 das 52 notícias que pertencem (35%)** — e **9 dessas 18 têm o rótulo
       certo**. Caem porque o título diz "gripe das aves" e a lista tem `gripe aviária H5N1`.
       **O custo não é da regra, é da lista.**
+
+      **A base desta decisão é o defeito de construção da lista**, verificado por leitura —
+      os conceitos simples **não existem**: nem `mpox`, nem `obesidade`, nem `poluição`, nem
+      `antibióticos`, nem `gripe`; e `saúde mental` aparece em 8 termos e **nunca sozinho**.
+      Ver "O que o mapa das notícias demonstra", na secção da hipótese do vocabulário.
+      **Não assenta na hipótese do vocabulário**, que continua por testar — e é por isso que
+      é mais fácil de defender do que ela.
 
       **É curadoria, não implementação, e é da Marta — não do Claude Code.** Não entra na
       quinta: a quinta corrige o rotulador, isto corrige o vocabulário, e são trabalhos
