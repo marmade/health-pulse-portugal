@@ -39,6 +39,8 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| O botão `Remove Lovable Cloud` **destrói a instância**, não a desassocia | 15/09/2026 | `[sessão 14][documento]` Documentação do Lovable, `docs.lovable.dev/integrations/cloud` | Citação: **"This permanently deletes your Cloud instance and cannot be undone."** Não é desassociação — é **eliminação definitiva**. Logo o botão **fecha o Crítico nº 4** e é o **último** passo do Crítico nº 5, não um passo a meio. Era esta a pergunta marcada como "a que manda" na ordem de 15/09, e está respondida |
+| `lovable-tagger` removido — e nunca estava no build de produção | 15/09/2026 | `[sessão 14][ficheiro]` Linha do `vite.config.ts` e dependência removidas ao mesmo tempo; `npm run build` de raiz, `tsc`, `eslint`, e `vite` em modo *development* | Build **✓ em 2,26s**. **O nome do bundle não mudou — `index-2tjWbBoE.js` antes e depois** —, o que prova que o `componentTagger` **nunca entrava no build de produção**: era só de modo `development`, como o código dizia. O modo *development* arranca limpo (73 ms, `index.html` e `src/main.tsx` a 200), que é onde ele corria de facto. `tsc` e `eslint` sem avisos. O parâmetro `mode` saiu com ele: só existia para o alimentar |
 | Instância antiga — escrita parada e dados pessoais apagados | 15/09/2026 | `[sessão 14][painel]` `cron.alter_job(1, active := false)` e dois `DELETE`, no SQL editor do Lovable Cloud, 12:07–12:10 UTC · `[sessão 14][bd]` confirmação **por fora**, no terminal, com a chave `anon` | `cron.job`: **os dois jobs com `active = false`** — nenhum apagado, o registo mantém-se `[painel]`. `contactos_projecto` e `revisao_pares`: **`[]` e `count=0`** com a chave `anon`, confirmado no terminal. **As 14 tabelas não pessoais estão intactas** — contagens idênticas às dos CSV de `docs/arquivo/2026-09-15-instancia-antiga/`, verificadas uma a uma: nada foi apagado por arrasto. **Custo assumido:** os e-mails e telefones dos revisores só existiam aqui (na instância nova foram esvaziados a 09/09) e a decisão foi perdê-los; nomes, especialidade, link e bios continuam na nova |
 | Job 1 inactivo — prova pelo efeito, **por fazer** | — | `[por testar]` `news_items` da instância antiga está em **2128**. Se o job 1 estiver mesmo parado, **não cresce** a 16/09 às 06:00 UTC; se crescer (~+22), a desactivação não pegou | A desactivação está confirmada `[painel]` mas **não pelo efeito** — a chave `anon` não lê o schema `cron`. **Verificar a 16/09/2026.** É a diferença entre o estado que a ferramenta reporta e o que se observa, e este documento já foi mordido por ela três vezes |
 | A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
@@ -728,13 +730,24 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       administrativo a ela. Cortar antes de a limpar teria deixado 8 linhas de dados pessoais
       legíveis para sempre. **Foi limpa primeiro** — jobs inactivos, tabelas apagadas,
       confirmado por fora com a chave `anon`. Ver Crítico nº 4.
-      **O que ainda se perde ao cortar:** a capacidade de **apagar a instância**, que fica a
-      existir e a responder com os dados não pessoais, todos arquivados aqui. Isso é para
-      **decidir**, não para descobrir depois — e é a única razão que resta para investigar o
-      botão `Remove Lovable Cloud` antes de cortar a ligação
-   4. **remover o `lovable-tagger`** — não foi tocado no commit `fedd760` de propósito: é
-      importado no topo do `vite.config.ts`, fora da condição de modo, e o build parte se o
-      pacote sair sem a linha sair também. Sai a linha e a dependência ao mesmo tempo
+      **RESPONDIDO a 15/09/2026, e muda a ordem.** A documentação do Lovable
+      (`docs.lovable.dev/integrations/cloud`) diz do botão `Remove Lovable Cloud`:
+      **"This permanently deletes your Cloud instance and cannot be undone."** Não
+      desassocia — **destrói**. Logo esse botão **é** o Crítico nº 4 e é o **último** passo,
+      não um passo a meio: carregar nele apaga a instância antiga, que era o que faltava
+   4. ~~**remover o `lovable-tagger`**~~ — **FEITO a 15/09/2026.** A linha do
+      `vite.config.ts` e a dependência saíram ao mesmo tempo, como o aviso exigia, mais o
+      parâmetro `mode`, que só existia para alimentar o `componentTagger`. Build ✓ em 2,26s,
+      `tsc` e `eslint` limpos, modo *development* a arrancar em 73 ms. **O nome do bundle não
+      mudou** (`index-2tjWbBoE.js` antes e depois): o tagger **nunca entrava no build de
+      produção**
+   5. **Ordem decidida para 16/09/2026, e é esta:**
+      1. **confirmar pelo efeito que o job 1 parou** — `news_items` da instância antiga está
+         em 2128; se não crescer depois das 06:00 UTC, parou. **Tem de ser primeiro: se a
+         instância for apagada antes, esta prova morre com ela**, e é a prova que falta ao
+         único passo de 15/09 confirmado só pelo estado
+      2. **`Remove Lovable Cloud`** — apaga a instância antiga e fecha o Crítico nº 4
+      3. **cortar a ligação ao GitHub** — sem consequência irreversível, é a última
 
    **Detalhe apurado a 09/09/2026, mais grave do que estava registado.** São dois commits do
    bot, não um: `5246597` (21/05/2026 07:35:53 UTC) é a alteração e `e22227d` (07:36:47) é o
