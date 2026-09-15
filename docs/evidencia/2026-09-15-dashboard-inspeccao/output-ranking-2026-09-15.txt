@@ -1,0 +1,39 @@
+========================================================================
+RANKING DE URGENCIA DO DASHBOARD — reproducao
+========================================================================
+keywords-volumes-2026-09-15.json  sha256 3a1217e95875f3cfcb74937ab1c38e5983aaa688534456142a867c0ab001d383
+periodo: 12m  (o valor por omissao)
+keywords activas: 82  (a tabela tem 83; o dashboard le so as activas)
+
+[1] O DENOMINADOR DO avgChange
+    activas com current_volume = 0 .... 43 de 82 (52%)
+    Um 0 aqui significa ao mesmo tempo "sem procura" e "recolha falhou".
+    Nao ha como separar os dois: o estado real e desconhecido.
+
+[2] AS TRES KEYWORDS QUE DECIDEM TUDO  (limiar de alerta: 40)
+    alimentacao    refluxo gastroesofágico      6 ->  13 =  +116.7%  emergente=True  alerta=True
+    emergentes     candida auris                1 ->   2 =  +100.0%  emergente=False alerta=True
+    emergentes     avc                         34 ->  59 =   +73.5%  emergente=True  alerta=True
+    total de alertas: 3  (o codigo corta nos 10 primeiros)
+
+[3] OS DOIS ORDENAMENTOS
+
+    (a) So por avgChange — o que os dados de facto dizem:
+        1. alimentacao      -52.0%
+        2. menopausa        -54.7%
+        3. saude-mental     -56.4%
+        4. emergentes       -57.4%
+
+    (b) Pelo score que o dashboard mostra:
+        1. emergentes     score   +12.6   =   -57.4 + 1x30 + 2x20   (mostra "-57%" ao lado)
+        2. alimentacao    score    -2.0   =   -52.0 + 1x30 + 1x20   (mostra "-52%" ao lado)
+        3. menopausa      score   -54.7   =   -54.7 + 0x30 + 0x20   (mostra "-55%" ao lado)
+        4. saude-mental   score   -56.4   =   -56.4 + 0x30 + 0x20   (mostra "-56%" ao lado)
+
+[4] A INVERSAO
+    alimentacao    passa de 1. (por avgChange) para 2. (por score)
+    menopausa      passa de 2. (por avgChange) para 3. (por score)
+    saude-mental   passa de 3. (por avgChange) para 4. (por score)
+    emergentes     passa de 4. (por avgChange) para 1. (por score)
+    eixos com score positivo: 1 -> ['emergentes']
+    ... e nenhum deles tem avgChange positivo.

@@ -1,0 +1,749 @@
+[
+    {
+        "term": "a\u00e7\u00facar e sa\u00fade",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Nov 2025"
+    },
+    {
+        "term": "alcoolismo",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 9,
+        "previous_volume": 10,
+        "change_percent": -10.0,
+        "last_peak": null
+    },
+    {
+        "term": "alergias alimentares",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 25,
+        "previous_volume": 25,
+        "change_percent": 0.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "alimenta\u00e7\u00e3o plant-based",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "alzheimer",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 16,
+        "previous_volume": 22,
+        "change_percent": -27.3,
+        "last_peak": null
+    },
+    {
+        "term": "anemia",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 37,
+        "previous_volume": 42,
+        "change_percent": -11.9,
+        "last_peak": null
+    },
+    {
+        "term": "anorexia nervosa",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 2,
+        "previous_volume": 3,
+        "change_percent": -33.3,
+        "last_peak": null
+    },
+    {
+        "term": "ansiedade",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 65,
+        "previous_volume": 71,
+        "change_percent": -8.5,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "automutila\u00e7\u00e3o",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "avc",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 59,
+        "previous_volume": 34,
+        "change_percent": 73.5,
+        "last_peak": null
+    },
+    {
+        "term": "bact\u00e9rias carn\u00edvoras",
+        "axis": "emergentes",
+        "is_active": false,
+        "current_volume": 17,
+        "previous_volume": 18,
+        "change_percent": -19,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "burnout",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 40,
+        "previous_volume": 43,
+        "change_percent": -7.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "calor extremo e sa\u00fade",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "cancro da mama",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 30,
+        "previous_volume": 28,
+        "change_percent": 7.1,
+        "last_peak": null
+    },
+    {
+        "term": "candida auris",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 2,
+        "previous_volume": 1,
+        "change_percent": 100.0,
+        "last_peak": null
+    },
+    {
+        "term": "candid\u00edase",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 31,
+        "previous_volume": 32,
+        "change_percent": -3.1,
+        "last_peak": null
+    },
+    {
+        "term": "colesterol alto",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 18,
+        "previous_volume": 21,
+        "change_percent": -14.3,
+        "last_peak": null
+    },
+    {
+        "term": "compet\u00eancias socioemocionais",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "dem\u00eancia",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 27,
+        "previous_volume": 26,
+        "change_percent": 3.8,
+        "last_peak": null
+    },
+    {
+        "term": "dengue europa",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 56,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "depend\u00eancias",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 25,
+        "previous_volume": 20,
+        "change_percent": 25.0,
+        "last_peak": null
+    },
+    {
+        "term": "depress\u00e3o",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 38,
+        "previous_volume": 40,
+        "change_percent": -5.0,
+        "last_peak": "Jan 2026"
+    },
+    {
+        "term": "desinstitucionaliza\u00e7\u00e3o sa\u00fade mental",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "diabetes tipo 2",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 4,
+        "previous_volume": 6,
+        "change_percent": -33.3,
+        "last_peak": null
+    },
+    {
+        "term": "dieta cetog\u00e9nica",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Set 2025"
+    },
+    {
+        "term": "dieta mediterr\u00e2nica",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 25,
+        "previous_volume": 60,
+        "change_percent": -58.3,
+        "last_peak": "Jan 2026"
+    },
+    {
+        "term": "doen\u00e7a cel\u00edaca",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 1,
+        "previous_volume": 37,
+        "change_percent": -97.3,
+        "last_peak": null
+    },
+    {
+        "term": "doen\u00e7as cardiovasculares",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "doen\u00e7as da tiroide",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "endometriose",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 40,
+        "previous_volume": 49,
+        "change_percent": -18.4,
+        "last_peak": null
+    },
+    {
+        "term": "enxaqueca",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 39,
+        "previous_volume": 43,
+        "change_percent": -9.3,
+        "last_peak": null
+    },
+    {
+        "term": "equipas comunit\u00e1rias sa\u00fade mental",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "fitoterapia menopausa",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "fobia social",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "gripe avi\u00e1ria H5N1",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "incontin\u00eancia urin\u00e1ria",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 1,
+        "previous_volume": 1,
+        "change_percent": 0.0,
+        "last_peak": null
+    },
+    {
+        "term": "ins\u00f3nia",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 2,
+        "previous_volume": 7,
+        "change_percent": -71.4,
+        "last_peak": "Nov 2025"
+    },
+    {
+        "term": "intoler\u00e2ncia \u00e0 lactose",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 1,
+        "previous_volume": 1,
+        "change_percent": 0.0,
+        "last_peak": null
+    },
+    {
+        "term": "intoler\u00e2ncia ao gl\u00faten",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Out 2025"
+    },
+    {
+        "term": "jejum intermitente",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 21,
+        "previous_volume": 24,
+        "change_percent": -12.5,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "libido menopausa",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 2,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "literacia em sa\u00fade mental",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "long covid",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 2,
+        "change_percent": -100.0,
+        "last_peak": "Set 2025"
+    },
+    {
+        "term": "l\u00fapus",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 32,
+        "previous_volume": 64,
+        "change_percent": -50.0,
+        "last_peak": null
+    },
+    {
+        "term": "menopausa masculina",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "menopausa precoce",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 2,
+        "previous_volume": 2,
+        "change_percent": 0.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "menopausa sintomas",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 49,
+        "previous_volume": 52,
+        "change_percent": -5.8,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "micropl\u00e1sticos sangue",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "mpox portugal",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "obesidade infantil",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 20,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "osteoporose",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 24,
+        "previous_volume": 34,
+        "change_percent": -29.4,
+        "last_peak": "Jan 2026"
+    },
+    {
+        "term": "p\u00e2nico",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 6,
+        "previous_volume": 6,
+        "change_percent": 0.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "perturba\u00e7\u00e3o bipolar",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "perturba\u00e7\u00e3o obsessivo-compulsiva",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "perturba\u00e7\u00f5es do espectro do autismo",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "peso na menopausa",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "polui\u00e7\u00e3o e sa\u00fade",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "pr\u00e9-diabetes",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "preven\u00e7\u00e3o suic\u00eddio",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "PTSD",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 14,
+        "previous_volume": 13,
+        "change_percent": 7.7,
+        "last_peak": "Dez 2025"
+    },
+    {
+        "term": "reabilita\u00e7\u00e3o psicossocial",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "refluxo gastroesof\u00e1gico",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 13,
+        "previous_volume": 6,
+        "change_percent": 116.7,
+        "last_peak": null
+    },
+    {
+        "term": "resist\u00eancia antibi\u00f3ticos",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "sarampo surto",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "sa\u00fade mental ensino superior",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "sa\u00fade mental escolar",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "sa\u00fade mental jovens",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "sa\u00fade mental no trabalho",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "sa\u00fade mental sem-abrigo",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 1,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "secura vaginal",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 30,
+        "previous_volume": 40,
+        "change_percent": -25.0,
+        "last_peak": "Jan 2026"
+    },
+    {
+        "term": "sepsis",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 22,
+        "previous_volume": 19,
+        "change_percent": 15.8,
+        "last_peak": null
+    },
+    {
+        "term": "s\u00edndrome de intestino irrit\u00e1vel",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 2,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "s\u00edndrome do ov\u00e1rio poliqu\u00edstico",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 2,
+        "change_percent": -100.0,
+        "last_peak": null
+    },
+    {
+        "term": "solid\u00e3o",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 8,
+        "previous_volume": 8,
+        "change_percent": 0.0,
+        "last_peak": "Out 2025"
+    },
+    {
+        "term": "stress",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 22,
+        "previous_volume": 26,
+        "change_percent": -15.4,
+        "last_peak": null
+    },
+    {
+        "term": "suic\u00eddio",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 18,
+        "previous_volume": 24,
+        "change_percent": -25.0,
+        "last_peak": null
+    },
+    {
+        "term": "suores noturnos",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Dez 2025"
+    },
+    {
+        "term": "suplementos alimentares",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 62,
+        "previous_volume": 82,
+        "change_percent": -24.4,
+        "last_peak": "Dez 2025"
+    },
+    {
+        "term": "TDAH adulto",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 25,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "terapia hormonal",
+        "axis": "menopausa",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 2,
+        "change_percent": -100.0,
+        "last_peak": "Fev 2026"
+    },
+    {
+        "term": "terapia online",
+        "axis": "saude-mental",
+        "is_active": true,
+        "current_volume": 46,
+        "previous_volume": 40,
+        "change_percent": 15.0,
+        "last_peak": "Jan 2026"
+    },
+    {
+        "term": "ultraprocessados",
+        "axis": "alimentacao",
+        "is_active": true,
+        "current_volume": 0,
+        "previous_volume": 10,
+        "change_percent": -100.0,
+        "last_peak": "Mar 2026"
+    },
+    {
+        "term": "v\u00edrus nipah",
+        "axis": "emergentes",
+        "is_active": true,
+        "current_volume": 1,
+        "previous_volume": 1,
+        "change_percent": 0,
+        "last_peak": "Mar 2026"
+    }
+]
