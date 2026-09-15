@@ -11,7 +11,8 @@
 A 14/09/2026 gastou-se um dia inteiro em higiene de repositório — seis commits, uma
 auditoria, zero conteúdo de projecto. Justificou-se, porque uma divergência entre
 documentos estava a produzir trabalho errado. Mas o que saiu do dia não foi só um
-repositório arrumado: foi um padrão, observado **cinco vezes**, em três famílias
+repositório arrumado: foi um padrão, observado **oito vezes** até 15/09/2026 — cinco a
+14/09 e três no dia seguinte —, em três famílias
 distintas, todas com data e prova.
 
 O padrão importa mais do que qualquer das correcções, porque as correcções fecham e o
@@ -71,6 +72,42 @@ Corrigido no commit seguinte. A afirmação errada sobrevive na mensagem do comm
 `92bfadf`, já publicado, com a correcção anexada à mensagem do `d657344` — história
 partilhada anota-se, não se reescreve.
 
+**B2. O estado verde que reporta o despacho.** 15/09/2026. `cron.job_run_details` na
+instância antiga dá `succeeded` para as 191 execuções do agendador. É verdade, e o que
+observa é que o `select net.http_post(...)` executou sem erro de SQL — não que a Edge
+Function tenha corrido, nem que tenha escrito. Cada execução dura ~100 ms e recolher 44 feeds
+RSS não se faz em décimo de segundo. **A mesma forma que o `success` do GitHub Actions**, em
+que as falhas dos passos saem como `::warning::` e a conclusão fica verde: foi assim que os
+404 das Edge Functions e os 429 do pytrends passaram meses sem ser vistos.
+
+Duas ferramentas sem relação nenhuma, o mesmo erro de leitura. O que prova escrita é o
+efeito — `news_items` de 1994 para 2128 — e não o estado.
+
+**B3. A coluna que não sinaliza o que existe para sinalizar.** A única entrada preservada em
+`net._http_response` tem `error_msg` a descrever um *timeout* de 5001,281 ms e a coluna
+`timed_out` **vazia**. Não é falso: é um registo que se contradiz a si próprio. E a
+consequência é operacional — quem verificar por `where timed_out is true` ou
+`where status_code >= 400`, que são as duas consultas naturais, **não encontra esta linha em
+nenhuma das duas**. O registo existe, contradiz o verde do `cron`, e é invisível ao filtro
+que o iria procurar.
+
+**B4. A frase verdadeira e vazia, lida como informação.** Na noite de 14/09/2026 decidiu-se
+adiar a correcção da `fetch-rss-feeds` porque o `CONTEXT.md` dizia: *"Nunca redeployadas.
+Alterações no repositório desde 28/07 NÃO estão em produção."* A frase está correcta. Só que
+o conjunto de que fala é **vazio**: não há alterações desde 28/07 — zero commits a
+`supabase/functions/` nessa janela, e o último ao ficheiro é de 12/04/2026, **anterior** ao
+deploy. Verificado a 15/09 por `git log` e por comparação de conteúdo com a versão em
+produção.
+
+Uma frase sobre um conjunto vazio é verdadeira independentemente do que se afirme dele. Lida
+como aviso — e é como soa — sugeriu uma divergência acumulada que não existia, e essa
+divergência imaginária travou uma decisão durante um dia.
+
+**É a mesma família de B2 e B3, e é a mais barata de evitar das três:** bastava perguntar
+*"quais são essas alterações?"*. Nenhuma ferramenta reportou nada de errado — a frase estava
+no documento, escrita de boa-fé a 14/08, e **foi consumida sem se verificar se tinha
+conteúdo**. O aviso que não se confirma é um aviso que passa a decidir por nós.
+
 ## Família C — rastreabilidade perdida por uma ferramenta que escreve sem registar
 
 A única das três sem correcção possível.
@@ -110,8 +147,17 @@ precisamente o que ninguém faz no dia em que precisa do plano.
 
 A família A resolve-se por arrumação: não ter duas cópias, e quando a regra tiver de viver
 noutro ficheiro, deixar remissão em vez de duplicado. A família B não se resolve por
-arrumação nenhuma — resolve-se por hábito, e o hábito é escrever ao lado de cada prova o
-que ela não prova. A família C não se resolve.
+arrumação nenhuma — resolve-se por hábito, e **são dois hábitos, não um**:
+
+- **do lado de quem escreve:** escrever ao lado de cada prova o que ela **não** prova (B1);
+- **do lado de quem lê:** antes de agir sobre um aviso, verificar se ele tem **conteúdo** —
+  qual é o conjunto de que fala, e se não está vazio (B4). E nunca tomar um estado verde por
+  resultado sem ver o efeito (B2, B3).
+
+O segundo hábito é o mais fácil de falhar, porque não há nada a corrigir: a frase está certa,
+a ferramenta não se queixou, e o erro está inteiramente em quem leu.
+
+A família C não se resolve.
 
 ## Regras que saíram daqui, e que estão em vigor
 
@@ -124,7 +170,11 @@ que ela não prova. A família C não se resolve.
    `AUDIT.md` e para mensagens de commit já publicadas.
 4. **Ao lado de cada prova, o que ela não prova.** O grau — por identidade, por
    consequência, por dedução — escreve-se junto ao resultado.
-5. **Uma correcção não verificada não é uma correcção.** A 14/09 o ficheiro foi corrigido
+5. **Um aviso que não se confirma é um aviso que passa a decidir por nós.** Antes de
+   adiar ou mudar de rumo por causa de uma frase de aviso, perguntar **qual é o conjunto de
+   que ela fala**. Saiu de B4, a 15/09/2026: "alterações desde 28/07 não estão em produção"
+   travou uma decisão durante um dia, e o conjunto era vazio.
+6. **Uma correcção não verificada não é uma correcção.** A 14/09 o ficheiro foi corrigido
    e dado por bom antes de voltar a ser corrido; correu-se, e só então o cabeçalho deixou
    de ser inferência.
 
@@ -132,7 +182,7 @@ que ela não prova. A família C não se resolve.
 
 É um caso único, observado por quem o produziu, num projecto de uma pessoa. Não é um
 estudo e não sustenta generalização. O que sustenta é mais modesto e verificável: num
-projecto construído com assistência de IA, ao longo de seis meses, cinco afirmações
+projecto construído com assistência de IA, ao longo de seis meses, oito afirmações
 documentais divergiram do sistema que descreviam, em três modos distintos, e todas foram
 detectadas por comparação directa com o sistema — nunca por releitura dos documentos.
 

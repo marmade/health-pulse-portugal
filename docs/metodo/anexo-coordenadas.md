@@ -1,8 +1,17 @@
-# Anexo — coordenadas dos cinco casos
+# Anexo — coordenadas dos cinco casos de 14/09/2026
 
-Aparato para a frase de `2026-09-14-afirmacao-e-coisa-afirmada.md`: *"cinco afirmações
+Aparato para a frase de `2026-09-14-afirmacao-e-coisa-afirmada.md`: *"as afirmações
 documentais divergiram do sistema que descreviam, em três modos distintos, e todas foram
 detectadas por comparação directa com o sistema."*
+
+> **Âmbito, e uma desactualização declarada.** Este anexo dá coordenadas aos **cinco casos
+> conhecidos a 14/09/2026** — A1, A2, A3, B1, C1. A 15/09/2026 a nota passou a **oito**: B2 (o
+> `succeeded` do `pg_cron`), B3 (a coluna `timed_out` vazia) e B4 (a frase verdadeira e vazia
+> sobre o deploy). **Esses três não têm coordenadas aqui.** A evidência deles está em
+> `docs/evidencia/2026-09-15-cron-instancia-antiga/` (B2, B3) e em
+> `docs/arquivo/2026-09-15-news-items-viva/README.md` (B4), e os commits são de 15/09/2026 —
+> mas o aparato de graus não foi estendido a eles. Fica dito em vez de o número calar a
+> diferença.
 
 Cada caso é ligado abaixo ao seu ponto imutável. O repositório é **público** —
 `github.com/marmade/health-pulse-portugal` —, portanto tudo o que é commit, ficheiro ou

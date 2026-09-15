@@ -817,6 +817,42 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **`<![CDATA[` nos títulos e a má rotulagem — uma só intervenção, decidida para
+      quinta 17/09/2026.** Os dois defeitos estão no mesmo ficheiro,
+      `supabase/functions/fetch-rss-feeds/index.ts`, e corrigem-se no mesmo redeploy. Estado
+      a 15/09: **113 de 310 títulos (36,5%)** trazem `<![CDATA[` visível na página publicada;
+      o mecanismo da rotulagem está identificado em `index.ts:138-144`, com o diagnóstico
+      completo em `docs/arquivo/2026-09-15-news-items-viva/README.md`.
+
+      **Porque NÃO é para hoje — e a razão mudou durante o dia 15/09, o que vale a pena não
+      perder.** Na noite de 14/09 ficou decidido adiar **pelo risco do redeploy**: a função
+      está em produção na versão 1 desde 28/07/2026, e o `CONTEXT.md` avisava que as
+      alterações no repositório desde essa data não estavam em produção. **Essa razão caiu
+      a 15/09:** não há alterações nenhumas desde 28/07 — zero commits a
+      `supabase/functions/`, e o último a este ficheiro é de 12/04/2026, anterior ao deploy.
+      Não é um deploy às cegas. **O que resta desse lado é só que nenhum redeploy foi
+      testado**, o que é uma incerteza muito menor e de natureza diferente.
+
+      **A razão actual é de método, não de risco.** Corrigir a rotulagem obriga a **decidir
+      como**, e nenhuma das decisões é técnica:
+      1. **Fronteiras de palavra** — resolve `candida`→candidato, `SOP`→sopa, `POC`→época,
+         `THS`→CathStart. É a parte fácil.
+      2. **Que sinónimos sobrevivem.** Siglas de três letras são ruído mesmo com fronteiras:
+         `POC`, `SOP`, `THS`, `PEA` aparecem como palavras isoladas em contextos que nada têm
+         a ver. Cortá-las perde recolha legítima; mantê-las mantém ruído.
+      3. **Que regra substitui o primeiro-a-casar.** Hoje `return kw` devolve o primeiro
+         termo da tabela que apareça no texto. Alternativas — o mais longo, o mais
+         específico, todos com um score — são decisões de método com consequências
+         diferentes no que o dashboard afirma.
+      4. **`depressão` não se resolve com fronteiras nenhumas.** Depressão clínica e
+         depressão meteorológica são a mesma palavra. Isto exige desambiguação por contexto,
+         ou aceitar o ruído e declará-lo.
+
+      **Isto é desenho de método e sai do varrimento de quinta, não antes dele.** Decidir a
+      regra antes de olhar para as 100 classificadas à mão seria escolher o critério sem ver
+      o que ele tem de separar. A amostra e a semente estão em
+      `docs/arquivo/2026-09-15-news-items-viva/`.
+
 - [ ] **Depositar um instantâneo do repositório num arquivo com DOI.** **Acção da Marta —
       exige as contas dela** (GitHub + Zenodo); não se faz daqui.
       **Porquê:** o apêndice metodológico e o `docs/metodo/anexo-coordenadas.md` ligam cinco
