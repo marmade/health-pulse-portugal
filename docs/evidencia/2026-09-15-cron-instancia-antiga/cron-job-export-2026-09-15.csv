@@ -1,0 +1,16 @@
+active;command;jobid;schedule
+true;"
+  SELECT
+    net.http_post(
+        url:='https://cyjwhmuakmiytypewwfw.supabase.co/functions/v1/fetch-rss-feeds',
+        headers:='{""Content-Type"": ""application/json"", ""Authorization"": ""Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5andobXVha21peXR5cGV3d2Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4Mjc2MjksImV4cCI6MjA4ODQwMzYyOX0.bcAKG2nQdYG7Qf8Mm1e_eJR9Fueqw20jkwlqrTWyH4Q""}'::jsonb,
+        body:='{}'::jsonb
+    ) as request_id;
+  ";1;0 6 * * *
+false;"
+  SELECT net.http_post(
+    url:='https://cyjwhmuakmiytypewwfw.supabase.co/functions/v1/refresh-trends',
+    headers:='{""Content-Type"": ""application/json"", ""Authorization"": ""Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5andobXVha21peXR5cGV3d2Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4Mjc2MjksImV4cCI6MjA4ODQwMzYyOX0.bcAKG2nQdYG7Qf8Mm1e_eJR9Fueqw20jkwlqrTWyH4Q""}'::jsonb,
+    body:=concat('{""time"": ""', now(), '""}')::jsonb
+  ) as request_id;
+  ";2;0 6 * * *
