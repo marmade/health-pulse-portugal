@@ -32,6 +32,49 @@ const EIXOS = ['saude-mental', 'alimentacao', 'menopausa', 'emergentes'];
  * diferentes e nenhuma é exaustiva.
  */
 const TECTO = 9999;          // `min(growth, 9999)` no script 6: é tecto, não sentinela
+
+/**
+ * Formas de grafia que o português europeu não usa. Servem para NÃO MOSTRAR
+ * perguntas que não podem ter sido escritas em Portugal — e só isso: as linhas
+ * ficam na base de dados, e a contagem continua a poder ser refeita.
+ *
+ * UM FILTRO, UM CRITÉRIO. Esta lista é sobre **origem**, não sobre âmbito.
+ * `cachorro` esteve aqui durante uma versão e saiu: as 26 linhas que apanhava
+ * são de veterinária ("sintomas de alzheimer em cachorro") e o que está errado
+ * nelas é serem sobre cães, não serem brasileiras. Misturar as duas razões numa
+ * regra só torna impossível dizer, mais tarde, por que motivo uma linha
+ * desapareceu. O âmbito veterinário fica por tratar, e fica por tratar à vista.
+ *
+ * Existem porque o pedido ao Autocomplete não consegue pedir Portugal: com
+ * `client=firefox` o parâmetro `gl` não tem efeito nenhum (verificado a
+ * 07/09/2026, e de novo a 16/09 com `gl=pt` contra `gl=br`); com
+ * `client=chrome` tem efeito residual — em três seeds testadas, duas deram
+ * resultados idênticos para PT e BR.
+ *
+ * Medido a 16/09/2026: apanham **127 das 3634** linhas do autocomplete (3,5%)
+ * contra **4 das 1013** do Trends (0,4%), onde o `geo=PT` funciona.
+ *
+ * NÃO está aqui `remédio`, que aparece 39 vezes — e também na fonte com
+ * `geo=PT`, o que é argumento contra ser marca de origem. Fica por decidir.
+ *
+ * O que este filtro NÃO faz: tornar os dados portugueses. Apanha só o que se
+ * denuncia pela grafia ou pelo vocabulário; "sintomas de enxaqueca" escreve-se
+ * igual nos dois países e passa incólume. Por isso a página continua a dizer
+ * que o país não está garantido.
+ */
+const MARCAS_OUTRA_NORMA = [
+  /\bestress/i,          // estresse (PT: stress)
+  /\bsus\b/i,            // Sistema Único de Saúde, brasileiro
+  /\bvocê\b/i,
+  /\w*[ôê]nic/i,         // crônica, cetogênica (PT: crónica, cetogénica)
+  /\w*ômic/i,            // econômico
+  /\bgên/i,              // gênero, gêmeo
+  /\banônim/i,
+  /\bestômago|\bfôlego/i,
+];
+
+const daOutraNorma = (pergunta: string) =>
+  MARCAS_OUTRA_NORMA.some(rx => rx.test(pergunta));
 const POR_EIXO_PYTRENDS = 100;
 const POR_EIXO_AUTOCOMPLETE = 40;
 
@@ -97,9 +140,11 @@ async function repartirEixo(eixo: string) {
   const nasDuasSet = new Set((cruzadas ?? []).map(l => l.question));
 
   return {
-    nasDuas: linhasP.filter(l => nasDuasSet.has(l.question)),
-    soASubir: linhasP.filter(l => !nasDuasSet.has(l.question)),
-    soHabituais: linhasA.filter(l => !nasDuasSet.has(l.question)),
+    nasDuas: linhasP.filter(l => nasDuasSet.has(l.question) && !daOutraNorma(l.question)),
+    soASubir: linhasP.filter(l => !nasDuasSet.has(l.question) && !daOutraNorma(l.question)),
+    soHabituais: linhasA.filter(
+      l => !nasDuasSet.has(l.question) && !daOutraNorma(l.question),
+    ),
   };
 }
 

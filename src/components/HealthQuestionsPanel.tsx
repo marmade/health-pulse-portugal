@@ -193,19 +193,73 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
           {title}
         </p>
       </div>
-      <div className="mb-5 ml-[18px] flex-shrink-0">
-        <p className="text-[10px] text-foreground/50 leading-relaxed max-w-3xl">
-          Dúvidas reais da população, recolhidas em <strong>duas</strong> ferramentas
-          do Google que dizem coisas diferentes. O <strong>Trends</strong> diz o que
-          <em> subiu</em> nos últimos 3 meses. O <strong>Autocomplete</strong> diz o
-          que as pessoas <em>escrevem</em> na caixa de pesquisa — são as sugestões que
-          aparecem enquanto se escreve. As três colunas mostram em qual das duas cada
-          pergunta apareceu.
-        </p>
-        <p className="text-[10px] text-foreground/40 leading-relaxed max-w-3xl mt-2">
-          «Só» quer dizer «só nesta recolha»: as duas correm em dias diferentes e
-          nenhuma devolve tudo o que existe.
-        </p>
+      {/* Três caixas na mesma grelha das três colunas: a do Trends fica por cima
+          de «Só a subir», a do Autocomplete por cima de «Só habituais», e a da
+          esquerda explica o cruzamento, que é o que a primeira coluna mostra. */}
+      <div className="mb-5 ml-[18px] flex-shrink-0 grid gap-6 md:grid-cols-3 items-start">
+        <div>
+          <p className="text-[10px] text-foreground/50 leading-relaxed">
+            Dúvidas recolhidas em <strong>duas</strong> ferramentas do Google que medem
+            coisas diferentes. As três colunas mostram em qual delas cada pergunta
+            apareceu.
+          </p>
+          <p className="text-[10px] text-foreground/40 leading-relaxed mt-2">
+            «Só» quer dizer «só nesta recolha»: as duas correm em dias diferentes e
+            nenhuma devolve tudo o que existe.
+          </p>
+        </div>
+
+        <div>
+          <p className="text-[10px] text-foreground/60 leading-relaxed">
+            <strong>Google Trends</strong> — o que <em>subiu</em>. Pesquisas feitas em
+            Portugal nos últimos 3 meses, face aos 3 meses anteriores.
+          </p>
+          <p className="text-[10px] text-foreground/40 leading-relaxed mt-1 italic">
+            «Each data point is divided by the total searches of the geography and time
+            range it represents to compare relative popularity.»
+          </p>
+          <p className="text-[9px] text-foreground/40 leading-relaxed mt-1">
+            Google,{" "}
+            <a
+              href="https://support.google.com/trends/answer/4365533"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              FAQ about Google Trends data
+            </a>{" "}
+            — o valor é relativo ao total de pesquisas, não é um número de pesquisas.
+          </p>
+        </div>
+
+        <div>
+          <p className="text-[10px] text-foreground/60 leading-relaxed">
+            <strong>Google Autocomplete</strong> — o que se <em>escreve</em>. As sugestões
+            que aparecem enquanto se escreve na caixa de pesquisa.
+          </p>
+          <p className="text-[10px] text-foreground/40 leading-relaxed mt-1 italic">
+            «We look at the real searches that happen on Google and show common and
+            trending ones relevant to the characters that are entered.»
+          </p>
+          <p className="text-[9px] text-foreground/40 leading-relaxed mt-1">
+            Google,{" "}
+            <a
+              href="https://blog.google/products/search/how-google-autocomplete-works-search/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              How Google autocomplete works in Search
+            </a>{" "}
+            — o Google não publica volumes nem o país destas sugestões, e o parâmetro que
+            pediria Portugal não é respeitado. <strong>127</strong> das 3634 perguntas
+            trazem formas que um português não escreve (<em>estresse</em>, <em>crônica</em>,
+            o <em>SUS</em>) e <strong>não são mostradas</strong> — ficam na base, e a
+            contagem pode ser refeita. A mesma medição na fonte do Trends, onde o país
+            funciona, dá <strong>4</strong>. O filtro não torna o resto português: só
+            apanha o que se denuncia pela escrita.
+          </p>
+        </div>
       </div>
 
       {isLoading ? (
@@ -219,7 +273,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
           <div className="grid gap-6 md:grid-cols-3 items-start">
             {grupo(
               "Nas duas fontes",
-              "Apareceram nas duas recolhas: subiram e são das primeiras sugestões. É o sinal mais forte que estes dados dão — perguntam-se sempre, e agora perguntam-se mais.",
+              "As duas ferramentas apontam para a mesma pergunta: o Trends deu-a como tendo subido, e o Autocomplete sugere-a a quem começa a escrever sobre o tema. Coincidirem é raro — e é o sinal mais forte que estes dados dão.",
               nasDuas,
               growingDate,
               true,
@@ -227,7 +281,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
             )}
             {grupo(
               "Só a subir",
-              "Apareceram só no Trends: subiram, e não estão entre as sugestões do Autocomplete. São o que é novo na cabeça das pessoas.",
+              "Subiram no Trends e não estão entre as sugestões que recolhemos do Autocomplete. É o que mudou: pergunta-se hoje mais do que se perguntava há três meses.",
               soASubir,
               growingDate,
               true,
@@ -235,7 +289,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
             )}
             {grupo(
               "Só habituais",
-              "Apareceram só no Autocomplete: são sugeridas a quem escreve, e não vieram como subidas. É o que se pergunta sempre, sem ter mudado.",
+              "O Autocomplete sugere-as e o Trends não as deu como tendo subido. É o que não muda: pergunta-se hoje como se perguntava antes.",
               soHabituais,
               askedDate,
               false,
