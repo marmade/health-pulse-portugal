@@ -1,8 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { HealthQuestion } from "@/data/healthQuestions";
 import { getAxisColors } from "@/lib/axisColors";
 import { useHealthQuestions } from "@/hooks/useHealthQuestions";
 import { supabase } from "@/integrations/supabase/client";
+
+const formatarData = (iso: string) =>
+  new Date(iso).toLocaleDateString('pt-PT', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 
 type Props = {
   axis?: string;
@@ -13,11 +20,13 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [relatedMap, setRelatedMap] = useState<Record<string, HealthQuestion[]>>({});
   const isOverview = !axis || axis === "all";
-  const { questions, isLoading } = useHealthQuestions(axis);
-  const top15 = isOverview ? questions.slice(0, 30) : questions.slice(0, 15);
+  const { nasDuas, soASubir, soHabituais, growingDate, askedDate, isLoading } =
+    useHealthQuestions(axis);
+
+  const limite = isOverview ? 30 : 15;
   const title = axis && axisLabel
     ? `Perguntas sobre ${axisLabel}`
-    : "Perguntas de Saúde em Crescimento";
+    : "Perguntas de Saúde";
 
   const toggle = async (question: string, cluster: string) => {
     const isClosing = expanded === question;
@@ -27,8 +36,10 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         .from('health_questions')
         .select('*')
         .eq('cluster', cluster)
+        .eq('is_question', true)
         .neq('question', question)
         .order('relative_volume', { ascending: false })
+        .order('question', { ascending: true })
         .limit(5);
       if (data && data.length > 0) {
         setRelatedMap(prev => ({
@@ -49,6 +60,131 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
     }
   };
 
+  /**
+   * O que cada coluna mostra ao lado da pergunta NÃO é a mesma grandeza, e a
+   * barra que aqui estava mentia nas duas: `relative_volume` não é um volume —
+   * é a posição na lista devolvida, convertida em número
+   * (`max(10, 100 - pos * 8)` no script 6, `* 5` no script 7). Nenhuma das duas
+   * fontes publica quantidade de pesquisas.
+   *
+   *   em crescimento   → `growth_percent`, que é medida a sério: a subida que o
+   *                      Google Trends reporta. `min(growth, 9999)` é um tecto,
+   *                      logo 9999 lê-se «pelo menos 9999%», não «sem valor».
+   *   mais perguntadas → só existe ordem. Mostra-se a posição, que é o que é.
+   */
+  const metrica = (q: HealthQuestion, comSubida: boolean) => {
+    // Onde só há ordem, não se inventa número: a ordem da lista já é a ordem,
+    // e um `01` ao lado da primeira linha é a mesma informação escrita outra vez.
+    if (!comSubida) return null;
+    if (q.growthPercent >= 9999) {
+      return (
+        <span className="text-[9px] font-bold uppercase tracking-wider text-foreground/50 border border-foreground/20 px-1.5 py-0.5 rounded-sm whitespace-nowrap">
+          fora de escala
+        </span>
+      );
+    }
+    return (
+      <span className="text-[11px] font-bold text-foreground/70 tabular-nums">
+        +{q.growthPercent}%
+      </span>
+    );
+  };
+
+  const linha = (q: HealthQuestion, ultima: boolean, comSubida: boolean) => {
+    const isExpanded = expanded === q.question;
+    return (
+      <div key={`${q.axis}-${q.question}`} className="break-inside-avoid">
+        <button
+          onClick={() => toggle(q.question, q.cluster)}
+          className="w-full text-left py-2.5 group"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold leading-snug">
+                {q.question}?
+              </p>
+              <div className="flex items-center gap-2 mt-1">
+                <span
+                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+                  style={{ backgroundColor: getAxisColors(q.axis).bg, color: getAxisColors(q.axis).text }}
+                >
+                  {q.axisLabel}
+                </span>
+                <span className="text-[9px] text-foreground/40">
+                  {q.cluster}
+                </span>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0">
+              {metrica(q, comSubida)}
+            </div>
+
+            <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
+              {isExpanded ? "−" : "+"}
+            </span>
+          </div>
+        </button>
+
+        {isExpanded && (() => {
+          const related = relatedMap[q.question] || [];
+          return related.length > 0 ? (
+            <div className="pb-4 pl-0">
+              <div className="border border-foreground/10 p-4">
+                <p className="editorial-label mb-2">Pesquisas relacionadas</p>
+                {related.map((rq) => (
+                  <p
+                    key={rq.question}
+                    className="text-[10px] text-foreground/50 leading-relaxed mb-1"
+                  >
+                    {rq.question}?
+                  </p>
+                ))}
+              </div>
+            </div>
+          ) : null;
+        })()}
+
+        {!ultima && <div className="border-t border-foreground/10" />}
+      </div>
+    );
+  };
+
+  /**
+   * Os dois grupos vêm de fontes diferentes e são apresentados em separado
+   * porque medem coisas diferentes: `pytrends` diz o que subiu esta semana,
+   * `autocomplete` diz o que as pessoas escrevem na caixa de pesquisa. Juntá-los
+   * numa lista ordenada por crescimento escondia as 3634 linhas do segundo.
+   */
+  const grupo = (
+    rotulo: string,
+    nota: string,
+    linhas: HealthQuestion[],
+    data: string | null,
+    comSubida: boolean,
+    notaNumero: string,
+  ) => {
+    if (linhas.length === 0) return null;
+    const visiveis = linhas.slice(0, limite);
+    return (
+      <div className="min-w-0">
+        <p className="editorial-label mb-1">{rotulo}</p>
+        <p className="text-[10px] text-foreground/50 leading-relaxed mb-1">{nota}</p>
+        <p className="text-[10px] text-foreground/40 mb-3">
+          {data
+            ? `Última recolha: ${formatarData(data)}`
+            : 'Data da última recolha desconhecida'}
+        </p>
+        <p className="text-[10px] text-foreground/40 leading-relaxed mb-3 pb-3 border-b border-foreground/10">
+          {notaNumero}
+        </p>
+        <div className="space-y-0">
+          {visiveis.map((q, i) => linha(q, i === visiveis.length - 1, comSubida))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="py-5 flex flex-col h-full min-h-0 max-h-[700px]">
       <div className="flex items-center gap-3 mb-1 flex-shrink-0">
@@ -57,9 +193,20 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
           {title}
         </p>
       </div>
-      <p className="text-[9px] text-foreground/40 mb-4 ml-[18px] flex-shrink-0">
-        Dúvidas reais da população detetadas nos motores de pesquisa
-      </p>
+      <div className="mb-5 ml-[18px] flex-shrink-0">
+        <p className="text-[10px] text-foreground/50 leading-relaxed max-w-3xl">
+          Dúvidas reais da população, recolhidas em <strong>duas</strong> ferramentas
+          do Google que dizem coisas diferentes. O <strong>Trends</strong> diz o que
+          <em> subiu</em> nos últimos 3 meses. O <strong>Autocomplete</strong> diz o
+          que as pessoas <em>escrevem</em> na caixa de pesquisa — são as sugestões que
+          aparecem enquanto se escreve. As três colunas mostram em qual das duas cada
+          pergunta apareceu.
+        </p>
+        <p className="text-[10px] text-foreground/40 leading-relaxed max-w-3xl mt-2">
+          «Só» quer dizer «só nesta recolha»: as duas correm em dias diferentes e
+          nenhuma devolve tudo o que existe.
+        </p>
+      </div>
 
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
@@ -67,80 +214,37 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         </div>
       ) : (
         <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow">
-          <div className={`${isOverview ? "md:columns-2 md:gap-6" : ""} space-y-0`}>
-            {top15.map((q, i) => {
-              const isExpanded = expanded === q.question;
-
-              return (
-                <div key={q.question} className="break-inside-avoid">
-                  <button
-                    onClick={() => toggle(q.question, q.cluster)}
-                    className="w-full text-left py-2.5 group"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold leading-snug">
-                          {q.question}?
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span
-                            className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
-                            style={{ backgroundColor: getAxisColors(q.axis).bg, color: getAxisColors(q.axis).text }}
-                          >
-                            {q.axisLabel}
-                          </span>
-                          <span className="text-[9px] text-foreground/40">
-                            {q.cluster}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="text-right shrink-0">
-                        <div className="flex items-center gap-1 justify-end">
-                          <div className="w-14 h-1.5 bg-foreground/10 overflow-hidden rounded-sm">
-                            <div
-                              className="h-full transition-all rounded-sm"
-                              style={{ width: `${q.relativeVolume}%`, backgroundColor: 'hsl(var(--foreground) / 0.6)' }}
-                            />
-                          </div>
-                          <span className="text-[10px] font-bold text-foreground/70">
-                            {q.relativeVolume}
-                          </span>
-                        </div>
-                      </div>
-
-                      <span className="text-[10px] text-foreground/30 group-hover:text-foreground transition-colors shrink-0 mt-0.5">
-                        {isExpanded ? "−" : "+"}
-                      </span>
-                    </div>
-                  </button>
-
-                  {isExpanded && (() => {
-                    const related = relatedMap[q.question] || [];
-                    return related.length > 0 ? (
-                      <div className="pb-4 pl-0">
-                        <div className="border border-foreground/10 p-4">
-                          <p className="editorial-label mb-2">Pesquisas relacionadas</p>
-                          {related.map((rq) => (
-                            <p
-                              key={rq.question}
-                              className="text-[10px] text-foreground/50 leading-relaxed mb-1"
-                            >
-                              {rq.question}?
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null;
-                  })()}
-
-                  {i < top15.length - 1 && (
-                    <div className="border-t border-foreground/10" />
-                  )}
-                </div>
-              );
-            })}
+          {/* Lado a lado a partir de `md`; empilhados no telemóvel, onde duas
+              colunas de perguntas não cabem sem partir as palavras ao meio. */}
+          <div className="grid gap-6 md:grid-cols-3 items-start">
+            {grupo(
+              "Nas duas fontes",
+              "Apareceram nas duas recolhas: subiram e são das primeiras sugestões. É o sinal mais forte que estes dados dão — perguntam-se sempre, e agora perguntam-se mais.",
+              nasDuas,
+              growingDate,
+              true,
+              "O número é a subida que o Google Trends reportou para pesquisas feitas em Portugal nos últimos 3 meses, face aos 3 meses anteriores.",
+            )}
+            {grupo(
+              "Só a subir",
+              "Apareceram só no Trends: subiram, e não estão entre as sugestões do Autocomplete. São o que é novo na cabeça das pessoas.",
+              soASubir,
+              growingDate,
+              true,
+              "«Fora de escala» são as que subiram acima do que o Google quantifica: sabe-se que dispararam, não quanto, nem a partir de que base.",
+            )}
+            {grupo(
+              "Só habituais",
+              "Apareceram só no Autocomplete: são sugeridas a quem escreve, e não vieram como subidas. É o que se pergunta sempre, sem ter mudado.",
+              soHabituais,
+              askedDate,
+              false,
+              "Sem número, porque não há medida: o Autocomplete não publica volumes de pesquisa — devolve sugestões por ordem, e a ordem entre linhas diferentes não é um ranking.",
+            )}
           </div>
+          {nasDuas.length === 0 && soASubir.length === 0 && soHabituais.length === 0 && (
+            <p className="text-[10px] text-foreground/40">Sem perguntas para mostrar.</p>
+          )}
         </div>
       )}
     </div>
