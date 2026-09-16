@@ -55,7 +55,22 @@ Deno.serve(async (req) => {
         supabase
           .from("health_questions")
           .select("*")
-          .order("growth_percent", { ascending: false }),
+          // Três condições que não são zelo a mais — ver o que estava gravado
+          // nos arquivos de 24/08, 31/08 e 07/09: "stress strain curve",
+          // "ministro avc", "ptad", "todo mundo em pânico 7 data de
+          // lançamento", cada um com um `current_volume` que era a posição na
+          // lista. O arquivo é permanente: o que aqui entra fica.
+          //
+          //  source=pytrends   → só esta fonte mede crescimento
+          //  is_question=true  → a coluna existia e nunca era usada; é ela que
+          //                      separa a pergunta do ruído
+          //  nullsFirst: false → desde 16/09/2026 o script 7 grava NULL em
+          //                      growth_percent, e num ORDER BY DESC os NULL
+          //                      vêm primeiro
+          .eq("source", "pytrends")
+          .eq("is_question", true)
+          .order("growth_percent", { ascending: false, nullsFirst: false })
+          .order("question", { ascending: true }),
         supabase
           .from("debunking")
           .select("*"),
@@ -199,7 +214,10 @@ Deno.serve(async (req) => {
           })),
           top_questions: questions.slice(0, 5).map((q: any) => ({
             term: q.question,
-            current_volume: q.relative_volume,
+            // NÃO se grava `relative_volume` aqui. Nunca foi um volume — era a
+            // posição na lista — e ficava no arquivo permanente debaixo de um
+            // nome que dizia o contrário. O que se mede é a subida.
+            growth_percent: q.growth_percent,
           })),
           top_debunking: debunking.slice(0, 5).map((d: any) => ({
             term: d.term,

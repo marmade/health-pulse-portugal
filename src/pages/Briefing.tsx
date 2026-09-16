@@ -722,7 +722,14 @@ const Briefing = () => {
                           {archive.top_questions.map((q: any, i: number) => (
                             <div key={i} className="flex items-baseline justify-between mb-2">
                               <span className="text-sm">{q.term}</span>
-                              <span className="text-xs font-bold tabular-nums">{q.current_volume}</span>
+                              {/* Arquivos anteriores a 16/09/2026 guardavam a
+                                  posição na lista em `current_volume`. Não é
+                                  medida nenhuma — não se mostra. */}
+                              {q.growth_percent != null && (
+                                <span className="text-xs font-bold tabular-nums">
+                                  +{Math.round(q.growth_percent)}%
+                                </span>
+                              )}
                             </div>
                           ))}
                         </div>

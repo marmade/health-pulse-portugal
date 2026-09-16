@@ -204,13 +204,20 @@ def buscar_queries_crescimento(pytrends: TrendReq, keyword: str, axis: str) -> l
                 except (ValueError, TypeError):
                     growth = 0
 
-            rank_idx = len(perguntas)
-            relative_volume = max(10, 100 - (rank_idx * 8))
+            # A posição na lista devolvida pelo Google. É ordem, e é isso que se
+            # grava: até 16/09/2026 era convertida em
+            # `relative_volume = max(10, 100 - rank_idx*8)` e guardada como se
+            # fosse procura. Nem o Trends nem o Autocomplete publicam volumes.
+            posicao = len(perguntas) + 1
 
             perguntas.append({
                 "question": query,
+                # `min(growth, 9999)` é tecto, não sentinela: lê-se "subiu pelo
+                # menos isso". O `breakout` do Google é convertido em 5000 mais
+                # acima — e esse 5000 é escolha nossa, não limiar publicado.
                 "growth_percent": min(growth, 9999),
-                "relative_volume": relative_volume,
+                "relative_volume": None,
+                "posicao": posicao,
                 "axis": axis,
                 "axis_label": AXIS_LABELS.get(axis, axis),
                 "cluster": keyword,
@@ -286,6 +293,30 @@ def main():
 
 
 def expandir_mural(todas_perguntas: list[dict]):
+    """ESTE BLOCO NUNCA FUNCIONOU. NÃO O "CORRIJAS" SEM LERES ISTO.
+
+    O `payload` abaixo não inclui `source`, e `keywords.source` é NOT NULL sem
+    valor por omissão: a base recusa todos os inserts. Verificado a 16/09/2026
+    por três caminhos — a função É chamada (main, linha 285), o payload não tem
+    mesmo `source` (information_schema confirma a constraint), e o filtro produz
+    **536 candidatos** hoje sem que UM ÚNICO esteja na tabela. As 83 keywords
+    vêm todas de fontes curadas em Março.
+
+    E A FALHA ANDOU A PROTEGER O MURAL. Isto é o que ele tentaria inserir:
+
+        suicídio viseu · sepsis meaning · stress hídrico · tou avc
+        sofa score sepsis · sinais de demência precoce
+
+    É o mesmo ruído que saiu do painel das perguntas a 16/09/2026 — e não por
+    acaso: o filtro escolhe de propósito linhas com `is_question = false`,
+    porque quer termos e não perguntas. Acrescentar `source` a este payload, sem
+    mexer no resto, enche o mural de 536 entradas destas na segunda seguinte.
+
+    O mural é uma página de arquivo: o que lá entra fica.
+
+    POR DECIDIR (Marta, 16/09/2026): corrigir com filtros a sério, apagar o
+    bloco e assumir o mural como curado à mão, ou deixá-lo morto com este aviso.
+    """
     print("\nA expandir Mural com novos termos...")
     r = requests.get(
         f"{SUPABASE_URL}/rest/v1/keywords",
@@ -321,7 +352,7 @@ def expandir_mural(todas_perguntas: list[dict]):
             "category": p.get("cluster", ""),
             "is_active": True,
             "is_emergent": p["growth_percent"] >= 500,
-            "current_volume": p["relative_volume"],
+            "current_volume": p.get("posicao", 0),  # morto: ver o aviso acima
             "previous_volume": 0,
             "change_percent": float(p["growth_percent"]),
             "trend": "up",

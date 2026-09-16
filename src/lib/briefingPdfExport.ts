@@ -10,7 +10,7 @@ type BriefingPdfData = {
   generatedAt: Date;
   topGrowing: { term: string; axis: string; change_percent: number; current_volume: number | null }[];
   emergent: { term: string; axis: string; change_percent: number }[];
-  topVolume: { term: string; current_volume: number }[];
+  topVolume: { term: string; growth_percent?: number | null; current_volume?: number | null }[];
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string; source: string }[];
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
@@ -190,7 +190,13 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     pdf.setTextColor(BLACK);
     pdf.text(kw.term, MARGIN + 10, y);
     setFont("bold", 9);
-    pdf.text(String(kw.current_volume), pageWidth - MARGIN, y, { align: "right" });
+    // Só se escreve número quando há número. Os arquivos anteriores a
+    // 16/09/2026 guardavam em `current_volume` a POSIÇÃO na lista, não uma
+    // medida — para esses não se imprime nada, em vez de imprimir um valor que
+    // não quer dizer o que o cabeçalho promete.
+    if (kw.growth_percent != null) {
+      pdf.text(`+${Math.round(kw.growth_percent)}%`, pageWidth - MARGIN, y, { align: "right" });
+    }
     y += 6;
   });
   y += 4;

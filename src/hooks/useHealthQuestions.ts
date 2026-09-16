@@ -208,8 +208,25 @@ async function ultimaRecolha(fonte: string): Promise<string | null> {
   return data?.[0]?.last_seen_at ?? null;
 }
 
-/** Os três conjuntos de um eixo. */
-async function repartirEixo(eixo: string) {
+/**
+ * Os três conjuntos de um eixo.
+ *
+ * `desdeAutocomplete` corta o autocomplete na recolha mais recente. Decisão de
+ * 16/09/2026: a tabela ACUMULA — o upsert actualiza quem reaparece e deixa quem
+ * desapareceu com a data antiga —, logo sem corte a página mostrava perguntas
+ * de Março ao lado de perguntas de Setembro, todas como "o que as pessoas
+ * perguntam". Eram 909 em 3634.
+ *
+ * NADA É APAGADO: o corte é de leitura. As linhas ficam na base com a data em
+ * que foram vistas pela última vez, que é o que permite medir a rotatividade
+ * das dúvidas — e o que vai alimentar o arquivo nas páginas de eixo.
+ *
+ * O MESMO CORTE NÃO SE APLICA AO PYTRENDS, e a razão é medida: das 183
+ * perguntas dessa fonte só 21 são da recolha de 14/09, e o eixo `emergentes`
+ * fica com UMA. O painel mostra 3 por eixo em duas colunas. Em vez do corte, a
+ * coluna diz que a lista inclui recolhas anteriores.
+ */
+async function repartirEixo(eixo: string, desdeAutocomplete: string | null) {
   const [pytrends, autocomplete] = await Promise.all([
     supabase
       .from('health_questions')
@@ -220,12 +237,15 @@ async function repartirEixo(eixo: string) {
       .order('growth_percent', { ascending: false })
       .order('question', { ascending: true })
       .limit(POR_EIXO_PYTRENDS),
-    supabase
-      .from('health_questions')
-      .select('*')
-      .eq('source', 'autocomplete')
-      .eq('is_question', true)
-      .eq('axis', eixo)
+    (() => {
+      const q = supabase
+        .from('health_questions')
+        .select('*')
+        .eq('source', 'autocomplete')
+        .eq('is_question', true)
+        .eq('axis', eixo);
+      return desdeAutocomplete ? q.gte('last_seen_at', desdeAutocomplete) : q;
+    })()
       .order('relative_volume', { ascending: false })
       .order('question', { ascending: true })
       .limit(POR_EIXO_AUTOCOMPLETE),
@@ -274,11 +294,16 @@ export function useHealthQuestions(axis?: string) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [repartidos, dataP, dataA] = await Promise.all([
-          Promise.all(eixos.map(repartirEixo)),
+        // A data da última recolha do autocomplete tem de vir ANTES: é ela que
+        // define o corte. Daí não estar no mesmo Promise.all.
+        const [dataP, dataA] = await Promise.all([
           ultimaRecolha('pytrends'),
           ultimaRecolha('autocomplete'),
         ]);
+        const corte = dataA ? `${dataA.slice(0, 10)}T00:00:00Z` : null;
+        const repartidos = await Promise.all(
+          eixos.map(eixo => repartirEixo(eixo, corte)),
+        );
 
         // Cada eixo contribui com o mesmo número de linhas, para nenhum eixo
         // grande engolir a coluna.

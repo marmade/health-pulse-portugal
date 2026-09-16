@@ -173,7 +173,9 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         <p className="text-[10px] text-foreground/50 leading-relaxed mb-1">{nota}</p>
         <p className="text-[10px] text-foreground/40 mb-3">
           {data
-            ? `Última recolha: ${formatarData(data)}`
+            ? `Última recolha: ${formatarData(data)}${
+                comSubida ? ' · a lista inclui recolhas anteriores' : ''
+              }`
             : 'Data da última recolha desconhecida'}
         </p>
         <p className="text-[10px] text-foreground/40 leading-relaxed mb-3 pb-3 border-b border-foreground/10">
