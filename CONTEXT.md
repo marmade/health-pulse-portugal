@@ -49,6 +49,14 @@
 | Instância antiga — escrita parada e dados pessoais apagados | 15/09/2026 | `[sessão 14][painel]` `cron.alter_job(1, active := false)` e dois `DELETE`, no SQL editor do Lovable Cloud, 12:07–12:10 UTC · `[sessão 14][bd]` confirmação **por fora**, no terminal, com a chave `anon` | `cron.job`: **os dois jobs com `active = false`** — nenhum apagado, o registo mantém-se `[painel]`. `contactos_projecto` e `revisao_pares`: **`[]` e `count=0`** com a chave `anon`, confirmado no terminal. **As 14 tabelas não pessoais estão intactas** — contagens idênticas às dos CSV de `docs/arquivo/2026-09-15-instancia-antiga/`, verificadas uma a uma: nada foi apagado por arrasto. **Custo assumido:** os e-mails e telefones dos revisores só existiam aqui (na instância nova foram esvaziados a 09/09) e a decisão foi perdê-los; nomes, especialidade, link e bios continuam na nova |
 | A instância antiga deixou de existir | 16/09/2026 | `[sessão 15][bd]` Leitura REST com a chave `anon` antes e depois, às 09:30 e 09:32 UTC · `dig` contra o resolvedor do sistema, `8.8.8.8` e `1.1.1.1` · `[painel]` ecrã da Marta | **200 → 540** (`Project paused`) em todas as tabelas às 09:32:08; **NXDOMAIN** nos três resolvedores às 09:33. Controlo no mesmo minuto: instância nova 206 com 310 linhas, site 200 — não é rede nem ferramenta. No painel, a secção `Cloud` desapareceu. **Três observações independentes concordam.** O 540 que persistiu em HTTP vinha de cache de DNS local, não do servidor |
 | Job 1 da instância antiga está parado — **provado pelo efeito** | 16/09/2026 | `[sessão 15][bd][agregado]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave `anon` às **08:58 UTC**, 2h58 depois da janela das 06:00: `count=exact` em `news_items` e `order=created_at.desc&limit=3` | `news_items` em **2128** — o mesmo número de 15/09, **não cresceu**; nos 6 dias anteriores entravam ~22/dia. A linha mais recente continua a ser a de **15/09 06:00:54 UTC**. A 15/09 a escrita chegou **54 s** depois do despacho, logo três horas é folga larga. **A desactivação deixa de ser estado de painel e passa a efeito observado.** No mesmo pedido: `contactos_projecto` e `revisao_pares` continuam `[]`; `historical_snapshots` 12072, `health_questions` 3362, `bookmarks` 180, inalteradas. **Não prova** que o job não volte — está `active = false`, não apagado — nem diz nada sobre o job 2 |
+| `relative_volume` **não é um volume** — é a posição na lista | 16/09/2026 | `[sessão 15][ficheiro]` Leitura de `scripts/6_fetch_health_questions.py:206` e `scripts/7_fetch_autocomplete_questions.py:142` · `[bd][agregado]` distribuição dos valores nas 4647 linhas | `max(10, 100 - rank_idx*8)` no script 6 e `max(10, 100 - pos*5)` no script 7. A primeira sugestão recebe 100, a segunda 92 ou 95, e tudo o que passa de certa posição fica preso em 10 — daí as **2408 linhas exactamente a 10** no autocomplete e os múltiplos de 8 no pytrends. **Nenhuma relação com quantidade de pesquisas.** O defeito do script 7 estava documentado desde 09/09 no comentário do `youtube-trends.yml` que desligou o passo 2B; **o do script 6 não estava em lado nenhum**, e era esse que o dashboard desenhava numa barra em todas as linhas |
+| `growth_percent = 9999` é **tecto**, não sentinela | 16/09/2026 | `[sessão 15][ficheiro]` `scripts/6_fetch_health_questions.py:212`, `min(growth, 9999)` · `[bd]` valores imediatamente abaixo | Lê-se **«subiu pelo menos 9999%»**. Há valores medidos logo abaixo — 9750, 9200, 8650 — o que confirma o corte. O `breakout` do Google é convertido em **5000** pelo script; ver a linha sobre o limiar |
+| `is_question` existia, estava preenchida, e **nunca era usada** | 16/09/2026 | `[sessão 15][bd]` As consultas que o painel faz, corridas contra a instância viva | **18 das 20 linhas** que o painel mostrava não eram perguntas: *"pânico 7 data de lançamento"* (o filme), *"stress hídrico"* (agricultura), *"avc toy"*, *"sepsis meaning"*, *"suicídio viseu"* — por baixo da legenda *"Dúvidas reais da população detetadas nos motores de pesquisa"*. A coluna tem **830 linhas a `false`**, todas de pytrends: no autocomplete é fixa a `true`, logo aí o filtro não filtra nada |
+| O `o'que é` **vem do Google**, não da recolha | 16/09/2026 | `[sessão 15]` Chamada directa a `suggestqueries.google.com` com o seed `"o que é ptsd"` | O Google devolve `o'que é ptsd giria` e `o'que é ptsd severo`. **39 linhas** em 4647 têm este padrão, nas duas fontes. Os templates do script 7 estão limpos (`"o que é {keyword}"`, com espaço). **É o que as pessoas escrevem** — a recolha está fiel, incluindo fiel aos erros |
+| A coluna do Autocomplete **não é de Portugal** | 16/09/2026 | `[sessão 15]` Pedidos com `gl=pt` contra `gl=br`, em `client=firefox` e `client=chrome`, e em `google.pt`/`google.com.br` · `[bd][agregado]` contagem de marcas nas 4647 linhas | Com **`client=firefox`**, que é o que o script usa, `gl` **não tem efeito nenhum** — confirma o registo de 07/09. Com **`client=chrome`** tem efeito residual: **em três seeds testadas, duas deram resultados idênticos** para PT e BR, e o Google devolveu `constipação crônica` com `gl=PT`. **Amostra pequena, e é o que há.** Medido nos dados: **127 das 3634** linhas do autocomplete (3,5%) trazem formas que o português europeu não usa, contra **4 das 1013** do Trends (0,4%), onde o `geo=PT` funciona — **dez vezes mais na fonte onde o país é ignorado** |
+| O **"Breakout" do Google não tem limiar publicado** | 16/09/2026 | `[sessão 15][documento]` *How Google autocomplete works in Search* e *FAQ about Google Trends data* | Lê-se por aí que são "mais de 5000%". **Não está na documentação consultada.** O `5000` que o `scripts/6_fetch_health_questions.py:200` lhe atribui é **escolha nossa**, e fica registada como nossa |
+| O valor do Trends é **relativo, não é um número de pesquisas** | 16/09/2026 | `[sessão 15][documento]` *FAQ about Google Trends data* | Citação: *"Each data point is divided by the total searches of the geography and time range it represents"*. **Vale para toda a página**, não só para este painel — é a mesma advertência que a nota "Como ler a escala" do gráfico de trends já fazia, agora dita pela fonte |
+| Como as perguntas se repartem entre as duas fontes | 16/09/2026 | `[sessão 15][bd][agregado]` Cruzamento por texto exacto de `question`, sobre as 4647 linhas | **48** nas duas fontes · **135** só no Trends · **3391** só no Autocomplete depois dos filtros (**3586** antes). **Números deste dia:** mudam a cada recolha |
 | A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
 | O `succeeded` do `pg_cron` não prova escrita | 15/09/2026 | `[sessão 14][bd]` Duração de cada execução em `cron.job_run_details` | ~**100 ms** por execução (06:00:00.214546 → .313409, a 15/09). Recolher 44 feeds RSS não se faz em décimo de segundo: o `net.http_post` **despacha** o pedido e devolve. **É a mesma armadilha do `success` do GitHub Actions** (`AUDIT.md` secções 2 e 3) — duas ferramentas, o mesmo erro de leitura. O que prova escrita é o crescimento de `news_items`, não o verde |
 | A instância nova não tem agendador interno | 15/09/2026 | `[sessão 14][bd]` `select count(*) from cron.job` por MCP Supabase, re-corrido no terminal antes do commit | **0 linhas.** Toda a automação da instância viva passa pelo `youtube-trends.yml`, que está versionado. **É a diferença que interessa:** na antiga a automação era invisível e ninguém a podia auditar; na nova lê-se num ficheiro |
@@ -485,6 +493,31 @@ explica o motivo e a condição para religar:
 - **Alertas**: thresholds 30% (7d), 50% (30d), 40% (12m) + emergentes com variação > 0 (corrigido sessão 3 — antes incluía emergentes com variação negativa)
 - **Ranking urgência**: "Prioridade de comunicação esta semana" no overview e briefing
 
+### Painel das perguntas — reconstruído a 16/09/2026
+
+**Três colunas que não se cruzam**, para cada pergunta aparecer uma vez e o cruzamento entre
+fontes ficar à vista. **Número só onde há medida:** a subida do Trends leva valor, as do
+tecto levam a marca *«fora de escala»*, e a coluna do Autocomplete não leva número nenhum —
+não há medida, só ordem. As duas ferramentas são apresentadas por palavras do próprio Google,
+com fonte e ligação.
+
+**Dois filtros, dois critérios, contados em separado** — origem e âmbito. A separação é
+deliberada: com as duas razões na mesma regra, ninguém consegue saber mais tarde por que
+motivo uma linha desapareceu. **A lista de marcas de origem é julgamento de falante nativa,
+da Marta, não regra automática** — `estresse` e `cachorro` entraram por decisão dela, e
+`cachorro` saiu quando ela distinguiu origem de âmbito. **Nenhuma linha foi apagada:** os
+filtros são de apresentação e a página diz quantas esconde e porquê.
+
+**Por resolver, à vista:** a coluna "Só habituais" está ordenada **alfabeticamente** na
+prática — há 84 linhas empatadas no valor máximo e o desempate é por texto; o Autocomplete
+não publica volumes e não há critério melhor decidido. E a janela do Trends é **móvel**: cada
+recolha compara um trimestre diferente, logo linhas da mesma coluna podem vir de recolhas de
+semanas diferentes, e a página não o diz.
+
+**NÃO PUBLICADO.** Commits `1746a89`, `5dfe615`, `01ca894`, `477e17f`. O site continua a
+servir o painel anterior.
+
+
 ---
 
 ## Estado do Admin
@@ -915,9 +948,28 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
 
    Religar os passos 1 e 3 antes disto só acrescenta lixo à série.
-7. [ ] **`7_fetch_autocomplete_questions.py`:** exportar primeiro as 3634 linhas de
-   autocomplete que já estão na base de dados. **Só depois** tocar no script — mexer antes
-   perde-as
+7. [ ] **`7_fetch_autocomplete_questions.py`.** ~~Exportar primeiro as 3634 linhas de
+   autocomplete~~ — **FEITO a 16/09/2026**, e a tabela inteira com elas: **4647 linhas** em
+   `docs/arquivo/2026-09-16-health-questions-autocomplete/`, JSON e CSV com `sha256`,
+   conferidas no acto (o servidor declarou 3634 de autocomplete, desceram 3634, `id` todos
+   distintos). A exportação completa não estava pedida e passou a estar: o painel só servia
+   linhas de `pytrends`, logo guardar só o autocomplete era guardar a metade que não estava
+   na página.
+
+   **Falta a reescrita**, e as condições para religar o passo 2B estão escritas no
+   `youtube-trends.yml`: o script tem de gravar **o que mede ou `NULL`**, nunca um número
+   vindo da posição. Enquanto não for feito, o passo fica desligado e as duas fontes correm
+   em dias diferentes — que é o que obriga a página a dizer *"as duas correm em dias
+   diferentes"*.
+
+   **Acrescentar à reescrita, apurado a 16/09/2026:** trocar `client=firefox` por
+   `client=chrome`, para o `gl=PT` passar a ser respeitado — não resolve a contaminação, mas
+   passa a ser verdade que se pediu Portugal; e **`is_question` calculado em vez de fixo a
+   `true`**.
+
+   **Decisão pendente, da Marta:** o que fazer às **909 linhas** que não são vistas desde
+   antes de 07/09/2026 — ficam como arquivo histórico, ou o script passa a marcar as que já
+   não aparecem?
 
 ### Suspensos — dependem de verificação prévia
 
