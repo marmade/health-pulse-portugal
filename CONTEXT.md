@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-15 (sessão 14)
+> Última actualização: 2026-09-16 (sessão 15)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -12,10 +12,13 @@
 > soube-se que ela não estava congelada — escrevia todos os dias às 06:00 por um `pg_cron`
 > interno invisível no repositório, desde 09/03/2026 — e no mesmo dia **os dois jobs foram
 > postos inactivos e as duas tabelas de dados pessoais apagadas**. Verificado por fora com a
-> chave `anon`: `contactos_projecto` e `revisao_pares` devolvem `[]`. **A instância continua
-> a existir e a responder**, com os dados não pessoais; apagá-la por inteiro passou de
-> urgência a arrumação. Ver Crítico nº 4, `docs/evidencia/2026-09-15-cron-instancia-antiga/`
-> e o arquivo em `docs/arquivo/2026-09-15-instancia-antiga/`.
+> chave `anon`: `contactos_projecto` e `revisao_pares` devolvem `[]`.
+> **A instância antiga foi apagada a 16/09/2026, por volta das 09:32 UTC**, com o botão
+> `Remove Lovable Cloud`. Deixou de servir e o nome `cyjwhmuakmiytypewwfw.supabase.co`
+> deixou de resolver — NXDOMAIN em três resolvedores independentes. Os dados não pessoais
+> ficam arquivados em `docs/arquivo/2026-09-15-instancia-antiga/`, 14 tabelas conferidas
+> linha a linha contra o painel antes de apagar. **Crítico nº 4 fechado.** Ver também
+> `docs/evidencia/2026-09-15-cron-instancia-antiga/`.
 > **Publicado desde 15/09/2026** em `dizquedisse.martamadeira.pt` (Cloudflare Pages), a ler
 > a instância nova. A rota `/admin` foi removida no mesmo dia — ver Crítico nº 2.
 
@@ -44,7 +47,8 @@
 | O botão `Remove Lovable Cloud` **destrói a instância**, não a desassocia | 15/09/2026 | `[sessão 14][documento]` Documentação do Lovable, `docs.lovable.dev/integrations/cloud` | Citação: **"This permanently deletes your Cloud instance and cannot be undone."** Não é desassociação — é **eliminação definitiva**. Logo o botão **fecha o Crítico nº 4** e é o **último** passo do Crítico nº 5, não um passo a meio. Era esta a pergunta marcada como "a que manda" na ordem de 15/09, e está respondida |
 | `lovable-tagger` removido — e nunca estava no build de produção | 15/09/2026 | `[sessão 14][ficheiro]` Linha do `vite.config.ts` e dependência removidas ao mesmo tempo; `npm run build` de raiz, `tsc`, `eslint`, e `vite` em modo *development* | Build **✓ em 2,26s**. **O nome do bundle não mudou — `index-2tjWbBoE.js` antes e depois** —, o que prova que o `componentTagger` **nunca entrava no build de produção**: era só de modo `development`, como o código dizia. O modo *development* arranca limpo (73 ms, `index.html` e `src/main.tsx` a 200), que é onde ele corria de facto. `tsc` e `eslint` sem avisos. O parâmetro `mode` saiu com ele: só existia para o alimentar |
 | Instância antiga — escrita parada e dados pessoais apagados | 15/09/2026 | `[sessão 14][painel]` `cron.alter_job(1, active := false)` e dois `DELETE`, no SQL editor do Lovable Cloud, 12:07–12:10 UTC · `[sessão 14][bd]` confirmação **por fora**, no terminal, com a chave `anon` | `cron.job`: **os dois jobs com `active = false`** — nenhum apagado, o registo mantém-se `[painel]`. `contactos_projecto` e `revisao_pares`: **`[]` e `count=0`** com a chave `anon`, confirmado no terminal. **As 14 tabelas não pessoais estão intactas** — contagens idênticas às dos CSV de `docs/arquivo/2026-09-15-instancia-antiga/`, verificadas uma a uma: nada foi apagado por arrasto. **Custo assumido:** os e-mails e telefones dos revisores só existiam aqui (na instância nova foram esvaziados a 09/09) e a decisão foi perdê-los; nomes, especialidade, link e bios continuam na nova |
-| Job 1 inactivo — prova pelo efeito, **por fazer** | — | `[por testar]` `news_items` da instância antiga está em **2128**. Se o job 1 estiver mesmo parado, **não cresce** a 16/09 às 06:00 UTC; se crescer (~+22), a desactivação não pegou | A desactivação está confirmada `[painel]` mas **não pelo efeito** — a chave `anon` não lê o schema `cron`. **Verificar a 16/09/2026.** É a diferença entre o estado que a ferramenta reporta e o que se observa, e este documento já foi mordido por ela três vezes |
+| A instância antiga deixou de existir | 16/09/2026 | `[sessão 15][bd]` Leitura REST com a chave `anon` antes e depois, às 09:30 e 09:32 UTC · `dig` contra o resolvedor do sistema, `8.8.8.8` e `1.1.1.1` · `[painel]` ecrã da Marta | **200 → 540** (`Project paused`) em todas as tabelas às 09:32:08; **NXDOMAIN** nos três resolvedores às 09:33. Controlo no mesmo minuto: instância nova 206 com 310 linhas, site 200 — não é rede nem ferramenta. No painel, a secção `Cloud` desapareceu. **Três observações independentes concordam.** O 540 que persistiu em HTTP vinha de cache de DNS local, não do servidor |
+| Job 1 da instância antiga está parado — **provado pelo efeito** | 16/09/2026 | `[sessão 15][bd][agregado]` Leitura REST de `cyjwhmuakmiytypewwfw` com a chave `anon` às **08:58 UTC**, 2h58 depois da janela das 06:00: `count=exact` em `news_items` e `order=created_at.desc&limit=3` | `news_items` em **2128** — o mesmo número de 15/09, **não cresceu**; nos 6 dias anteriores entravam ~22/dia. A linha mais recente continua a ser a de **15/09 06:00:54 UTC**. A 15/09 a escrita chegou **54 s** depois do despacho, logo três horas é folga larga. **A desactivação deixa de ser estado de painel e passa a efeito observado.** No mesmo pedido: `contactos_projecto` e `revisao_pares` continuam `[]`; `historical_snapshots` 12072, `health_questions` 3362, `bookmarks` 180, inalteradas. **Não prova** que o job não volte — está `active = false`, não apagado — nem diz nada sobre o job 2 |
 | A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
 | O `succeeded` do `pg_cron` não prova escrita | 15/09/2026 | `[sessão 14][bd]` Duração de cada execução em `cron.job_run_details` | ~**100 ms** por execução (06:00:00.214546 → .313409, a 15/09). Recolher 44 feeds RSS não se faz em décimo de segundo: o `net.http_post` **despacha** o pedido e devolve. **É a mesma armadilha do `success` do GitHub Actions** (`AUDIT.md` secções 2 e 3) — duas ferramentas, o mesmo erro de leitura. O que prova escrita é o crescimento de `news_items`, não o verde |
 | A instância nova não tem agendador interno | 15/09/2026 | `[sessão 14][bd]` `select count(*) from cron.job` por MCP Supabase, re-corrido no terminal antes do commit | **0 linhas.** Toda a automação da instância viva passa pelo `youtube-trends.yml`, que está versionado. **É a diferença que interessa:** na antiga a automação era invisível e ninguém a podia auditar; na nova lê-se num ficheiro |
@@ -678,8 +682,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Abril. É a confirmação no browser que faltava, e o Crítico nº 3 fica integralmente
    fechado: bundle, REST e browser dizem os três a mesma coisa.
 
-4. [ ] **Instância antiga `cyjwhmuakmiytypewwfw` — o urgente está feito; falta apagar a
-   instância.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**. Apagar as
+4. [x] **Instância antiga `cyjwhmuakmiytypewwfw` — APAGADA a 16/09/2026.** Decisão de 09/09/2026: a instância vai ser **apagada por inteiro**. Apagar as
    linhas primeiro era para não ficar exposto no intervalo.
 
    **FECHADO O QUE ERA URGENTE, a 15/09/2026 entre as 12:07 e as 12:10 UTC**, no SQL editor
@@ -697,15 +700,33 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    **perdê-los**, tomada com o custo à vista. Nomes, especialidade, link e bios continuam na
    instância nova.
 
-   **O que resta é arrumação, não urgência.** A instância não escreve e não expõe dados
-   pessoais. Continua a existir, a responder e a ser legível com a chave `anon`, com os dados
-   não pessoais que estão todos arquivados neste repositório. Apagá-la é higiene: fecha a
-   pergunta "que instância é esta?" para quem vier depois, e tira uma base a responder sem
-   dono funcional.
+   **FECHADO a 16/09/2026, ~09:32 UTC.** A sequência foi cumprida pela ordem decidida a
+   15/09, sem trocar nenhum passo: (1) **prova pelo efeito de que o job 1 parou**, às 08:58,
+   **com a instância ainda viva** — `news_items` em 2128, sem crescer; (2) verificação de que
+   o painel era mesmo esta instância, pelos quatro números que a distinguem da nova e pelas
+   duas tabelas pessoais a 0 linhas; (3) **Storage confirmado vazio no painel** (*No buckets
+   yet*), o que resolve a ambiguidade do `[]` que a chave `anon` devolvia — com chave
+   anónima, `[]` tanto podia ser "não há" como "há e estão fechados"; (4) **arquivo conferido
+   — 14 CSV, 14 contagens idênticas às do painel**, lidas com leitor de CSV e não `wc -l`, e
+   as 4 tabelas não arquivadas são exactamente as 4 que estavam a 0 linhas; (5) `Remove
+   Lovable Cloud`.
 
-   **Falta uma confirmação, e é pelo efeito:** a desactivação do job 1 está confirmada no
-   painel mas **não observada** — a chave `anon` não lê o schema `cron`. `news_items` está em
-   **2128**. Se o job estiver mesmo parado, **não cresce a 16/09 às 06:00 UTC**. Verificar.
+   **Observado de fora:** todas as tabelas passaram de 200 a **540 `Project paused`** às
+   09:32:08, e o DNS passou a **NXDOMAIN** até às 09:33, em três resolvedores. Controlo no
+   mesmo minuto: instância nova a 206 e site a 200.
+
+   **O que não é observável, e fica dito:** que os dados tenham sido **destruídos**. Isso é
+   afirmação da plataforma — o acesso que o verificaria é precisamente o que desapareceu. O
+   que se observou foi o desaparecimento: sem serviço, sem nome, sem painel.
+
+   **A ordem não foi indiferente.** A prova do job 1 foi feita com a instância viva; ao
+   contrário, teria morrido com ela e ficaria para sempre uma afirmação de painel sem nada
+   por baixo.
+
+   **Confirmado pelo efeito a 16/09/2026, 08:58 UTC.** `news_items` continua em **2128** e a
+   linha mais recente continua a ser a de 15/09 06:00:54 — **o job 1 não escreveu a 16/09**. A
+   desactivação de 15/09 estava confirmada no painel e **não observada**, porque a chave `anon`
+   não lê o schema `cron`; passa a observada. Ver a linha respectiva na tabela de Verificações.
 
    **ACTUALIZADO a 15/09/2026 — a instância não está inerte, e isso muda o item.** Tem dois
    `pg_cron` internos, criados no dashboard e invisíveis no repositório. O **job 1 está
@@ -741,10 +762,13 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    jobs estão inactivos. As duas capacidades urgentes foram exercidas antes de a porta se
    fechar, e é por isso que a ordem importava.
 
-   **O que ainda se perde, e é permanente:** a capacidade de **apagar a instância**. Ela não
-   está na conta da Marta, logo sem o painel do Lovable fica a existir e a responder para
+   ~~**O que ainda se perde, e é permanente:** a capacidade de **apagar a instância**. Ela
+   não está na conta da Marta, logo sem o painel do Lovable fica a existir e a responder para
    sempre, com os dados não pessoais — todos arquivados aqui. **Não é exposição, é uma base
-   órfã a responder sem dono funcional.** Aceitável, se for decidido e não descoberto.
+   órfã a responder sem dono funcional.** Aceitável, se for decidido e não descoberto.~~
+   **CADUCOU a 16/09/2026:** este custo nunca chegou a ser pago. A instância foi apagada
+   **antes** de o Lovable ser cortado, pela ordem decidida, e não ficou base órfã nenhuma.
+   Fica escrito porque era o risco real enquanto a ordem não estava cumprida.
 
    **A confirmação pendente não depende do Lovable:** a contagem de `news_items` lê-se com a
    chave `anon`, logo o teste de 16/09 funciona com o Lovable já cortado.
@@ -766,10 +790,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
      perda nenhuma para registar. O erro da sessão 11 foi inferir o schema do ficheiro de
      migração em vez de consultar a base de dados.
 
-   Enquanto não for feito, os mesmos dados continuam legíveis lá por quem tenha a chave
-   `anon` dessa instância, que está no histórico público do git.
+   ~~Enquanto não for feito, os mesmos dados continuam legíveis lá por quem tenha a chave
+   `anon` dessa instância, que está no histórico público do git.~~ **SEM OBJECTO desde
+   16/09/2026:** não há instância para ler. A chave `anon` continua no histórico público do
+   git e passou a ser uma chave de uma base que não existe.
 
-5. [ ] **Cortar o Lovable e publicar no Cloudflare Pages.** Enquanto a ligação Lovable
+5. [x] **Cortar o Lovable e publicar no Cloudflare Pages — FECHADO a 16/09/2026.** Enquanto a ligação Lovable
    Cloud↔Supabase estiver activa, o editor visual reescreve o `.env` e desfaz o item 3.
    Decisão de 07/09/2026: abandonar o Lovable.
 
@@ -815,12 +841,19 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       mudou** (`index-2tjWbBoE.js` antes e depois): o tagger **nunca entrava no build de
       produção**
    5. **Ordem decidida para 16/09/2026, e é esta:**
-      1. **confirmar pelo efeito que o job 1 parou** — `news_items` da instância antiga está
-         em 2128; se não crescer depois das 06:00 UTC, parou. **Tem de ser primeiro: se a
-         instância for apagada antes, esta prova morre com ela**, e é a prova que falta ao
-         único passo de 15/09 confirmado só pelo estado
-      2. **`Remove Lovable Cloud`** — apaga a instância antiga e fecha o Crítico nº 4
-      3. **cortar a ligação ao GitHub** — sem consequência irreversível, é a última
+      1. ~~**confirmar pelo efeito que o job 1 parou**~~ — **FEITO a 16/09/2026, 08:58 UTC.**
+         `news_items` em 2128, sem crescer, e a linha mais recente ainda de 15/09 06:00:54. A
+         prova que morreria com a instância está feita **antes** de a apagar, que era a razão
+         de este passo vir primeiro
+      2. ~~**`Remove Lovable Cloud`**~~ — **FEITO a 16/09/2026, ~09:32 UTC.** Fecha o
+         Crítico nº 4
+      3. ~~**cortar a ligação ao GitHub**~~ — **FEITO a 16/09/2026, ~09:35 UTC.** `origin`
+         intacto (`git@github.com:marmade/health-pulse-portugal.git`), `git fetch --all
+         --prune` sem trazer nada em ramo nenhum, `main` em sincronia com `origin/main` em
+         `755c521`. **O Cloudflare Pages não foi afectado** — é integração Git própria: site
+         a responder 200 e o mesmo bundle (`index-CZyl4iDM.js`). **A prova de que a
+         sincronização morreu é negativa e só o tempo a dá**; o que se verificou é que o
+         corte não estragou nada
 
    **Detalhe apurado a 09/09/2026, mais grave do que estava registado.** São dois commits do
    bot, não um: `5246597` (21/05/2026 07:35:53 UTC) é a alteração e `e22227d` (07:36:47) é o
