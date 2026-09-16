@@ -207,6 +207,12 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
             «Só» quer dizer «só nesta recolha»: as duas correm em dias diferentes e
             nenhuma devolve tudo o que existe.
           </p>
+          <p className="text-[10px] text-foreground/40 leading-relaxed mt-2">
+            Não são mostradas <strong>72</strong> perguntas sobre <strong>saúde
+            animal</strong> — «sintomas de alzheimer em cachorro», «como tratar avc em
+            gatos». As pessoas perguntam-nas com as mesmas palavras, e este painel é
+            sobre saúde humana.
+          </p>
         </div>
 
         <div>

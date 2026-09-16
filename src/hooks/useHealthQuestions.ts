@@ -75,6 +75,39 @@ const MARCAS_OUTRA_NORMA = [
 
 const daOutraNorma = (pergunta: string) =>
   MARCAS_OUTRA_NORMA.some(rx => rx.test(pergunta));
+
+/**
+ * Saúde animal. Lista separada da de origem por decisão de 16/09/2026: um
+ * filtro, um critério — com as duas razões na mesma regra ninguém conseguiria
+ * saber, mais tarde, por que motivo uma linha desapareceu.
+ *
+ * O Autocomplete devolve-as porque as pessoas perguntam mesmo pela saúde dos
+ * seus animais com as mesmas palavras ("sintomas de alzheimer em cachorro"): os
+ * seeds do script 7 são construídos a partir das keywords do projecto, e o
+ * Google completa-os com o que lhe pedem de facto. Não é defeito de recolha, é
+ * âmbito — este painel é sobre saúde humana.
+ *
+ * Medido a 16/09/2026: 72 linhas em 4647 — 71 no autocomplete e 1 no Trends.
+ * Verificado uma a uma: nenhuma é falso positivo, todas as ocorrências de
+ * `gato`, `cão` e `canina` nestes dados são veterinárias.
+ *
+ * `veterinári` e `pet` não apanham nada hoje. Ficam porque são o vocabulário
+ * óbvio deste âmbito e as recolhas futuras não vão ser relidas por ninguém.
+ */
+const MARCAS_SAUDE_ANIMAL = [
+  /\bcachorr|\bcadela\b|\bfilhote/i,
+  /\bc[ãa]o\b|\bc[ãa]es\b|\bcãozinho/i,
+  /\bgat[oa]s?\b|\bfelin/i,
+  /\bcanin/i,
+  /\bveterin[áa]ri/i,
+  /\bpets?\b/i,
+];
+
+const eSaudeAnimal = (pergunta: string) =>
+  MARCAS_SAUDE_ANIMAL.some(rx => rx.test(pergunta));
+
+const naoMostrar = (pergunta: string) =>
+  daOutraNorma(pergunta) || eSaudeAnimal(pergunta);
 const POR_EIXO_PYTRENDS = 100;
 const POR_EIXO_AUTOCOMPLETE = 40;
 
@@ -140,10 +173,10 @@ async function repartirEixo(eixo: string) {
   const nasDuasSet = new Set((cruzadas ?? []).map(l => l.question));
 
   return {
-    nasDuas: linhasP.filter(l => nasDuasSet.has(l.question) && !daOutraNorma(l.question)),
-    soASubir: linhasP.filter(l => !nasDuasSet.has(l.question) && !daOutraNorma(l.question)),
+    nasDuas: linhasP.filter(l => nasDuasSet.has(l.question) && !naoMostrar(l.question)),
+    soASubir: linhasP.filter(l => !nasDuasSet.has(l.question) && !naoMostrar(l.question)),
     soHabituais: linhasA.filter(
-      l => !nasDuasSet.has(l.question) && !daOutraNorma(l.question),
+      l => !nasDuasSet.has(l.question) && !naoMostrar(l.question),
     ),
   };
 }
