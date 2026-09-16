@@ -38,7 +38,8 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         .eq('cluster', cluster)
         .eq('is_question', true)
         .neq('question', question)
-        .order('relative_volume', { ascending: false })
+        .order('posicao', { ascending: true, nullsFirst: false })
+        .order('relative_volume', { ascending: false, nullsFirst: false })
         .order('question', { ascending: true })
         .limit(5);
       if (data && data.length > 0) {

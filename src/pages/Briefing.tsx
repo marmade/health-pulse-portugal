@@ -94,7 +94,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
-  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; growth_percent: number; relative_volume: number; axis: string}[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; growth_percent: number | null; relative_volume: number | null; axis: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
@@ -114,7 +114,19 @@ const Briefing = () => {
         supabase.from("news_items").select("*").order("date", { ascending: false }),
         supabase.from("debunking").select("*").order("data_publicacao", { ascending: false }),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        supabase.from("health_questions").select("question, growth_percent, relative_volume, axis, axis_label").order("growth_percent", { ascending: false }),
+        // `source=pytrends` e `nullsFirst: false` não são zelo a mais.
+        // Desde 16/09/2026 o script 7 grava `growth_percent = NULL` — não mede
+        // crescimento — e num `ORDER BY ... DESC` os NULL vêm primeiro. Sem o
+        // filtro e sem o modificador, esta secção passava a abrir com perguntas
+        // sem crescimento nenhum, debaixo do título "As principais dúvidas dos
+        // portugueses". Estas linhas vão também para o PDF e para o arquivo
+        // semanal, logo o erro ficaria gravado.
+        supabase
+          .from("health_questions")
+          .select("question, growth_percent, relative_volume, axis, axis_label")
+          .eq("source", "pytrends")
+          .order("growth_percent", { ascending: false, nullsFirst: false })
+          .order("question", { ascending: true }),
         supabase.from("youtube_trends").select("*").order("views", { ascending: false }).limit(5),
       ]);
 
@@ -122,7 +134,7 @@ const Briefing = () => {
       if (newsRes.data) setNews(newsRes.data as NewsRow[]);
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
-      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number; relative_volume: number; axis: string}[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number | null; relative_volume: number | null; axis: string}[]);
       if (ytRes.data) setYoutube(ytRes.data as any[]);
       setLoading(false);
     };

@@ -270,13 +270,15 @@ export type Database = {
           axis: string
           axis_label: string
           cluster: string
-          growth_percent: number
+          growth_percent: number | null
           id: string
           is_question: boolean
           keyword_id: string | null
           last_seen_at: string | null
+          posicao: number | null
           question: string
-          relative_volume: number
+          relative_volume: number | null
+          seed: string | null
           source: string
           updated_at: string
         }
@@ -284,13 +286,15 @@ export type Database = {
           axis: string
           axis_label: string
           cluster: string
-          growth_percent?: number
+          growth_percent?: number | null
           id?: string
           is_question?: boolean
           keyword_id?: string | null
           last_seen_at?: string | null
+          posicao?: number | null
           question: string
-          relative_volume?: number
+          relative_volume?: number | null
+          seed?: string | null
           source?: string
           updated_at?: string
         }
@@ -298,13 +302,15 @@ export type Database = {
           axis?: string
           axis_label?: string
           cluster?: string
-          growth_percent?: number
+          growth_percent?: number | null
           id?: string
           is_question?: boolean
           keyword_id?: string | null
           last_seen_at?: string | null
+          posicao?: number | null
           question?: string
-          relative_volume?: number
+          relative_volume?: number | null
+          seed?: string | null
           source?: string
           updated_at?: string
         }
