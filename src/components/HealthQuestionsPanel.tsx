@@ -258,9 +258,9 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               How Google autocomplete works in Search
             </a>{" "}
             — o Google não publica volumes nem o país destas sugestões, e o parâmetro que
-            pediria Portugal não é respeitado. <strong>127</strong> das 3634 perguntas
-            trazem formas que um português não escreve (<em>estresse</em>, <em>crônica</em>,
-            o <em>SUS</em>) e <strong>não são mostradas</strong> — ficam na base, e a
+            pediria Portugal não é respeitado. <strong>169</strong> das 3634 perguntas
+            trazem formas que um português não escreve (<em>estresse</em>, <em>insônia</em>,
+            <em>crônica</em>, o <em>SUS</em>) e <strong>não são mostradas</strong> — ficam na base, e a
             contagem pode ser refeita. A mesma medição na fonte do Trends, onde o país
             funciona, dá <strong>4</strong>. O filtro não torna o resto português: só
             apanha o que se denuncia pela escrita.
@@ -279,7 +279,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
           <div className="grid gap-6 md:grid-cols-3 items-start">
             {grupo(
               "Nas duas fontes",
-              "As duas ferramentas apontam para a mesma pergunta: o Trends deu-a como tendo subido, e o Autocomplete sugere-a a quem começa a escrever sobre o tema. Coincidirem é raro — e é o sinal mais forte que estes dados dão.",
+              "Estas perguntas estão nas duas ferramentas: o Trends deu-as como tendo subido, e o Autocomplete sugere-as a quem começa a escrever. São 48 — uma em cada quatro das que subiram. As pessoas perguntam-nas sempre, e agora perguntam-nas mais.",
               nasDuas,
               growingDate,
               true,
@@ -299,7 +299,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               soHabituais,
               askedDate,
               false,
-              "Sem número, porque não há medida: o Autocomplete não publica volumes de pesquisa — devolve sugestões por ordem, e a ordem entre linhas diferentes não é um ranking.",
+              "Uma pergunta de cada tipo de dúvida — o que é · sintomas · causas · tratamento · prevenção · é normal ter. Sem número, porque não há medida: o Autocomplete não publica volumes, e esta lista não é um ranking. A mistura de tipos vem em parte dos moldes com que perguntámos ao Google, não só do que as pessoas procuram.",
             )}
           </div>
           {nasDuas.length === 0 && soASubir.length === 0 && soHabituais.length === 0 && (

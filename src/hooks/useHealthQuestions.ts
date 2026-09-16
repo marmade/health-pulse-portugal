@@ -51,8 +51,11 @@ const TECTO = 9999;          // `min(growth, 9999)` no script 6: é tecto, não 
  * `client=chrome` tem efeito residual — em três seeds testadas, duas deram
  * resultados idênticos para PT e BR.
  *
- * Medido a 16/09/2026: apanham **127 das 3634** linhas do autocomplete (3,5%)
+ * Medido a 16/09/2026: apanham **169 das 3634** linhas do autocomplete (4,7%)
  * contra **4 das 1013** do Trends (0,4%), onde o `geo=PT` funciona.
+ *
+ * `insôni` entrou depois das outras e sozinha vale 42 linhas — a lista cresce
+ * quando alguém olha, e é essa a sua natureza: apanha o que lá está escrito.
  *
  * NÃO está aqui `remédio`, que aparece 39 vezes — e também na fonte com
  * `geo=PT`, o que é argumento contra ser marca de origem. Fica por decidir.
@@ -71,6 +74,7 @@ const MARCAS_OUTRA_NORMA = [
   /\bgên/i,              // gênero, gêmeo
   /\banônim/i,
   /\bestômago|\bfôlego/i,
+  /\binsôni/i,           // insônia (PT: insónia) — apanhada a 16/09 numa lista
 ];
 
 const daOutraNorma = (pergunta: string) =>
@@ -108,8 +112,81 @@ const eSaudeAnimal = (pergunta: string) =>
 
 const naoMostrar = (pergunta: string) =>
   daOutraNorma(pergunta) || eSaudeAnimal(pergunta);
+
+/**
+ * O TIPO DE DÚVIDA, lido do próprio texto da pergunta.
+ *
+ * Os 10 moldes do script 7 ("sintomas de {k}", "o que é {k}", "como tratar
+ * {k}"…) deixam marca no texto, e essa marca diz o que a pergunta quer saber —
+ * reconhecer, perceber, resolver, ou apenas saber se é normal.
+ *
+ * Serve para escolher o que a coluna "só habituais" mostra. Sem isto a escolha
+ * era do alfabeto: há 84 perguntas empatadas no valor máximo, o desempate é por
+ * texto, e o resultado eram cinco linhas começadas em «como» e «o que é» por
+ * acaso da ordenação.
+ *
+ * RESSALVA, e é grande: a mistura de tipos no autocomplete é em boa parte
+ * NOSSA. Três dos dez moldes pedem sintomas, logo «31% são sobre sintomas» diz
+ * mais sobre o instrumento do que sobre quem procura. No pytrends não é assim —
+ * aí o Google devolve o que quer, sem moldes nossos.
+ */
+const TIPOS: Array<[string, RegExp]> = [
+  ['o que é', /^o\W?que (é|e)\b/i],
+  ['sintomas', /^sintomas d|\bsintomas\b/i],
+  ['causas', /^causas d|\bcausas\b|^o que causa\b/i],
+  ['tratamento', /^como tratar\b|^tratamento para\b|\btratamento\b|^o que tomar\b|^como curar\b/i],
+  ['prevenção', /^como prevenir\b|^como evitar\b/i],
+  ['é normal', /^é normal\b|^e normal\b/i],
+  ['diagnóstico', /^como diagnosticar\b|^como saber se\b/i],
+];
+
+const tipoDaPergunta = (pergunta: string) =>
+  TIPOS.find(([, rx]) => rx.test(pergunta))?.[0] ?? 'outro';
+
+/**
+ * Uma pergunta de cada tipo, e o arranque roda de eixo para eixo — com 3 linhas
+ * por eixo e um arranque fixo, o painel mostrava sempre os mesmos três tipos e
+ * nunca chegava a «é normal ter», que são 124 perguntas e as mais eloquentes
+ * que estes dados têm.
+ */
+function umaDeCadaTipo<T extends { question: string }>(
+  linhas: T[],
+  quantas: number,
+  rodar: number,
+): T[] {
+  const ordem = TIPOS.map(([rot]) => rot).concat('outro');
+  const rodada = [...ordem.slice(rodar % ordem.length), ...ordem.slice(0, rodar % ordem.length)];
+  const escolhidas: T[] = [];
+  const usadas = new Set<T>();
+
+  for (const tipo of rodada) {
+    if (escolhidas.length >= quantas) break;
+    const achada = linhas.find(l => !usadas.has(l) && tipoDaPergunta(l.question) === tipo);
+    if (achada) {
+      escolhidas.push(achada);
+      usadas.add(achada);
+    }
+  }
+  // Se não houver tipos que cheguem, completa pela ordem em que vieram.
+  for (const l of linhas) {
+    if (escolhidas.length >= quantas) break;
+    if (!usadas.has(l)) {
+      escolhidas.push(l);
+      usadas.add(l);
+    }
+  }
+  return escolhidas;
+}
 const POR_EIXO_PYTRENDS = 100;
-const POR_EIXO_AUTOCOMPLETE = 40;
+/**
+ * O conjunto de onde a quota por tipo escolhe. Tem de ser largo: as linhas vêm
+ * ordenadas por `relative_volume` e desempatadas por texto, logo um conjunto
+ * curto fica cheio das que começam em «c» e sem nenhuma «o que é…» — e a quota
+ * escolheria de um saco já enviesado pelo alfabeto, que é o defeito que ela
+ * existe para corrigir. 400 cobre tudo o que está acima do chão de 10 em cada
+ * eixo (~300 linhas).
+ */
+const POR_EIXO_AUTOCOMPLETE = 400;
 
 const mapear = (row: Linha): HealthQuestion => ({
   question: row.question,
@@ -205,13 +282,18 @@ export function useHealthQuestions(axis?: string) {
 
         // Cada eixo contribui com o mesmo número de linhas, para nenhum eixo
         // grande engolir a coluna.
-        const juntar = (chave: 'nasDuas' | 'soASubir' | 'soHabituais') =>
+        const juntar = (chave: 'nasDuas' | 'soASubir') =>
           repartidos.flatMap(r => r[chave].slice(0, porEixo)).map(mapear);
+
+        // "Só habituais" não tem medida nenhuma para ordenar — ver TIPOS acima.
+        const habituais = repartidos
+          .flatMap((r, i) => umaDeCadaTipo(r.soHabituais, porEixo, i))
+          .map(mapear);
 
         if (!cancelled) {
           setNasDuas(juntar('nasDuas'));
           setSoASubir(juntar('soASubir'));
-          setSoHabituais(juntar('soHabituais'));
+          setSoHabituais(habituais);
           setGrowingDate(dataP);
           setAskedDate(dataA);
         }
