@@ -50,8 +50,12 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
       <div className="px-6 py-5">
         <div className="flex items-baseline justify-between">
           <div>
-            <Link to="/" className="text-lg font-bold tracking-[0.05em] uppercase hover:opacity-70 transition-opacity">
-              Reportagem Viva
+            <Link
+              to="/"
+              className="text-lg tracking-[0.05em] uppercase hover:opacity-70 transition-opacity"
+            >
+              <span className="font-bold">Diz que Disse · Lado A</span>
+              <span className="font-light text-foreground/50"> · Reportagem Viva</span>
             </Link>
             <p className="editorial-label mt-1">
               Monitorização de Tendências sobre Saúde em Portugal
@@ -139,8 +143,12 @@ const DashboardHeader = ({ activeAxis, onAxisChange, lastRefreshed, activePage }
         {/* GUIÕES */}
 
         </div>
-        <Link to="/plataforma" className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity">
-          Editorial
+        <Link
+          to="/plataforma"
+          className="text-[10px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity whitespace-nowrap"
+        >
+          <span className="font-bold">Lado B</span>
+          <span className="font-light text-foreground/50"> · Editorial</span>
         </Link>
       </nav>
 

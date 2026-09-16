@@ -26,7 +26,10 @@ const EditorialHeader = () => {
     <header className="w-full">
       {/* Branding */}
       <div className="px-6 py-5">
-        <p className="text-lg font-bold tracking-[0.05em] uppercase">Diz que Disse</p>
+        <p className="text-lg tracking-[0.05em] uppercase">
+          <span className="font-bold">Diz que Disse · Lado B</span>
+          <span className="font-light text-foreground/50"> · Editorial</span>
+        </p>
         <p className="editorial-label mt-1" style={{ opacity: 0.5 }}>
           Serviço Nacional de Literacia em Saúde
         </p>
@@ -39,9 +42,10 @@ const EditorialHeader = () => {
       >
         <Link
           to="/"
-          className="text-[10px] font-bold tracking-[0.15em] uppercase hover:opacity-70 transition-opacity"
+          className="text-[10px] tracking-[0.15em] uppercase hover:opacity-70 transition-opacity whitespace-nowrap"
         >
-          Reportagem Viva
+          <span className="font-bold">Lado A</span>
+          <span className="font-light text-foreground/50"> · Reportagem Viva</span>
         </Link>
         <div className="flex items-center gap-2">
           {NAV_ITEMS.map((item, i) => (
