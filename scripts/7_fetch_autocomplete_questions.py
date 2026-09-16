@@ -4,9 +4,25 @@
 Reportagem Viva — recolhe perguntas reais de saúde via Google Autocomplete
 para cada keyword activa e guarda na tabela health_questions do Supabase.
 
-FONTE: Google Autocomplete (suggestqueries.google.com) — queries reais
-pesadas por frequência histórica. NÃO inclui growth_percent. Campo
-source="autocomplete" distingue estes registos dos do script 6 (pytrends).
+FONTE: Google Autocomplete — as sugestões que aparecem enquanto se escreve.
+Campo source="autocomplete" distingue estes registos dos do script 6 (pytrends).
+
+O QUE ESTE SCRIPT NÃO MEDE, E POR ISSO NÃO INVENTA (reescrito 16/09/2026)
+  O Autocomplete NÃO publica volumes de pesquisa nem crescimento. Até hoje o
+  script gravava `relative_volume = max(10, 100 - pos*5)` — a posição na lista
+  vestida de procura — e `growth_percent = 0` como se medisse crescimento. O
+  dashboard desenhava esse número numa barra ao lado de cada pergunta.
+  Agora grava NULL nos dois, e a posição REAL em `posicao`, com o molde que a
+  produziu em `seed`. Ver a migração 20260916180000.
+
+  A posição reinicia em cada molde. Antes acumulava ao longo dos 10, logo a
+  19.ª sugestão de um tema recebia o valor de chão mesmo sendo a primeira do
+  seu molde.
+
+PAÍS: `client=chrome`, porque com `client=firefox` o parâmetro `gl` não tem
+efeito nenhum (verificado 07/09/2026 e repetido 16/09). Com `chrome` tem efeito
+residual — em três seeds testadas, duas deram resultados idênticos para PT e BR.
+NÃO torna os dados portugueses; torna verdade que se pediu Portugal.
 
 COMPLEMENTARIDADE COM SCRIPT 6:
   Script 6 (pytrends)      → o que está a CRESCER recentemente
@@ -109,7 +125,7 @@ def buscar_autocomplete(seed: str) -> list[str]:
     try:
         r = requests.get(
             AUTOCOMPLETE_URL,
-            params={"q": seed, "hl": "pt", "gl": "pt", "client": "firefox"},
+            params={"q": seed, "hl": "pt", "gl": "PT", "client": "chrome"},
             headers={"Accept-Language": "pt-PT,pt;q=0.9"},
             timeout=8,
         )
@@ -123,6 +139,48 @@ def buscar_autocomplete(seed: str) -> list[str]:
         return []
 
 
+# Moldes que produzem uma pergunta, e marcas de pergunta no próprio texto.
+# Até 16/09/2026 este campo era fixo a True para tudo o que viesse do
+# autocomplete — o que tornava a coluna inútil para filtrar, e deixava passar
+# para o dashboard coisas como "avc toy" ou "stress hídrico" vindas do script 6.
+MOLDES_INTERROGATIVOS = {
+    "sintomas de {keyword}",
+    "como tratar {keyword}",
+    "o que é {keyword}",
+    "causas de {keyword}",
+    "tratamento para {keyword}",
+    "como prevenir {keyword}",
+    "é normal ter {keyword}",
+}
+
+MARCAS_DE_PERGUNTA = (
+    "o que", "o'que", "como ", "quais ", "qual ", "quando ", "onde ",
+    "porque", "porquê", "para que", "sintomas", "causas", "tratamento",
+    "é normal", "e normal", "tem cura", "faz mal", "serve para", "significa",
+)
+
+
+def e_pergunta(sugestao: str, molde: str) -> bool:
+    """Se o molde pede uma pergunta, o que dele sai é pergunta.
+
+    O Google devolve também continuações que já não são a pergunta do molde —
+    por isso confirma-se no texto.
+
+    ESPERA-SE QUE DÊ True QUASE SEMPRE, e isso não é defeito: os 10 moldes são
+    todos em forma de pergunta, logo as continuações também o são. Medido a
+    16/09/2026 sobre as 3634 linhas então guardadas: as 128 que não traziam
+    marca no texto eram todas perguntas na mesma ("o que causa alergias
+    alimentares"), e a lista de marcas foi alargada por causa delas.
+
+    A diferença em relação ao que estava antes não é o valor — é ser OBSERVADO
+    em vez de FIXO. Se um dia vier coisa que não seja pergunta, fica marcada.
+    """
+    if molde in MOLDES_INTERROGATIVOS:
+        return True
+    t = sugestao.lower().strip()
+    return any(m in t for m in MARCAS_DE_PERGUNTA)
+
+
 def buscar_perguntas_keyword(keyword: str, axis: str) -> list[dict]:
     agora = datetime.now(timezone.utc).isoformat()
     vistas: set[str] = set()
@@ -132,23 +190,24 @@ def buscar_perguntas_keyword(keyword: str, axis: str) -> list[dict]:
         seed = template.replace("{keyword}", keyword)
         sugestoes = buscar_autocomplete(seed)
 
-        for sugestao in sugestoes:
+        for posicao, sugestao in enumerate(sugestoes, start=1):
             chave = sugestao.lower().strip()
             if chave in vistas:
                 continue
             vistas.add(chave)
 
-            pos = len(resultados)
-            relative_volume = max(10, 100 - pos * 5)
-
             resultados.append({
                 "question": sugestao,
-                "growth_percent": 0,
-                "relative_volume": relative_volume,
+                # NULL, não 0: esta fonte não mede crescimento nem volume.
+                "growth_percent": None,
+                "relative_volume": None,
+                # A posição dentro DESTE molde, que é o que de facto se observa.
+                "posicao": posicao,
+                "seed": template,
                 "axis": axis,
                 "axis_label": AXIS_LABELS.get(axis, axis),
                 "cluster": keyword,
-                "is_question": True,
+                "is_question": e_pergunta(sugestao, template),
                 "source": SOURCE,
                 "updated_at": agora,
                 "last_seen_at": agora,

@@ -283,11 +283,17 @@ CREATE TABLE IF NOT EXISTS public.bookmarks (
 -- 2.16 health_questions -- Trending health questions from search engines
 --      FK -> keywords(id) ON DELETE SET NULL  (added in later migration)
 -- ----------------------------------------------------------------------------
+-- ALTERADA A 16/09/2026 (migração 20260916180000): growth_percent e
+-- relative_volume deixaram de ser obrigatórios, e entraram `posicao` e `seed`.
+-- Quem não mede escreve NULL em vez de inventar um número — `relative_volume`
+-- nunca foi um volume, era a posição na lista convertida em número.
 CREATE TABLE IF NOT EXISTS public.health_questions (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   question TEXT NOT NULL,
-  growth_percent INTEGER NOT NULL DEFAULT 0,
-  relative_volume INTEGER NOT NULL DEFAULT 0,
+  growth_percent INTEGER,          -- NULL quando a fonte não mede crescimento
+  relative_volume INTEGER,         -- OBSOLETA: nunca foi volume. Usar `posicao`
+  posicao SMALLINT,                -- posição dentro do molde, a começar em 1
+  seed TEXT,                       -- o molde que a produziu, ex. "o que é {keyword}"
   axis TEXT NOT NULL,
   axis_label TEXT NOT NULL,
   cluster TEXT NOT NULL,
