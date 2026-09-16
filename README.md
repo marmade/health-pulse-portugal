@@ -1,73 +1,55 @@
-# Welcome to your Lovable project
+# Reportagem Viva / Diz que Disse
 
-## Project info
+Dashboard de monitorização de tendências de pesquisa sobre saúde em Portugal.
+Trabalho de tese de **Marta Madeira**.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Publicado em** [dizquedisse.martamadeira.pt](https://dizquedisse.martamadeira.pt/)
+(Cloudflare Pages).
 
-## How can I edit this code?
+> **O estado do projecto não se lê aqui — lê-se no [`CONTEXT.md`](CONTEXT.md)**, que é a
+> fonte de verdade e é actualizado a cada sessão. Este ficheiro diz só como se põe o
+> projecto a correr. O diagnóstico do incidente em curso está no [`AUDIT.md`](AUDIT.md).
 
-There are several ways of editing your application.
+## Correr localmente
 
-**Use Lovable**
+Requer Node 20 (está no `.nvmrc`) e um `.env` na raiz com as credenciais da instância
+Supabase:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_PUBLISHABLE_KEY=...
 ```
 
-**Edit a file directly in GitHub**
+Sem estas duas variáveis o build **passa** e o site abre em branco — é comportamento
+deliberado, documentado em `src/integrations/supabase/client.ts`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+npm install
+npm run dev      # servidor de desenvolvimento
+npm run build    # build de produção, sai para dist/
+npm run lint
+npm run test     # vitest
+```
 
-**Use GitHub Codespaces**
+## Como está feito
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Frontend:** Vite · React · TypeScript · Tailwind · shadcn-ui
+- **Dados:** Supabase (instância `ijpxjpbjudaddfatibfl`)
+- **Recolha:** scripts Python em `scripts/`, orquestrados pelo GitHub Actions em
+  `.github/workflows/youtube-trends.yml` — corre **às segundas, 06:00 UTC**
+- **Publicação:** Cloudflare Pages, a partir do `main`
 
-## What technologies are used for this project?
+**Toda a automação está versionada neste repositório.** É uma regra, não um acaso: a
+instância antiga tinha agendadores criados no painel, invisíveis no código, que correram
+durante 191 dias depois de o projecto ter mudado de casa. Ver `CONTEXT.md`, secção
+"Padrões estabelecidos".
 
-This project is built with:
+## Documentação
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+| pasta | o que lá está |
+|---|---|
+| `docs/sessoes/` | registo de cada sessão de trabalho |
+| `docs/evidencia/` | provas com comando e `sha256`, guardadas antes de decidir |
+| `docs/arquivo/` | cópias de dados que deixaram de existir noutro lado |
+| `docs/metodo/` | material para o apêndice metodológico |
+| `docs/operacoes/` | SQL e briefings de operações pontuais |
