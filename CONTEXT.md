@@ -909,6 +909,29 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **Termos ambíguos na lista — quatro medidos, e o `depressão` já com prova.**
+      `[sessão 14][ficheiro]` Achado a 15/09/2026 ao montar as séries do Google Trends.
+      **Palavras clínicas curtas em português tendem a ter uso corrente**, e a recolha não
+      distingue:
+
+      | termo | vol. | o outro significado | estado |
+      |---|---|---|---|
+      | `depressão` | 38 | **sistema meteorológico** | ver abaixo — provado que a série mistura dois fenómenos |
+      | `solidão` | 8 | *"A Solidão dos Números Primos"*, romance | **já contamina** as `health_questions` — a pergunta está lá, com `relative_volume` 100 |
+      | `dependências` | 25 | em imobiliário, **anexos** | por verificar |
+      | `pânico` | 6 | pânico em geral — bolsa, multidões | por verificar |
+
+      **Quatro em dezasseis do eixo saúde mental.** Não é caso isolado: é padrão.
+
+      **A solução não é trocar de termo — é trocar de tipo.** O **tópico** do Google (ex.:
+      `Clinical depression — Mental disorder`) desambigua e continua a medir o conceito.
+      Verificado a 15/09: os tópicos `Mood` e `Clinical depression` têm picos em **semanas
+      diferentes** e são quase cegos um ao outro. Ver
+      `docs/evidencia/2026-09-15-dashboard-inspeccao/`, apêndice.
+
+      **Termo a acrescentar, que não existe na lista: `antidepressivos`.** Não é ambíguo, e
+      mede **procura de tratamento** em vez de procura de informação — para uma tese sobre
+      literacia, é um sinal diferente e provavelmente mais forte.
 - [ ] **SEXTA DECISÃO — separar, na lista de keywords, o nome do conceito da consulta de
       pesquisa.** `[sessão 14][bd][agregado]` Saiu da classificação das 100 a 15/09/2026.
       **Um termo tem de poder ser as duas coisas sem ser a mesma:** `mpox` é o **conceito**,
@@ -933,6 +956,19 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       Ver "O que o mapa das notícias demonstra", na secção da hipótese do vocabulário.
       **Não assenta na hipótese do vocabulário**, que continua por testar — e é por isso que
       é mais fácil de defender do que ela.
+
+      **A lista de partida, se ajudar** `[sessão 14][bd]` — os termos de **uma palavra e com
+      volume ≥ 10**, que são os que têm dados a sério (12% de zeros contra 69% nos
+      multi-palavra):
+      `ansiedade` 65 · `avc` 59 · `burnout` 40 · `endometriose` 40 · `enxaqueca` 39 ·
+      `depressão` 38 · `anemia` 37 · `lúpus` 32 · `candidíase` 31 · `demência` 27 ·
+      `dependências` 25 · `osteoporose` 24 · `sepsis` 22 · `stress` 22 · `suicídio` 18 ·
+      `alzheimer` 16 · `PTSD` 14.
+      **São 17 — quatro descargas de cinco, não dezassete.** Mas o desequilíbrio por eixo é
+      gritante: **saúde mental 10, emergentes 3, menopausa 3, alimentação 1**. Para
+      `alimentação` e `menopausa` os conceitos simples que faltam — `menopausa`,
+      `alimentação`, `dieta`, `nutrição` — **têm de ser acrescentados**, porque não estão na
+      lista.
 
       **É curadoria, não implementação, e é da Marta — não do Claude Code.** Não entra na
       quinta: a quinta corrige o rotulador, isto corrige o vocabulário, e são trabalhos
