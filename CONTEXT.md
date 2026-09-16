@@ -56,6 +56,12 @@
 | A coluna do Autocomplete **não é de Portugal** | 16/09/2026 | `[sessão 15]` Pedidos com `gl=pt` contra `gl=br`, em `client=firefox` e `client=chrome`, e em `google.pt`/`google.com.br` · `[bd][agregado]` contagem de marcas nas 4647 linhas | Com **`client=firefox`**, que é o que o script usa, `gl` **não tem efeito nenhum** — confirma o registo de 07/09. Com **`client=chrome`** tem efeito residual: **em três seeds testadas, duas deram resultados idênticos** para PT e BR, e o Google devolveu `constipação crônica` com `gl=PT`. **Amostra pequena, e é o que há.** Medido nos dados: **169 das 3634** linhas do autocomplete (4,7%) trazem formas que o português europeu não usa, contra **4 das 1013** do Trends (0,4%), onde o `geo=PT` funciona — **dez vezes mais na fonte onde o país é ignorado** |
 | O **"Breakout" do Google não tem limiar publicado** | 16/09/2026 | `[sessão 15][documento]` *How Google autocomplete works in Search* e *FAQ about Google Trends data* | Lê-se por aí que são "mais de 5000%". **Não está na documentação consultada.** O `5000` que o `scripts/6_fetch_health_questions.py:200` lhe atribui é **escolha nossa**, e fica registada como nossa |
 | O valor do Trends é **relativo, não é um número de pesquisas** | 16/09/2026 | `[sessão 15][documento]` *FAQ about Google Trends data* | Citação: *"Each data point is divided by the total searches of the geography and time range it represents"*. **Vale para toda a página**, não só para este painel — é a mesma advertência que a nota "Como ler a escala" do gráfico de trends já fazia, agora dita pela fonte |
+| O script 7 deixou de inventar números | 16/09/2026 | `[sessão 15][ficheiro]` Reescrita de `scripts/7_fetch_autocomplete_questions.py` · migração `20260916180000` aplicada e verificada por `information_schema` · recolha de teste para «menopausa» **sem escrever na base** | `relative_volume` e `growth_percent` passam a **`NULL`** — a fonte não mede volume nem crescimento. Entram **`posicao`** (posição real dentro do molde, a reiniciar em cada um) e **`seed`** (o molde que a produziu). **A posição antes acumulava ao longo dos 10 moldes**, logo a 19.ª sugestão de um tema recebia o valor de chão mesmo sendo a primeira do seu molde. `is_question` passa a calculado — dá `True` quase sempre, porque os moldes são todos em forma de pergunta, e o que muda é ser **observado** e não **fixo**. `client=chrome` em vez de `firefox`, para o `gl=PT` ser respeitado. **4647 linhas intactas** |
+| O script 6 fazia o mesmo, e **esse corre todas as segundas** | 16/09/2026 | `[sessão 15][ficheiro]` `scripts/6_fetch_health_questions.py:206` · workflow, passo 2 activo | `max(10, 100 - rank_idx*8)`. Enquanto o 7 estava desligado desde 09/09, **o 6 escreveu o número fabricado todas as semanas**. Corrigido no mesmo dia: `NULL` e `posicao`. **Foi encontrado ao percorrer todos os sítios que tocam em `health_questions`, não por acaso** — o método passou a ser esse depois de o `archive-weekly` ter aparecido por tropeção |
+| O arquivo semanal guardava ruído com um número que era uma posição | 16/09/2026 | `[sessão 15][ficheiro]` `supabase/functions/archive-weekly/index.ts` · `[bd]` conteúdo de `briefings_archive` · `[bd]` código **publicado** lido por `get_edge_function` | A Edge Function do passo 7 lia `health_questions` por `growth_percent` **sem filtrar fonte nem `is_question`**, e gravava `relative_volume` como **`current_volume`**. O que está guardado: semana 31/08 *"stress strain curve"*, *"todo mundo em pânico 7 data de lançamento"*; semana 24/08 *"ministro avc"*, *"ptad"* — com 100, 76, 84, os múltiplos de 8 da posição. **Corrigida e publicada a 16/09 (versão 2)**, verificada indo buscar o código ao servidor. **Os arquivos já gravados não foram tocados** — apagar destrói o registo, reescrever inventa um passado; ficam como prova para o apêndice |
+| O bloco que devia alimentar o mural **nunca funcionou** | 16/09/2026 | `[sessão 15][ficheiro]` `scripts/6:288-360` · `[bd]` `information_schema` e distribuição de `keywords.source` · filtro do bloco corrido contra os dados | O `payload` não inclui `source`, e `keywords.source` é `NOT NULL` sem valor por omissão: a base recusa todos os inserts. Verificado por **três caminhos** — a função **é** chamada (`main:285`), a constraint existe, e o filtro produz **536 candidatos hoje** sem que **um único** esteja na tabela; as 83 keywords vêm de fontes curadas em Março. **E a falha andou a proteger o mural:** o que tentava inserir era *"suicídio viseu"*, *"sepsis meaning"*, *"stress hídrico"*, *"tou avc"* — escolhe de propósito linhas com `is_question = false`. **Aviso escrito por cima do bloco**, porque quem lá for mexer pode não ler este documento. **Não verificado:** o erro HTTP de uma corrida — os registos do GitHub Actions não foram consultados |
+| O corte pela recolha mais recente **só se pode aplicar ao autocomplete** | 16/09/2026 | `[sessão 15][bd][agregado]` Contagem por fonte e por eixo das perguntas na última recolha de cada uma | Autocomplete: 3397 → **2549**, sobra de tudo. pytrends: 183 → **21**, e `emergentes` fica com **uma**. O painel mostra 3 por eixo em duas colunas. **Decisão:** corta-se o autocomplete e nas colunas do Trends o rótulo passa a dizer *"a lista inclui recolhas anteriores"*. Nada é apagado — o corte é de leitura |
+| Os tipos do TypeScript **não protegem nada** | 16/09/2026 | `[sessão 15][ficheiro]` `tsconfig.app.json` e `tsconfig.json` | `"strict": false` e `strictNullChecks: false`. O `types.ts` foi realinhado com o schema, mas **o compilador não verifica nulos**. São documentação, não guarda. **Vale para todo o projecto**, não só para esta tabela |
 | O **tipo de dúvida** lê-se no texto da pergunta — e a mistura é em parte nossa | 16/09/2026 | `[sessão 15][bd][agregado]` Classificação das 4647 linhas pelo início do texto, que reflecte os 10 moldes do `scripts/7:68-79` | **Autocomplete:** sintomas 31% · tratamento 27% · o que é 16% · causas 14% · prevenção 4% · «é normal ter» 4%. **pytrends:** sintomas 33% · o que é 24% · tratamento 8% · causas 8%. **A distribuição do autocomplete descreve o instrumento, não o país:** três dos dez moldes pedem sintomas, logo «31% procuram sintomas» é uma afirmação sobre a nossa recolha. **No pytrends não há moldes nossos** — aí a distribuição é das pessoas, e é a coluna informativa. Passou a ser o critério da terceira coluna do painel, que antes não tinha nenhum |
 | Como as perguntas se repartem entre as duas fontes | 16/09/2026 | `[sessão 15][bd][agregado]` Cruzamento por texto exacto de `question`, sobre as 4647 linhas | **48** nas duas fontes · **135** só no Trends · **3349** só no Autocomplete depois dos filtros (**3586** antes). **Números deste dia:** mudam a cada recolha |
 | A instância antiga **não está congelada** — escreve todos os dias | 15/09/2026 | `[sessão 14][bd]` `cron.job` e `cron.job_run_details` no SQL editor do Lovable Cloud, único acesso administrativo a esta instância · contagens REST com a chave `anon` · evidência em `docs/evidencia/2026-09-15-cron-instancia-antiga/`, três CSV com `sha256` conferido no terminal | **Dois `pg_cron` internos**, nenhum deles no repositório: job **1 activo**, `0 6 * * *`, invoca `fetch-rss-feeds` → `news_items`; job **2 inactivo**, invocaria `refresh-trends`. **191 execuções em 191 dias**, 09/03–15/09/2026, sem falhar um — **156 posteriores à migração de 12/04**. `news_items` **1994 (09/09) → 2128 (15/09)**, +134 em 6 dias. **"Congelada a 30/04" é falso para `news_items`**; é verdadeiro para `historical_snapshots` (12072, inalteradas) — e a causa é o **job 2 estar desligado, não avariado** |
@@ -522,8 +528,13 @@ diferente, logo linhas da mesma coluna podem vir de recolhas de semanas diferent
 página não o diz. E a ideia de **blocos por tipo dentro da página de cada eixo**, decidida a
 16/09 e por fazer: é aí que cabe o detalhe que o dashboard só amostra.
 
-**NÃO PUBLICADO.** Commits `1746a89`, `5dfe615`, `01ca894`, `477e17f`, `07df266`. O site
-continua a servir o painel anterior.
+**NÃO PUBLICADO.** Commits `1746a89`, `5dfe615`, `01ca894`, `477e17f`, `07df266`,
+`456fc7a`, `2b83a00`. O site continua a servir o painel anterior.
+
+**O que FOI para produção a 16/09/2026**, e é só isto: a migração `20260916180000` e a Edge
+Function `archive-weekly` **versão 2**. O passo 2B continua desligado. O site continua no
+painel antigo. Na segunda 21/09 corre o mesmo que correu na segunda passada, **menos** o
+ruído que o arquivo deixou de gravar.
 
 
 ---
@@ -964,9 +975,20 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    linhas de `pytrends`, logo guardar só o autocomplete era guardar a metade que não estava
    na página.
 
-   **Falta a reescrita**, e as condições para religar o passo 2B estão escritas no
-   `youtube-trends.yml`: o script tem de gravar **o que mede ou `NULL`**, nunca um número
-   vindo da posição. Enquanto não for feito, o passo fica desligado e as duas fontes correm
+   ~~**Falta a reescrita**~~ — **FEITA a 16/09/2026** (`5e424e7`, `2b83a00`), com a migração
+   `20260916180000` e a `migration_consolidada.sql` alinhada no mesmo dia. **Decisão da
+   Marta sobre as 909 linhas:** o painel mostra só a recolha mais recente, **e o script
+   nunca apaga**. Medido antes de decidir: **70 dos 71 temas foram recolhidos a 07/09**,
+   logo 908 das 909 são desaparecimentos reais e não falha de recolha. Cada tema tem ~100
+   perguntas vivas porque são **10 moldes × ~10 sugestões** — *inferência, não medição
+   directa*: o tamanho do conjunto vivo é decidido pelo instrumento.
+
+   **Falta só ligar o passo 2B**, e fica deliberadamente para depois de 21/09: a Edge
+   Function foi publicada hoje e a corrida de segunda testa-a sozinha. Ligar as duas coisas
+   na mesma semana deixaria sem saber qual delas falhou.
+
+   As condições que o `youtube-trends.yml` exigia estão cumpridas: o script grava **o que
+   mede ou `NULL`**, nunca um número vindo da posição. Enquanto não for feito, o passo fica desligado e as duas fontes correm
    em dias diferentes — que é o que obriga a página a dizer *"as duas correm em dias
    diferentes"*.
 
