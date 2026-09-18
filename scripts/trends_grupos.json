@@ -1,0 +1,19 @@
+{
+  "_comentario": "Âncoras por eixo, escolhidas com dados a 18/09/2026 — ver docs/metodo/2026-09-18-reguas-e-ancoras.md secção 7. A lista de termos NÃO está aqui: o script lê as keywords activas da base de dados e agrupa-as de 4 em 4 com a âncora do eixo. Muda-se a lista na base; muda-se a âncora aqui.",
+  "ancoras": {
+    "saude-mental": "psiquiatra",
+    "alimentacao": "colesterol alto",
+    "menopausa": "menopausa",
+    "emergentes": "avc"
+  },
+  "categoria": 45,
+  "geo": "PT",
+  "termos_por_pedido": 5,
+  "pausa_segundos": 15,
+  "esmagado_abaixo_de": 15,
+  "ancora_secundaria_entre": [
+    20,
+    40
+  ],
+  "espera_apos_429": 60
+}

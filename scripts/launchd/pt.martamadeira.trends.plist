@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Google Trends por grupos com âncora, à segunda de manhã, no Mac da Marta.
+       Ver scripts/launchd/README.md. NÃO está instalado até se correr o `launchctl load`. -->
+  <key>Label</key>            <string>pt.martamadeira.trends</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/marmade/Documents/health-pulse-portugal/.venv-trends/bin/python</string>
+    <string>/Users/marmade/Documents/health-pulse-portugal/scripts/5_fetch_google_trends.py</string>
+    <string>--gravar</string>
+    <string>--origem</string> <string>launchd</string>
+  </array>
+  <key>WorkingDirectory</key> <string>/Users/marmade/Documents/health-pulse-portugal</string>
+  <!-- a chave vem de um ficheiro fora do repositório, lido pelo script? NÃO: o launchd
+       passa-a como variável. Preencher antes de instalar; o ficheiro instalado fica em
+       ~/Library/LaunchAgents e NÃO se versiona. -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>SUPABASE_SERVICE_ROLE_KEY</key> <string>PREENCHER-ANTES-DE-INSTALAR</string>
+  </dict>
+  <!-- segunda-feira (1), 07:30 locais. Se o Mac estiver a dormir, corre ao acordar;
+       se estiver desligado, a semana fica sem lote — e isso vê-se na tabela. -->
+  <key>StartCalendarInterval</key>
+  <dict> <key>Weekday</key><integer>1</integer> <key>Hour</key><integer>7</integer> <key>Minute</key><integer>30</integer> </dict>
+  <key>StandardOutPath</key>  <string>/Users/marmade/Library/Logs/trends-lote.log</string>
+  <key>StandardErrorPath</key> <string>/Users/marmade/Library/Logs/trends-lote.err</string>
+</dict>
+</plist>

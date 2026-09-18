@@ -36,3 +36,4 @@ dist-ssr
 # Pasta de trabalho da ponte do Cowork. Os documentos que ficam vão para
 # docs/operacoes/ ou docs/evidencia/, com nome datado.
 Claude outputs/
+.venv-trends/
