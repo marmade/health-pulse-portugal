@@ -1,0 +1,11 @@
+lotes: 2 · pontos parciais excluídos: 168 · lote de 5 anos: ec6cc6fc (261 semanas completas)
+
+== lote 4dad25b9 () — última semana completa
+  2026-09-06 a observar   emergentes    avc                                x=  39.5 ref=  28.2 ruído=  5.6 z=  2.0 × 1.4 saz×1.2
+  2026-09-06 a observar   saude-mental  psiquiatra                         x=  83.4 ref=  68.6 ruído=  7.3 z=  2.0 × 1.2 saz×1.2
+  elegíveis para subida, por eixo: {'alimentacao': '3/18', 'emergentes': '1/15', 'menopausa': '5/17', 'saude-mental': '8/34'}
+
+== lote ec6cc6fc () — última semana completa
+  2026-09-06 a observar   emergentes    avc                                x=  39.7 ref=  28.3 ruído=  5.7 z=  2.0 × 1.4 saz×1.2
+  2026-09-06 a observar   saude-mental  psiquiatra                         x=  73.2 ref=  59.5 ruído=  6.1 z=  2.3 × 1.2 saz×1.2
+  elegíveis para subida, por eixo: {'alimentacao': '3/18', 'emergentes': '1/15', 'menopausa': '5/17', 'saude-mental': '8/34'}

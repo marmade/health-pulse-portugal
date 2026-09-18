@@ -1080,14 +1080,21 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       100 (`20260918180000`) e das colunas de auditoria de `news_items` (`20260918190000`) →
       publicar `fetch-rss-feeds` reescrita (palavra inteira, categoria do feed, CDATA) →
       `types.ts` → consolidada → script 5 sobre a lista nova (12 m e 5 a; o dashboard já lê do
-      último lote) → rotular de novo as 310 notícias → passo 2B
+      último lote) → rotular de novo as 310 notícias → passo 2B. **Na mesma passagem:** as
+      vistas `20260918200000` a excluírem a semana parcial (`is_partial`) — hoje `maximo_52s`
+      / `pico_em` podem apontar para ela
 - [ ] Instalar o `launchd` depois do primeiro passo validado
-- [ ] Alertas (fase 3): regra escrita, 12 meses semanal, sazonalidade descontada; Emergentes
-      por pico
+- [ ] Alertas (fase 3): **regra desenhada a 18/09** (`docs/metodo/2026-09-18-alertas-regra.md`;
+      `scripts/testes/teste_5_alertas.py`): mediana + MAD sobre 8 semanas, elegibilidade
+      (6/8 > 0), sazonalidade descontada no lote de 5 anos, aparecimento para os não elegíveis,
+      Emergentes por pico. Faltam as cinco decisões da secção 7 e a implementação, depois do
+      lote da lista nova
 - [ ] As 100 keywords no mural (decisão da Marta, 18/09)
 - [ ] `keywords.current_volume INT NOT NULL DEFAULT 0` — o zero-que-finge está no schema
-- [ ] Reconsiderar `açúcar e saúde` (14 ao lado de anemia no lote); classificar as 40 novas
-      (`category` = 'por classificar')
+- [ ] Reconsiderar `açúcar e saúde` (14 ao lado de anemia no lote). ~~Classificar as 40
+      novas~~ — feito a 18/09 na migração por aplicar
+      (`docs/evidencia/2026-09-18-vocabulario/classificacao-40-novas.md`); `lipedema` e
+      `mosquito tigre` a rever
 - [ ] Repetir as 6 related queries que falharam com 429
 - [ ] Resposta da alfa da API do Trends
 - [ ] **Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do

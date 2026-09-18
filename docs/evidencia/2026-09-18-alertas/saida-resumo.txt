@@ -1,0 +1,162 @@
+lotes: 2 · pontos parciais excluídos: 168 · lote de 5 anos: ec6cc6fc (261 semanas completas)
+avaliações 21252 · elegíveis 5043 (24%) · subidas 109 · sazonais descontadas 18 · aparecimentos 8
+semanas com alerta 90 de 253 · máx numa semana 4 · por ano [('2022', 29), ('2023', 14), ('2024', 23), ('2025', 21), ('2026', 30)]
+
+por termo (subidas não sazonais):
+   21  saude-mental  depressão
+   12  alimentacao   diabetes tipo 2
+   12  saude-mental  burnout
+   11  menopausa     endometriose
+    6  alimentacao   jejum intermitente
+    6  saude-mental  demência
+    5  emergentes    avc
+    5  menopausa     menopausa
+    5  saude-mental  alzheimer
+    4  saude-mental  stress
+    3  alimentacao   colesterol alto
+    3  alimentacao   suplementos alimentares
+    3  emergentes    sepsis
+    3  menopausa     cancro da mama
+    3  menopausa     menopausa sintomas
+    3  menopausa     osteoporose
+    1  alimentacao   refluxo gastroesofágico
+    1  emergentes    long covid
+    1  emergentes    lúpus
+    1  saude-mental  psiquiatra
+
+todos os disparos, por data:
+  2022-01-02 SUBIDA       alimentacao   jejum intermitente                 x= 126.3 ref=  34.1 ruído= 13.1 z=  7.0 × 3.7 saz× — 
+  2022-01-09 SUBIDA       menopausa     endometriose                       x=  32.2 ref=  18.6 ruído=  3.8 z=  3.6 × 1.7 saz× — 
+  2022-01-09 SUBIDA       menopausa     osteoporose                        x=  15.0 ref=   8.0 ruído=  2.0 z=  3.5 × 1.9 saz× — 
+  2022-02-06 SUBIDA       alimentacao   colesterol alto                    x=  76.2 ref=  49.4 ruído=  6.3 z=  4.3 × 1.5 saz× — 
+  2022-03-13 SUBIDA       alimentacao   suplementos alimentares            x=  40.3 ref=  25.0 ruído=  3.8 z=  4.0 × 1.6 saz× — 
+  2022-03-13 SUBIDA       saude-mental  burnout                            x=  44.9 ref=  27.8 ruído=  4.0 z=  4.3 × 1.6 saz× — 
+  2022-03-27 SUBIDA       emergentes    avc                                x=  51.0 ref=  34.0 ruído=  5.7 z=  3.0 × 1.5 saz× — 
+  2022-03-27 SUBIDA       menopausa     endometriose                       x=  49.1 ref=  27.1 ruído=  6.3 z=  3.5 × 1.8 saz× — 
+  2022-04-10 SUBIDA       saude-mental  burnout                            x=  55.6 ref=  30.5 ruído=  5.3 z=  4.7 × 1.8 saz× — 
+  2022-05-08 SUBIDA       emergentes    long covid                         x=  12.0 ref=   5.0 ruído=  2.0 z=  3.5 × 2.4 saz× — 
+  2022-06-05 SUBIDA       emergentes    sepsis                             x=  13.0 ref=   5.5 ruído=  2.0 z=  3.8 × 2.4 saz× — 
+  2022-06-26 SUBIDA       saude-mental  burnout                            x= 179.4 ref=  37.7 ruído=  8.0 z= 17.8 × 4.8 saz× — 
+  2022-06-26 SUBIDA       saude-mental  depressão                          x= 183.0 ref= 108.4 ruído= 13.6 z=  5.5 × 1.7 saz× — 
+  2022-07-03 SUBIDA       menopausa     endometriose                       x=  59.2 ref=  22.0 ruído=  3.4 z= 11.0 × 2.7 saz× — 
+  2022-07-10 SUBIDA       alimentacao   diabetes tipo 2                    x=  58.1 ref=  36.6 ruído=  5.1 z=  4.2 × 1.6 saz× — 
+  2022-07-10 SUBIDA       menopausa     endometriose                       x=  91.4 ref=  22.0 ruído=  3.8 z= 18.4 × 4.2 saz× — 
+  2022-07-17 SUBIDA       menopausa     endometriose                       x= 130.3 ref=  22.0 ruído=  7.5 z= 14.4 × 5.9 saz× — 
+  2022-07-24 SUBIDA       menopausa     endometriose                       x= 169.2 ref=  22.0 ruído=  7.5 z= 19.6 × 7.7 saz× — 
+  2022-07-31 SUBIDA       menopausa     menopausa sintomas                 x=  14.0 ref=   7.5 ruído=  2.0 z=  3.2 × 1.9 saz× — 
+  2022-09-18 SUBIDA       saude-mental  alzheimer                          x= 100.7 ref=  59.5 ruído=  6.8 z=  6.1 × 1.7 saz× — 
+  2022-10-02 SUBIDA       menopausa     cancro da mama                     x=  27.1 ref=  15.2 ruído=  3.4 z=  3.5 × 1.8 saz× — 
+  2022-10-09 SUBIDA       menopausa     cancro da mama                     x=  30.5 ref=  15.2 ruído=  3.8 z=  4.0 × 2.0 saz× — 
+  2022-10-09 SUBIDA       saude-mental  burnout                            x= 109.4 ref=  31.4 ruído=  5.3 z= 14.7 × 3.5 saz× — 
+  2022-10-16 SUBIDA       menopausa     cancro da mama                     x=  40.6 ref=  17.8 ruído=  7.5 z=  3.0 × 2.3 saz× — 
+  2022-10-16 SUBIDA       menopausa     osteoporose                        x=  16.0 ref=   8.5 ruído=  2.2 z=  3.4 × 1.9 saz× — 
+  2022-10-23 SUBIDA       saude-mental  burnout                            x=  68.2 ref=  34.1 ruído= 10.6 z=  3.2 × 2.0 saz× — 
+  2022-11-13 SUBIDA       alimentacao   suplementos alimentares            x=  38.4 ref=  24.0 ruído=  4.3 z=  3.4 × 1.6 saz× — 
+  2022-12-11 SUBIDA       alimentacao   jejum intermitente                 x=  49.3 ref=  32.8 ruído=  4.7 z=  3.5 × 1.5 saz×1.1
+  2022-12-11 SUBIDA       alimentacao   refluxo gastroesofágico            x=  51.8 ref=  19.2 ruído=  4.3 z=  7.6 × 2.7 saz× — 
+  2022-12-25 sazonal      alimentacao   jejum intermitente                 x=  64.4 ref=  30.9 ruído=  5.6 z=  6.0 × 2.1 saz×3.8
+  2023-01-01 sazonal      alimentacao   jejum intermitente                 x=  93.5 ref=  30.9 ruído=  5.6 z= 11.1 × 3.0 saz×3.7
+  2023-01-08 sazonal      alimentacao   jejum intermitente                 x= 116.2 ref=  32.2 ruído=  8.4 z= 10.0 × 3.6 saz×3.5
+  2023-01-15 sazonal      menopausa     osteoporose                        x=  16.0 ref=   8.5 ruído=  2.0 z=  3.8 × 1.9 saz×1.7
+  2023-02-12 SUBIDA       saude-mental  demência                           x=  91.5 ref=  19.7 ruído=  4.0 z= 18.0 × 4.6 saz× — 
+  2023-03-05 SUBIDA       alimentacao   diabetes tipo 2                    x=  45.5 ref=  24.0 ruído=  5.1 z=  4.3 × 1.9 saz×1.3
+  2023-05-07 SUBIDA       emergentes    lúpus                              x=  18.0 ref=   6.0 ruído=  2.0 z=  6.0 × 3.0 saz× — 
+  2023-05-14 SUBIDA       saude-mental  burnout                            x=  71.8 ref=  30.5 ruído=  3.6 z= 11.5 × 2.4 saz×1.3
+  2023-05-21 SUBIDA       saude-mental  burnout                            x=  50.2 ref=  30.5 ruído=  3.6 z=  5.5 × 1.6 saz×1.3
+  2023-06-04 SUBIDA       saude-mental  depressão                          x= 277.9 ref=  94.9 ruído= 13.6 z= 13.5 × 2.9 saz×1.0
+  2023-07-16 sazonal      menopausa     endometriose                       x=  49.1 ref=  22.0 ruído=  3.8 z=  7.2 × 2.2 saz×7.7
+  2023-09-17 SUBIDA       alimentacao   suplementos alimentares            x=  44.2 ref=  22.1 ruído=  5.7 z=  3.9 × 2.0 saz× — 
+  2023-09-17 sazonal      saude-mental  alzheimer                          x=  85.4 ref=  51.9 ruído=  6.1 z=  5.5 × 1.6 saz×1.7
+  2023-09-17 SUBIDA       saude-mental  burnout                            x=  53.8 ref=  28.7 ruído=  3.6 z=  7.0 × 1.9 saz×1.0
+  2023-09-24 SUBIDA       saude-mental  burnout                            x=  44.9 ref=  28.7 ruído=  5.3 z=  3.0 × 1.6 saz×1.0
+  2023-10-01 sazonal      menopausa     cancro da mama                     x=  27.1 ref=  14.4 ruído=  3.4 z=  3.8 × 1.9 saz×2.0
+  2023-10-08 sazonal      menopausa     cancro da mama                     x=  30.5 ref=  15.2 ruído=  3.8 z=  4.0 × 2.0 saz×2.7
+  2023-10-15 sazonal      menopausa     cancro da mama                     x=  42.3 ref=  15.2 ruído=  3.8 z=  7.2 × 2.8 saz×2.3
+  2023-10-15 SUBIDA       saude-mental  depressão                          x= 203.3 ref=  81.3 ruído= 15.1 z=  8.1 × 2.5 saz×1.3
+  2023-10-22 SUBIDA       saude-mental  depressão                          x= 149.1 ref=  84.7 ruído= 15.1 z=  4.3 × 1.8 saz×1.3
+  2023-10-29 SUBIDA       saude-mental  depressão                          x= 169.4 ref=  91.5 ruído= 15.1 z=  5.2 × 1.9 saz×1.2
+  2023-11-12 SUBIDA       alimentacao   diabetes tipo 2                    x=  70.7 ref=  36.6 ruído=  9.4 z=  3.6 × 1.9 saz×1.1
+  2023-12-17 SUBIDA       saude-mental  burnout                            x=  84.3 ref=  37.7 ruído=  8.0 z=  5.8 × 2.2 saz×0.9
+  2023-12-31 sazonal      alimentacao   jejum intermitente                 x=  39.2 ref=  23.4 ruído=  3.7 z=  4.2 × 1.7 saz×3.7
+  2024-01-07 sazonal      alimentacao   jejum intermitente                 x=  40.4 ref=  23.4 ruído=  3.7 z=  4.6 × 1.7 saz×3.6
+  2024-01-07 SUBIDA       saude-mental  depressão                          x= 135.6 ref=  81.3 ruído= 13.6 z=  4.0 × 1.7 saz×1.1
+  2024-01-14 SUBIDA       saude-mental  depressão                          x= 230.4 ref=  81.3 ruído= 13.6 z= 11.0 × 2.8 saz×1.2
+  2024-01-28 SUBIDA       saude-mental  alzheimer                          x= 109.8 ref=  61.0 ruído=  6.8 z=  7.2 × 1.8 saz×1.2
+  2024-02-04 SUBIDA       saude-mental  depressão                          x= 196.6 ref=  81.3 ruído= 15.1 z=  7.6 × 2.4 saz×1.1
+  2024-02-25 APARECIMENTO alimentacao   ultraprocessados                   x=  23.0 ref=   0.0 ruído=  2.0 z=  0.0 × 0.0 saz× — 
+  2024-03-24 SUBIDA       saude-mental  depressão                          x= 155.9 ref=  77.9 ruído= 13.6 z=  5.8 × 2.0 saz×1.2
+  2024-03-31 SUBIDA       saude-mental  demência                           x=  28.7 ref=  17.9 ruído=  3.6 z=  3.0 × 1.6 saz×1.0
+  2024-04-14 SUBIDA       alimentacao   jejum intermitente                 x=  65.7 ref=  35.4 ruído=  6.6 z=  4.6 × 1.9 saz×1.2
+  2024-05-05 SUBIDA       alimentacao   diabetes tipo 2                    x=  53.1 ref=  35.4 ruído=  5.1 z=  3.5 × 1.5 saz×1.2
+  2024-06-02 SUBIDA       alimentacao   jejum intermitente                 x=  85.9 ref=  39.8 ruído=  5.6 z=  8.2 × 2.2 saz×1.1
+  2024-06-09 SUBIDA       alimentacao   jejum intermitente                 x=  61.9 ref=  39.8 ruído=  5.6 z=  3.9 × 1.6 saz×1.1
+  2024-06-09 SUBIDA       saude-mental  psiquiatra                         x= 100.7 ref=  59.5 ruído=  6.8 z=  6.1 × 1.7 saz×1.0
+  2024-07-21 APARECIMENTO emergentes    vírus nipah                        x=  23.0 ref=   0.0 ruído=  2.0 z=  0.0 × 0.0 saz× — 
+  2024-07-21 SUBIDA       saude-mental  burnout                            x=  55.6 ref=  36.8 ruído=  4.0 z=  4.7 × 1.5 saz×1.2
+  2024-09-22 SUBIDA       menopausa     osteoporose                        x=  14.0 ref=   7.5 ruído=  2.0 z=  3.2 × 1.9 saz×1.4
+  2024-09-29 SUBIDA       menopausa     endometriose                       x=  55.8 ref=  23.7 ruído=  3.4 z=  9.5 × 2.4 saz×1.1
+  2024-09-29 SUBIDA       menopausa     menopausa sintomas                 x=  13.0 ref=   6.5 ruído=  2.0 z=  3.2 × 2.0 saz×1.2
+  2024-09-29 SUBIDA       saude-mental  alzheimer                          x=  70.2 ref=  45.8 ruído=  6.1 z=  4.0 × 1.5 saz×1.1
+  2024-10-06 SUBIDA       menopausa     menopausa                          x=  74.5 ref=  45.7 ruído=  6.3 z=  4.6 × 1.6 saz×1.3
+  2024-10-13 sazonal      menopausa     cancro da mama                     x=  37.2 ref=  15.2 ruído=  3.8 z=  5.8 × 2.4 saz×2.5
+  2024-10-13 SUBIDA       menopausa     menopausa                          x=  82.9 ref=  47.4 ruído=  7.5 z=  4.7 × 1.8 saz×1.3
+  2024-10-20 sazonal      menopausa     cancro da mama                     x=  33.8 ref=  16.1 ruído=  5.0 z=  3.5 × 2.1 saz×2.1
+  2024-11-10 SUBIDA       alimentacao   diabetes tipo 2                    x=  53.1 ref=  25.3 ruído=  7.5 z=  3.7 × 2.1 saz×1.5
+  2024-11-10 SUBIDA       saude-mental  demência                           x=  39.5 ref=  19.7 ruído=  4.0 z=  4.9 × 2.0 saz×1.0
+  2024-11-17 SUBIDA       saude-mental  depressão                          x= 128.8 ref=  71.2 ruído= 13.6 z=  4.2 × 1.8 saz×0.9
+  2025-01-12 SUBIDA       menopausa     menopausa                          x=  66.0 ref=  39.8 ruído=  7.5 z=  3.5 × 1.7 saz×1.3
+  2025-01-19 SUBIDA       menopausa     menopausa                          x=  64.3 ref=  39.8 ruído=  7.5 z=  3.3 × 1.6 saz×1.2
+  2025-01-19 SUBIDA       saude-mental  depressão                          x= 176.2 ref=  61.0 ruído= 13.6 z=  8.5 × 2.9 saz×1.3
+  2025-01-26 SUBIDA       menopausa     menopausa                          x=  98.2 ref=  39.8 ruído=  7.5 z=  7.8 × 2.5 saz×1.1
+  2025-01-26 SUBIDA       saude-mental  depressão                          x= 115.2 ref=  61.0 ruído= 13.6 z=  4.0 × 1.9 saz×1.2
+  2025-02-02 sazonal      menopausa     endometriose                       x=  38.9 ref=  22.8 ruído=  3.8 z=  4.3 × 1.7 saz×1.8
+  2025-03-09 SUBIDA       emergentes    avc                                x=  48.2 ref=  31.2 ruído=  5.7 z=  3.0 × 1.5 saz×1.1
+  2025-03-09 SUBIDA       menopausa     endometriose                       x=  62.6 ref=  23.7 ruído=  5.0 z=  7.8 × 2.6 saz×1.3
+  2025-03-16 SUBIDA       saude-mental  depressão                          x= 311.8 ref=  71.2 ruído= 13.6 z= 17.7 × 4.4 saz×1.2
+  2025-03-23 SUBIDA       menopausa     endometriose                       x=  69.4 ref=  30.5 ruído= 12.5 z=  3.1 × 2.3 saz×1.5
+  2025-03-30 SUBIDA       alimentacao   jejum intermitente                 x=  39.2 ref=  25.3 ruído=  3.7 z=  3.7 × 1.6 saz×1.3
+  2025-03-30 SUBIDA       saude-mental  depressão                          x= 155.9 ref=  71.2 ruído= 13.6 z=  6.2 × 2.2 saz×1.2
+  2025-05-11 APARECIMENTO alimentacao   refluxo gastroesofágico            x= 192.0 ref=   0.0 ruído=  3.8 z=  0.0 × 0.0 saz× — 
+  2025-07-06 sazonal      menopausa     endometriose                       x=  32.2 ref=  20.3 ruído=  3.4 z=  3.5 × 1.6 saz×2.1
+  2025-08-17 SUBIDA       menopausa     menopausa sintomas                 x=  12.0 ref=   6.0 ruído=  2.0 z=  3.0 × 2.0 saz×1.4
+  2025-09-07 SUBIDA       alimentacao   colesterol alto                    x=  62.1 ref=  35.3 ruído=  6.3 z=  4.3 × 1.8 saz×1.0
+  2025-09-28 sazonal      menopausa     cancro da mama                     x=  25.4 ref=  13.5 ruído=  3.4 z=  3.5 × 1.9 saz×2.0
+  2025-09-28 SUBIDA       saude-mental  stress                             x=  94.5 ref=  57.1 ruído= 10.2 z=  3.7 × 1.7 saz×1.4
+  2025-10-05 sazonal      menopausa     cancro da mama                     x=  32.2 ref=  13.5 ruído=  3.4 z=  5.5 × 2.4 saz×2.7
+  2025-10-12 sazonal      menopausa     cancro da mama                     x=  35.5 ref=  13.5 ruído=  5.0 z=  4.4 × 2.6 saz×2.4
+  2025-10-19 SUBIDA       saude-mental  depressão                          x= 135.6 ref=  67.8 ruído= 13.6 z=  5.0 × 2.0 saz×1.3
+  2025-11-09 SUBIDA       saude-mental  depressão                          x= 332.1 ref=  71.2 ruído= 13.6 z= 19.2 × 4.7 saz×1.2
+  2025-11-16 SUBIDA       emergentes    avc                                x=  96.3 ref=  32.6 ruído=  5.7 z= 11.2 × 3.0 saz×1.1
+  2025-11-23 SUBIDA       emergentes    avc                                x=  68.0 ref=  34.0 ruído=  5.7 z=  6.0 × 2.0 saz×1.1
+  2025-12-21 SUBIDA       emergentes    avc                                x=  85.0 ref=  36.8 ruído=  8.4 z=  5.7 × 2.3 saz×1.1
+  2025-12-28 SUBIDA       alimentacao   diabetes tipo 2                    x=  58.1 ref=  26.5 ruído=  5.1 z=  6.3 × 2.2 saz×0.9
+  2026-01-11 APARECIMENTO emergentes    candida auris                      x= 283.3 ref=   0.0 ruído=  5.7 z=  0.0 × 0.0 saz× — 
+  2026-01-18 SUBIDA       saude-mental  depressão                          x= 216.9 ref=  81.3 ruído= 35.2 z=  3.9 × 2.7 saz×2.1
+  2026-01-25 APARECIMENTO emergentes    vírus nipah                        x=  51.0 ref=   0.0 ruído=  2.0 z=  0.0 × 0.0 saz× — 
+  2026-01-25 SUBIDA       saude-mental  depressão                          x= 657.4 ref= 105.1 ruído= 40.2 z= 13.7 × 6.3 saz×1.8
+  2026-02-01 SUBIDA       saude-mental  depressão                          x= 677.8 ref= 108.4 ruído= 55.3 z= 10.3 × 6.2 saz×1.6
+  2026-02-08 APARECIMENTO alimentacao   intolerância à lactose             x=  27.8 ref=   0.0 ruído=  2.5 z=  0.0 × 0.0 saz× — 
+  2026-02-08 SUBIDA       saude-mental  depressão                          x= 399.9 ref= 108.4 ruído= 70.3 z=  4.1 × 3.7 saz×1.1
+  2026-02-15 SUBIDA       saude-mental  stress                             x= 157.4 ref=  97.4 ruído= 17.5 z=  3.4 × 1.6 saz×1.1
+  2026-02-22 SUBIDA       saude-mental  burnout                            x=  62.8 ref=  34.1 ruído=  9.3 z=  3.1 × 1.8 saz×1.1
+  2026-03-08 SUBIDA       menopausa     endometriose                       x=  40.6 ref=  22.0 ruído=  5.0 z=  3.7 × 1.8 saz×1.4
+  2026-04-12 SUBIDA       alimentacao   colesterol alto                    x=  70.6 ref=  42.4 ruído=  5.6 z=  5.0 × 1.7 saz×1.2
+  2026-04-12 APARECIMENTO alimentacao   ultraprocessados                   x=  29.0 ref=   0.0 ruído=  2.0 z=  0.0 × 0.0 saz× — 
+  2026-04-12 SUBIDA       emergentes    sepsis                             x=  16.0 ref=   9.0 ruído=  2.0 z=  3.5 × 1.8 saz×1.2
+  2026-04-12 SUBIDA       saude-mental  demência                           x=  35.9 ref=  23.3 ruído=  3.6 z=  3.5 × 1.5 saz×1.3
+  2026-04-19 SUBIDA       alimentacao   diabetes tipo 2                    x= 252.6 ref=  30.3 ruído=  7.5 z= 29.7 × 8.3 saz×1.2
+  2026-05-24 SUBIDA       saude-mental  alzheimer                          x=  94.5 ref=  47.3 ruído= 13.6 z=  3.5 × 2.0 saz×1.2
+  2026-06-07 SUBIDA       alimentacao   diabetes tipo 2                    x=  60.6 ref=  26.5 ruído=  5.1 z=  6.8 × 2.3 saz×1.2
+  2026-06-14 SUBIDA       alimentacao   diabetes tipo 2                    x=  88.4 ref=  26.5 ruído=  5.6 z= 11.0 × 3.3 saz×1.2
+  2026-06-21 SUBIDA       alimentacao   diabetes tipo 2                    x=  45.5 ref=  26.5 ruído=  5.6 z=  3.4 × 1.7 saz×1.2
+  2026-06-28 SUBIDA       saude-mental  demência                           x=  34.1 ref=  21.5 ruído=  3.6 z=  3.5 × 1.6 saz×1.2
+  2026-07-05 SUBIDA       saude-mental  demência                           x=  43.1 ref=  21.5 ruído=  3.6 z=  6.0 × 2.0 saz×1.1
+  2026-07-05 SUBIDA       saude-mental  stress                             x= 161.4 ref= 101.3 ruído= 17.5 z=  3.4 × 1.6 saz×1.1
+  2026-07-12 SUBIDA       saude-mental  alzheimer                          x= 119.0 ref=  39.7 ruído=  9.0 z=  8.8 × 3.0 saz×1.2
+  2026-07-12 SUBIDA       saude-mental  stress                             x= 196.8 ref= 101.3 ruído= 26.3 z=  3.6 × 1.9 saz×1.1
+  2026-07-19 APARECIMENTO saude-mental  pânico                             x=  75.0 ref=   0.0 ruído=  2.0 z=  0.0 × 0.0 saz× — 
+  2026-08-09 SUBIDA       emergentes    sepsis                             x=  34.0 ref=   6.5 ruído=  3.7 z=  7.4 × 5.2 saz× — 
+  2026-08-09 SUBIDA       saude-mental  depressão                          x= 135.6 ref=  54.2 ruído= 13.6 z=  6.0 × 2.5 saz×1.0
+  2026-08-23 SUBIDA       alimentacao   diabetes tipo 2                    x=  70.7 ref=  34.1 ruído= 11.2 z=  3.3 × 2.1 saz×1.1
+  2026-08-30 SUBIDA       alimentacao   diabetes tipo 2                    x= 149.1 ref=  35.4 ruído=  9.4 z= 12.1 × 4.2 saz×0.8
+  2026-08-30 SUBIDA       menopausa     endometriose                       x=  35.5 ref=  22.8 ruído=  3.8 z=  3.4 × 1.6 saz×0.9

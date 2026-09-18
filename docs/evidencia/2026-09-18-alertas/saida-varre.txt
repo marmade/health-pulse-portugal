@@ -1,0 +1,9 @@
+lotes: 2 · pontos parciais excluídos: 168 · lote de 5 anos: ec6cc6fc (261 semanas completas)
+N_REF=8 z≥3.0 ×1.5: elegíveis 5043/21252 · subidas 127 · sazonais 18 · alertas 109 · semanas com alerta 86 · máx numa semana 3
+N_REF=8 z≥3.0 ×2.0: elegíveis 5043/21252 · subidas 64 · sazonais 10 · alertas 54 · semanas com alerta 50 · máx numa semana 2
+N_REF=8 z≥4.0 ×1.5: elegíveis 5043/21252 · subidas 79 · sazonais 13 · alertas 66 · semanas com alerta 60 · máx numa semana 2
+N_REF=8 z≥4.0 ×2.0: elegíveis 5043/21252 · subidas 52 · sazonais 9 · alertas 43 · semanas com alerta 41 · máx numa semana 2
+N_REF=12 z≥3.0 ×1.5: elegíveis 5489/20916 · subidas 136 · sazonais 25 · alertas 111 · semanas com alerta 84 · máx numa semana 4
+N_REF=12 z≥3.0 ×2.0: elegíveis 5489/20916 · subidas 79 · sazonais 14 · alertas 65 · semanas com alerta 56 · máx numa semana 2
+N_REF=12 z≥4.0 ×1.5: elegíveis 5489/20916 · subidas 83 · sazonais 11 · alertas 72 · semanas com alerta 62 · máx numa semana 2
+N_REF=12 z≥4.0 ×2.0: elegíveis 5489/20916 · subidas 62 · sazonais 9 · alertas 53 · semanas com alerta 49 · máx numa semana 2
