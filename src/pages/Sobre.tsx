@@ -357,6 +357,7 @@ const Sobre = () => {
       <footer className="px-6 py-12">
         <p className="text-[10px] uppercase tracking-[0.15em] leading-relaxed opacity-50">
           Marta Madeira · 2024110168<br />
+          <a href="mailto:a2024110168@campus.fcsh.unl.pt" className="hover:underline">a2024110168@campus.fcsh.unl.pt</a><br />
           Mestrado em Comunicação de Ciência<br />
           Faculdade de Ciências Sociais e Humanas<br />
           Universidade Nova de Lisboa · 2026
