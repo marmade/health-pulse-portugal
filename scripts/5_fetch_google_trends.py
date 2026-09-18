@@ -208,14 +208,33 @@ def correr(args):
     return pedidos, calibrados, top5, resumo
 
 # ── gravar ──────────────────────────────────────────────────────────────────
-def gravar(pedidos, calibrados, resumo, args):
+def chave_service_role():
+    """Do ambiente, ou de ~/.config/health-pulse/env (fora do repositório, chmod 600)."""
     key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    if not key: sys.exit("ERRO: --gravar exige SUPABASE_SERVICE_ROLE_KEY no ambiente.")
+    if key: return key
+    cfg = os.path.expanduser("~/.config/health-pulse/env")
+    if os.path.exists(cfg):
+        for l in open(cfg):
+            if l.startswith("SUPABASE_SERVICE_ROLE_KEY="):
+                return l.split("=", 1)[1].strip().strip('"')
+    sys.exit("ERRO: falta SUPABASE_SERVICE_ROLE_KEY — no ambiente ou em ~/.config/health-pulse/env.")
+
+def gravar(pedidos, calibrados, resumo, args):
+    key = chave_service_role()
     url, _ = env_publico()
     lote = rest(url, key, "trends_lotes", "POST", dict(fonte="pytrends", origem=args.origem,
                 estado="a_correr", n_pedidos=resumo["pedidos"], n_falhados=resumo["falhados"]),
                 "return=representation")[0]
     ids = []
+    try:
+      escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids)
+    except Exception as e:
+        rest(url, key, "trends_lotes?id=eq." + lote["id"], "PATCH",
+             dict(terminado_em=datetime.now(timezone.utc).isoformat(), estado="falhou",
+                  notas="rebentou a meio da escrita: %s: %s" % (type(e).__name__, str(e)[:300])))
+        raise
+
+def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
     for p in pedidos:
         datas = [d for s in p["series"].values() for d, _, _ in s]
         row = rest(url, key, "trends_pedidos", "POST", dict(
@@ -229,8 +248,14 @@ def gravar(pedidos, calibrados, resumo, args):
         pontos = [dict(pedido_id=row["id"], termo=t, data=d.isoformat(), valor=v, is_partial=pc)
                   for t, s in p["series"].items() for d, v, pc in s]
         for i in range(0, len(pontos), 500): rest(url, key, "trends_pontos", "POST", pontos[i:i + 500])
+    # um termo esmagado é calibrado no passo 1 E no passo 2: fica a do passo 2 (mais resolução)
+    melhor = {}
+    for e, t, d, ve, f, i in calibrados:
+        k = (e, t, d.isoformat())
+        if k not in melhor or pedidos[i]["passo"] > pedidos[melhor[k][5]]["passo"]:
+            melhor[k] = (e, t, d, ve, f, i)
     cal = [dict(lote_id=lote["id"], eixo=e, termo=t, data=d.isoformat(), valor_eixo=round(ve, 3),
-                factor=round(f, 6), pedido_id=ids[i]) for e, t, d, ve, f, i in calibrados]
+                factor=round(f, 6), pedido_id=ids[i]) for e, t, d, ve, f, i in melhor.values()]
     for i in range(0, len(cal), 500): rest(url, key, "trends_calibrados", "POST", cal[i:i + 500])
     estado = "completo" if resumo["falhados"] == 0 else "incompleto"
     rest(url, key, "trends_lotes?id=eq." + lote["id"], "PATCH",
@@ -248,10 +273,21 @@ def main():
     ap.add_argument("--amostras", type=int, default=1)
     ap.add_argument("--origem", default="manual " + os.uname().nodename)
     ap.add_argument("--dump", help="grava o resultado (pedidos, calibrados, top5) em JSON — evidência sem repetir pedidos")
+    ap.add_argument("--carregar", help="com --gravar: lê um dump em vez de pedir ao Google (mesmos pedidos, mesma hora de recolha)")
     args = ap.parse_args()
     if args.amostras != 1: sys.exit("v1: --amostras só suporta 1 (a repetição fica para quando houver dados para a justificar).")
-    pedidos, calibrados, top5, resumo = correr(args)
-    if args.dump:
+    if args.carregar:
+        d = json.load(open(args.carregar))
+        args.timeframe = d["timeframe"]
+        pedidos = [dict(p, fetched_at=datetime.fromisoformat(p["fetched_at"]),
+                        series={t: [(datetime.fromisoformat(x[0]), x[1], x[2]) for x in s] for t, s in p["series"].items()})
+                   for p in d["pedidos"]]
+        calibrados = [(e, t, datetime.fromisoformat(dt), ve, f, i) for e, t, dt, ve, f, i in d["calibrados"]]
+        top5, resumo = d["top5"], d["resumo"]
+        print("carregado de %s: %s" % (args.carregar, json.dumps(resumo)))
+    else:
+        pedidos, calibrados, top5, resumo = correr(args)
+    if args.dump and not args.carregar:
         json.dump(dict(timeframe=args.timeframe, eixo=args.eixo, resumo=resumo, top5=top5,
                        pedidos=[dict(p, fetched_at=p["fetched_at"].isoformat(),
                                      series={t: [(d.isoformat(), v, pc) for d, v, pc in s] for t, s in p["series"].items()})

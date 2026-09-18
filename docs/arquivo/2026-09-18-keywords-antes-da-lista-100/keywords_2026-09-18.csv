@@ -1,0 +1,84 @@
+id,term,synonyms,category,axis,source,current_volume,previous_volume,change_percent,trend,last_peak,is_emergent,is_active,created_at
+d413b61b-cb88-438f-8f70-1fbe4eab29f3,açúcar e saúde,"[""redução de açúcar""]",Nutrição,alimentacao,alimentacaosaudavel.dgs.pt,0,25,-100.0,down,Nov 2025,False,True,2026-03-08T11:08:27.79661+00:00
+875e5cf6-8b09-4db7-980f-4c055b89e4bd,alergias alimentares,"[""alergia alimentar crianças""]",Alergias,alimentacao,alimentacaosaudavel.dgs.pt,25,25,0.0,stable,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+41e9c9a7-ac28-422c-bcd3-d801e8558779,alimentação plant-based,"[""dieta vegetal"", ""plant based""]",Dietas,alimentacao,nutrimento.pt,0,1,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+5d5a8581-2856-4594-bae6-a1bc0f795a38,anemia,"[""anemia ferropénica""]",Nutrição,alimentacao,sns24.gov.pt,37,42,-11.9,down,,False,True,2026-03-10T23:05:57.24831+00:00
+b87d8183-4232-4881-964e-51b6f1c69b55,colesterol alto,"[""hipercolesterolemia"", ""colesterol""]",Metabolismo,alimentacao,dgs.pt,18,21,-14.3,down,,False,True,2026-03-10T23:05:57.24831+00:00
+6d9de8a8-6fbb-406f-bc4c-e5a443d312a0,diabetes tipo 2,"[""diabetes"", ""diabete""]",Metabolismo,alimentacao,cuf.pt,4,6,-33.3,down,,False,True,2026-03-10T23:05:57.24831+00:00
+56a9f29d-5637-4969-a1a3-89484a266f46,dieta cetogénica,"[""keto diet"", ""dieta keto""]",Dietas,alimentacao,alimentacaosaudavel.dgs.pt,0,25,-100.0,down,Set 2025,False,True,2026-03-08T11:08:27.79661+00:00
+dfd5fe96-bec5-4c6c-80bf-9188a6d06804,dieta mediterrânica,"[""alimentação mediterrânica""]",Dietas,alimentacao,nutrimento.pt,25,60,-58.3,down,Jan 2026,False,True,2026-03-08T11:08:27.79661+00:00
+5165f454-ef13-4b2e-af43-8a042daf34b1,doença celíaca,"[""celíaco"", ""glúten""]",Intolerâncias,alimentacao,sns24.gov.pt,1,37,-97.3,down,,False,True,2026-03-10T23:05:57.24831+00:00
+687ac36b-9ef0-4880-9244-0469eb22d8e2,intolerância à lactose,[],Intolerâncias,alimentacao,cuf.pt,1,1,0.0,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+f9c1757e-0e8d-48c8-9c9e-19450c54840a,intolerância ao glúten,"[""doença celíaca"", ""gluten free""]",Alergias,alimentacao,alimentacaosaudavel.dgs.pt,0,25,-100.0,down,Out 2025,False,True,2026-03-08T11:08:27.79661+00:00
+fa3f2208-0d08-4ccb-ba47-ab2084989670,jejum intermitente,"[""intermittent fasting""]",Dietas,alimentacao,alimentacaosaudavel.dgs.pt,21,24,-12.5,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+1b5fc07f-58fb-4a83-83a1-50c11c7ceab9,obesidade infantil,"[""excesso de peso crianças""]",Pediatria,alimentacao,nutrimento.pt,0,20,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+cb8af5a3-ea7f-4314-b40f-212f75565d42,pré-diabetes,"[""pré diabético"", ""resistência insulina""]",Metabolismo,alimentacao,sns24.gov.pt,0,25,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+df364765-ff00-46b1-834c-94010f936658,refluxo gastroesofágico,"[""azia"", ""DRGE""]",Digestivo,alimentacao,cuf.pt,13,6,116.7,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+b56e2613-a517-42c2-a312-442de5016385,síndrome de intestino irritável,"[""SII"", ""cólon irritável""]",Digestivo,alimentacao,cuf.pt,0,2,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+c7e49577-876b-4db0-8d52-40151efddfad,suplementos alimentares,"[""vitaminas"", ""suplementação""]",Suplementos,alimentacao,alimentacaosaudavel.dgs.pt,62,82,-24.4,down,Dez 2025,False,True,2026-03-08T11:08:27.79661+00:00
+45517adf-5e93-468b-9398-952f410e7eac,ultraprocessados,"[""alimentos ultraprocessados"", ""comida processada""]",Nutrição,alimentacao,nutrimento.pt,0,10,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+ee35c6f5-46d7-4bb4-a141-80c869db9807,avc,"[""acidente vascular cerebral"", ""derrame""]",Neurologia,emergentes,cuf.pt,59,34,73.5,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+bd08036a-2145-4bf5-b3b0-a01e158386e0,bactérias carnívoras,"[""fasceíte necrosante""]",Doenças infecciosas,emergentes,dgs.pt,17,18,-19,down,Fev 2026,False,False,2026-03-08T11:08:27.79661+00:00
+12d143f9-8662-4f43-98a4-8fdd989d8290,calor extremo e saúde,"[""ondas de calor"", ""coup de chaleur""]",Saúde Ambiental,emergentes,dgs.pt,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+24ff5784-d363-4b76-87ce-aa8ba199a314,candida auris,[],Infeção Emergente,emergentes,sns24.gov.pt,2,1,100.0,up,,False,True,2026-03-10T23:05:57.24831+00:00
+9841bbff-93ed-4fcf-b96c-4d4b659e9912,dengue europa,"[""dengue portugal""]",Doenças infecciosas,emergentes,dgs.pt,0,56,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+f4fa0023-4e4a-47fc-b244-141cb103a8b2,doenças cardiovasculares,"[""doenças do coração"", ""enfarte""]",Cardiologia,emergentes,cuf.pt,0,25,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+182b5f68-1f50-4ffd-8013-db61fd005db2,gripe aviária H5N1,"[""influenza aviária"", ""gripe aviária""]",Doenças infecciosas,emergentes,dgs.pt,0,25,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+a3cd6c3d-a5d6-4ace-aa9b-5c203a2991e2,long covid,"[""covid longa"", ""pós-covid""]",Doenças infecciosas,emergentes,dgs.pt,0,2,-100.0,down,Set 2025,False,True,2026-03-08T11:08:27.79661+00:00
+299f778f-e1bc-4d56-94eb-ec6c272218bb,lúpus,"[""lúpus eritematoso""]",Autoimune,emergentes,cuf.pt,32,64,-50.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+6f66a12c-919b-458e-bbba-02e776839761,microplásticos sangue,"[""microplásticos corpo humano"", ""microplásticos""]",Ambiente,emergentes,dgs.pt,0,1,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+db9df232-e277-4390-a2c5-e2b6cd8dda38,mpox portugal,"[""varíola dos macacos""]",Doenças infecciosas,emergentes,dgs.pt,0,1,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+d2672872-3289-40f5-b243-7ea5d86b538e,poluição e saúde,"[""qualidade do ar""]",Ambiente,emergentes,dgs.pt,0,1,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+0fd64329-5c27-472b-8408-d6c3be1f58a7,resistência antibióticos,"[""superbactérias"", ""AMR""]",Saúde pública,emergentes,sns.gov.pt,0,25,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+562f3ed1-3f6e-45fe-b175-7a10d9e86c4f,sarampo surto,"[""surto de sarampo""]",Doenças infecciosas,emergentes,dgs.pt,0,25,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+49ba1353-1570-4370-8f48-f6f71c0680dc,sepsis,"[""septicemia"", ""sépsis""]",Urgência,emergentes,dgs.pt,22,19,15.8,up,,False,True,2026-03-10T23:05:57.24831+00:00
+1af7e5c8-8dd1-467b-acf4-fcd1b97d2823,vírus nipah,"[""nipah virus""]",Doenças infecciosas,emergentes,dgs.pt,1,1,0,stable,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+01a3e6e5-61c3-4619-80a4-cf0896831aeb,cancro da mama,"[""carcinoma mamário""]",Oncologia,menopausa,sns24.gov.pt,30,28,7.1,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+653f955d-b106-4faf-87c4-d51b64b2d7ce,candidíase,"[""candidose"", ""candida""]",Infeção,menopausa,sns24.gov.pt,31,32,-3.1,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+85111a6a-8a61-46c6-b614-d02ae80b7fdd,doenças da tiroide,"[""hipotiroidismo"", ""hipertiroidismo"", ""tiróide""]",Endocrinologia,menopausa,cuf.pt,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+23bed89a-e3d8-4502-a6c1-c9da1390aeaa,endometriose,[],Saúde da Mulher,menopausa,cuf.pt,40,49,-18.4,down,,False,True,2026-03-10T23:05:57.24831+00:00
+e111eb9e-8610-45e0-bb3b-f06acb4ab416,fitoterapia menopausa,"[""remédios naturais menopausa""]",Alternativas,menopausa,sns24.gov.pt,0,25,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+83f5a579-b1d4-4755-a7a4-b05ec878f8b2,incontinência urinária,[],Saúde da Mulher,menopausa,sns24.gov.pt,1,1,0.0,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+8289f033-a95e-4d8a-ab29-0ec9f804e4cc,libido menopausa,"[""desejo sexual menopausa""]",Sintomas,menopausa,msdmanuals.com,0,2,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+a42c5c56-4472-4635-b3fa-4f352c8e6de3,menopausa masculina,"[""andropausa"", ""défice de testosterona""]",Diagnóstico,menopausa,msdmanuals.com,0,25,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+2142c6d1-c4d1-4fc3-87ab-b81dd47932ff,menopausa precoce,"[""insuficiência ovárica prematura""]",Diagnóstico,menopausa,sponcologia.pt,2,2,0.0,stable,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+aa13a813-d683-45ed-afb7-56f81baac397,menopausa sintomas,"[""climatério"", ""afrontamentos"", ""menopausa""]",Sintomas,menopausa,sns24.gov.pt,49,52,-5.8,stable,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+171496a9-afe9-4080-ae52-cbf194a27a3a,osteoporose,"[""perda óssea""]",Complicações,menopausa,sns24.gov.pt,24,34,-29.4,down,Jan 2026,False,True,2026-03-08T11:08:27.79661+00:00
+daa16cea-d7b8-41df-8c03-b578a79d22f7,peso na menopausa,"[""engordar menopausa""]",Sintomas,menopausa,sns24.gov.pt,0,1,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+9f9b1044-ea99-44f7-ad44-ebc0ab2fe2d7,secura vaginal,"[""atrofia vaginal""]",Sintomas,menopausa,sns24.gov.pt,30,40,-25.0,down,Jan 2026,False,True,2026-03-08T11:08:27.79661+00:00
+cfbbe23d-429d-485e-a0a8-87449533b89e,síndrome do ovário poliquístico,"[""SOP"", ""ovários poliquísticos""]",Saúde da Mulher,menopausa,cuf.pt,0,2,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+3d135c81-3e65-4982-b3c3-3bd06d1637c7,suores noturnos,"[""transpiração noturna""]",Sintomas,menopausa,sns24.gov.pt,0,25,-100.0,down,Dez 2025,False,True,2026-03-08T11:08:27.79661+00:00
+76c4b1bc-ae64-41ca-b57f-75b87c56b447,terapia hormonal,"[""THS"", ""reposição hormonal""]",Tratamento,menopausa,msdmanuals.com,0,2,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+7abf6027-f8e7-4157-9180-6825b4cdc0f7,alcoolismo,"[""dependência álcool""]",Adições,saude-mental,dgs.pt,9,10,-10.0,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+9ddfb501-c699-4bef-b22f-fa0bb5c15788,alzheimer,[],Demência,saude-mental,dgs.pt,16,22,-27.3,down,,False,True,2026-03-10T23:05:57.24831+00:00
+ecc69941-92fd-4cd0-8728-1750cece4992,anorexia nervosa,"[""anorexia""]",Perturbações Alimentares,saude-mental,cuf.pt,2,3,-33.3,down,,False,True,2026-03-10T23:05:57.24831+00:00
+91a7df8f-676d-4053-8e62-f97b5df4ba0f,ansiedade,"[""stress"", ""perturbação de ansiedade""]",Perturbações,saude-mental,saudementalpt.com,65,71,-8.5,stable,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+ad37b323-95bf-4228-a839-190850b51ae2,automutilação,"[""autolesão""]",Comportamento,saude-mental,sns24.gov.pt,0,25,-100.0,down,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+e39430ea-a287-4d68-9848-3558a4a4ae30,burnout,"[""esgotamento profissional""]",Trabalho,saude-mental,saudementalpt.com,40,43,-7.0,stable,Fev 2026,False,True,2026-03-08T11:08:27.79661+00:00
+91820935-4cc2-4037-980f-73b78e51e324,competências socioemocionais,[],saude-mental,saude-mental,manual,0,25,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+f0e28c28-3a57-45df-b2ba-9b5aca061a86,demência,[],Demência,saude-mental,sns24.gov.pt,27,26,3.8,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+915850ec-3e89-4ecc-b4be-ba309cf6ff9d,dependências,"[""vício"", ""adições""]",Adições,saude-mental,saudementalpt.com,25,20,25.0,up,,False,True,2026-03-10T23:05:57.24831+00:00
+c81e8a5e-b44a-4c5a-abd1-89f3ca814980,depressão,"[""tristeza crónica""]",Perturbações,saude-mental,saudementalpt.com,38,40,-5.0,stable,Jan 2026,False,True,2026-03-08T11:08:27.79661+00:00
+e668ae88-1b54-4c2b-a66e-0b0fc1c6b367,desinstitucionalização saúde mental,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+1ba4b8e2-dec5-4e85-9193-8cb6b143d2b3,enxaqueca,"[""migraine""]",Dor,saude-mental,cuf.pt,39,43,-9.3,stable,,False,True,2026-03-10T23:05:57.24831+00:00
+5b0508d2-33a8-442f-9613-6f0eff14c1d2,equipas comunitárias saúde mental,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+942f3dda-2eb5-4f21-84e7-c10d00fb82c0,fobia social,"[""ansiedade social""]",Ansiedade,saude-mental,sns24.gov.pt,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+fe9feeab-6157-438a-a7de-0961b4b3f722,insónia,"[""perturbação do sono""]",Sono,saude-mental,saudementalpt.com,2,7,-71.4,down,Nov 2025,False,True,2026-03-08T11:08:27.79661+00:00
+f4dee12a-bc07-40ed-8010-65bad206efef,literacia em saúde mental,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+46accf04-c6b3-40a4-9b3a-43dfcad075c9,pânico,"[""ataque de pânico""]",Perturbações,saude-mental,saudementalpt.com,6,6,0.0,stable,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+424c8be2-b785-4b3c-9f60-7bbf5f617be8,perturbação bipolar,"[""bipolaridade""]",Perturbação Mental,saude-mental,saudementalpt.com,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+657c9a04-cb1b-4d82-b0f3-f4ec79487aea,perturbação obsessivo-compulsiva,"[""POC"", ""OCD""]",Perturbação Mental,saude-mental,saudementalpt.com,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+fd0d0b4b-8173-4ec5-bf05-4ce9840d8624,perturbações do espectro do autismo,"[""autismo"", ""PEA""]",Neurodesenvolvimento,saude-mental,cuf.pt,0,1,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+cbfd314e-92b2-4cc7-86ad-f96d25371d4a,prevenção suicídio,[],saude-mental,saude-mental,manual,0,25,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+138b904c-c507-4a7b-b626-d9186fd533e1,PTSD,"[""stress pós-traumático""]",Perturbações,saude-mental,saudementalpt.com,14,13,7.7,stable,Dez 2025,False,True,2026-03-08T11:08:27.79661+00:00
+04f73ff9-216e-495d-b73f-23e99446a48d,reabilitação psicossocial,[],saude-mental,saude-mental,manual,0,25,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+a1f8c9ea-d5fc-4d73-9864-a86cd1349e7d,saúde mental ensino superior,[],saude-mental,saude-mental,manual,0,25,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+5f121538-9bbe-4861-a23e-df81c42ba462,saúde mental escolar,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+9daf4ca1-7d24-4b3a-a8f8-ecb76b9e51a3,saúde mental jovens,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+5b4a0910-f0a9-4cc4-9bc9-67c57a5cc023,saúde mental no trabalho,"[""bem-estar laboral""]",Trabalho,saude-mental,saudementalpt.com,0,25,-100.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+66a58e75-7a9d-49e5-84f9-e189dbc09451,saúde mental sem-abrigo,[],saude-mental,saude-mental,manual,0,1,-100.0,down,,False,True,2026-03-20T17:42:25.444644+00:00
+b4c9aaaf-3e78-446c-984c-734fe6156d81,solidão,"[""isolamento social""]",Social,saude-mental,saudementalpt.com,8,8,0.0,stable,Out 2025,False,True,2026-03-08T11:08:27.79661+00:00
+6a99f63f-e019-4df6-b7e9-1095e41d5c87,stress,"[""stresse""]",Bem-estar Mental,saude-mental,sns24.gov.pt,22,26,-15.4,down,,False,True,2026-03-10T23:05:57.24831+00:00
+75da0146-d3e2-4571-b2c3-8b81ec622ba2,suicídio,"[""ideação suicida""]",Perturbação Mental,saude-mental,saudementalpt.com,18,24,-25.0,down,,False,True,2026-03-10T23:05:57.24831+00:00
+f882429f-2743-4121-bf34-c4d983fb31e5,TDAH adulto,"[""défice de atenção adultos"", ""TDAH""]",Perturbações,saude-mental,saudementalpt.com,0,25,-100.0,down,Mar 2026,False,True,2026-03-08T11:08:27.79661+00:00
+9882601a-2bab-4aef-95a4-f21de647eb91,terapia online,"[""psicologia online"", ""teleconsulta psicologia""]",Tratamento,saude-mental,sns24.gov.pt,46,40,15.0,up,Jan 2026,False,True,2026-03-08T11:08:27.79661+00:00
