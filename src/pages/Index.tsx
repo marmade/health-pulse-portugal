@@ -20,11 +20,10 @@ import { useTrendsLote } from "@/hooks/useTrendsLote";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
-// Blocos RETIRADOS da página a 18/09/2026, com nota no ecrã e registo em
+// Bloco RETIRADO da página a 18/09/2026, com nota no ecrã e registo em
 // docs/sessoes/2026-09-18.md. O código fica para não ser reinventado; volta com a
-// condição escrita em cada nota.
+// condição escrita na nota.
 const RANKING_RETIRADO = true;     // prioridade de comunicação: dados parados, réguas incomparáveis
-const FACTCHECK_RETIRADO = true;   // debunking: 36 linhas semeadas, sem fonte automática
 
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
@@ -353,24 +352,11 @@ const Index = () => {
         <div className="mt-10">
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
-            {/* Fact-check — RETIRADO a 18/09/2026 (decisão da Marta, com registo). A tabela
-                `debunking` tem 36 linhas semeadas a 25/03/2026, todas "a verificar", sem URL,
-                com `term` = `title`; o único feed de fact-check configurado devolve o feed
-                geral do Observador, e o Polígrafo não tem RSS. Nunca houve fonte. Volta com a
-                Google Fact Check Tools API (ClaimReview), que traz o veredicto. Ver
-                docs/sessoes/2026-09-18.md. O componente fica intacto. */}
-            <div className="flex flex-col">
-              <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50 mb-2">
-                Fact-check &amp; desinformação
-              </p>
-              <p className="text-[10px] leading-relaxed text-foreground/50">
-                Retirado a 18/09/2026: as 36 verificações que aqui estavam foram semeadas a
-                25/03/2026, sem classificação nem fonte automática — o feed configurado devolvia
-                o jornal inteiro, não os fact-checks. O bloco volta quando tiver uma fonte com
-                veredicto (Google Fact Check Tools, ClaimReview).
-              </p>
-            </div>
-            {!FACTCHECK_RETIRADO && <DebunkingTable items={filteredDebunkingData} />}
+            {/* Fact-check: o componente só mostra linhas COM veredicto e URL; as 36 semeadas a
+                25/03/2026 ("a verificar") ficam na tabela e fora do ecrã. A fonte passa a ser a
+                Google Fact Check Tools API, só editores portugueses (scripts/11), a partir de
+                terça 22/09 — até lá o componente di-lo em vez de mostrar uma lista vazia. */}
+            <DebunkingTable items={filteredDebunkingData} />
             <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} activeTheme={activeAxis !== "all" ? activeAxis : undefined} />
           </div>
         </div>

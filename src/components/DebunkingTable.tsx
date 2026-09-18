@@ -6,22 +6,50 @@ type Props = {
   items: DebunkItem[];
 };
 
-const classificationStyle: Record<string, string> = {
-  FALSO: "border-foreground bg-foreground text-background",
-  ENGANADOR: "border-foreground",
-  "SEM EVIDÊNCIA": "border-foreground/50 text-foreground/60",
-  IMPRECISO: "border-foreground/50 text-foreground/60",
-};
+// Os veredictos são os do editor, TAL COMO VÊM (Observador: Errado, Enganador, Esticado,
+// Certo, Praticamente certo…), sem tradução para uma escala nossa. O estilo é por família;
+// o texto no ecrã é sempre o original. Desde 18/09/2026 a fonte é a Google Fact Check Tools
+// API (ClaimReview), só editores portugueses — scripts/11_fetch_fact_checks.py.
+function estiloVeredicto(v: string): string {
+  const l = v.toLowerCase();
+  if (/errad|fals/.test(l)) return "border-foreground bg-foreground text-background";
+  if (/engan|estic|imprec|descontext/.test(l)) return "border-foreground";
+  if (/certo|verdad/.test(l)) return "border-foreground/50 text-foreground/60";
+  return "border-foreground/30 text-foreground/50";
+}
 
-const classifications = ["TODOS", "FALSO", "ENGANADOR", "SEM EVIDÊNCIA", "IMPRECISO"];
+// As 36 linhas semeadas a 25/03/2026 ficaram "a verificar", sem URL nem veredicto; não se
+// apagam (regra do projecto), mas não são fact-checks — não se mostram.
+const temVeredicto = (item: DebunkItem) =>
+  !!item.url && !!item.classification && item.classification.toLowerCase() !== "a verificar";
 
 const DebunkingTable = ({ items }: Props) => {
   const [activeFilter, setActiveFilter] = useState("TODOS");
 
+  const comVeredicto = useMemo(() => items.filter(temVeredicto), [items]);
+  // os separadores vêm dos dados, não de uma lista fixa que nunca lhes correspondeu
+  const classifications = useMemo(
+    () => ["TODOS", ...[...new Set(comVeredicto.map((i) => i.classification))].sort((a, b) => a.localeCompare(b, "pt"))],
+    [comVeredicto]
+  );
+
   const filteredItems = useMemo(() => {
-    if (activeFilter === "TODOS") return items;
-    return items.filter((item) => item.classification === activeFilter);
-  }, [items, activeFilter]);
+    if (activeFilter === "TODOS") return comVeredicto;
+    return comVeredicto.filter((item) => item.classification === activeFilter);
+  }, [comVeredicto, activeFilter]);
+
+  if (comVeredicto.length === 0) {
+    return (
+      <div className="flex flex-col h-full min-h-0">
+        <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5">Fact-Check & Desinformação</p>
+        <p className="text-[10px] leading-relaxed text-foreground/50">
+          Sem verificações com veredicto ainda. As 36 entradas que aqui estavam foram semeadas
+          a 25/03/2026 sem classificação nem fonte; a fonte passa a ser a Google Fact Check
+          Tools API, só editores portugueses, a partir de 22/09/2026.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -75,9 +103,7 @@ const DebunkingTable = ({ items }: Props) => {
                     </div>
                   </div>
                   <span
-                    className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 shrink-0 mt-0.5 ${
-                      classificationStyle[item.classification] || ""
-                    }`}
+                    className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 shrink-0 mt-0.5 ${estiloVeredicto(item.classification)}`}
                   >
                     {item.classification}
                   </span>
@@ -90,6 +116,10 @@ const DebunkingTable = ({ items }: Props) => {
           ))
         )}
       </div>
+      <p className="text-[8px] leading-relaxed text-foreground/40 mt-1.5 flex-shrink-0">
+        Verificações de editores portugueses indexadas pela Google Fact Check Tools API
+        (ClaimReview), casadas com as keywords; o veredicto é o do editor, tal como o publicou.
+      </p>
     </div>
   );
 };

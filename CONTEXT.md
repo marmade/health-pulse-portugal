@@ -1090,6 +1090,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       (`category` = 'por classificar')
 - [ ] Repetir as 6 related queries que falharam com 429
 - [ ] Resposta da alfa da API do Trends
+- [ ] **Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do
+      Observador via Google Fact Check Tools API, só editores portugueses — decisão da Marta,
+      18/09); passo no `youtube-trends.yml` com o secret `GOOGLE_FACTCHECK_API_KEY`. A chave
+      está em `~/.config/health-pulse/env`. O Polígrafo não publica ClaimReview
+- [ ] As 36 linhas semeadas em `debunking` (25/03, "a verificar"): ficam, fora do ecrã
 
 - [ ] **Termos ambíguos na lista — quatro medidos, e o `depressão` já com prova.**
       `[sessão 14][ficheiro]` Achado a 15/09/2026 ao montar as séries do Google Trends.
