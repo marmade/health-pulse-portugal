@@ -1072,9 +1072,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
-- [ ] **Terça 22/09, por esta ordem:** corrida de segunda pelo efeito → migração da lista de
-      100 → `types.ts` → consolidada (a de hoje já leva as `trends_*`) → script 5 sobre a lista
-      nova (12 m e 5 a) → dashboard a ler de `trends_calibrados` → passo 2B
+- [ ] **Terça 22/09, por esta ordem:** corrida de segunda pelo efeito → migrações da lista de
+      100 (`20260918180000`) e das colunas de auditoria de `news_items` (`20260918190000`) →
+      publicar `fetch-rss-feeds` reescrita (palavra inteira, categoria do feed, CDATA) →
+      `types.ts` → consolidada → script 5 sobre a lista nova (12 m e 5 a) → dashboard a ler de
+      `trends_calibrados` → rotular de novo as 310 notícias → passo 2B
 - [ ] Instalar o `launchd` depois do primeiro passo validado
 - [ ] Alertas (fase 3): regra escrita, 12 meses semanal, sazonalidade descontada; Emergentes
       por pico

@@ -114,34 +114,76 @@ async function fetchFeedWithFallback(feed: FeedSource): Promise<{ xml: string; u
   return null;
 }
 
-function extractItems(xml: string): Array<{ title: string; link: string; pubDate: string; description: string }> {
-  const items: Array<{ title: string; link: string; pubDate: string; description: string }> = [];
+// Limpa o invólucro CDATA (em qualquer posição, com ou sem espaços à volta) e as
+// entidades HTML mais comuns. Até 18/09/2026 o CDATA só era tirado quando colava
+// exactamente à tag: 113 dos 310 títulos (Notícias ao Minuto) ficaram com "<![CDATA[".
+function limpar(texto: string): string {
+  return texto
+    .replace(/<!\[CDATA\[/g, '').replace(/\]\]>/g, '')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
+type Item = { title: string; link: string; pubDate: string; description: string; categories: string[] };
+
+function extractItems(xml: string): Item[] {
+  const items: Item[] = [];
   const itemRegex = /<item[^>]*>([\s\S]*?)<\/item>/gi;
   let match;
   while ((match = itemRegex.exec(xml)) !== null) {
     const content = match[1];
     const getTag = (tag: string) => {
-      const r = new RegExp(`<${tag}[^>]*>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?<\/${tag}>`, 'is');
-      const m = content.match(r);
-      return m ? m[1].trim() : '';
+      const m = content.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+      return m ? limpar(m[1]) : '';
     };
+    const categories: string[] = [];
+    const catRegex = /<category[^>]*>([\s\S]*?)<\/category>/gi;
+    let c;
+    while ((c = catRegex.exec(content)) !== null) categories.push(limpar(c[1]));
     items.push({
       title: getTag('title'),
       link: getTag('link') || getTag('guid'),
       pubDate: getTag('pubDate') || getTag('dc:date'),
       description: getTag('description'),
+      categories,
     });
   }
   return items;
 }
 
+// Casamento por PALAVRA INTEIRA. Até 18/09/2026 era `includes()` sobre minúsculas:
+// "candida" apanhava recandidatura (63 das 79 "candidíase" eram política e futebol),
+// "POC" apanhava época, "SOP" apanhava Sophie, "PEA" apanhava pontapeados.
+// Regras:
+//   - fronteira de palavra com letras acentuadas (\p{L}), não \b, que ignora o ç e o ã;
+//   - siglas (só maiúsculas, até 5 letras) casam com maiúsculas exactas — "SOP" não é "sop";
+//   - entre vários termos que casem, ganha o MAIS LONGO (o mais específico), e em empate o
+//     alfabético — critério escrito, em vez da ordem física da tabela (achado de 15/09).
+function escapeRegex(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function isSigla(s: string): boolean { return /^[A-ZÀ-Ý]{2,5}$/.test(s); }
+
 function matchesKeyword(text: string, keywords: string[]): string | null {
-  const lower = text.toLowerCase();
+  const hits: string[] = [];
   for (const kw of keywords) {
-    if (lower.includes(kw.toLowerCase())) return kw;
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegex(kw)}(?![\\p{L}\\p{N}])`, isSigla(kw) ? 'u' : 'iu');
+    if (re.test(text)) hits.push(kw);
   }
-  return null;
+  if (hits.length === 0) return null;
+  hits.sort((a, b) => b.length - a.length || a.localeCompare(b, 'pt'));
+  return hits[0];
 }
+
+// Filtro por categoria do próprio feed — o que a Marta escolheu ("canais com tag saúde")
+// e que nunca tinha sido implementado. Só se aplica quando o feed traz categorias; feeds
+// sem categorias (institucionais, quase todos) passam directamente ao casamento por keyword.
+const CATEGORIA_SAUDE = /sa[úu]de|health|medicin|vacin|doen[çc]a|hospital|\bsns\b|bem-estar|nutri|psic|ci[êe]ncia|epidem|farm[áa]c/i;
+function passaCategoria(item: Item): boolean {
+  if (item.categories.length === 0) return true;
+  return item.categories.some((c) => CATEGORIA_SAUDE.test(c));
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -182,6 +224,7 @@ Deno.serve(async (req) => {
     let totalProcessed = 0;
     let totalDuplicates = 0;
     let totalNoMatch = 0;
+    let totalForaDaCategoria = 0;
     const errors: string[] = [];
     const fallbacksUsed: string[] = [];
 
@@ -201,11 +244,12 @@ Deno.serve(async (req) => {
         const toInsert: Array<{
           title: string; outlet: string; date: string;
           url: string; related_term: string; source_type: string;
-          keyword_id: string | null;
+          keyword_id: string | null; casou_por: string; categorias: string[];
         }> = [];
 
         for (const item of items) {
           if (!item.link || existingUrls.has(item.link)) { totalDuplicates++; continue; }
+          if (!passaCategoria(item)) { totalForaDaCategoria++; continue; }
           const searchText = `${item.title} ${(item.description || '').substring(0, 200)}`;
           const matchedTerm = matchesKeyword(searchText, allTerms);
           if (!matchedTerm) { totalNoMatch++; continue; }
@@ -228,6 +272,8 @@ Deno.serve(async (req) => {
             related_term: relatedTerm,
             source_type: feed.type,
             keyword_id: keywordId,
+            casou_por: matchedTerm,          // o termo ou sinónimo que casou — para auditar
+            categorias: item.categories,     // as categorias do feed — para auditar o filtro
           });
           existingUrls.add(item.link);
         }
@@ -248,6 +294,7 @@ Deno.serve(async (req) => {
       feeds: FEEDS.length,
       keywords: allTerms.length,
       processed: totalProcessed,
+      fora_da_categoria: totalForaDaCategoria,
       duplicates: totalDuplicates,
       no_match: totalNoMatch,
       inserted: totalInserted,
