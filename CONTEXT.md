@@ -42,6 +42,11 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| O `pytrends` funciona a partir do Mac da Marta e dá os mesmos números que a descarga manual | 18/09/2026 | `[sessão 16][google]` ~120 pedidos ao longo do dia; `menopausa` sozinha, 5 anos, semanal, contra o CSV manual de 15/09 | 262 semanas, correlação **0,987**, diferença média 1,9 pontos, 190 de 262 a ≤ 2. Zero 429 nos primeiros ~50 pedidos; a partir daí o Google trava e o script espera 60 s e repete. Os bloqueios de Agosto eram dos IPs do GitHub, não da ferramenta |
+| Uma descarga de grupo dá o comparativo **e** o comportamento individual | 18/09/2026 | `[sessão 16][ficheiro]` Série de cada termo na comparação de 15/09 contra a descarga solo do mesmo termo | Correlação 0,998 (menopausa, ansiedade); 0,981 na obesidade, esmagada a máximo 10. Regra: máximo < 15 no grupo = repetir com âncora mais pequena |
+| A janela decide o detalhe; "com período anterior" é outra régua | 18/09/2026 | `[sessão 16][ficheiro]` Seis descargas de `menopausa` (11:25–11:29), pares simples/com período anterior comparados | 5 anos → mensal (61), 12 meses → semanal (53), 90/30 dias → diário, 7 dias → ~4 h. 3 dos 4 pares diferem: o 100 passa a ser o máximo dos dois períodos |
+| A categoria Saúde do Trends **não filtra homónimos e esconde termos** — é uma limitação | 18/09/2026 | `[sessão 16][google]` Related queries de `depressão` com e sem categoria; `psicólogo`/`psicologa` com e sem acento, com e sem categoria | 18 de 25 tempestades com categoria, 16 sem. `psicologa`: 0 com categoria, mediana 36 sem. Decisão da Marta: o filtro fica, escrito como limitação (método 5b) |
+| As tabelas `trends_*` existem na base viva, lêem-se em público e não se escrevem com `anon` | 18/09/2026 | `[sessão 16][bd]` REST com a chave pública: SELECT nas quatro; INSERT válido em `trends_lotes`; contagem depois | 200 nas quatro; **401 / `42501`** no INSERT; 0 linhas antes do lote. Lote `4dad25b9`: 33 pedidos, 8109 pontos, 4452 calibrados, lido com a chave pública |
 | A rotulagem de `news_items` **não é reproduzível** | 15/09/2026 | `[sessão 14][ficheiro]` Leitura de `supabase/functions/fetch-rss-feeds/index.ts:138-144` e `:154-157` · `[sessão 14][bd]` colisões de chave na tabela `keywords` e escritores do workflow | `matchesKeyword` devolve o **primeiro** termo da lista que apareça no texto, e a consulta que constrói a lista **não tem `ORDER BY`**. Logo "primeiro a casar" **não é critério — é a ordem física da tabela**, e duas corridas sobre a mesma notícia podem dar rótulos diferentes sem nada mudar. **Segunda indeterminação, esta nos dados:** `stress` é termo canónico **e** sinónimo de `ansiedade`; `doença celíaca` é termo **e** sinónimo de `intolerância ao glúten` — o `Map` de resolução é *last-write-wins*, logo o rótulo gravado pode **discordar do termo que casou**. **Não observado a mudar:** é propriedade do PostgreSQL, não medição; nenhuma re-corrida foi feita. Evidência em `docs/evidencia/2026-09-15-rotulagem-news-items/` |
 | A estabilidade actual da ordem assenta num *bug* | 15/09/2026 | `[sessão 14][ficheiro]` `scripts/6_fetch_health_questions.py:330-334` cruzado com `.github/workflows/youtube-trends.yml:62` e com o achado do `400` (`docs/sessoes/2026-09-09.md:143`) | O `5_fetch_google_trends.py`, que faz UPDATE a `keywords`, está comentado desde 14/08/2026 — mas **não é o único escritor.** O `expandir_mural()` do script 6 faz **POST a `/rest/v1/keywords`**, e o script 6 é o **passo 2, activo**, todas as segundas. Só não mexe na ordem porque **falha com HTTP 400 há semanas, sem diagnóstico**. **Corrigir esse `400` activa a variação da rotulagem** — nada no repositório ligava as duas coisas até hoje |
 | O botão `Remove Lovable Cloud` **destrói a instância**, não a desassocia | 15/09/2026 | `[sessão 14][documento]` Documentação do Lovable, `docs.lovable.dev/integrations/cloud` | Citação: **"This permanently deletes your Cloud instance and cannot be undone."** Não é desassociação — é **eliminação definitiva**. Logo o botão **fecha o Crítico nº 4** e é o **último** passo do Crítico nº 5, não um passo a meio. Era esta a pergunta marcada como "a que manda" na ordem de 15/09, e está respondida |
@@ -184,6 +189,11 @@
 - **Automatização:** GitHub Actions (workflow semanal), Python scripts em `scripts/`.
   **Na instância viva não há agendador interno** — `cron.job` devolve 0 linhas, verificado a
   15/09/2026. Toda a automação dela é um ficheiro versionado
+- **Google Trends por grupos com âncora, a partir do Mac da Marta (desde 18/09/2026).**
+  `scripts/5_fetch_google_trends.py` reescrito (Crítico nº 6) corre com `.venv-trends/`
+  (`pytrends==4.9.2`) e grava com a `service_role` lida de `~/.config/health-pulse/env` (fora
+  do repositório, `chmod 600`). Agendamento pelo `launchd` em `scripts/launchd/` — **não
+  instalado**. Candidatura à API oficial do Trends (alfa) entregue a 18/09/2026, sem resposta
 - **Claude Code:** instalado localmente; comando `claude`, a partir de `~/Documents/health-pulse-portugal`
 
 ---
@@ -259,6 +269,11 @@ como passar a recolhê-lo.
 | Google Trends (script 5) | dinâmica temporal do interesse | **Sim** — `geo=PT` |
 | pytrends *related queries* (script 6) | o que está a crescer | **Sim** — `geo=PT` |
 | Google Autocomplete (script 7) | como se formula a dúvida | **Não** — verificado 07/09/2026 |
+
+**Limitação, decidida a 18/09/2026:** o filtro "categoria Saúde" do Trends fica em todos os
+pedidos, e é o que o Google entende por saúde, por regras que não publica. Não filtra
+homónimos e esconde termos classificados noutro sítio (`psicologa`). Vai para a secção de
+limitações da tese. Ver `docs/metodo/2026-09-18-reguas-e-ancoras.md` 5b.
 
 ### Hipótese do vocabulário — 09/09/2026
 
@@ -536,6 +551,22 @@ Function `archive-weekly` **versão 2**. O passo 2B continua desligado. O site c
 painel antigo. Na segunda 21/09 corre o mesmo que correu na segunda passada, **menos** o
 ruído que o arquivo deixou de gravar.
 
+### Página inicial — o gráfico de cada eixo numa régua só (18/09/2026)
+
+A linha de cada coluna era a média de 15–33 keywords sobre `historical_snapshots`, cada uma na
+sua régua, sobre a série parada. Passa a ser a média dos termos de **uma** descarga de grupo
+do eixo (`src/lib/trendsGrupo.ts`), 2026 contra 2025, com leituras calculadas. O ranking
+"Prioridade de comunicação" foi **retirado com nota no ecrã** (Marta: *"arriscado escondermos
+coisas... a não ser que registes"*): contradizia as colunas e vinha de dados parados; volta
+quando os quatro eixos estiverem numa régua só (o passo 3 do script já os liga: psiquiatra 39
+· colesterol alto 17 · menopausa 73 · avc 100) e a definição estiver escrita. O painel
+completo do Trends (68 séries) fica na vista de eixo. **Provisório:** o top 5 das colunas
+ainda vem de `keywords` de 10/08; passa a vir de `trends_calibrados` na terça 22/09, com a
+lista nova.
+
+**NÃO PUBLICADO** — nem isto nem o painel das perguntas de 16/09. O site serve a versão de
+15/09.
+
 
 ---
 
@@ -631,6 +662,15 @@ regras, e o balanço não se fez.
 da segunda seguinte: **não falhar duas segundas seguidas** é mais fácil do que recuperar uma
 rotina que se interrompeu duas vezes. Fica registado aqui em vez de desaparecer — uma rotina
 que falha sem deixar rasto é uma rotina que se perde sem ninguém decidir perdê-la.
+
+### Balanço de sexta 18/09 — contra o plano de segunda
+
+Terça: preview e deploy — **feito**. Quarta: exportar autocomplete e inventário — **a
+exportação feita; o inventário não, substituído pelo painel refeito**. Quinta: **não houve
+sessão**. Sexta: "decidir correcções e balanço" — a Marta redireccionou para "o dashboard
+funcionar": Crítico nº 6 a correr, lista de 100 aprovada, primeiro lote na base. **O balanço
+da semana anterior, movido de 14/09 para hoje, voltou a não se fazer** — terceira vez; fica
+para segunda 21/09, à cabeça, antes de qualquer outra coisa.
 
 ## Pendentes
 
@@ -967,6 +1007,14 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
    Time Series*, CIKM '20, pp. 2257-2260. DOI 10.1145/3340531.3412075
 
    Religar os passos 1 e 3 antes disto só acrescenta lixo à série.
+
+   **18/09/2026 — feito em três quartos.** Script reescrito e validado
+   (`docs/metodo/2026-09-18-reguas-e-ancoras.md`); migração `20260918170000` aplicada; primeiro
+   lote gravado (12 meses, 82 keywords actuais, `4dad25b9`). **Falta:** a lista de 100
+   (migração `20260918180000`, gerada e não aplicada — terça 22/09, depois de a corrida de
+   segunda testar só o `archive-weekly` v2), o dashboard a ler do lote, o `launchd`. Achado
+   do lote: nos Emergentes não há âncora secundária possível — emergente é pico, não mediana;
+   o ranking desse eixo tem de ser por pico (fase 3).
 7. [ ] **`7_fetch_autocomplete_questions.py`.** ~~Exportar primeiro as 3634 linhas de
    autocomplete~~ — **FEITO a 16/09/2026**, e a tabela inteira com elas: **4647 linhas** em
    `docs/arquivo/2026-09-16-health-questions-autocomplete/`, JSON e CSV com `sha256`,
@@ -1023,6 +1071,19 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   data de resposta não é um plano — se a resposta chegar, reabre-se o assunto
 
 ### Restantes
+
+- [ ] **Terça 22/09, por esta ordem:** corrida de segunda pelo efeito → migração da lista de
+      100 → `types.ts` → consolidada (a de hoje já leva as `trends_*`) → script 5 sobre a lista
+      nova (12 m e 5 a) → dashboard a ler de `trends_calibrados` → passo 2B
+- [ ] Instalar o `launchd` depois do primeiro passo validado
+- [ ] Alertas (fase 3): regra escrita, 12 meses semanal, sazonalidade descontada; Emergentes
+      por pico
+- [ ] As 100 keywords no mural (decisão da Marta, 18/09)
+- [ ] `keywords.current_volume INT NOT NULL DEFAULT 0` — o zero-que-finge está no schema
+- [ ] Reconsiderar `açúcar e saúde` (14 ao lado de anemia no lote); classificar as 40 novas
+      (`category` = 'por classificar')
+- [ ] Repetir as 6 related queries que falharam com 429
+- [ ] Resposta da alfa da API do Trends
 
 - [ ] **Termos ambíguos na lista — quatro medidos, e o `depressão` já com prova.**
       `[sessão 14][ficheiro]` Achado a 15/09/2026 ao montar as séries do Google Trends.

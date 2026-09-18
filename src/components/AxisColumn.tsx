@@ -20,6 +20,10 @@ type Props = {
   hideKeywords?: boolean;
 };
 
+// O "Var. média" calculado sobre a tabela `keywords` (série parada desde 10/08/2026) deixou
+// de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
+const VAR_MEDIA_ANTIGA = false;
+
 const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
@@ -69,7 +73,8 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          ) : !hideChart ? null : (
+          ) : null}
+          {VAR_MEDIA_ANTIGA && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

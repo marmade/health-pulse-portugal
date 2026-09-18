@@ -17,6 +17,15 @@
 --
 -- Verified by execution on 2026-09-14, in a disposable project -- not by
 -- reading. See AUDIT.md sections 6.5 and 6.6.
+--
+-- 2026-09-18: four trends_* tables added (sections 2.20-2.23, 3, 4, 5.20),
+--   mirroring migration 20260918170000 which was applied to the live instance
+--   the same day. NOT re-verified by execution since; the 24 non-idempotent
+--   policies above still apply. The new four use DROP POLICY IF EXISTS.
+--   GAP, until 22/09: migration 20260918180000 (keywords.termo_institucional,
+--   tipo, inactivada_em, motivo_inactivacao + the list of 100) exists under
+--   supabase/migrations/ but is NOT applied and NOT mirrored here yet. Mirror
+--   it the day it is applied.
 -- ============================================================================
 
 
@@ -379,6 +388,68 @@ CREATE TABLE IF NOT EXISTS public.contactos_projecto (
 );
 
 
+-- ----------------------------------------------------------------------------
+-- 2.20-2.23 trends_lotes / trends_pedidos / trends_pontos / trends_calibrados
+--      ACRESCENTADAS A 18/09/2026 (migração 20260918170000, Crítico nº 6).
+--      Um pedido ao Google Trends = uma régua; a âncora liga as réguas; o dashboard
+--      lê sempre de um lote só. Método: docs/metodo/2026-09-18-reguas-e-ancoras.md.
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.trends_lotes (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  iniciado_em   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  terminado_em  TIMESTAMPTZ,
+  fonte         TEXT NOT NULL CHECK (fonte IN ('pytrends', 'manual', 'api_oficial')),
+  origem        TEXT,
+  estado        TEXT NOT NULL DEFAULT 'a_correr'
+                CHECK (estado IN ('a_correr', 'completo', 'incompleto', 'falhou')),
+  n_pedidos     INTEGER,
+  n_falhados    INTEGER,
+  notas         TEXT
+);
+
+CREATE TABLE IF NOT EXISTS public.trends_pedidos (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  lote_id           UUID NOT NULL REFERENCES public.trends_lotes(id) ON DELETE CASCADE,
+  fetched_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+  eixo              TEXT,
+  passo             SMALLINT NOT NULL DEFAULT 1 CHECK (passo IN (1, 2, 3)),
+  amostra           SMALLINT NOT NULL DEFAULT 1,
+  termos            TEXT[] NOT NULL,
+  ancora            TEXT,
+  geo               TEXT NOT NULL DEFAULT 'PT',
+  categoria         INTEGER,
+  timeframe         TEXT NOT NULL,
+  window_start      DATE,
+  window_end        DATE,
+  granularidade     TEXT CHECK (granularidade IN ('horaria', 'diaria', 'semanal', 'mensal')),
+  collection_status TEXT NOT NULL CHECK (collection_status IN ('recolhido', 'sem_dados', 'falhou')),
+  erro              TEXT,
+  ficheiro          TEXT,
+  sha256            TEXT,
+  UNIQUE (lote_id, eixo, passo, amostra, termos)
+);
+
+CREATE TABLE IF NOT EXISTS public.trends_pontos (
+  pedido_id   UUID NOT NULL REFERENCES public.trends_pedidos(id) ON DELETE CASCADE,
+  termo       TEXT NOT NULL,
+  data        TIMESTAMPTZ NOT NULL,
+  valor       SMALLINT,
+  is_partial  BOOLEAN NOT NULL DEFAULT false,
+  PRIMARY KEY (pedido_id, termo, data)
+);
+
+CREATE TABLE IF NOT EXISTS public.trends_calibrados (
+  lote_id      UUID NOT NULL REFERENCES public.trends_lotes(id) ON DELETE CASCADE,
+  eixo         TEXT NOT NULL,
+  termo        TEXT NOT NULL,
+  data         TIMESTAMPTZ NOT NULL,
+  valor_eixo   NUMERIC(8,3),
+  factor       NUMERIC(10,6) NOT NULL,
+  pedido_id    UUID NOT NULL REFERENCES public.trends_pedidos(id) ON DELETE CASCADE,
+  PRIMARY KEY (lote_id, eixo, termo, data)
+);
+
+
 -- ============================================================================
 -- SECTION 3: INDEXES
 -- ============================================================================
@@ -412,6 +483,12 @@ CREATE INDEX IF NOT EXISTS idx_eixos_archive_axis_week ON public.eixos_archive (
 CREATE UNIQUE INDEX IF NOT EXISTS briefings_archive_week_start_idx ON public.briefings_archive (week_start);
 
 
+-- trends (18/09/2026)
+CREATE INDEX IF NOT EXISTS trends_pedidos_lote_idx    ON public.trends_pedidos (lote_id);
+CREATE INDEX IF NOT EXISTS trends_pontos_termo_idx    ON public.trends_pontos (termo, data);
+CREATE INDEX IF NOT EXISTS trends_calibrados_eixo_idx ON public.trends_calibrados (lote_id, eixo, termo);
+
+
 -- ============================================================================
 -- SECTION 4: ROW LEVEL SECURITY -- Enable RLS on all tables
 -- ============================================================================
@@ -435,6 +512,10 @@ ALTER TABLE public.health_questions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.eixos_archive ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.revisao_pares ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.contactos_projecto ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.trends_lotes      ENABLE ROW LEVEL SECURITY;  -- 18/09/2026
+ALTER TABLE public.trends_pedidos    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.trends_pontos     ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.trends_calibrados ENABLE ROW LEVEL SECURITY;
 
 
 -- ============================================================================
@@ -656,6 +737,21 @@ CREATE POLICY "Public read"
 -- As políticas "Public full CRUD" que aqui estavam foram removidas por
 -- supabase/migrations/20260909160000_contactos_projecto_rls_restrict.sql.
 -- NÃO as repor sem autenticação a sério no lugar.
+
+
+-- ----------------------------------------------------------------------------
+-- 5.20 trends_* -- Leitura pública, escrita só service_role (18/09/2026)
+--      Com DROP POLICY IF EXISTS antes do CREATE: estas quatro são idempotentes,
+--      ao contrário das 24 anteriores (AUDIT.md secção 6).
+-- ----------------------------------------------------------------------------
+DROP POLICY IF EXISTS "Allow public read on trends_lotes"      ON public.trends_lotes;
+DROP POLICY IF EXISTS "Allow public read on trends_pedidos"    ON public.trends_pedidos;
+DROP POLICY IF EXISTS "Allow public read on trends_pontos"     ON public.trends_pontos;
+DROP POLICY IF EXISTS "Allow public read on trends_calibrados" ON public.trends_calibrados;
+CREATE POLICY "Allow public read on trends_lotes"      ON public.trends_lotes      FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read on trends_pedidos"    ON public.trends_pedidos    FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read on trends_pontos"     ON public.trends_pontos     FOR SELECT TO public USING (true);
+CREATE POLICY "Allow public read on trends_calibrados" ON public.trends_calibrados FOR SELECT TO public USING (true);
 
 
 COMMIT;

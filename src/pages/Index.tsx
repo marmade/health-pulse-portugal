@@ -19,6 +19,12 @@ import { grupoDoEixo } from "@/lib/trendsGrupo";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
+// Blocos RETIRADOS da página a 18/09/2026, com nota no ecrã e registo em
+// docs/sessoes/2026-09-18.md. O código fica para não ser reinventado; volta com a
+// condição escrita em cada nota.
+const RANKING_RETIRADO = true;     // prioridade de comunicação: dados parados, réguas incomparáveis
+const FACTCHECK_RETIRADO = true;   // debunking: 36 linhas semeadas, sem fonte automática
+
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
   const [eixosArchives, setEixosArchives] = useState<Record<string, any[]>>({});
@@ -193,6 +199,7 @@ const Index = () => {
                     allKeywords={axis.allKeywords}
                     trendData={axis.trend}
                     period={filters.period}
+                    grupo={grupoDoEixo(axisId)}
                     archive={eixosArchives[axisId] || []}
                     hideKeywords
                   />
@@ -209,6 +216,7 @@ const Index = () => {
                     allKeywords={axis.allKeywords}
                     trendData={axis.trend}
                     period={filters.period}
+                    grupo={grupoDoEixo(axisId)}
                     hideChart
                   />
                 );
@@ -253,7 +261,7 @@ const Index = () => {
             desde 10/08 e de réguas incomparáveis. Volta quando os quatro eixos estiverem numa
             régua só e a definição estiver escrita.
           </p>
-          {false && urgencyRanking.length > 0 && (
+          {!RANKING_RETIRADO && urgencyRanking.length > 0 && (
             <div className="mb-8">
               <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50 mb-3">
                 Prioridade de comunicação esta semana
@@ -315,27 +323,16 @@ const Index = () => {
           </>
         )}
 
-        {/* Alerts + Health Questions + YouTube Trends */}
+        {/* Health Questions + YouTube Trends — ordem decidida pela Marta a 18/09/2026: as
+            perguntas logo a seguir às colunas; os alertas foram para o fim da página. O
+            interesse de pesquisa está no gráfico de cada coluna (grupoDoEixo); o painel
+            completo do Trends fica na vista de eixo. */}
         {activeAxis === 'all' && (
           <div className="mt-10">
-            {/* O interesse de pesquisa está no gráfico de cada coluna (grupoDoEixo);
-                o painel completo do Trends fica na vista de eixo (decisão de 18/09/2026). */}
-            {alerts.length > 0 && (
-              <>
-                <div className="section-divider mb-6" />
-                <SearchAlerts
-                  alerts={alerts}
-                  period={filters.period}
-                  debunkingData={debunkingData}
-                  newsData={newsData}
-                  historicalData={historicalData}
-                />
-              </>
-            )}
+            <div className="section-divider mb-6" />
+            <HealthQuestionsPanel />
             <div className="section-divider mb-6 mt-10" />
             <YouTubeTrendsPanel axis={activeAxis} />
-            <div className="section-divider mb-6 mt-10" />
-            <HealthQuestionsPanel />
           </div>
         )}
 
@@ -343,10 +340,42 @@ const Index = () => {
         <div className="mt-10">
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
-            <DebunkingTable items={filteredDebunkingData} />
+            {/* Fact-check — RETIRADO a 18/09/2026 (decisão da Marta, com registo). A tabela
+                `debunking` tem 36 linhas semeadas a 25/03/2026, todas "a verificar", sem URL,
+                com `term` = `title`; o único feed de fact-check configurado devolve o feed
+                geral do Observador, e o Polígrafo não tem RSS. Nunca houve fonte. Volta com a
+                Google Fact Check Tools API (ClaimReview), que traz o veredicto. Ver
+                docs/sessoes/2026-09-18.md. O componente fica intacto. */}
+            <div className="flex flex-col">
+              <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50 mb-2">
+                Fact-check &amp; desinformação
+              </p>
+              <p className="text-[10px] leading-relaxed text-foreground/50">
+                Retirado a 18/09/2026: as 36 verificações que aqui estavam foram semeadas a
+                25/03/2026, sem classificação nem fonte automática — o feed configurado devolvia
+                o jornal inteiro, não os fact-checks. O bloco volta quando tiver uma fonte com
+                veredicto (Google Fact Check Tools, ClaimReview).
+              </p>
+            </div>
+            {!FACTCHECK_RETIRADO && <DebunkingTable items={filteredDebunkingData} />}
             <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} activeTheme={activeAxis !== "all" ? activeAxis : undefined} />
           </div>
         </div>
+
+        {/* Alertas de pesquisa — no FIM da página (Marta, 18/09/2026): vêm da série
+            parada de 10/08 até a fase 3 os refazer, e não devem abrir a leitura. */}
+        {activeAxis === 'all' && alerts.length > 0 && (
+          <div className="mt-10">
+            <div className="section-divider mb-6" />
+            <SearchAlerts
+              alerts={alerts}
+              period={filters.period}
+              debunkingData={debunkingData}
+              newsData={newsData}
+              historicalData={historicalData}
+            />
+          </div>
+        )}
       </main>
 
       <DashboardFooter

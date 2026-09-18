@@ -95,27 +95,36 @@ def ler_novo(p, linhas):
     linhas_dados = [next(csv.reader([l])) for l in linhas[1:] if l.strip()]
     linhas_dados = [r for r in linhas_dados if r and r[0][:2] == "20"]
     termos = [separar_termo(b) for b in cab[1:]]
-    saida, ignoradas = [], []
+    def e_periodo_anterior(termo, periodo):
+        return periodo in SUFIXOS_PERIODO_ANTERIOR or (periodo and periodo.isdigit() and
+                any(t == termo and q and q.isdigit() and q > periodo for t, q in termos))
+    # primeiro decide-se o que fica de fora — TODAS as colunas —, so depois se constroem as
+    # series; senao a bandeira "regua conjunta" e calculada antes de a coluna ignorada ser
+    # vista (bug de 18/09, apanhado na revisao do mesmo dia)
+    ignoradas = [cab[j] for j, (termo, periodo) in enumerate(termos, start=1)
+                 if e_periodo_anterior(termo, periodo)]
+    desenhadas = len(cab) - 1 - len(ignoradas)
+    saida = []
     for j, (termo, periodo) in enumerate(termos, start=1):
-        if periodo in SUFIXOS_PERIODO_ANTERIOR or (periodo and periodo.isdigit() and
-                any(t == termo and q and q.isdigit() and q > periodo for t, q in termos)):
+        if cab[j] in ignoradas:
             # datas do periodo actual, valores do anterior: nao se desenha
-            ignoradas.append(cab[j]); continue
+            continue
         pontos = []
         for r in linhas_dados:
             try:
                 pontos.append({"data": r[0].strip(), "valor": int(str(r[j]).replace("<", "").strip())})
             except (ValueError, IndexError):
                 pass
-        outros = [b for k, b in enumerate(cab[1:], start=1) if k != j
-                  and separar_termo(b)[1] not in SUFIXOS_PERIODO_ANTERIOR]
+        outros = [b for k, b in enumerate(cab[1:], start=1) if k != j and b not in ignoradas]
         saida.append({"termo": termo, "periodo": periodo,
                       "rotulo": termo + (" (%s)" % periodo if periodo else ""),
                       "geo": geo, "categoria": None,
                       "granularidade": granularidade_por_datas([x["data"] for x in pontos]),
                       "pontos": pontos,
                       "ficheiro": os.path.relpath(p, RAIZ), "eixo": eixo_de(p),
-                      "termos_no_ficheiro": len(cab) - 1,
+                      # termos DESENHADOS: as colunas de periodo anterior nao contam, senao o
+                      # painel diz "2 na mesma regua" a uma serie que esta sozinha numa regua conjunta
+                      "termos_no_ficheiro": desenhadas,
                       "regua": os.path.splitext(os.path.basename(p))[0],
                       "regua_conjunta_com_periodo_anterior": bool(ignoradas),
                       "colunas_ignoradas": ignoradas,

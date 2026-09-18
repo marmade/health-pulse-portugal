@@ -85,6 +85,22 @@ def pedir(pt, termos, timeframe):
                   for d, v, p in zip(df.index, df[t].tolist(), parcial)]
     return "recolhido", out, None
 
+def granularidade_por_datas(datas):
+    """Pelo intervalo mediano entre datas consecutivas — 'today 3-m' vem diario, nao semanal."""
+    if len(datas) < 2: return None
+    gaps = sorted((b - a).total_seconds() / 3600 for a, b in zip(datas, datas[1:]))
+    g = gaps[len(gaps) // 2]
+    return "horaria" if g < 23 else "diaria" if g < 24 * 6 else "semanal" if g < 24 * 27 else "mensal"
+
+def dedup_passo2(pedidos, calibrados):
+    """Um termo esmagado e calibrado no passo 1 E no passo 2: fica a do passo 2 (mais resolucao)."""
+    melhor = {}
+    for e, t, d, ve, f, i in calibrados:
+        k = (e, t, d)
+        if k not in melhor or pedidos[i]["passo"] > pedidos[melhor[k][5]]["passo"]:
+            melhor[k] = (e, t, d, ve, f, i)
+    return list(melhor.values())
+
 def mediana(vals): return statistics.median(vals) if vals else 0
 def maximo(vals): return max(vals) if vals else 0
 
@@ -187,9 +203,10 @@ def correr(args):
                 if p["passo"] == 2 and t == p["ancora"]: continue  # a secundária já está calibrada no passo 1
                 for d, v, _ in s:
                     calibrados.append((eixo, t, d, v * f, f, pedidos.index(p)))
-        # top 5 do eixo: mediana calibrada, excluindo a âncora se não for keyword do eixo
+        # top 5 do eixo: mediana calibrada, DEPOIS de deduplicar (senão um termo esmagado
+        # conta duas vezes), excluindo a âncora se não for keyword do eixo
         med_por_termo = {}
-        for e, t, d, ve, f, i in calibrados:
+        for e, t, d, ve, f, i in dedup_passo2(pedidos, calibrados):
             if e == eixo: med_por_termo.setdefault(t, []).append(ve)
         ordem = sorted(((t, mediana(v)) for t, v in med_por_termo.items() if t in por_eixo[eixo]), key=lambda x: -x[1])
         top5[eixo] = ordem[:5]
@@ -242,20 +259,14 @@ def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
             amostra=p["amostra"], termos=p["termos"], ancora=p["ancora"], geo=CFG["geo"], categoria=CFG["categoria"],
             timeframe=args.timeframe, window_start=min(datas).date().isoformat() if datas else None,
             window_end=max(datas).date().isoformat() if datas else None,
-            granularidade="semanal" if "-m" in args.timeframe or "-y" in args.timeframe else None,
+            granularidade=granularidade_por_datas(sorted(set(datas))),
             collection_status=p["status"], erro=p["erro"]), "return=representation")[0]
         ids.append(row["id"])
         pontos = [dict(pedido_id=row["id"], termo=t, data=d.isoformat(), valor=v, is_partial=pc)
                   for t, s in p["series"].items() for d, v, pc in s]
         for i in range(0, len(pontos), 500): rest(url, key, "trends_pontos", "POST", pontos[i:i + 500])
-    # um termo esmagado é calibrado no passo 1 E no passo 2: fica a do passo 2 (mais resolução)
-    melhor = {}
-    for e, t, d, ve, f, i in calibrados:
-        k = (e, t, d.isoformat())
-        if k not in melhor or pedidos[i]["passo"] > pedidos[melhor[k][5]]["passo"]:
-            melhor[k] = (e, t, d, ve, f, i)
     cal = [dict(lote_id=lote["id"], eixo=e, termo=t, data=d.isoformat(), valor_eixo=round(ve, 3),
-                factor=round(f, 6), pedido_id=ids[i]) for e, t, d, ve, f, i in melhor.values()]
+                factor=round(f, 6), pedido_id=ids[i]) for e, t, d, ve, f, i in dedup_passo2(pedidos, calibrados)]
     for i in range(0, len(cal), 500): rest(url, key, "trends_calibrados", "POST", cal[i:i + 500])
     estado = "completo" if resumo["falhados"] == 0 else "incompleto"
     rest(url, key, "trends_lotes?id=eq." + lote["id"], "PATCH",
@@ -276,6 +287,8 @@ def main():
     ap.add_argument("--carregar", help="com --gravar: lê um dump em vez de pedir ao Google (mesmos pedidos, mesma hora de recolha)")
     args = ap.parse_args()
     if args.amostras != 1: sys.exit("v1: --amostras só suporta 1 (a repetição fica para quando houver dados para a justificar).")
+    if args.gravar:
+        chave_service_role()   # pára AQUI, antes de gastar 10 minutos de pedidos, se a chave faltar
     if args.carregar:
         d = json.load(open(args.carregar))
         args.timeframe = d["timeframe"]
