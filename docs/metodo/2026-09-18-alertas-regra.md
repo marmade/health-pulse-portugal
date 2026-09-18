@@ -1,7 +1,7 @@
 # A regra dos alertas (fase 3) — desenho, com exemplos calculados sobre os dois lotes
 
-**Data:** 18/09/2026, sessão 16 · **Estado:** DESENHO. Nada disto corre no dashboard nem grava
-nada. A regra foi **calibrada nos lotes que existem** (12 meses `4dad25b9`, 5 anos
+**Data:** 18/09/2026, sessão 16 · **Estado:** DESENHO, com as cinco decisões tomadas (secção 7). Nada disto corre no
+dashboard nem grava nada. A regra foi **calibrada nos lotes que existem** (12 meses `4dad25b9`, 5 anos
 `ec6cc6fc`, ambos da lista actual de 82) e os parâmetros ficaram fixados nesse dia — logo o
 que está abaixo não é um teste cego da regra, é a regra a explicar-se nos dados em que nasceu.
 O teste cego é o que as semanas seguintes fizerem. Script: `scripts/testes/teste_5_alertas.py`
@@ -65,7 +65,7 @@ Para cada termo, no lote de 5 anos, semana a semana:
 | **d. Subida** | Dispara se `(x − ref) / ruído ≥ 3` **e** `x / ref ≥ 1,5`. As duas: o z sozinho dispara em séries muito planas com subidas pequenas; a razão sozinha dispara no ruído dos pequenos. | `Z_MIN = 3`, `RAZAO_MIN = 1,5` |
 | **e. Sazonalidade** | Para cada ano anterior no lote (até 4), o **factor sazonal** = máximo da mesma semana ± 1 nesse ano ÷ mediana das 8 anteriores nesse ano — o que aquela época costuma fazer. Toma-se a mediana dos anos. Se o factor ≥ 1,5 e `x ≤ ref × factor × 1,25`, a subida é **sazonal**: mostra-se como tal, não é alerta. | `TOL_SAZONAL = 1,25` |
 | **f. Aparecimento** | Para os termos **não elegíveis** (o caso dos emergentes): dispara se o valor na **régua do próprio pedido** for ≥ 20 — acima do piscar, que vive nos 10–19 — **e** ≥ 2 × o máximo das 52 semanas anteriores. | `RAW_MIN = 20`, `MULT = 2` |
-| g. *A observar* (opcional) | z ≥ 2 sem chegar ao alerta. Um nível abaixo, para o ecrã não ficar vazio nas semanas calmas — **por decidir**, ver secção 7. | |
+| g. *A observar* | z ≥ 2 sem chegar ao alerta. Um nível abaixo, sem bandeira, só no ecrã — decidido, secção 7. | |
 
 Sem bibliotecas: mediana, MAD e uma divisão. Cabe numa vista SQL ou numa função de 40 linhas
 em TypeScript, e cabe numa página da tese.
@@ -157,7 +157,7 @@ lotes concordam.
   agradou — muda-se com registo e data, como a lista.
 - **A referência é curta de propósito e por isso um pico que dura levanta-a.** A `endometriose`
   em Julho de 2022 disparou quatro semanas seguidas com a mesma referência (22): a regra vê
-  quatro alertas onde há um acontecimento. Ver a decisão 3.
+  quatro alertas onde há um acontecimento. Resolvido pela decisão 3 ("em curso").
 - **A sazonalidade precisa de anos anteriores elegíveis** — no primeiro ano do lote não há
   desconto, e um termo que só ganhou procura regular este ano também não tem.
 - **Os homónimos disparam** (`depressão`, `pânico`). A regra não os distingue; a lista de 100
@@ -167,20 +167,38 @@ lotes concordam.
 - **Abaixo do limiar não há regra possível.** 67 dos 84 termos não têm série; um alerta lá seria
   o piscar do Google com outro nome.
 
-## 7. O que fica para a Marta
+## 7. As cinco decisões — tomadas pela Marta a 18/09/2026, ao fim do dia
 
-1. **Os limiares:** z ≥ 3 e ×1,5 (≈ 23 alertas por ano na lista actual) ou z ≥ 4 e ×2 (≈ 9).
-   A primeira lê melhor; a segunda quase só apanha acontecimentos.
-2. **O nível "a observar"** (z ≥ 2): existe no ecrã ou não? A favor: a maior parte das semanas
-   não tem alerta, e o bloco fica vazio. Contra: um nível fraco gasta a atenção.
-3. **Um acontecimento que dura:** semanas consecutivas do mesmo termo são o mesmo alerta
-   ("em curso, 3.ª semana") ou alertas novos? Proposta: o mesmo, enquanto a razão se mantiver
-   ≥ 1,5 contra a referência **de antes do primeiro disparo**.
-4. **O aparecimento é só dos emergentes ou de todos os eixos?** Nos 5 anos disparou 8 vezes: 3
-   nos emergentes, 4 na alimentação, 1 na saúde mental (o `pânico`, cinema).
-5. **O que o ecrã mostra por alerta:** proposta — termo, valor, referência, "×1,8 contra as 8
-   semanas anteriores", e o factor sazonal quando existir ("em anos anteriores esta época faz
-   ×2,0"). O número antes da bandeira.
+1. **Limiares: z ≥ 3 e ×1,5.** O limiar mais duro (z ≥ 4, ×2) deixava 43 dos 109 e perdia
+   precisamente as subidas de metade a dobro (`stress` ×1,6–1,9, `alzheimer` ×1,5–2,0,
+   `colesterol alto` ×1,7, `menopausa` na semana do Dia Mundial) — as semanas em que "está a
+   subir e vale a pena falar disto". Os grandes sobrevivem aos dois. O número fica ao lado
+   da bandeira, logo um alerta fraco lê-se como fraco.
+2. **O nível "a observar" (z ≥ 2) existe, secundário.** Sem bandeira, nunca com a palavra
+   "alerta", nunca em notificações — só no ecrã. Preenche 85 das 163 semanas sem alerta;
+   ficam 31 % de semanas vazias, não 64 %. É a resposta a "então e o que está a mexer?".
+3. **Um acontecimento que dura é um alerta só, "em curso, n.ª semana".** A referência
+   congela na de antes do primeiro disparo; o alerta continua enquanto o valor estiver
+   ≥ 1,5× essa referência e fecha quando cai. Evita as duas falhas da regra sem estado:
+   repetir "alerta" como se fosse novo, e calar-se à 3.ª semana porque o pico já entrou na
+   referência. 109 subidas → 84 acontecimentos. Custo: uma tabela `trends_alertas` (termo,
+   eixo, início, fim, referência congelada) — a implementar com a fase 3.
+4. **O aparecimento aplica-se a todos os eixos.** 8 disparos em 5 anos; o `refluxo` a chegar
+   ao 100 em Maio de 2025 não é emergente e é para ver.
+5. **A linha do ecrã**, na formulação da Marta — *"vezes acima do valor normal"*, e "valor
+   normal" = a mediana das 8 semanas anteriores, explicado uma vez na proveniência da página:
+
+   ```
+   ▲ diabetes tipo 2        253 — 8 vezes acima do valor normal (30)        1.ª semana
+   ▲ endometriose            59 — 2,7 vezes acima do valor normal (22)      em curso, 3.ª semana
+   ● candida auris          100 — apareceu; normalmente sem procura (máx. anterior 6)
+   ○ psiquiatra              73 — 1,2 vezes acima do valor normal (a observar)
+   ~ cancro da mama          32 — 2,4 vezes acima do valor normal — sazonal: em Outubro é habitual (×2,0–2,7)
+   ```
+
+   O número antes da bandeira; o sazonal mostra-se e diz porquê, mas não é alerta; nada de
+   "score" nem percentagens; tudo na régua do eixo, dentro de cada coluna — os eixos não se
+   misturam numa lista só.
 
 ## 8. Reproduzir
 

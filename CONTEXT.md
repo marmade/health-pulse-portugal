@@ -1084,11 +1084,13 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       vistas `20260918200000` a excluírem a semana parcial (`is_partial`) — hoje `maximo_52s`
       / `pico_em` podem apontar para ela
 - [ ] Instalar o `launchd` depois do primeiro passo validado
-- [ ] Alertas (fase 3): **regra desenhada a 18/09** (`docs/metodo/2026-09-18-alertas-regra.md`;
-      `scripts/testes/teste_5_alertas.py`): mediana + MAD sobre 8 semanas, elegibilidade
-      (6/8 > 0), sazonalidade descontada no lote de 5 anos, aparecimento para os não elegíveis,
-      Emergentes por pico. Faltam as cinco decisões da secção 7 e a implementação, depois do
-      lote da lista nova
+- [ ] Alertas (fase 3): regra desenhada **e as cinco decisões tomadas a 18/09**
+      (`docs/metodo/2026-09-18-alertas-regra.md`, secção 7; `scripts/testes/teste_5_alertas.py`):
+      z ≥ 3 e ×1,5 sobre a mediana das 8 semanas anteriores; "a observar" (z ≥ 2) secundário,
+      sem bandeira; um acontecimento que dura é um alerta "em curso" com referência congelada
+      (precisa de `trends_alertas`); aparecimento em todos os eixos; no ecrã "n vezes acima do
+      valor normal (ref)". Falta implementar — tabela, vista ou função, bloco no ecrã — depois
+      do lote da lista nova
 - [ ] As 100 keywords no mural (decisão da Marta, 18/09)
 - [ ] `keywords.current_volume INT NOT NULL DEFAULT 0` — o zero-que-finge está no schema
 - [ ] Reconsiderar `açúcar e saúde` (14 ao lado de anemia no lote). ~~Classificar as 40
