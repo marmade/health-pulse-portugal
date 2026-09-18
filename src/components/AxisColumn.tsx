@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
+import type { Top5Item } from "@/hooks/useTrendsLote";
 import Top5Table from "./Top5Table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
@@ -15,6 +16,9 @@ type Props = {
   /** Resumo da descarga de grupo do eixo (página inicial). Se vier, o gráfico usa-o
       em vez de `trendData` — ver src/lib/trendsGrupo.ts para o porquê. */
   grupo?: GrupoResumo | null;
+  /** Top 5 do lote do Google Trends (mediana calibrada, 52 semanas). Se vier, substitui o
+      top 5 da tabela `keywords`, que é a série parada de 10/08/2026. */
+  top5Lote?: Top5Item[] | null;
   archive?: any[];
   hideChart?: boolean;
   hideKeywords?: boolean;
@@ -24,7 +28,7 @@ type Props = {
 // de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
 const VAR_MEDIA_ANTIGA = false;
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, archive = [], hideChart, hideKeywords }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
@@ -161,7 +165,26 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
         </>
       )}
 
-      {!hideKeywords && (
+      {!hideKeywords && top5Lote && top5Lote.length > 0 && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <Top5Table
+            rotulo={top5Lote.length < 5
+              ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo tem" : "termos têm"} procura regular neste eixo`
+              : "Top 5 — mais pesquisados, na régua do eixo"}
+            keywords={top5Lote.map(t => ({
+              term: t.termo, synonyms: [], category: "", axis: axisId, source: "trends",
+              currentVolume: Math.round(t.mediana), previousVolume: Math.round(t.medianaAnterior ?? 0),
+              changePercent: t.variacao ?? 0,
+              trend: (t.variacao ?? 0) > 10 ? "up" : (t.variacao ?? 0) < -10 ? "down" : "stable",
+              lastPeak: t.picoEm ? `${MES_LONGO[+t.picoEm.slice(5, 7) - 1].slice(0, 3)} ${t.picoEm.slice(0, 4)}` : "",
+              isEmergent: false,
+            }))}
+            nota="Mediana das últimas 52 semanas, calibrada para a régua da âncora do eixo (a âncora ≈ 100); a variação compara com as 52 semanas anteriores; o pico é a semana mais alta do ano. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos."
+          />
+        </>
+      )}
+      {!hideKeywords && !(top5Lote && top5Lote.length > 0) && (
         <>
           <div className="border-t border-foreground/10" />
           <Top5Table keywords={top5} />

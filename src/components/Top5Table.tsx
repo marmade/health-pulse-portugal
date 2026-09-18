@@ -3,9 +3,12 @@ import type { Keyword } from "@/data/mockData";
 
 type Props = {
   keywords: Keyword[];
+  /** rótulo por cima da lista (por omissão "Top 5 — Keywords") e nota de proveniência por baixo */
+  rotulo?: string;
+  nota?: string;
 };
 
-const Top5Table = ({ keywords }: Props) => {
+const Top5Table = ({ keywords, rotulo, nota }: Props) => {
   const maxVolume = useMemo(
     () => Math.max(...keywords.map((k) => k.currentVolume), 1),
     [keywords]
@@ -13,7 +16,7 @@ const Top5Table = ({ keywords }: Props) => {
 
   return (
     <div>
-      <p className="editorial-label mb-3">Top 5 — Keywords</p>
+      <p className="editorial-label mb-3">{rotulo || "Top 5 — Keywords"}</p>
       <div className="space-y-0">
         {keywords.map((kw, i) => {
           const barWidth = Math.round((kw.currentVolume / maxVolume) * 100);
@@ -70,6 +73,7 @@ const Top5Table = ({ keywords }: Props) => {
           );
         })}
       </div>
+      {nota && <p className="text-[9px] leading-relaxed text-foreground/50 mt-3">{nota}</p>}
     </div>
   );
 };

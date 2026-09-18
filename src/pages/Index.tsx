@@ -16,6 +16,7 @@ import { useLastRefreshed } from "@/hooks/useLastRefreshed";
 import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
 import { grupoDoEixo } from "@/lib/trendsGrupo";
+import { useTrendsLote } from "@/hooks/useTrendsLote";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -35,6 +36,16 @@ const Index = () => {
   const { data: dbNewsData, lastFetchTimestamp } = useNewsData();
   const lastRefreshed = useLastRefreshed();
   const { data: historicalData } = useHistoricalData(filters.period);
+
+  // O lote do Google Trends (trends_calibrados): top 5 e gráfico de cada eixo. Os termos
+  // activos por eixo servem para a âncora, quando não é keyword, ficar fora do top.
+  const termosDoEixo = useMemo(() => {
+    if (!filteredData) return null;
+    const m: Record<string, string[]> = {};
+    for (const a of axisOrder) m[a] = (filteredData[a]?.allKeywords || []).map((k: { term: string }) => k.term);
+    return m;
+  }, [filteredData]);
+  const { porEixo: loteEixo, lote } = useTrendsLote(termosDoEixo);
 
   // Use only real DB data — no mock fallback
   const debunkingData = dbDebunkingData;
@@ -199,7 +210,7 @@ const Index = () => {
                     allKeywords={axis.allKeywords}
                     trendData={axis.trend}
                     period={filters.period}
-                    grupo={grupoDoEixo(axisId)}
+                    grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                     archive={eixosArchives[axisId] || []}
                     hideKeywords
                   />
@@ -216,7 +227,8 @@ const Index = () => {
                     allKeywords={axis.allKeywords}
                     trendData={axis.trend}
                     period={filters.period}
-                    grupo={grupoDoEixo(axisId)}
+                    grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                    top5Lote={loteEixo?.[axisId]?.top5}
                     hideChart
                   />
                 );
@@ -315,7 +327,8 @@ const Index = () => {
                   allKeywords={axis.allKeywords}
                   trendData={axis.trend}
                   period={filters.period}
-                  grupo={grupoDoEixo(axisId)}
+                  grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                  top5Lote={loteEixo?.[axisId]?.top5}
                 />
               );
             })}

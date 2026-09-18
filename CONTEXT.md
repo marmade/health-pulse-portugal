@@ -560,9 +560,13 @@ do eixo (`src/lib/trendsGrupo.ts`), 2026 contra 2025, com leituras calculadas. O
 coisas... a não ser que registes"*): contradizia as colunas e vinha de dados parados; volta
 quando os quatro eixos estiverem numa régua só (o passo 3 do script já os liga: psiquiatra 39
 · colesterol alto 17 · menopausa 73 · avc 100) e a definição estiver escrita. O painel
-completo do Trends (68 séries) fica na vista de eixo. **Provisório:** o top 5 das colunas
-ainda vem de `keywords` de 10/08; passa a vir de `trends_calibrados` na terça 22/09, com a
-lista nova.
+completo do Trends (68 séries) fica na vista de eixo. **Desde a tarde de 18/09, o top 5 e o
+gráfico de cada coluna lêem do último lote completo de 5 anos em `trends_calibrados`**
+(`src/hooks/useTrendsLote.ts`, sobre as vistas `trends_termo_52s`, `trends_termo_mensal`,
+`trends_termo_anual` — migração `20260918200000`, aplicada): top 5 = mediana calibrada das
+últimas 52 semanas, só termos com procura; gráfico = média mensal desses 5, 2026 vs 2025. Sem
+lote, cai no `googleTrends.json`. Com a lista antiga, os Emergentes têm só 3 termos com
+procura regular — e a página di-lo.
 
 **NÃO PUBLICADO** — nem isto nem o painel das perguntas de 16/09. O site serve a versão de
 15/09.
@@ -1075,8 +1079,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Terça 22/09, por esta ordem:** corrida de segunda pelo efeito → migrações da lista de
       100 (`20260918180000`) e das colunas de auditoria de `news_items` (`20260918190000`) →
       publicar `fetch-rss-feeds` reescrita (palavra inteira, categoria do feed, CDATA) →
-      `types.ts` → consolidada → script 5 sobre a lista nova (12 m e 5 a) → dashboard a ler de
-      `trends_calibrados` → rotular de novo as 310 notícias → passo 2B
+      `types.ts` → consolidada → script 5 sobre a lista nova (12 m e 5 a; o dashboard já lê do
+      último lote) → rotular de novo as 310 notícias → passo 2B
 - [ ] Instalar o `launchd` depois do primeiro passo validado
 - [ ] Alertas (fase 3): regra escrita, 12 meses semanal, sazonalidade descontada; Emergentes
       por pico

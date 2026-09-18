@@ -18,7 +18,8 @@
 -- Verified by execution on 2026-09-14, in a disposable project -- not by
 -- reading. See AUDIT.md sections 6.5 and 6.6.
 --
--- 2026-09-18: four trends_* tables added (sections 2.20-2.23, 3, 4, 5.20),
+-- 2026-09-18: four trends_* tables added (sections 2.20-2.23, 3, 4, 5.20) and four
+--   trends_* views (5.19b, migration 20260918200000),
 --   mirroring migration 20260918170000 which was applied to the live instance
 --   the same day. NOT re-verified by execution since; the 24 non-idempotent
 --   policies above still apply. The new four use DROP POLICY IF EXISTS.
@@ -738,6 +739,38 @@ CREATE POLICY "Public read"
 -- supabase/migrations/20260909160000_contactos_projecto_rls_restrict.sql.
 -- NÃO as repor sem autenticação a sério no lugar.
 
+
+-- ----------------------------------------------------------------------------
+-- 5.19b trends_* vistas de resumo (18/09/2026, migração 20260918200000)
+--      Para o dashboard ler do lote sem puxar 22 000 linhas por visita.
+-- ----------------------------------------------------------------------------
+CREATE OR REPLACE VIEW public.trends_eixo_mensal AS
+SELECT lote_id, eixo, date_trunc('month', data)::date AS mes,
+       avg(valor_eixo)::numeric(8,2) AS media, count(DISTINCT termo) AS n_termos
+FROM public.trends_calibrados GROUP BY lote_id, eixo, date_trunc('month', data);
+
+CREATE OR REPLACE VIEW public.trends_termo_52s AS
+WITH fim AS (SELECT lote_id, max(data) AS fim FROM public.trends_calibrados GROUP BY lote_id)
+SELECT c.lote_id, c.eixo, c.termo,
+       percentile_cont(0.5) WITHIN GROUP (ORDER BY c.valor_eixo) FILTER (WHERE c.data > f.fim - interval '52 weeks') AS mediana_52s,
+       max(c.valor_eixo) FILTER (WHERE c.data > f.fim - interval '52 weeks') AS maximo_52s,
+       (array_agg(c.data ORDER BY c.valor_eixo DESC) FILTER (WHERE c.data > f.fim - interval '52 weeks'))[1]::date AS pico_em,
+       percentile_cont(0.5) WITHIN GROUP (ORDER BY c.valor_eixo)
+         FILTER (WHERE c.data <= f.fim - interval '52 weeks' AND c.data > f.fim - interval '104 weeks') AS mediana_52s_anteriores,
+       count(*) FILTER (WHERE c.data > f.fim - interval '52 weeks') AS n_52s
+FROM public.trends_calibrados c JOIN fim f ON f.lote_id = c.lote_id
+GROUP BY c.lote_id, c.eixo, c.termo;
+
+CREATE OR REPLACE VIEW public.trends_termo_anual AS
+SELECT lote_id, eixo, termo, extract(year FROM data)::int AS ano, avg(valor_eixo)::numeric(8,2) AS media,
+       count(*) AS n, count(DISTINCT date_trunc('month', data)) AS meses
+FROM public.trends_calibrados GROUP BY lote_id, eixo, termo, extract(year FROM data);
+
+CREATE OR REPLACE VIEW public.trends_termo_mensal AS
+SELECT lote_id, eixo, termo, date_trunc('month', data)::date AS mes, avg(valor_eixo)::numeric(8,2) AS media, count(*) AS n
+FROM public.trends_calibrados GROUP BY lote_id, eixo, termo, date_trunc('month', data);
+
+GRANT SELECT ON public.trends_eixo_mensal, public.trends_termo_52s, public.trends_termo_anual, public.trends_termo_mensal TO anon, authenticated;
 
 -- ----------------------------------------------------------------------------
 -- 5.20 trends_* -- Leitura pública, escrita só service_role (18/09/2026)
