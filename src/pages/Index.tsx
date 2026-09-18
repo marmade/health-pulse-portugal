@@ -17,6 +17,8 @@ import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
 import { grupoDoEixo } from "@/lib/trendsGrupo";
 import { useTrendsLote } from "@/hooks/useTrendsLote";
+import AlertasEixo, { NOTA_ALERTAS, semanaCurta } from "@/components/AlertasEixo";
+import { NOTA_TOP5 } from "@/components/AxisColumn";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -24,6 +26,8 @@ const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 // docs/sessoes/2026-09-18.md. O código fica para não ser reinventado; volta com a
 // condição escrita na nota.
 const RANKING_RETIRADO = true;     // prioridade de comunicação: dados parados, réguas incomparáveis
+const ALERTAS_ANTIGOS = false;   // ver a nota no fim da página
+const SELECTOR_PERIODO = false;  // 7 | 30 dias | 12 meses: retirado a 18/09/2026, ver a nota junto ao <Filters>
 
 const Index = () => {
   const [activeAxis, setActiveAxis] = useState("all");
@@ -45,6 +49,7 @@ const Index = () => {
     return m;
   }, [filteredData]);
   const { porEixo: loteEixo, lote } = useTrendsLote(termosDoEixo);
+  const semanaAlertas = axisOrder.map(a => loteEixo?.[a]?.alertas?.semana).find(Boolean) ?? null;
 
   // Use only real DB data — no mock fallback
   const debunkingData = dbDebunkingData;
@@ -110,13 +115,9 @@ const Index = () => {
     [filteredData, filters.period]
   );
 
-  const axisAlerts = useMemo(
-    () =>
-      activeAxis === 'all'
-        ? alerts
-        : alerts.filter((a) => a.axisLabel === filteredData[activeAxis]?.label),
-    [alerts, activeAxis, filteredData]
-  );
+  // `axisAlerts` (os alertas antigos filtrados por eixo) saiu a 18/09/2026 com o bloco que os
+  // mostrava na vista de eixo; `alerts` fica só para o ranking retirado e o bloco antigo, ambos
+  // desligados.
 
   const visibleAxes =
     activeAxis === "all"
@@ -187,10 +188,20 @@ const Index = () => {
         </div>
       )}
 
-      {/* Filters */}
-      <div className="px-6 py-2 overflow-x-auto">
-        <Filters filters={filters} onFilterChange={setFilters} />
-      </div>
+      {/* Selector de período (7 | 30 dias | 12 meses) — RETIRADO a 18/09/2026 (decisão da
+          Marta, registada aqui, no ecrã e em docs/sessoes/2026-09-18.md). Tudo o que está
+          acima da dobra vem do lote e tem a sua janela própria, escrita ao lado: gráfico =
+          anos, top 5 = 52 semanas, alertas = esta semana contra as 8 anteriores; um selector
+          global prometia mudar os três e não mudava nenhum. Só filtrava a lista de notícias
+          por data. A Marta: "se nos vier a fazer falta, será dentro de cada eixo" — para a
+          fase 4 (séries diárias para um caso). `filters.period` fica a "12m" fixo até o
+          código antigo que o lê (useAxisData, useHistoricalData, o filtro das notícias)
+          ser apagado ou refeito. */}
+      {SELECTOR_PERIODO && (
+        <div className="px-6 py-2 overflow-x-auto">
+          <Filters filters={filters} onFilterChange={setFilters} />
+        </div>
+      )}
 
       {/* Main grid */}
       <main className="flex-1 px-6 py-6">
@@ -228,6 +239,7 @@ const Index = () => {
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                     top5Lote={loteEixo?.[axisId]?.top5}
+                    alertas={loteEixo?.[axisId]?.alertas}
                     hideChart
                   />
                 );
@@ -237,18 +249,12 @@ const Index = () => {
             {/* Linha 1B: interesse de pesquisa deste eixo, logo a seguir às keywords */}
             <GoogleTrendsPanel axis={activeAxis} />
 
-            {/* Linha 2: perguntas esquerda, alertas direita */}
+            {/* Linha 2: perguntas. Os alertas passaram para a coluna das keywords (fase 3,
+                18/09/2026); o bloco antigo, da série parada, foi retirado — ver o fim da página inicial. */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <HealthQuestionsPanel
                 axis={activeAxis}
                 axisLabel={filteredData[activeAxis]?.label}
-              />
-              <SearchAlerts
-                alerts={axisAlerts}
-                period={filters.period}
-                debunkingData={filteredDebunkingData}
-                newsData={filteredNewsData}
-                historicalData={historicalData}
               />
             </div>
 
@@ -267,10 +273,15 @@ const Index = () => {
               em baixo). Volta quando houver: (1) o pedido das quatro âncoras juntas, que põe
               os eixos numa régua só; (2) uma definição escrita do que "prioridade" mede.
               O cálculo fica intacto abaixo, para não ser reinventado. */}
-          <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mb-8">
+          <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mb-2">
             Prioridade de comunicação — retirado a 18/09/2026: o ranking vinha de dados parados
             desde 10/08 e de réguas incomparáveis. Volta quando os quatro eixos estiverem numa
             régua só e a definição estiver escrita.
+          </p>
+          <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mb-8">
+            Período 7 | 30 dias | 12 meses — retirado a 18/09/2026: cada bloco tem a sua janela,
+            escrita ao lado (gráfico = anos; top 5 = 52 semanas; alertas = esta semana). Se fizer
+            falta, será dentro de cada eixo.
           </p>
           {!RANKING_RETIRADO && urgencyRanking.length > 0 && (
             <div className="mb-8">
@@ -314,12 +325,42 @@ const Index = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          {/* Página inicial em LINHAS alinhadas (Marta, 18/09/2026: "é um dashboard para ser
+              visto num computador, com tudo alinhado"). Cada linha é uma grelha de 4 colunas
+              com `items-start`, logo as quatro células começam à mesma altura — antes cada
+              eixo era uma pilha vertical e o texto do gráfico (de altura variável) empurrava
+              o top 5 e os alertas para alturas diferentes. Linhas: cabeçalho + gráfico ·
+              ● Top keywords · ● Alertas. */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">
             {visibleAxes.map((axisId) => {
               const axis = filteredData[axisId];
               return (
                 <AxisColumn
-                  key={`${axisId}-${filters.period}`}
+                  key={`${axisId}-${filters.period}-grafico`}
+                  axisId={axisId}
+                  label={axis.label}
+                  keywords={axis.keywords}
+                  allKeywords={axis.allKeywords}
+                  trendData={axis.trend}
+                  period={filters.period}
+                  grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                  hideKeywords
+                />
+              );
+            })}
+          </div>
+
+          <div className="section-divider mt-10 mb-6" />
+          <div className="flex items-center gap-3 mb-5">
+            <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
+            <p className="text-xs font-bold uppercase tracking-[0.15em]">Top keywords</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">
+            {visibleAxes.map((axisId) => {
+              const axis = filteredData[axisId];
+              return (
+                <AxisColumn
+                  key={`${axisId}-${filters.period}-keywords`}
                   axisId={axisId}
                   label={axis.label}
                   keywords={axis.keywords}
@@ -328,10 +369,35 @@ const Index = () => {
                   period={filters.period}
                   grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                   top5Lote={loteEixo?.[axisId]?.top5}
+                  hideChart
+                  hideHeader
+                  hideAlertas
                 />
               );
             })}
           </div>
+          {lote && <p className="text-[9px] leading-relaxed text-foreground/50 mt-4">{NOTA_TOP5}</p>}
+
+          {semanaAlertas && (
+            <>
+              <div className="section-divider mt-10 mb-6" />
+              <div className="flex items-center gap-3 mb-5">
+                <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
+                <p className="text-xs font-bold uppercase tracking-[0.15em]">
+                  Alertas — semana de {semanaCurta(semanaAlertas)}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">
+                {visibleAxes.map((axisId) => {
+                  const dados = loteEixo?.[axisId]?.alertas;
+                  return dados
+                    ? <AlertasEixo key={`${axisId}-alertas`} dados={dados} rotulo={filteredData[axisId].label} rotuloCor="#0000FF" compacto />
+                    : <div key={`${axisId}-alertas`} />;
+                })}
+              </div>
+              <p className="text-[9px] leading-relaxed text-foreground/50 mt-4">{NOTA_ALERTAS}</p>
+            </>
+          )}
           </>
         )}
 
@@ -361,9 +427,14 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Alertas de pesquisa — no FIM da página (Marta, 18/09/2026): vêm da série
-            parada de 10/08 até a fase 3 os refazer, e não devem abrir a leitura. */}
-        {activeAxis === 'all' && alerts.length > 0 && (
+        {/* "Alertas de pesquisa" — RETIRADO a 18/09/2026 (decisão da Marta, registada aqui,
+            no ecrã e em docs/sessoes/2026-09-18.md). O que mostrava: `change_percent` da
+            tabela `keywords`, a série parada desde 10/08, 4 semanas contra 4 numa régua
+            incomparável, e chamava "PICO" a +40% — um 1→2 dava "+100%". Os alertas verdadeiros
+            (fase 3, regra de 18/09/2026, trends_alertas) estão agora dentro de cada coluna,
+            a seguir ao top 5. O componente SearchAlerts e o detectAlerts ficam no código,
+            sem uso, até se decidir apagá-los. */}
+        {activeAxis === 'all' && ALERTAS_ANTIGOS && alerts.length > 0 && (
           <div className="mt-10">
             <div className="section-divider mb-6" />
             <SearchAlerts
@@ -374,6 +445,13 @@ const Index = () => {
               historicalData={historicalData}
             />
           </div>
+        )}
+        {activeAxis === 'all' && (
+          <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
+            Alertas de pesquisa — retirado a 18/09/2026: vinha da série parada desde 10/08 e
+            chamava pico a um 1→2. Os alertas estão agora em cada coluna, a seguir ao top 5,
+            com a regra de 18/09/2026.
+          </p>
         )}
       </main>
 

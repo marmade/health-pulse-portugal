@@ -10,19 +10,24 @@ interface FeedSource {
   fallbackUrls?: string[];
   outlet: string;
   type: 'media' | 'institucional' | 'factcheck';
+  /** Feed geral (política, desporto, tudo): a <category> do item é o filtro de saúde
+      (decisão da Marta, 18/09/2026). Os feeds de secção de saúde e os institucionais já
+      são de saúde por construção e NÃO se filtram — uma categoria "Sociedade" ou
+      "Empresas" num item da Visão — Saúde não o torna menos de saúde. */
+  geral?: boolean;
 }
 
 // Estratégia de fallback: tenta URL principal; se 404/403, tenta fallbackUrls em sequência.
 // Para adicionar novos outlets: basta acrescentar à lista.
 const FEEDS: FeedSource[] = [
   // MEDIA GERAL
-  { url: 'https://feeds.feedburner.com/PublicoRSS', fallbackUrls: ['https://www.publico.pt/rss'], outlet: 'Público', type: 'media' },
-  { url: 'https://observador.pt/feed/', outlet: 'Observador', type: 'media' },
-  { url: 'https://www.dn.pt/stories.rss', fallbackUrls: ['https://www.dn.pt/feed/'], outlet: 'Diário de Notícias', type: 'media' },
-  { url: 'https://www.cmjornal.pt/rss', fallbackUrls: ['https://www.cmjornal.pt/rss/'], outlet: 'CM Jornal', type: 'media' },
-  { url: 'https://www.rtp.pt/noticias/rss', fallbackUrls: ['https://www.rtp.pt/noticias/feed/'], outlet: 'RTP', type: 'media' },
-  { url: 'https://sicnoticias.pt/rss', fallbackUrls: ['https://sicnoticias.pt/rss/'], outlet: 'SIC Notícias', type: 'media' },
-  { url: 'https://www.noticiasaominuto.com/rss/ultima-hora', fallbackUrls: ['https://www.noticiasaominuto.com/rss'], outlet: 'Notícias ao Minuto', type: 'media' },
+  { url: 'https://feeds.feedburner.com/PublicoRSS', fallbackUrls: ['https://www.publico.pt/rss'], outlet: 'Público', type: 'media', geral: true },
+  { url: 'https://observador.pt/feed/', outlet: 'Observador', type: 'media', geral: true },
+  { url: 'https://www.dn.pt/stories.rss', fallbackUrls: ['https://www.dn.pt/feed/'], outlet: 'Diário de Notícias', type: 'media', geral: true },
+  { url: 'https://www.cmjornal.pt/rss', fallbackUrls: ['https://www.cmjornal.pt/rss/'], outlet: 'CM Jornal', type: 'media', geral: true },
+  { url: 'https://www.rtp.pt/noticias/rss', fallbackUrls: ['https://www.rtp.pt/noticias/feed/'], outlet: 'RTP', type: 'media', geral: true },
+  { url: 'https://sicnoticias.pt/rss', fallbackUrls: ['https://sicnoticias.pt/rss/'], outlet: 'SIC Notícias', type: 'media', geral: true },
+  { url: 'https://www.noticiasaominuto.com/rss/ultima-hora', fallbackUrls: ['https://www.noticiasaominuto.com/rss'], outlet: 'Notícias ao Minuto', type: 'media', geral: true },
   // MEDIA — SECÇÕES SAÚDE
   { url: 'https://feeds.feedburner.com/PublicoRSS', outlet: 'Público — Ciência', type: 'media' },
   { url: 'https://observador.pt/seccao/saude/feed/', fallbackUrls: ['https://observador.pt/seccao/sociedade/saude/feed/'], outlet: 'Observador — Saúde', type: 'media' },
@@ -214,7 +219,10 @@ Deno.serve(async (req) => {
     }
 
     const { data: existingItems } = await sb.from('news_items').select('url');
-    const existingUrls = new Set((existingItems || []).map((i: { url: string }) => i.url));
+    // As URLs gravadas até 18/09/2026 vieram sem descodificar (113 das 310 têm `&amp;`);
+    // o `<link>` passa agora por limpar(). Comparar as duas na mesma forma, senão cada uma
+    // dessas notícias entrava outra vez como nova (achado da revisão de 18/09).
+    const existingUrls = new Set((existingItems || []).map((i: { url: string }) => limpar(i.url || '')));
 
     if (allTerms.length === 0) {
       console.warn('RSS fetch: keywords table is empty — no articles will match');
@@ -225,6 +233,7 @@ Deno.serve(async (req) => {
     let totalDuplicates = 0;
     let totalNoMatch = 0;
     let totalForaDaCategoria = 0;
+    const foraPorFeed: Record<string, number> = {};
     const errors: string[] = [];
     const fallbacksUsed: string[] = [];
 
@@ -249,7 +258,9 @@ Deno.serve(async (req) => {
 
         for (const item of items) {
           if (!item.link || existingUrls.has(item.link)) { totalDuplicates++; continue; }
-          if (!passaCategoria(item)) { totalForaDaCategoria++; continue; }
+          if (feed.geral && !passaCategoria(item)) {
+            totalForaDaCategoria++; foraPorFeed[feed.outlet] = (foraPorFeed[feed.outlet] || 0) + 1; continue;
+          }
           const searchText = `${item.title} ${(item.description || '').substring(0, 200)}`;
           const matchedTerm = matchesKeyword(searchText, allTerms);
           if (!matchedTerm) { totalNoMatch++; continue; }
@@ -295,6 +306,7 @@ Deno.serve(async (req) => {
       keywords: allTerms.length,
       processed: totalProcessed,
       fora_da_categoria: totalForaDaCategoria,
+      fora_da_categoria_por_feed: Object.keys(foraPorFeed).length ? foraPorFeed : undefined,
       duplicates: totalDuplicates,
       no_match: totalNoMatch,
       inserted: totalInserted,

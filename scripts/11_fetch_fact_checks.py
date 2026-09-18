@@ -71,7 +71,9 @@ def main():
     api_key = chave("GOOGLE_FACTCHECK_API_KEY")
     url, anon = env_publico()
     kws = rest(url, anon, "keywords?select=id,term,axis&is_active=eq.true&order=axis,term")
-    existentes = {r["url"] for r in rest(url, anon, "debunking?select=url") if r.get("url")}
+    # o par (url, keyword), como o dedup dentro da corrida — só por url, uma verificação
+    # gravada para a keyword A nunca entrava para a B (achado da revisão de 18/09)
+    existentes = {(r["url"], r.get("term")) for r in rest(url, anon, "debunking?select=url,term") if r.get("url")}
     novos, vistos = [], set()
     for kw in kws:
         for site in EDITORES_PT:
@@ -80,7 +82,7 @@ def main():
             for c in cl:
                 r = c["claimReview"][0]
                 u = r.get("url", "")
-                if not u or u in existentes or (u, kw["term"]) in vistos: continue
+                if not u or (u, kw["term"]) in existentes or (u, kw["term"]) in vistos: continue
                 vistos.add((u, kw["term"]))
                 novos.append(dict(term=kw["term"], title=(c.get("text") or "")[:500],
                                   classification=(r.get("textualRating") or "sem veredicto").strip(),

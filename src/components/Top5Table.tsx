@@ -5,10 +5,13 @@ type Props = {
   keywords: Keyword[];
   /** rótulo por cima da lista (por omissão "Top 5 — Keywords") e nota de proveniência por baixo */
   rotulo?: string;
+  rotuloCor?: string;
+  /** linha por baixo do rótulo, quando há menos de 5 termos com procura regular */
+  aviso?: string;
   nota?: string;
 };
 
-const Top5Table = ({ keywords, rotulo, nota }: Props) => {
+const Top5Table = ({ keywords, rotulo, rotuloCor, aviso, nota }: Props) => {
   const maxVolume = useMemo(
     () => Math.max(...keywords.map((k) => k.currentVolume), 1),
     [keywords]
@@ -16,7 +19,8 @@ const Top5Table = ({ keywords, rotulo, nota }: Props) => {
 
   return (
     <div>
-      <p className="editorial-label mb-3">{rotulo || "Top 5 — Keywords"}</p>
+      <p className={`editorial-label ${aviso ? "mb-1" : "mb-3"}`} style={rotuloCor ? { color: rotuloCor } : undefined}>{rotulo || "Top 5 — Keywords"}</p>
+      {aviso && <p className="text-[10px] leading-relaxed text-foreground/60 mb-3">{aviso}</p>}
       <div className="space-y-0">
         {keywords.map((kw, i) => {
           const barWidth = Math.round((kw.currentVolume / maxVolume) * 100);

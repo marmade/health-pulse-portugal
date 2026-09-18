@@ -1,7 +1,6 @@
 # A regra dos alertas (fase 3) — desenho, com exemplos calculados sobre os dois lotes
 
-**Data:** 18/09/2026, sessão 16 · **Estado:** DESENHO, com as cinco decisões tomadas (secção 7). Nada disto corre no
-dashboard nem grava nada. A regra foi **calibrada nos lotes que existem** (12 meses `4dad25b9`, 5 anos
+**Data:** 18/09/2026, sessão 16 · **Estado:** IMPLEMENTADA ao fim do dia (secção 9), com as cinco decisões da secção 7. A regra foi **calibrada nos lotes que existem** (12 meses `4dad25b9`, 5 anos
 `ec6cc6fc`, ambos da lista actual de 82) e os parâmetros ficaram fixados nesse dia — logo o
 que está abaixo não é um teste cego da regra, é a regra a explicar-se nos dados em que nasceu.
 O teste cego é o que as semanas seguintes fizerem. Script: `scripts/testes/teste_5_alertas.py`
@@ -210,3 +209,26 @@ python3 scripts/testes/teste_5_alertas.py varre      # o varrimento da tabela da
 
 Corre com o `.env` do repositório (chave pública), sem `pytrends` e sem escrever nada. Na terça,
 depois do lote da lista nova, corre-se outra vez: os números da secção 5 mudam, a regra não.
+
+## 9. Implementação (18/09/2026, ao fim do dia) `[ficheiro]` `[bd]` `[painel]`
+
+- **`scripts/trends_alertas.py`** — a regra, uma vez só (o `teste_5` importa-a). O "em curso"
+  sai de percorrer a série inteira do lote: um acontecimento começa num disparo e continua
+  enquanto o valor ficar ≥ 1,5 × a referência de antes do 1.º disparo (subida) ou ≥ 20 na
+  régua do pedido (aparecimento). Sem estado fora do lote.
+- **`trends_alertas`** (migração `20260918210000`, aplicada; leitura pública 200, escrita
+  anónima 401/42501): uma linha por (lote, eixo, termo, semana), com `tipo`, valor,
+  referência (congelada durante o acontecimento), razão, z, factor sazonal, `semana_n`.
+  Guarda-se a história inteira do lote, não só a última semana — 394 linhas para o lote de
+  5 anos: 149 semanas de subida (109 disparos + 40 "em curso"), 8 aparecimentos, 18
+  sazonais, 219 a observar. Recalcular: `python3 scripts/trends_alertas.py --lote <id> --gravar`.
+- **O script 5** calcula e grava os alertas no fim de cada lote (passo 7); se falhar, o lote
+  fica gravado e avisa. Verificado que o caminho em memória dá as mesmas 394 linhas que o
+  caminho pela base.
+- **O dashboard** (`useTrendsLote` → `AlertasEixo`, dentro de `AxisColumn`): lê só a última
+  semana completa do lote (a parcial é detectada por `is_partial` e salta-se), um bloco por
+  coluna a seguir ao top 5, com a frase da decisão 5. O bloco antigo "Alertas de pesquisa"
+  (`change_percent` da série parada, "+100 %" de 1 → 2) foi retirado com nota no ecrã;
+  `SearchAlerts` e `detectAlerts` ficam no código sem uso.
+- Visto no browser a 06/09/2026: quatro colunas com "Nenhum alerta esta semana", `psiquiatra`
+  e `avc` a observar.

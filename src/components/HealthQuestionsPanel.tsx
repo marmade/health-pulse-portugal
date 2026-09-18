@@ -198,8 +198,10 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
       </div>
       {/* Três caixas na mesma grelha das três colunas: a do Trends fica por cima
           de «Só a subir», a do Autocomplete por cima de «Só habituais», e a da
-          esquerda explica o cruzamento, que é o que a primeira coluna mostra. */}
-      <div className="mb-5 ml-[18px] flex-shrink-0 grid gap-6 md:grid-cols-3 items-start">
+          esquerda explica o cruzamento, que é o que a primeira coluna mostra.
+          Alinhadas à esquerda como o resto da página (Marta, 18/09/2026); só o
+          título fica atrás da bolinha. */}
+      <div className="mb-5 flex-shrink-0 grid gap-6 md:grid-cols-3 items-start">
         <div>
           <p className="text-[10px] text-foreground/50 leading-relaxed">
             Dúvidas recolhidas em <strong>duas</strong> ferramentas do Google que medem

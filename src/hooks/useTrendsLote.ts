@@ -18,12 +18,21 @@ export type Top5Item = {
   termo: string; mediana: number; maximo: number; picoEm: string | null;
   medianaAnterior: number | null; variacao: number | null;   // 52s vs 52s anteriores, %
 };
-export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[] };
+/** Uma linha de trends_alertas (regra de 18/09/2026, docs/metodo/2026-09-18-alertas-regra.md). */
+export type AlertaItem = {
+  termo: string; tipo: "subida" | "aparecimento" | "sazonal" | "a_observar";
+  valor: number; referencia: number; razao: number; z: number | null;
+  fatorSazonal: number | null; maxAnterior: number | null; semanaN: number; inicio: string;
+};
+/** Os alertas do eixo na última semana completa do lote. `semana` é essa semana (domingo). */
+export type AlertasEixo = { semana: string; itens: AlertaItem[] };
+export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; alertas: AlertasEixo | null };
 export type LoteInfo = { id: string; iniciadoEm: string; origem: string | null; timeframe: string };
 
 const AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 const MES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+const ORDEM: Record<AlertaItem["tipo"], number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3 };
 
 /** termosDoEixo: os termos activos de cada eixo (a âncora pode não ser keyword — sai do top). */
 export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
@@ -70,7 +79,50 @@ export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
                 ? Math.round(((+(r.mediana_52s || 0) - +r.mediana_52s_anteriores) / +r.mediana_52s_anteriores) * 100) : null,
             }));
           top5.forEach(t => termosTop.push({ eixo, termo: t.termo }));
-          resultado[eixo] = { top5, resumo: null as unknown as GrupoResumo };
+          resultado[eixo] = { top5, resumo: null as unknown as GrupoResumo, alertas: null };
+        }
+
+        // 2b. os alertas da última semana COMPLETA do lote (a semana parcial nunca conta —
+        //     o Google marca-a; a regra avalia sempre a anterior). Se a tabela ainda não
+        //     existir, o resto do lote continua a servir.
+        try {
+          const { data: ult } = await supabase
+            .from("trends_calibrados" as never).select("data").eq("lote_id", loteId)
+            .order("data", { ascending: false }).limit(1);
+          const ultima = (ult as unknown as { data: string }[])?.[0]?.data?.slice(0, 10);
+          if (ultima) {
+            const { data: parc } = await supabase
+              .from("trends_pontos" as never).select("pedido_id, trends_pedidos!inner(lote_id)")
+              .eq("trends_pedidos.lote_id", loteId).eq("data", `${ultima}T00:00:00+00:00`).eq("is_partial", true).limit(1);
+            const d = new Date(ultima + "T00:00:00Z");
+            if ((parc as unknown[])?.length) d.setUTCDate(d.getUTCDate() - 7);
+            const semana = d.toISOString().slice(0, 10);
+            // "Nenhum alerta esta semana" é uma afirmação sobre os dados; um lote sem linha
+            // nenhuma em trends_alertas (o passo 7 do script 5 falhou, ou o lote é anterior à
+            // regra) não pode dizê-la — fica sem bloco.
+            const { data: algum, error: e5a } = await supabase
+              .from("trends_alertas" as never).select("semana").eq("lote_id", loteId).limit(1);
+            if (e5a) throw e5a;
+            if (!(algum as unknown[])?.length) throw new Error(`lote ${loteId.slice(0, 8)} sem alertas calculados`);
+            const { data: al, error: e5 } = await supabase
+              .from("trends_alertas" as never).select("*").eq("lote_id", loteId).eq("semana", semana);
+            if (e5) throw e5;
+            type Al = { eixo: string; termo: string; tipo: AlertaItem["tipo"]; valor: number; referencia: number; razao: number;
+                        z: number | null; fator_sazonal: number | null; max_anterior: number | null; semana_n: number; inicio: string };
+            const linhas = (al as unknown as Al[]) || [];
+            for (const eixo of AXES) {
+              resultado[eixo].alertas = {
+                semana,
+                itens: linhas.filter(r => r.eixo === eixo).map(r => ({
+                  termo: r.termo, tipo: r.tipo, valor: +r.valor, referencia: +r.referencia, razao: +r.razao,
+                  z: r.z == null ? null : +r.z, fatorSazonal: r.fator_sazonal == null ? null : +r.fator_sazonal,
+                  maxAnterior: r.max_anterior == null ? null : +r.max_anterior, semanaN: r.semana_n, inicio: r.inicio,
+                })).sort((a, b) => ORDEM[a.tipo] - ORDEM[b.tipo] || b.razao - a.razao),
+              };
+            }
+          }
+        } catch (e) {
+          console.warn("useTrendsLote: alertas indisponíveis —", e);
         }
 
         // 3. mensal e anual, só para os termos do top

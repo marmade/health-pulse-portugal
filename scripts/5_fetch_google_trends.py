@@ -19,6 +19,10 @@ O QUE FAZ
   6. Grava um LOTE: lote → pedidos → pontos → calibrados. NUNCA acumula sobre lotes
      anteriores; o dashboard lê de um lote só. Falhas ficam como `falhou`/`sem_dados`, e os
      pontos que não vieram ficam NULL — nunca 0.
+  7. Calcula os ALERTAS do lote (fase 3, scripts/trends_alertas.py — regra em
+     docs/metodo/2026-09-18-alertas-regra.md) e grava-os em trends_alertas. Se este passo
+     falhar, o lote fica gravado na mesma: os alertas recalculam-se com
+     `python3 scripts/trends_alertas.py --lote <id> --gravar`.
 
 COMO CORRER
   python3 scripts/5_fetch_google_trends.py --dry-run                # não grava nada
@@ -33,6 +37,7 @@ import argparse, json, os, statistics, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(RAIZ, "scripts"))   # trends_alertas.py, ao lado deste
 CFG = json.load(open(os.path.join(RAIZ, "scripts", "trends_grupos.json")))
 AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"]
 
@@ -273,6 +278,19 @@ def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
          dict(terminado_em=datetime.now(timezone.utc).isoformat(), estado=estado))
     print("GRAVADO lote %s (%s): %d pedidos, %d pontos, %d calibrados" % (
         lote["id"], estado, len(pedidos), resumo["pontos"], len(cal)))
+    # 7. os alertas do lote — a semana parcial fica de fora, como na regra
+    try:
+        import trends_alertas as TA
+        parciais = {(t, d.date().isoformat()) for p in pedidos for t, s in p["series"].items() for d, _, pc in s if pc}
+        series, factor = {}, {}
+        for e, t, d, ve, f, i in dedup_passo2(pedidos, calibrados):
+            if (t, d.date().isoformat()) in parciais: continue
+            series.setdefault((e, t), {})[d.date().isoformat()] = ve; factor[(e, t)] = f
+        n = TA.gravar(url, key, lote["id"], TA.calcula(series, factor))
+        print("ALERTAS: %d linhas em trends_alertas (regra de 18/09/2026)" % n)
+    except Exception as ex:
+        print("AVISO: alertas não calculados (%s: %s) — o lote está gravado; correr "
+              "scripts/trends_alertas.py --lote %s --gravar" % (type(ex).__name__, str(ex)[:200], lote["id"][:8]))
 
 def main():
     ap = argparse.ArgumentParser()

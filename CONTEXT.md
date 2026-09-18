@@ -1081,16 +1081,24 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       publicar `fetch-rss-feeds` reescrita (palavra inteira, categoria do feed, CDATA) →
       `types.ts` → consolidada → script 5 sobre a lista nova (12 m e 5 a; o dashboard já lê do
       último lote) → rotular de novo as 310 notícias → passo 2B. **Na mesma passagem:** as
-      vistas `20260918200000` a excluírem a semana parcial (`is_partial`) — hoje `maximo_52s`
-      / `pico_em` podem apontar para ela
+      vistas `20260918200000` a excluírem a semana parcial (`is_partial`) — migração
+      `20260918220000` já escrita; `types.ts` e a consolidada levam também `trends_alertas`
 - [ ] Instalar o `launchd` depois do primeiro passo validado
-- [ ] Alertas (fase 3): regra desenhada **e as cinco decisões tomadas a 18/09**
-      (`docs/metodo/2026-09-18-alertas-regra.md`, secção 7; `scripts/testes/teste_5_alertas.py`):
-      z ≥ 3 e ×1,5 sobre a mediana das 8 semanas anteriores; "a observar" (z ≥ 2) secundário,
-      sem bandeira; um acontecimento que dura é um alerta "em curso" com referência congelada
-      (precisa de `trends_alertas`); aparecimento em todos os eixos; no ecrã "n vezes acima do
-      valor normal (ref)". Falta implementar — tabela, vista ou função, bloco no ecrã — depois
-      do lote da lista nova
+- [x] **Alertas (fase 3) — implementados a 18/09** (`docs/metodo/2026-09-18-alertas-regra.md`,
+      secções 7 e 9): regra em `scripts/trends_alertas.py`, corrida pelo script 5 no fim de
+      cada lote; tabela `trends_alertas` (`20260918210000`, aplicada, 200/401); linha
+      "● Alertas — semana de …" na página inicial, 4 colunas alinhadas, "n vezes acima do
+      valor normal (ref)". O bloco antigo "Alertas de pesquisa" (série parada, "+100 %" de
+      1 → 2) e o selector 7 | 30 | 12 meses retirados com nota
+- [ ] Alertas e página inicial — o que fica: `types.ts` com `trends_alertas`; a consolidada
+      (também `news_items.casou_por/categorias`); aplicar `20260918220000` (vistas sem a
+      semana parcial); Emergentes por pico no `useTrendsLote`; apagar ou não
+      `SearchAlerts`/`detectAlerts`/`Filters`; o cabeçalho "Actualizado 10/08" vem da série
+      parada
+- [ ] **Corrigido a 18/09, por publicar com a RSS:** `existingUrls` descodificado (113 URLs
+      com `&amp;` na base — sem isto duplicavam na primeira corrida); filtro por `<category>`
+      só nos 7 feeds gerais; `useHealthQuestions` ordena por `posicao`; fact-check dedup por
+      (url, keyword)
 - [ ] As 100 keywords no mural (decisão da Marta, 18/09)
 - [ ] `keywords.current_volume INT NOT NULL DEFAULT 0` — o zero-que-finge está no schema
 - [ ] Reconsiderar `açúcar e saúde` (14 ao lado de anemia no lote). ~~Classificar as 40

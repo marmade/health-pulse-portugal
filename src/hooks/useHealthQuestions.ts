@@ -246,7 +246,10 @@ async function repartirEixo(eixo: string, desdeAutocomplete: string | null) {
         .eq('axis', eixo);
       return desdeAutocomplete ? q.gte('last_seen_at', desdeAutocomplete) : q;
     })()
-      .order('relative_volume', { ascending: false })
+      // `posicao` é o que o script 7 grava desde 16/09 (relative_volume passou a NULL):
+      // sem isto, o saco de 400 ficava ordenado por ordem alfabética e cortado numa letra.
+      .order('posicao', { ascending: true, nullsFirst: false })
+      .order('relative_volume', { ascending: false, nullsFirst: false })
       .order('question', { ascending: true })
       .limit(POR_EIXO_AUTOCOMPLETE),
   ]);

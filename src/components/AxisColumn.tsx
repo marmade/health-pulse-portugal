@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
-import type { Top5Item } from "@/hooks/useTrendsLote";
+import type { Top5Item, AlertasEixo as DadosAlertas } from "@/hooks/useTrendsLote";
 import Top5Table from "./Top5Table";
+import AlertasEixo from "./AlertasEixo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 type Props = {
@@ -19,16 +20,27 @@ type Props = {
   /** Top 5 do lote do Google Trends (mediana calibrada, 52 semanas). Se vier, substitui o
       top 5 da tabela `keywords`, que é a série parada de 10/08/2026. */
   top5Lote?: Top5Item[] | null;
+  /** Alertas do eixo na última semana completa do lote (fase 3, regra de 18/09/2026). Vêm
+      logo a seguir ao top 5, dentro da coluna — decisão da Marta: nada de linhas de um lado
+      ao outro; cada eixo na sua régua. */
+  alertas?: DadosAlertas | null;
   archive?: any[];
   hideChart?: boolean;
   hideKeywords?: boolean;
+  /** Página inicial em linhas alinhadas (Marta, 18/09/2026): a célula da linha "Top keywords"
+      não repete o cabeçalho do eixo — mostra o nome do eixo como rótulo do top 5. */
+  hideHeader?: boolean;
+  /** Os alertas têm a sua própria linha na página inicial; na vista de eixo ficam na coluna. */
+  hideAlertas?: boolean;
 };
+
+export const NOTA_TOP5 = "Mediana das últimas 52 semanas, calibrada para a régua da âncora do eixo (a âncora ≈ 100); a variação compara com as 52 semanas anteriores; o pico é a semana mais alta do ano. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos.";
 
 // O "Var. média" calculado sobre a tabela `keywords` (série parada desde 10/08/2026) deixou
 // de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
 const VAR_MEDIA_ANTIGA = false;
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, archive = [], hideChart, hideKeywords }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, alertas, archive = [], hideChart, hideKeywords, hideHeader, hideAlertas }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
@@ -44,7 +56,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
 
   return (
     <div className="flex flex-col gap-5">
-      <div>
+      {!hideHeader && <div>
         <h2 className="text-sm font-bold uppercase tracking-[0.15em]" style={{ color: "#0000FF" }}>
           {label}
         </h2>
@@ -112,7 +124,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
             </TooltipProvider>
           )}
         </div>
-      </div>
+      </div>}
 
       {!hideChart && grupo && (
         <>
@@ -167,11 +179,13 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
 
       {!hideKeywords && top5Lote && top5Lote.length > 0 && (
         <>
-          <div className="border-t border-foreground/10" />
+          {!hideHeader && <div className="border-t border-foreground/10" />}
           <Top5Table
-            rotulo={top5Lote.length < 5
-              ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo tem" : "termos têm"} procura regular neste eixo`
-              : "Top 5 — mais pesquisados, na régua do eixo"}
+            rotulo={hideHeader ? label : "Top 5 — mais pesquisados, na régua do eixo"}
+            rotuloCor={hideHeader ? "#0000FF" : undefined}
+            aviso={top5Lote.length < 5
+              ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo tem" : "termos têm"} procura regular neste eixo.`
+              : hideHeader ? "Os 5 mais pesquisados, na régua do eixo." : undefined}
             keywords={top5Lote.map(t => ({
               term: t.termo, synonyms: [], category: "", axis: axisId, source: "trends",
               currentVolume: Math.round(t.mediana), previousVolume: Math.round(t.medianaAnterior ?? 0),
@@ -180,14 +194,20 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
               lastPeak: t.picoEm ? `${MES_LONGO[+t.picoEm.slice(5, 7) - 1].slice(0, 3)} ${t.picoEm.slice(0, 4)}` : "",
               isEmergent: false,
             }))}
-            nota="Mediana das últimas 52 semanas, calibrada para a régua da âncora do eixo (a âncora ≈ 100); a variação compara com as 52 semanas anteriores; o pico é a semana mais alta do ano. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos."
+            nota={hideHeader ? undefined : NOTA_TOP5}
           />
         </>
       )}
       {!hideKeywords && !(top5Lote && top5Lote.length > 0) && (
         <>
+          {!hideHeader && <div className="border-t border-foreground/10" />}
+          <Top5Table keywords={top5} rotulo={hideHeader ? label : undefined} rotuloCor={hideHeader ? "#0000FF" : undefined} />
+        </>
+      )}
+      {!hideKeywords && !hideAlertas && alertas && (
+        <>
           <div className="border-t border-foreground/10" />
-          <Top5Table keywords={top5} />
+          <AlertasEixo dados={alertas} />
         </>
       )}
 
