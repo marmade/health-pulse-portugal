@@ -15,6 +15,7 @@ import { useAxisData, useDebunkingData, useNewsData } from "@/hooks/useAxisData"
 import { useLastRefreshed } from "@/hooks/useLastRefreshed";
 import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
+import { grupoDoEixo } from "@/lib/trendsGrupo";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -214,6 +215,9 @@ const Index = () => {
               })}
             </div>
 
+            {/* Linha 1B: interesse de pesquisa deste eixo, logo a seguir às keywords */}
+            <GoogleTrendsPanel axis={activeAxis} />
+
             {/* Linha 2: perguntas esquerda, alertas direita */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <HealthQuestionsPanel
@@ -237,8 +241,19 @@ const Index = () => {
         ) : (
           /* Overview */
           <>
-          {/* Urgency ranking */}
-          {urgencyRanking.length > 0 && (
+          {/* Urgency ranking — RETIRADO a 18/09/2026 (decisão da Marta, registada aqui, no
+              ecrã e em docs/sessoes/2026-09-18.md). Motivo: score = variação média +
+              emergentes×30 + alertas×20, sobre a tabela `keywords` parada desde 10/08 e com
+              réguas incomparáveis — contradizia as colunas (Emergentes −57% em cima, −25,8%
+              em baixo). Volta quando houver: (1) o pedido das quatro âncoras juntas, que põe
+              os eixos numa régua só; (2) uma definição escrita do que "prioridade" mede.
+              O cálculo fica intacto abaixo, para não ser reinventado. */}
+          <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mb-8">
+            Prioridade de comunicação — retirado a 18/09/2026: o ranking vinha de dados parados
+            desde 10/08 e de réguas incomparáveis. Volta quando os quatro eixos estiverem numa
+            régua só e a definição estiver escrita.
+          </p>
+          {false && urgencyRanking.length > 0 && (
             <div className="mb-8">
               <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-foreground/50 mb-3">
                 Prioridade de comunicação esta semana
@@ -292,6 +307,7 @@ const Index = () => {
                   allKeywords={axis.allKeywords}
                   trendData={axis.trend}
                   period={filters.period}
+                  grupo={grupoDoEixo(axisId)}
                 />
               );
             })}
@@ -302,6 +318,8 @@ const Index = () => {
         {/* Alerts + Health Questions + YouTube Trends */}
         {activeAxis === 'all' && (
           <div className="mt-10">
+            {/* O interesse de pesquisa está no gráfico de cada coluna (grupoDoEixo);
+                o painel completo do Trends fica na vista de eixo (decisão de 18/09/2026). */}
             {alerts.length > 0 && (
               <>
                 <div className="section-divider mb-6" />
@@ -314,8 +332,6 @@ const Index = () => {
                 />
               </>
             )}
-            <div className="section-divider mb-6 mt-10" />
-            <GoogleTrendsPanel />
             <div className="section-divider mb-6 mt-10" />
             <YouTubeTrendsPanel axis={activeAxis} />
             <div className="section-divider mb-6 mt-10" />

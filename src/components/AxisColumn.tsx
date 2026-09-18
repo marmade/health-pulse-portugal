@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
+import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
 import Top5Table from "./Top5Table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
@@ -11,12 +12,15 @@ type Props = {
   allKeywords: Keyword[];
   trendData: TrendPoint[];
   period: string;
+  /** Resumo da descarga de grupo do eixo (página inicial). Se vier, o gráfico usa-o
+      em vez de `trendData` — ver src/lib/trendsGrupo.ts para o porquê. */
+  grupo?: GrupoResumo | null;
   archive?: any[];
   hideChart?: boolean;
   hideKeywords?: boolean;
 };
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, archive = [], hideChart, hideKeywords }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, archive = [], hideChart, hideKeywords }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
@@ -37,23 +41,53 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, a
           {label}
         </h2>
         <div className="flex items-center gap-4 mt-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="cursor-help">
-                  <p className="editorial-label">Var. média</p>
-                  <p className={`text-lg font-bold ${totalChange > 0 ? "" : "opacity-50"}`}>
-                    {totalChange > 0 ? "+" : ""}
-                    {totalChange.toFixed(1)}%
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-[280px] text-xs leading-relaxed">
-                Média da variação percentual de todas as keywords deste eixo, comparando o período actual com o anterior equivalente. Valores negativos indicam que as pesquisas diminuíram face ao período anterior — pode reflectir sazonalidade ou normalização após um pico.
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          {emergentCount > 0 && (
+          {/* Com descarga de grupo, a variação é a da régua comum (ano corrente vs anterior,
+              meses sobrepostos). Sem ela, o número antigo ficaria a vir da série parada de
+              10/08/2026 — por isso não se mostra. */}
+          {grupo ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <p className="editorial-label">Var. {grupo.anoCorrente} vs {grupo.anoAnterior}</p>
+                    {grupo.variacao ? (
+                      <p className={`text-lg font-bold ${grupo.variacao.pct > 0 ? "" : "opacity-50"}`}>
+                        {grupo.variacao.pct > 0 ? "+" : ""}{grupo.variacao.pct.toFixed(1)}%
+                      </p>
+                    ) : (
+                      <p className="text-lg font-bold opacity-40">—</p>
+                    )}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[300px] text-xs leading-relaxed">
+                  {grupo.variacao
+                    ? <>Média dos {grupo.termos.length} termos da descarga de grupo deste eixo, na mesma régua,
+                        nos {grupo.variacao.meses} meses que existem nos dois anos: {grupo.variacao.corrente.toFixed(1)} em{" "}
+                        {grupo.anoCorrente} contra {grupo.variacao.anterior.toFixed(1)} em {grupo.anoAnterior}. É interesse
+                        relativo, não volume de pesquisas.</>
+                    : <>Não há meses com dados nos dois anos nesta descarga.</>}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : !hideChart ? null : (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="cursor-help">
+                    <p className="editorial-label">Var. média</p>
+                    <p className={`text-lg font-bold ${totalChange > 0 ? "" : "opacity-50"}`}>
+                      {totalChange > 0 ? "+" : ""}
+                      {totalChange.toFixed(1)}%
+                    </p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-[280px] text-xs leading-relaxed">
+                  Média da variação percentual de todas as keywords deste eixo, comparando o período actual com o anterior equivalente. Valores negativos indicam que as pesquisas diminuíram face ao período anterior — pode reflectir sazonalidade ou normalização após um pico.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          {!grupo && emergentCount > 0 && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -71,10 +105,54 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, a
         </div>
       </div>
 
-      {!hideChart && (
+      {!hideChart && grupo && (
         <>
           <div className="border-t border-foreground/10" />
-          <TrendChart data={trendData} label={label} period={period} />
+          <TrendChart data={grupo.pontos} label={label} period="12m" />
+          {/* Tudo o que está aqui é calculado da descarga; nada é escrito à mão. */}
+          <div className="space-y-1 -mt-2">
+            <p className="text-[10px] leading-relaxed">
+              Média de <strong>{grupo.termos.length} termos na mesma régua</strong> —{" "}
+              {grupo.termos.join(", ")} — <strong>{grupo.anoCorrente}</strong> contra{" "}
+              <strong>{grupo.anoAnterior}</strong>, mês a mês
+              {grupo.mesesSobrepostos > 0
+                ? <>, sobrepostos em {grupo.mesesSobrepostos} meses.</>
+                : <>. <em>Sem meses nos dois anos: a comparação não é possível.</em></>}
+            </p>
+            {grupo.maisInteresse && (
+              <p className="text-[10px] leading-relaxed">
+                <strong>Mais interesse:</strong> {grupo.maisInteresse.termo} (média{" "}
+                {grupo.maisInteresse.media.toFixed(0)} em {grupo.anosCompletos[grupo.anosCompletos.length - 1]}).
+              </p>
+            )}
+            {grupo.maisSobe && (
+              <p className="text-[10px] leading-relaxed">
+                <strong>Mais sobe:</strong> {grupo.maisSobe.termo},{" "}
+                {grupo.maisSobe.variacao > 0 ? "+" : ""}{grupo.maisSobe.variacao}% entre os dois
+                últimos anos completos ({grupo.maisSobe.de.toFixed(0)} → {grupo.maisSobe.a.toFixed(0)}).
+              </p>
+            )}
+            {grupo.mesAlto && (
+              <p className="text-[10px] leading-relaxed">
+                <strong>Mês mais alto:</strong> {MES_LONGO[grupo.mesAlto.mes]}, nos{" "}
+                {grupo.anosCompletos.length} anos completos.
+              </p>
+            )}
+            <p className="text-[9px] leading-relaxed text-foreground/50">
+              Google Trends, Portugal, índice 0–100 normalizado ao máximo desta descarga
+              ({grupo.granularidade}, descarregada a {grupo.descarregadoEm}). Não actualiza sozinha.
+            </p>
+          </div>
+        </>
+      )}
+      {!hideChart && !grupo && (
+        <>
+          <div className="border-t border-foreground/10" />
+          <p className="text-[10px] leading-relaxed text-foreground/50">
+            Sem descarga de grupo do Google Trends para este eixo — o gráfico fica de fora
+            até haver uma. (A série antiga, de <code>historical_snapshots</code>, deixou de
+            ser desenhada a 18/09/2026: média de réguas diferentes sobre dados parados.)
+          </p>
         </>
       )}
 
