@@ -135,15 +135,16 @@ que são tempestades ou meteorologia:
 **A categoria não filtra os homónimos** — a diferença é ruído — **e esconde termos de
 saúde** que o Google classifica noutro sítio. Custa e não dá.
 
-**Decisão da Marta (18/09/2026): o filtro fica, para facilitar a vida — com esta ressalva
-por escrito, que acompanha qualquer número saído daqui:**
+**Decisão da Marta (18/09/2026): o filtro fica, para facilitar a vida — e é uma
+LIMITAÇÃO do estudo, a escrever na secção de limitações da tese, não como nota de rodapé.
+O texto que a acompanha, onde quer que um número saia daqui:**
 
 > *A categoria "Saúde" é o que o Google entende por saúde, por regras que não publica.
 > Não filtra homónimos (a `depressão` continua a ser tempestades com o filtro ligado) e
 > esconde termos que o Google classifica noutro sítio (`psicólogo`). Os valores são
 > "pesquisas que o Google classificou como Saúde", não "pesquisas sobre saúde".*
 
-A ressalva vai para a página (proveniência dos gráficos) e para o apêndice metodológico.
+A limitação vai para a página (proveniência dos gráficos), para o apêndice metodológico e para a secção de limitações.
 O script grava a categoria em cada pedido (`trends_pedidos.categoria`), logo uma corrida
 sem filtro para comparação é sempre possível. Os homónimos tratam-se pela formulação, como
 a lista de 100 faz.
