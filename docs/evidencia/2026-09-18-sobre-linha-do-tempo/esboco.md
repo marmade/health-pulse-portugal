@@ -40,6 +40,8 @@ Decisões de forma (18/09, em conversa):
   projecto" / "a antiga, criada pela ferramenta"), **sem `AUDIT.md`** nem nomes de ficheiros:
   o júri não os conhece nem lhes vai ter acesso. Onde se diz que algo divergiu, diz-se
   **porquê**.
+- **Nomear as ferramentas** como se nomeia o Claude Code: Lovable (a ferramenta com que o
+  site foi construído), GitHub (GitHub Actions, onde o processo automático corria), Google.
 - Cada marco: data, título, três colunas *Pensava-se · Descobriu-se · Mudou*, prosa. A frase
   das 82 palavras-chave (Março) e a nota da assistência ocupam a largura toda.
 
@@ -106,23 +108,20 @@ lista nova existe também por causa deste número.
 ## C. Os outros marcos — só o essencial (aprovado pela Marta como escala)
 
 **27 de Março — os dados tinham de ser reais.** *Pensava-se* que o dashboard mostrava dados.
-*Descobriu-se* que parte dos números era gerada ao acaso pela ferramenta que o construiu.
+*Descobriu-se* que parte dos números era gerada ao acaso pelo Lovable, a ferramenta com que o site foi construído.
 *Mudou:* tudo o que não vinha de uma recolha foi eliminado; os gráficos passaram a ler
 séries recolhidas. *(a toda a largura:)* As 82 palavras-chave existiam desde o início,
 levantadas de fontes oficiais (DGS e SNS) para cobrir as pesquisas relacionadas com saúde.
 Foi uma das primeiras decisões do projecto, e a única parte do sistema de Março que chegou
 intacta a Setembro.
 
-**12 de Abril — uma base de dados só.** *Pensava-se* que a base de dados criada pela
-ferramenta e a base de dados do projecto eram a mesma coisa. *Descobriu-se* que eram duas, e
+**12 de Abril — uma base de dados só.** *Pensava-se* que a base de dados criada pelo Lovable e a base de dados do projecto eram a mesma coisa. *Descobriu-se* que eram duas, e
 que 17 das 19 tabelas tinham estruturas diferentes: nomes de colunas trocados, colunas em
 falta. *Mudou:* migração para a base de dados do projecto, tabela a tabela, e o site ligado a
 ela.
 
 **21 de Maio — a ferramenta desfez a migração sem aviso.** *Pensava-se* que o site lia da
-base de dados do projecto desde Abril. *Descobriu-se*, só em Julho, que neste dia a
-ferramenta que construiu o site tinha reescrito, num commit automático, a ligação de volta
-para a base antiga. Bastou abrir o editor. *Mudou:* nada nesse dia. Ninguém deu por isso, e é
+base de dados do projecto desde Abril. *Descobriu-se*, só em Julho, que neste dia o Lovable tinha reescrito, num commit automático, a ligação de volta para a base antiga. Bastou abrir o editor visual. *Mudou:* nada nesse dia. Ninguém deu por isso, e é
 por isso que a pausa que se segue não foi neutra: durante dois meses o site serviu uma base
 e as recolhas escreveram noutra.
 *(Verificado: os dois commits de 21/05 são de `gpt-engineer-app[bot]`; `AUDIT.md` secção 4.)*
@@ -132,11 +131,9 @@ a base antiga tinha ficado para trás em Abril e o site lia da nova. *Descobriu-
 publicado lia da base antiga desde 21 de Maio, e que as duas divergiam há dois meses: uma a
 servir o site, a outra a receber as recolhas. A causa ficou provada pelo histórico de
 alterações do código, não por suposição. *Mudou:* a base de dados do projecto passou a ser
-a oficial, por decisão escrita; a ligação da ferramenta ficou marcada para ser cortada.
+a oficial, por decisão escrita; a ligação ao Lovable ficou marcada para ser cortada.
 
-**13 e 14 de Agosto — o sistema não estava a recolher.** *Pensava-se* que o Google Trends
-era recolhido todas as segundas, pelo processo automático. *Descobriu-se* que o Google
-bloqueava os pedidos feitos a partir dos servidores onde o processo corria, desde o Verão.
+**13 e 14 de Agosto — o sistema não estava a recolher.** *Pensava-se* que o Google Trends era recolhido todas as segundas, pelo processo automático no GitHub (GitHub Actions). *Descobriu-se* que o Google bloqueava os pedidos vindos dos servidores do GitHub, desde o Verão.
 *Mudou:* os passos foram desligados. A série parou a 10 de Agosto, coisa que o dashboard só
 confessou em Setembro.
 
@@ -149,8 +146,7 @@ regra "afirmação sem método é suposição" passou a valer para tudo o que o 
 antiga estava parada. *Descobriu-se* que escrevia todos os dias desde Março, por uma tarefa
 agendada dentro da própria base, invisível no código; que as notícias eram rotuladas por
 pedaços de palavra (`candida` em *recandidatura*); que o "volume" das perguntas era a
-posição na lista. *Mudou:* o site publicado fora da ferramenta de origem; a base antiga
-apagada; a hipótese que guia o resto do trabalho, **as pessoas não pesquisam com as palavras
+posição na lista. *Mudou:* o site publicado fora do Lovable (Cloudflare Pages); a base antiga, do Lovable, apagada; a hipótese que guia o resto do trabalho, **as pessoas não pesquisam com as palavras
 das instituições**, ganhou os primeiros dados.
 
 ---
