@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-16 (sessão 15)
+> Última actualização: 2026-09-18 (sessão 16)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -1095,6 +1095,16 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       semana parcial); Emergentes por pico no `useTrendsLote`; apagar ou não
       `SearchAlerts`/`detectAlerts`/`Filters`; o cabeçalho "Actualizado 10/08" vem da série
       parada
+- [ ] **A página /sobre (lado B) — frente aberta a 18/09.** A página descreve o sistema de
+      Março (limiares antigos, "sazonalidade não implementada", 42/48/55 fontes que são 41/56);
+      análise em `docs/operacoes/2026-09-18-sobre-o-que-foi-e-o-que-e.md`, conteúdo actual
+      arquivado em `docs/arquivo/2026-09-18-sobre-antes-da-revisao/`. Decidida uma **"Linha do
+      tempo do método"** entre Metodologia e Limitações (régua Mar→Set, oito marcos,
+      texto-fonte em `docs/evidencia/2026-09-18-sobre-linha-do-tempo/esboco.md`, maqueta
+      privada em `claude.ai/artifact/YWEA2XEqtVRaFek9RgQWTx`). Regras da Marta: voz de
+      equipa, sem travessões, nomear Lovable/GitHub/Google, sem "instância" nem nomes de
+      ficheiros, explicar o porquê. Falta: os sete marcos por inteiro; a régua no código; o
+      22/09 quando for passado; rever os blocos de Março
 - [ ] **Corrigido a 18/09, por publicar com a RSS:** `existingUrls` descodificado (113 URLs
       com `&amp;` na base — sem isto duplicavam na primeira corrida); filtro por `<category>`
       só nos 7 feeds gerais; `useHealthQuestions` ordena por `posicao`; fact-check dedup por
