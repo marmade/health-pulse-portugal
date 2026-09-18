@@ -104,6 +104,50 @@ um comando à mão, `python scripts/5_fetch_google_trends.py`, faz exactamente o
 pedidos): **candidatura entregue pela Marta a 18/09/2026, sem resposta.** Se entrar, as
 âncoras deixam de ser precisas; os dados por grupos continuam comparáveis com os novos.
 
+## 5b. A categoria Saúde: testada, e não faz o que se pensava (18/09, tarde)
+
+Todos os pedidos e descargas até aqui levaram a categoria 45 (Saúde), para filtrar
+homónimos. Dois testes, feitos porque o `psicólogo` dava zero:
+
+**Teste 1 — `psicólogo`, com e sem acento, com e sem categoria** (5 anos, PT, ao lado de
+`psiquiatra`):
+
+| termo | com categoria: mediana / zeros | sem categoria: mediana / zeros |
+|---|---|---|
+| psiquiatra | 61 / 0 | 50 / 0 |
+| psicólogo | **0 / 250** | 16 / 0 |
+| psicologo | 0 / 183 | **33 / 0** |
+| psicóloga | 0 / 221 | 13 / 0 |
+| psicologa | 14 / 61 | **36 / 0** |
+
+O zero era a categoria: o Google classifica "psicólogo" fora de Saúde. E o acento parte o
+termo (como a Marta já tinha provado com `depressão`/`depressao` a 15/09): as pessoas
+escrevem **sem acento e no feminino** — `psicologa` é a forma com mais procura.
+
+**Teste 2 — as pesquisas relacionadas de `depressão`, com e sem categoria**, contando as
+que são tempestades ou meteorologia:
+
+| | TOP | RISING |
+|---|---|---|
+| com categoria Saúde | 5 de 25 | 18 de 25 |
+| sem categoria | 4 de 25 | 16 de 25 |
+
+**A categoria não filtra os homónimos** — a diferença é ruído — **e esconde termos de
+saúde** que o Google classifica noutro sítio. Custa e não dá.
+
+**Decisão da Marta (18/09/2026): o filtro fica, para facilitar a vida — com esta ressalva
+por escrito, que acompanha qualquer número saído daqui:**
+
+> *A categoria "Saúde" é o que o Google entende por saúde, por regras que não publica.
+> Não filtra homónimos (a `depressão` continua a ser tempestades com o filtro ligado) e
+> esconde termos que o Google classifica noutro sítio (`psicólogo`). Os valores são
+> "pesquisas que o Google classificou como Saúde", não "pesquisas sobre saúde".*
+
+A ressalva vai para a página (proveniência dos gráficos) e para o apêndice metodológico.
+O script grava a categoria em cada pedido (`trends_pedidos.categoria`), logo uma corrida
+sem filtro para comparação é sempre possível. Os homónimos tratam-se pela formulação, como
+a lista de 100 faz.
+
 ## 6. Grupos com âncora — a regra
 
 1. **Um eixo são vários grupos.** O Trends compara 5 termos por pedido; cada grupo é
