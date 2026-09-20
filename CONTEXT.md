@@ -1,6 +1,6 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-18 (sessão 16)
+> Última actualização: 2026-09-20 (sessão 17)
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -1095,16 +1095,23 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       semana parcial); Emergentes por pico no `useTrendsLote`; apagar ou não
       `SearchAlerts`/`detectAlerts`/`Filters`; o cabeçalho "Actualizado 10/08" vem da série
       parada
-- [ ] **A página /sobre (lado B) — frente aberta a 18/09.** A página descreve o sistema de
-      Março (limiares antigos, "sazonalidade não implementada", 42/48/55 fontes que são 41/56);
-      análise em `docs/operacoes/2026-09-18-sobre-o-que-foi-e-o-que-e.md`, conteúdo actual
-      arquivado em `docs/arquivo/2026-09-18-sobre-antes-da-revisao/`. Decidida uma **"Linha do
-      tempo do método"** entre Metodologia e Limitações (régua Mar→Set, oito marcos,
-      texto-fonte em `docs/evidencia/2026-09-18-sobre-linha-do-tempo/esboco.md`, maqueta
-      privada em `claude.ai/artifact/YWEA2XEqtVRaFek9RgQWTx`). Regras da Marta: voz de
-      equipa, sem travessões, nomear Lovable/GitHub/Google, sem "instância" nem nomes de
-      ficheiros, explicar o porquê. Falta: os sete marcos por inteiro; a régua no código; o
-      22/09 quando for passado; rever os blocos de Março
+- [ ] **A página /sobre (lado B) — os marcos da linha do tempo escritos a 20/09.** A página
+      descreve o sistema de Março (limiares antigos, "sazonalidade não implementada",
+      42/48/55 fontes que são 41/56); análise em
+      `docs/operacoes/2026-09-18-sobre-o-que-foi-e-o-que-e.md`, conteúdo actual arquivado em
+      `docs/arquivo/2026-09-18-sobre-antes-da-revisao/`. A **"Linha do tempo do método"**
+      (entre Metodologia e Limitações; régua Mar→Set, oito marcos; maqueta privada em
+      `claude.ai/artifact/YWEA2XEqtVRaFek9RgQWTx`) tem os marcos em
+      `docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/`, um ficheiro por ponto, com
+      README de estado: sete fechados, 18/09 parcial (falta lista e alertas), 22/09 por
+      escrever; o `esboco.md` ao lado é histórico. Regras da Marta: voz de equipa, sem
+      travessões, nomear Lovable/GitHub/Google/Claude Code, sem nomes de ficheiros, explicar
+      o porquê; **datas só no título do marco** (na prosa "por esta altura"); as bases
+      chamam-se **"instância do Lovable" e "instância do Claude Code"** (o "sem instância"
+      de 18/09 foi revertido a 20/09); sem jargão sem explicação; rever frase a frase
+      (`docs/sessoes/2026-09-20.md` §4). Falta: acabar o 18/09; a régua no código a ler
+      `marcos/*.md`; o 22/09; rever os blocos de Março; corrigir "ansiedade"→"depressão"
+      no método de 18/09 (registo §2)
 - [ ] **Corrigido a 18/09, por publicar com a RSS:** `existingUrls` descodificado (113 URLs
       com `&amp;` na base — sem isto duplicavam na primeira corrida); filtro por `<category>`
       só nos 7 feeds gerais; `useHealthQuestions` ordena por `posicao`; fact-check dedup por
