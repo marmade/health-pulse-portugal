@@ -112,15 +112,37 @@ notícias (l.146) e que verificações (l.136) pertencem ao eixo. Essa parte est
 
 ## Estado
 
-**Regra decidida, escrita e implementada a 24/09/2026 — e por publicar.** Estão escritos:
+**Regra decidida, escrita, implementada, aplicada e publicada a 24/09/2026.**
 
-- `supabase/functions/archive-weekly/index.ts` — a alteração, **não publicada**
-- `supabase/migrations/20260924110000_keywords_current_volume_anulavel.sql` — **por aplicar**
-- `supabase/migrations/20260924120000_eixos_archive_nota_medicao.sql` — **por aplicar**
+| o quê | estado |
+|---|---|
+| `20260924110000` — `current_volume` anulável e sem `default 0` | **aplicada** |
+| `20260924120000` — `eixos_archive.nota_medicao` | **aplicada** |
+| `archive-weekly` | **publicada, versão 3** (`verify_jwt` mantido a `false`) |
 
-Ordem de aplicação: `20260924110000` antes da `20260918180000` (lista de 100), senão os ~40
-termos novos nascem a zero. A `20260924120000` antes de publicar a função, senão o `insert`
-falha por a coluna não existir.
+**Provado pelo efeito, não pelo código de estado.** A função foi invocada a seguir. Como a
+semana de 14–20/09 já estava arquivada, não escreveu nada — e foi isso que se confirmou
+(32 arquivos de eixo e 11 briefings antes e depois, os 43 zeros de Agosto intactos). O que a
+resposta provou foi o caminho novo:
 
-**Nada disto foi aplicado nem publicado.** Não há Deno nesta máquina, logo a função não pôde
-ser corrida localmente; foi verificada por análise de tipos (`tsc --noEmit`), sem erros.
+```
+medição: semana 2026-09-13 — a semana de 2026-09-13 está incompleta no lote
+mais recente (recolhido a 2026-09-18T13:16:49, a meio da semana)
+```
+
+Escolheu a semana do Trends certa para a semana do arquivo (13/09 para 14–20/09), encontrou o
+lote, viu que a semana estava parcial e escreveu a razão exacta. É o comportamento da regra.
+
+**Simulado em SQL antes de aplicar**, para a última semana completa (06/09), o que seria
+gravado: saúde mental *ansiedade 183 · stress 81 · alzheimer 52 · depressão 47 · enxaqueca
+47*; alimentação *anemia 136 · diabetes tipo 2 38 · colesterol alto 28 · suplementos 13 ·
+jejum intermitente 10*; menopausa *endometriose 20 · cancro da mama 15 · osteoporose 9 ·
+candidíase 9 · menopausa sintomas 5*; emergentes *avc 40 · sepsis 6 · lúpus 3 · long covid
+1* — **quatro, não cinco**, porque só quatro termos activos têm medição acima de zero. Ficam
+de fora `psiquiatra` (entra com a lista de 100) e `menopausa`, que é a âncora do eixo.
+
+**A primeira corrida que escreve é a de segunda 28/09**, e escreverá vazio com a razão,
+porque não há medição para a semana de 21–27/09 enquanto o script 5 não correr.
+
+Não há Deno nesta máquina: a função não foi corrida localmente, foi verificada por análise de
+tipos (`tsc --noEmit`) e depois no servidor, pela invocação acima.
