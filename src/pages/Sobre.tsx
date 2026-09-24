@@ -357,7 +357,11 @@ const Sobre = () => {
       <footer className="px-6 py-12">
         <p className="text-[10px] uppercase tracking-[0.15em] leading-relaxed opacity-50">
           Marta Madeira · 2024110168<br />
-          <a href="mailto:a2024110168@campus.fcsh.unl.pt" className="hover:underline">a2024110168@campus.fcsh.unl.pt</a><br />
+          {/* O e-mail de aluno foi acrescentado a 18/09/2026 e RETIRADO daqui a 24/09/2026,
+              antes do primeiro push: a Marta pediu que o /sobre ficasse na versão publicada
+              até ela o rever por inteiro. É a única linha de código do /sobre nestes 49
+              commits — o resto do trabalho da página está em docs/evidencia/. Repor com a
+              revisão dela. */}
           Mestrado em Comunicação de Ciência<br />
           Faculdade de Ciências Sociais e Humanas<br />
           Universidade Nova de Lisboa · 2026

@@ -241,6 +241,15 @@ const Index = () => {
                     top5Lote={loteEixo?.[axisId]?.top5}
                     alertas={loteEixo?.[axisId]?.alertas}
                     hideChart
+                    /* Alertas RETIRADOS do site a 24/09/2026, decisão da Marta: "os alertas
+                       não vão para o site até estarem explicados". A regra existe e corre —
+                       o lote de 24/09 tem 1185 linhas —, mas duas coisas ficaram por fechar
+                       nesse dia: o método (docs/metodo/2026-09-18-alertas-regra.md:223) conta
+                       109 disparos + 40 em curso onde o código conta 84 + 65, para o MESMO
+                       lote; e a subida de 65 para 508 semanas "em curso" no lote novo não tem
+                       explicação testada. Os dados continuam a ser gravados; o que se retira
+                       é a apresentação. Volta quando as duas ficarem fechadas. */
+                    hideAlertas
                   />
                 );
               })}
@@ -449,8 +458,11 @@ const Index = () => {
         {activeAxis === 'all' && (
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
             Alertas de pesquisa — retirado a 18/09/2026: vinha da série parada desde 10/08 e
-            chamava pico a um 1→2. Os alertas estão agora em cada coluna, a seguir ao top 5,
-            com a regra de 18/09/2026.
+            chamava pico a um 1→2. A regra nova (18/09/2026) foi escrita e corre sobre a
+            medição, mas <strong>não está no ecrã</strong>: a 24/09/2026 ficou por explicar
+            porque é que o mesmo lote dá 109 acontecimentos pela contagem do método e 84 pela
+            do código, e porque é que as semanas em curso passaram de 65 para 508. Os dados
+            continuam a ser recolhidos e guardados. Volta quando isso estiver fechado.
           </p>
         )}
       </main>
