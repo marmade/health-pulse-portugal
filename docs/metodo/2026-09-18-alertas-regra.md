@@ -220,8 +220,23 @@ depois do lote da lista nova, corre-se outra vez: os números da secção 5 muda
   anónima 401/42501): uma linha por (lote, eixo, termo, semana), com `tipo`, valor,
   referência (congelada durante o acontecimento), razão, z, factor sazonal, `semana_n`.
   Guarda-se a história inteira do lote, não só a última semana — 394 linhas para o lote de
-  5 anos: 149 semanas de subida (109 disparos + 40 "em curso"), 8 aparecimentos, 18
+  5 anos: 149 semanas de subida (**84 disparos + 65 "em curso"**), 8 aparecimentos, 18
   sazonais, 219 a observar. Recalcular: `python3 scripts/trends_alertas.py --lote <id> --gravar`.
+
+  > **Corrigido a 24/09/2026.** Esta linha dizia "109 disparos + 40 em curso". O **109 não é
+  > um número desta regra**: vem da tabela de calibragem dos limiares da secção 5, que foi
+  > corrida **antes de a máquina de estados existir** — a decisão 3 ainda a dava como "a
+  > implementar com a fase 3". É a contagem **sem estado**: quantas semanas disparariam se a
+  > referência fosse recalculada todas as semanas. O "40" saiu de subtrair 109 a 149, e nunca
+  > foi contado. A contagem desta regra, lida na tabela, é **84 disparos + 65 semanas em
+  > curso** — e é a que a secção 6, decisão 3, já dava quando escreveu "109 subidas → 84
+  > acontecimentos". Fica escrito em vez de se apagar, porque o 109 continua a ser o número
+  > certo **daquilo que ele mede**, e é ele que está na tabela da secção 5.
+  >
+  > A definição que vale, decidida pela Marta a 24/09/2026, é a do código: um acontecimento
+  > começa na semana em que dispara (`semana_n = 1`) e continua enquanto o valor se mantiver
+  > ≥ 1,5× a referência congelada de antes do disparo; enquanto está em curso, não pode
+  > começar outro.
 - **O script 5** calcula e grava os alertas no fim de cada lote (passo 7); se falhar, o lote
   fica gravado e avisa. Verificado que o caminho em memória dá as mesmas 394 linhas que o
   caminho pela base.
