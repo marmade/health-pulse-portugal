@@ -459,9 +459,8 @@ const Index = () => {
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
             Alertas de pesquisa — fora do ecrã desde 24/09/2026. Um alerta diz que um termo
             subiu mais do que costuma subir. A regra existe e corre sobre a medição, mas o
-            método e o programa ainda não contam as subidas da mesma maneira, e o número
-            delas cresceu de um modo que ainda não sabemos explicar. Mostrar isto agora seria
-            mostrar uma contagem em que não confiamos.
+            número de subidas cresceu de um modo que ainda só sabemos explicar em parte.
+            Mostrar isto agora seria mostrar uma contagem em que não confiamos.
           </p>
         )}
       </main>
