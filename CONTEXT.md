@@ -1,6 +1,8 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-20 (sessão 17)
+> Última actualização: 2026-09-24 (sessão 18) — seis migrações aplicadas, o top 5 do arquivo
+> a sair da medição, a lista de 100 na base, a `fetch-rss-feeds` v2 publicada, as permissões
+> do Claude Code com guarda, e **o primeiro push desde 16/09: 55 commits às 21:17 UTC**.
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
