@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Read",
+      "Edit(**)",
+      "Bash(ls:*)", "Bash(cat:*)", "Bash(head:*)", "Bash(tail:*)", "Bash(wc:*)",
+      "Bash(grep:*)", "Bash(rg:*)", "Bash(find:*)", "Bash(diff:*)", "Bash(jq:*)",
+      "Bash(sort:*)", "Bash(uniq:*)", "Bash(awk:*)", "Bash(sed:*)", "Bash(which:*)",
+      "Bash(mkdir:*)", "Bash(cp:*)", "Bash(chmod:*)",
+      "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)", "Bash(git show:*)",
+      "Bash(git add:*)", "Bash(git commit:*)", "Bash(git mv:*)", "Bash(git branch:*)",
+      "Bash(npm run build:*)", "Bash(npm test:*)", "Bash(npx tsc:*)", "Bash(npx vitest:*)",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "mcp__claude_ai_Supabase__list_tables",
+      "mcp__claude_ai_Supabase__list_migrations",
+      "mcp__claude_ai_Supabase__list_edge_functions",
+      "mcp__claude_ai_Supabase__get_edge_function",
+      "mcp__claude_ai_Supabase__list_projects",
+      "mcp__claude_ai_Supabase__get_project",
+      "mcp__claude_ai_Supabase__get_advisors",
+      "mcp__claude_ai_Supabase__query_logs",
+      "mcp__claude_ai_Supabase__generate_typescript_types"
+    ],
+    "ask": [
+      "Edit(.claude/**)",
+      "Edit(./.claude/**)",
+      "mcp__claude_ai_Supabase__apply_migration",
+      "mcp__claude_ai_Supabase__deploy_edge_function",
+      "mcp__claude_ai_Supabase__create_branch",
+      "mcp__claude_ai_Supabase__delete_branch",
+      "mcp__claude_ai_Supabase__merge_branch",
+      "mcp__claude_ai_Supabase__reset_branch",
+      "mcp__claude_ai_Supabase__rebase_branch",
+      "mcp__claude_ai_Supabase__pause_project",
+      "mcp__claude_ai_Supabase__restore_project",
+      "mcp__claude_ai_Supabase__create_project",
+      "Bash(git push:*)", "Bash(git reset:*)", "Bash(git clean:*)",
+      "Bash(git restore:*)", "Bash(git checkout:*)", "Bash(git rebase:*)",
+      "Bash(rm:*)", "Bash(rmdir:*)", "Bash(mv:*)",
+      "Bash(curl:*)", "Bash(wget:*)", "Bash(launchctl:*)", "Bash(supabase:*)",
+      "Bash(npm install:*)", "Bash(npm publish:*)"
+    ],
+    "deny": [
+      "Read(./.env)", "Edit(./.env)",
+      "Read(./.env.*)", "Edit(./.env.*)",
+      "Read(//Users/marmade/.config/health-pulse/**)",
+      "Edit(//Users/marmade/.config/health-pulse/**)",
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|NotebookEdit|mcp__claude_ai_Supabase__execute_sql",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/aprovar-escritas.sh\"",
+            "timeout": 10,
+            "statusMessage": "A verificar se isto escreve..."
+          }
+        ]
+      }
+    ]
+  }
+}
