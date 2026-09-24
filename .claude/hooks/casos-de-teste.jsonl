@@ -22,6 +22,15 @@
 {"esperado":"ask","nome":"script 5 com --gravar","payload":{"tool_name":"Bash","tool_input":{"command":".venv-trends/bin/python scripts/5_fetch_google_trends.py --gravar"}}}
 {"esperado":"ask","nome":"script do projecto sem --gravar","payload":{"tool_name":"Bash","tool_input":{"command":"python3 scripts/migrate_data.py"}}}
 {"esperado":"ask","nome":"script .sh do projecto","payload":{"tool_name":"Bash","tool_input":{"command":"bash scripts/recolher_domingo.sh"}}}
+{"esperado":"ask","nome":"script invocado directamente","payload":{"tool_name":"Bash","tool_input":{"command":"./scripts/recolher_domingo.sh"}}}
+{"esperado":"ask","nome":"script com o python da venv","payload":{"tool_name":"Bash","tool_input":{"command":".venv-trends/bin/python scripts/5_fetch_google_trends.py"}}}
+{"esperado":"ask","nome":"script depois de um ponto e virgula","payload":{"tool_name":"Bash","tool_input":{"command":"cd /tmp; python3 scripts/trends_alertas.py --lote abc"}}}
+{"esperado":"passa","nome":"ler um script com cat","payload":{"tool_name":"Bash","tool_input":{"command":"cat scripts/5_fetch_google_trends.py"}}}
+{"esperado":"passa","nome":"ler um script com head","payload":{"tool_name":"Bash","tool_input":{"command":"head -40 scripts/trends_alertas.py"}}}
+{"esperado":"passa","nome":"ler um troco com sed","payload":{"tool_name":"Bash","tool_input":{"command":"sed -n '69,92p' scripts/5_fetch_google_trends.py"}}}
+{"esperado":"passa","nome":"procurar dentro de um script","payload":{"tool_name":"Bash","tool_input":{"command":"grep -n def scripts/trends_alertas.py"}}}
+{"esperado":"passa","nome":"contar linhas dos scripts","payload":{"tool_name":"Bash","tool_input":{"command":"wc -l scripts/5_fetch_google_trends.py scripts/trends_alertas.py"}}}
+{"esperado":"passa","nome":"listar a pasta scripts","payload":{"tool_name":"Bash","tool_input":{"command":"ls -la scripts/"}}}
 {"esperado":"ask","nome":"curl -X POST","payload":{"tool_name":"Bash","tool_input":{"command":"curl -s -X POST https://x.supabase.co/rest/v1/keywords"}}}
 {"esperado":"ask","nome":"invocar Edge Function","payload":{"tool_name":"Bash","tool_input":{"command":"curl https://x.supabase.co/functions/v1/archive-weekly"}}}
 {"esperado":"ask","nome":"launchctl load","payload":{"tool_name":"Bash","tool_input":{"command":"launchctl load ~/Library/LaunchAgents/pt.trends.plist"}}}

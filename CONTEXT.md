@@ -676,6 +676,31 @@ funcionar": Crítico nº 6 a correr, lista de 100 aprovada, primeiro lote na bas
 da semana anterior, movido de 14/09 para hoje, voltou a não se fazer** — terceira vez; fica
 para segunda 21/09, à cabeça, antes de qualquer outra coisa.
 
+## Plano até segunda 28/09/2026
+
+> Escrito a 24/09, **antes** dos dias que descreve, para o balanço ter contra o que se medir.
+> A ordem é da Marta, e o critério dela: **o que tem prazo vai primeiro.**
+
+| quando | o quê | o que se espera |
+|---|---|---|
+| **domingo 27** | `bash scripts/recolher_domingo.sh`, **à mão** | a última linha diz **SERVE** ou **NÃO SERVE**. Se disser NÃO SERVE, repetir mais tarde, antes do meio-dia de segunda |
+| **segunda 28** | a corrida semanal, e **confirmar pelo efeito** | com lote de domingo: um top 5 a sério, diferente do da semana anterior. Sem ele: `top_keywords` **vazio** com `nota_medicao` — e isso é o comportamento certo, não uma falha |
+| **depois** | a **via B** — a recolha a partir do servidor | uma sessão a construir, mais uma segunda a validar |
+
+**Porque é que domingo é à mão e não agendado.** O arquivo de segunda fecha a semana de
+segunda a domingo; a semana do Google Trends que lhe corresponde começa no **domingo
+anterior** e só fecha no **sábado**. Um lote recolhido antes disso apanha-a a meio, e o Google
+marca-a `is_partial` — foi o que aconteceu ao lote de quinta 24, e é por isso que segunda 28
+sai vazia se ninguém correr o comando no domingo. O `launchd` fica por instalar até a via B
+decidir se ainda faz falta.
+
+**A suposição que segunda vai medir, e que ninguém verificou:** que às 06:00 UTC de uma
+segunda o Google já marca a semana anterior como completa. Se não marcar, o arquivo sai vazio
+com a razão — **e isso é o resultado aceitável**, não um erro a corrigir à pressa.
+
+**O que NÃO se faz até lá:** rotular de novo as notícias (não tem prazo, e reescreve 344
+rótulos), e pôr os alertas no ecrã (esperam pelo teste que falta).
+
 ## Pendentes
 
 ### Críticos — por esta ordem (09/09/2026)

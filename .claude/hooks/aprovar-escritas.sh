@@ -98,7 +98,14 @@ fi
 # aqui e a forma do bloco anonimo do Postgres, `DO $$`.
 verbos_sh='insert|update|delete|alter|drop|truncate|create|grant|revoke|upsert|copy|call|cron|vacuum|reindex'
 if [ -n "$cmd" ]; then
-  if printf '%s' "$cmd" | grep -qE 'python[0-9.]*[^|;&]*scripts/|scripts/[^[:space:]]*\.(py|sh)|--gravar'; then
+  # CORRER um script de scripts/ pede aprovacao; LER um nao (afinacao da Marta, 24/09/2026:
+  # "ler um script (sed, cat, grep, head) nao e corre-lo"). A primeira versao casava qualquer
+  # mencao de scripts/*.py, e por isso travava um `cat` a um ficheiro do projecto.
+  # Correr = um interpretador antes do caminho, ou o proprio caminho invocado.
+  interpretes='python[0-9.]*|bash|sh|zsh|node|deno|ruby|perl'
+  if printf '%s' "$cmd" | grep -qE "(^|[^a-z])($interpretes)[[:space:]][^|;&]*scripts/" \
+     || printf '%s' "$cmd" | grep -qE '(^|[;&|][[:space:]]*)(\./)?scripts/[^[:space:]]*\.(py|sh)' \
+     || printf '%s' "$cmd" | grep -qE -- '--gravar'; then
     pedir "Isto corre um script do projecto. Varios gravam na base de dados (script 5, 10, 11, alertas). Conta pelo que faz, nao pelo que parece."
   fi
   if printf '%s' "$cmd" | grep -qE -- '-X[[:space:]]*(POST|PUT|PATCH|DELETE)|/functions/v1/|/rest/v1/|supabase[[:space:]]+(db|functions|migration)'; then
