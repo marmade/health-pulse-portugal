@@ -31,6 +31,15 @@ function getPreviousWeek() {
   };
 }
 
+/**
+ * Desloca uma data ISO (YYYY-MM-DD) n dias, em UTC.
+ */
+function deslocaDias(iso: string, n: number) {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().split("T")[0];
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -90,6 +99,95 @@ Deno.serve(async (req) => {
     const news = newsRes.data || [];
     const youtube = youtubeRes.data || [];
 
+    // ── 1b. A medição da semana ──────────────────────────────────────────
+    //
+    // Regra decidida a 24/09/2026 pela Marta, em
+    // docs/metodo/2026-09-24-top5-do-arquivo-regra.md:
+    //   · o top 5 de uma semana são os cinco termos com maior valor MEDIDO
+    //     nessa semana, no eixo — não a maior subida;
+    //   · a semana sem medição fica VAZIA, com a razão registada.
+    //
+    // Até 24/09/2026 o top 5 saía da tabela `keywords`, ordenado por
+    // `change_percent`. Essa tabela não é escrita desde 20/03/2026, e o
+    // resultado foram sete semanas de arquivo com os mesmos cinco termos e os
+    // mesmos números até à casa decimal (03/08 a 20/09) — sem a `ansiedade`,
+    // que é o maior termo do seu eixo. Ver docs/sessoes/2026-09-24.md § 3b.
+    //
+    // As semanas do Google Trends são de DOMINGO a sábado; o arquivo fecha
+    // semanas de SEGUNDA a domingo. Desencontram-se por um dia. A semana do
+    // Trends que corresponde é a que começa no domingo anterior à segunda do
+    // arquivo: partilha seis dias com ela (segunda a sábado); a seguinte
+    // partilharia um.
+    const semanaTrends = deslocaDias(prev.isoStart, -1);
+    const semanaTrendsFim = deslocaDias(semanaTrends, 1);
+
+    let loteId: string | null = null;
+    let notaMedicao: string | null = null;
+    const medicaoPorEixo: Record<string, { termo: string; valor: number }[]> = {};
+
+    {
+      // O último lote completo de 5 anos — o mesmo critério do dashboard
+      // (src/hooks/useTrendsLote.ts), para que o arquivo e o ecrã não divirjam.
+      const { data: ped } = await supabase
+        .from("trends_pedidos")
+        .select("lote_id, fetched_at, trends_lotes!inner(estado)")
+        .eq("timeframe", "today 5-y")
+        .eq("trends_lotes.estado", "completo")
+        .order("fetched_at", { ascending: false })
+        .limit(1);
+      const p = (ped as any[] | null)?.[0];
+
+      if (!p) {
+        notaMedicao = "sem lote completo de 5 anos na base de dados";
+      } else {
+        loteId = p.lote_id;
+        const { data: pedidos } = await supabase
+          .from("trends_pedidos")
+          .select("id")
+          .eq("lote_id", loteId)
+          .eq("timeframe", "today 5-y");
+        const ids = ((pedidos as any[] | null) || []).map((r) => r.id);
+
+        // A semana parcial não conta: o lote é recolhido a meio da semana e o
+        // último ponto vem cortado. Escrevê-lo seria comparar seis dias com
+        // sete.
+        const { data: ponto } = await supabase
+          .from("trends_pontos")
+          .select("is_partial")
+          .in("pedido_id", ids)
+          .gte("data", semanaTrends)
+          .lt("data", semanaTrendsFim)
+          .limit(1);
+        const ok = (ponto as any[] | null)?.[0];
+
+        if (!ok) {
+          notaMedicao =
+            `sem medição para a semana de ${semanaTrends} — o lote mais recente (recolhido a ${p.fetched_at}) não a cobre`;
+        } else if (ok.is_partial) {
+          notaMedicao =
+            `a semana de ${semanaTrends} está incompleta no lote mais recente (recolhido a ${p.fetched_at}, a meio da semana)`;
+        } else {
+          const { data: cal } = await supabase
+            .from("trends_calibrados")
+            .select("eixo, termo, valor_eixo")
+            .eq("lote_id", loteId)
+            .gte("data", semanaTrends)
+            .lt("data", semanaTrendsFim);
+          for (const r of ((cal as any[] | null) || [])) {
+            (medicaoPorEixo[r.eixo] ||= []).push({
+              termo: r.termo,
+              valor: Number(r.valor_eixo),
+            });
+          }
+        }
+      }
+    }
+
+    results.push(
+      `medição: semana ${semanaTrends} — ` +
+        (notaMedicao ? notaMedicao : `lote ${loteId}`),
+    );
+
     // ── 2. Archive per-axis data (eixos_archive) ─────────────────────────
 
     const axes = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -108,21 +206,33 @@ Deno.serve(async (req) => {
         continue;
       }
 
-      const axisKeywords = keywords
-        .filter((k: any) => k.axis === axis)
-        .sort(
-          (a: any, b: any) => b.change_percent - a.change_percent
-        );
+      // A leitura da `keywords` que FICA: os nomes dos termos activos do eixo.
+      // São eles que escolhem as notícias e as verificações que lhe pertencem
+      // (topNews e topDebunking, abaixo). O que saiu daqui foram os números.
+      const axisKeywords = keywords.filter((k: any) => k.axis === axis);
 
       const axisTerms = new Set(
         axisKeywords.map((k: any) => (k.term as string).toLowerCase())
       );
 
-      const topKeywords = axisKeywords.slice(0, 5).map((k: any) => ({
-        term: k.term,
-        change_percent: k.change_percent,
-        current_volume: k.current_volume,
-      }));
+      const topKeywords = (medicaoPorEixo[axis] || [])
+        .filter((m) => axisTerms.has(m.termo.toLowerCase()) && m.valor > 0)
+        .sort((a, b) => b.valor - a.valor)
+        .slice(0, 5)
+        .map((m, i) => ({
+          term: m.termo,
+          valor: Math.round(m.valor * 10) / 10,
+          posicao: i + 1,
+          semana_trends: semanaTrends,
+          lote_id: loteId,
+        }));
+
+      // Semana sem medição: fica vazia, com a razão. Nunca se repete a semana
+      // anterior, nunca se escreve zero.
+      const notaEixo = notaMedicao ??
+        (topKeywords.length === 0
+          ? `sem termos activos com medição na semana de ${semanaTrends} (lote ${loteId})`
+          : null);
 
       const topQuestions = questions
         .filter((q: any) => q.axis === axis)
@@ -172,6 +282,7 @@ Deno.serve(async (req) => {
           week_end: prev.isoEnd,
           week_label: prev.label,
           top_keywords: topKeywords,
+          nota_medicao: notaEixo,
           top_questions: topQuestions,
           top_debunking: topDebunking,
           top_news: topNews,
@@ -197,6 +308,12 @@ Deno.serve(async (req) => {
     if (briefingExists) {
       results.push("briefing: already archived");
     } else {
+      // NOTA (24/09/2026): este bloco produz uma lista vazia e sempre produziu.
+      // Nenhuma das 82 keywords activas tem `is_emergent` a true — verificado na
+      // base de dados nesta data —, logo `top_emerging` está vazio nos 11
+      // briefings arquivados. Não se mexeu aqui de propósito: o substituto
+      // natural são os alertas (`trends_alertas`, regra de 18/09/2026), e essa
+      // é uma decisão por tomar, não uma tradução da regra do top 5.
       const emergent = keywords
         .filter((k: any) => k.is_emergent)
         .sort((a: any, b: any) => b.change_percent - a.change_percent);
