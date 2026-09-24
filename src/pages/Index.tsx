@@ -457,12 +457,11 @@ const Index = () => {
         )}
         {activeAxis === 'all' && (
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
-            Alertas de pesquisa — retirado a 18/09/2026: vinha da série parada desde 10/08 e
-            chamava pico a um 1→2. A regra nova (18/09/2026) foi escrita e corre sobre a
-            medição, mas <strong>não está no ecrã</strong>: a 24/09/2026 ficou por explicar
-            porque é que o mesmo lote dá 109 acontecimentos pela contagem do método e 84 pela
-            do código, e porque é que as semanas em curso passaram de 65 para 508. Os dados
-            continuam a ser recolhidos e guardados. Volta quando isso estiver fechado.
+            Alertas de pesquisa — fora do ecrã desde 24/09/2026. Um alerta diz que um termo
+            subiu mais do que costuma subir. A regra existe e corre sobre a medição, mas o
+            método e o programa ainda não contam as subidas da mesma maneira, e o número
+            delas cresceu de um modo que ainda não sabemos explicar. Mostrar isto agora seria
+            mostrar uma contagem em que não confiamos.
           </p>
         )}
       </main>
