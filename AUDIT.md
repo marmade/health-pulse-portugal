@@ -755,3 +755,139 @@ o que acontece à rastreabilidade quando se constrói com ferramentas que escrev
 - [ ] **Apagar o projecto de teste `hypztdsgzuykoksrurto`.** Está **pausado** desde
       14/09/2026 e custa 0 USD, logo não há urgência. **Exige o painel do Supabase:** o MCP
       não elimina projectos, só pausa.
+
+---
+
+## 7. Um número de outra regra dentro do documento do método — 24/09/2026
+
+**Erro dentro de `docs/metodo/2026-09-18-alertas-regra.md`. Não é uma divergência entre o
+método e o código** — foi assim que o reportei primeiro, à Marta, e estava errado. Fica
+escrito aqui pela ordem em que aconteceu, porque a primeira versão do achado circulou.
+
+### O que estava escrito, e o que está na tabela
+
+A secção 8 do método descrevia o conteúdo de `trends_alertas` para o lote de 5 anos de
+18/09/2026 assim:
+
+> 394 linhas: 149 semanas de subida (**109 disparos + 40 "em curso"**), 8 aparecimentos,
+> 18 sazonais, 219 a observar.
+
+Os totais estão certos e batem com a base: 149 + 8 + 18 + 219 = 394, verificado por consulta.
+**O que não bate é a repartição das 149.** Na tabela, contando `semana_n`:
+
+| | no documento | na tabela |
+|---|---|---|
+| semanas de subida | 149 | 149 ✓ |
+| — disparos | **109** | **84** |
+| — em curso | **40** | **65** |
+
+### De onde veio o 109
+
+Da **tabela de calibragem dos limiares**, secção 5 do mesmo documento — coluna "alertas",
+linha dos parâmetros escolhidos (N_REF 8, z ≥ 3, razão ≥ 1,5). Esse varrimento correu **antes
+de a máquina de estados existir**: a decisão 3, na secção 6, ainda a dava como *"a implementar
+com a fase 3"*. O 109 é a contagem **sem estado** — quantas semanas disparariam se a
+referência fosse recalculada todas as semanas. O **40** nunca foi contado: saiu de subtrair
+109 a 149.
+
+**E o próprio documento tinha o número certo, noutro sítio.** A decisão 3 escreve *"109
+subidas → 84 acontecimentos"* — que é exactamente o que o código produz. A frase da secção 8 é
+que juntou um número de uma regra com os totais de outra.
+
+### As duas definições, e a que fica
+
+**No código** (`scripts/trends_alertas.py`, `alertas_do_termo`, l.66–107): um acontecimento
+começa na semana em que a subida dispara (`semana_n = 1`, `inicio` = essa semana) e **continua**
+enquanto o valor se mantiver ≥ 1,5× a referência **congelada** de antes do disparo. Enquanto
+está em curso, **não pode começar outro**. A referência e o ruído ficam congelados para que o
+`z` gravado seja sempre `(valor − referência) / ruído`, como a coluna diz.
+
+**No varrimento sem estado** (secção 5): cada semana é avaliada de novo contra a mediana das 8
+anteriores. Um pico que se aguenta três semanas **deixa de disparar à terceira**, porque o
+próprio pico já entrou na referência. Era este o defeito que a decisão 3 corrigia.
+
+**Decidido pela Marta a 24/09/2026: fica a definição do código.** É a decisão 3, que ela
+aprovou a 18/09, e é com ela que a linha 183 do método já concordava.
+
+### O que se fez
+
+- A frase da secção 8 passou a dizer **84 + 65**, com nota debaixo a explicar de onde veio o
+  109 e porque é que ele continua certo **para aquilo que mede**. **Não se apagou nada** — a
+  tabela da secção 5 fica como está, e o 109 continua a ser o número dela.
+- **Não se mexeu no código.** Não havia nada para corrigir nele.
+
+### Porque é que isto importa para a tese
+
+O número que descreve os dados aparecia num documento de método a que o apêndice vai remeter.
+Ninguém o teria apanhado a ler o documento sozinho: só bate ao contar as linhas da tabela. É o
+mesmo padrão dos achados de Setembro — **a afirmação e a coisa afirmada têm de ser postas lado
+a lado**, e aqui a coisa afirmada era uma tabela que ninguém tinha contado.
+
+### Em aberto
+
+- [ ] **Porque é que as semanas "em curso" cresceram no lote de 24/09.** De 65 para 508 no
+      lote inteiro. Testado no próprio dia: os 40 termos novos fazem 357 dessas semanas com
+      apenas 51 dos 129 disparos — têm tendências longas. **Mas os 33 termos medidos com o
+      nome exactamente igual nos dois lotes também mudaram**: 47 disparos e 48 semanas em
+      curso a 18/09, contra 39 e 74 a 24/09. Isto é, menos acontecimentos, cada um a durar
+      mais — e isso não se explica por vocabulário novo.
+      **Próximo teste, por correr:** comparar a resolução das séries dos mesmos 33 termos nos
+      dois lotes. A suspeita é que um termo esmagado num grupo vinha em inteiros pequenos
+      (0, 1, 0, 1) e agora, noutro grupo ou pelo passo 2, vem com resolução — e uma série com
+      resolução aguenta-se acima do limiar mais semanas seguidas. **É suspeita, não
+      resultado.**
+- [ ] **Os alertas estão fora do ecrã** desde 24/09/2026 por causa desta pergunta em aberto,
+      com nota na página. Os dados continuam a ser recolhidos e gravados.
+
+---
+
+## 8. Três coisas diferentes chamadas "top 5" — 24/09/2026
+
+Achado ao responder a uma pergunta da Marta: *"em que unidade estão os números do top 5?"*.
+A resposta obrigou a ler o cálculo, e a leitura destapou que **"top 5" designa três medidas
+diferentes, em três sítios**, sem que nenhum deles diga qual é.
+
+| onde | o que calcula | sobre que período | código |
+|---|---|---|---|
+| **arquivo semanal** | o valor medido de cada termo **naquela semana** | 1 semana | `archive-weekly/index.ts`, regra de 24/09 |
+| **dashboard** | a **mediana** do valor de cada termo | últimas **52 semanas** | `trends_termo_52s.mediana_52s`, lido por `useTrendsLote.ts` |
+| **registo do script 5** | a **mediana** do valor de cada termo | **os 5 anos todos** | `5_fetch_google_trends.py`, bloco da calibração |
+
+Os três ordenam os mesmos termos, sobre os mesmos dados, e **dão listas diferentes** — o do
+arquivo reage a uma semana, o do dashboard a um ano, o do script a cinco. Nenhum está errado;
+o problema é chamarem-se todos o mesmo, e nenhum dizer no ecrã ou no registo qual é.
+
+### A unidade, que também não está escrita em lado nenhum
+
+**Nenhum dos três está no índice 0–100 do Google.** Cada pedido ao Google traz a sua própria
+régua, onde o maior termo *daquele pedido* é 100. O script escolhe como **referência** o
+pedido do passo 1 em que a âncora do eixo foi maior e multiplica os outros por
+`mediana da âncora na referência ÷ mediana da âncora naquele pedido`.
+
+Daí resulta que:
+
+- a régua é o **0–100 do pedido de referência**, não do Google;
+- **valores acima de 100 são esperados** — `dieta 232` lê-se "a dieta é cerca de 2,3× o maior
+  termo do grupo de referência da alimentação";
+- **os eixos não se comparam entre si**: cada um tem a sua âncora e a sua referência, logo
+  `dieta 232` e `ansiedade 215` não estão na mesma escala.
+
+### Nomes propostos — a Marta decide
+
+Em linguagem corrente, sem jargão, para poderem aparecer no ecrã:
+
+| medida | nome proposto |
+|---|---|
+| a semana | **os mais procurados da semana** |
+| as 52 semanas | **os mais procurados do último ano** |
+| os 5 anos | **os mais procurados em cinco anos** |
+
+E, uma vez por página, a explicação da escala: *"os valores estão na régua do eixo, não numa
+escala de 0 a 100, e não se comparam entre eixos."*
+
+### Em aberto
+
+- [ ] **Escolher os nomes** (ou outros) e aplicá-los nos três sítios.
+- [ ] **Decidir se os três devem existir.** São três respostas a três perguntas diferentes, e
+      pode ser essa a intenção — mas isso nunca foi decidido, foi acontecendo. Se só um for
+      preciso, os outros saem.
