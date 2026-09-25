@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AXIS_COLORS, type AxisId } from "@/lib/axisColors";
 import { fallbackSobreContent } from "@/data/sobreContent";
 import EditorialHeader from "@/components/EditorialHeader";
+import LinhaDoTempo from "@/components/LinhaDoTempo";
 
 const Sobre = () => {
   const [dbContent, setDbContent] = useState<Record<string, { titulo: string; conteudo: string }>>({});
@@ -324,6 +325,10 @@ const Sobre = () => {
           ))}
         </div>
       </section>
+
+      <div className="section-divider" />
+
+      <LinhaDoTempo />
 
       <div className="section-divider" />
 
