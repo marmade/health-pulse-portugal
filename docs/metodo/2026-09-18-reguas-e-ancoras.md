@@ -18,6 +18,11 @@ descarga**. Não há contagens. Consequência, vista nos ficheiros da Marta de 1
 - `menopausa` descarregada **com mais quatro termos**, no mesmo dia: máximo **33** — a régua
   foi fixada pela `ansiedade`.
 
+> **Corrigido a 25/09/2026:** a régua desta comparação não é a da `ansiedade`, é a de
+> `depressão`. Em `docs/google-trends/comparacao/2026-09-15-5termos-pesquisa-PT-5a.csv` os
+> cinco termos têm máximos menopausa 33 · ansiedade 43 · depressão 100 · alimentação 52 ·
+> obesidade 10. Erro encontrado a 20/09 (`docs/sessoes/2026-09-20.md` §2).
+
 Mesmo termo, mesmas semanas, números diferentes. **Dois ficheiros diferentes nunca se
 comparam entre si.** Foi isto que estragou as 3462 linhas de `historical_snapshots`: valores
 de pedidos diferentes colados na mesma tabela como se fossem uma série.

@@ -1,8 +1,10 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-24 (sessão 18) — seis migrações aplicadas, o top 5 do arquivo
-> a sair da medição, a lista de 100 na base, a `fetch-rss-feeds` v2 publicada, as permissões
-> do Claude Code com guarda, e **o primeiro push desde 16/09: 55 commits às 21:17 UTC**.
+> Última actualização: 2026-09-25 (sessão 19) — os nove marcos da linha do tempo fechados
+> (Cowork) e a linha do tempo no `/sobre` (commit `f1533ec`, por publicar); os guiões vazios
+> desde 03/08; o "POC" que casava com "época"; a `spesf.pt` ainda activa. **A meta de
+> Outubro de 2026 deixou de o ser** — ver "Projecto". Anterior: 2026-09-24 (sessão 18), o
+> primeiro push desde 16/09, 55 commits às 21:17 UTC.
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -131,6 +133,15 @@
 
 **Reportagem Viva** — dashboard de monitorização de narrativas de saúde em Portugal (lado A)
 **Diz que Disse** — editorial de comunicação de ciências da saúde (lado B)
+
+- **Meta — mudou a 25/09/2026 (decisão da Marta).** O lançamento em Outubro de 2026 **deixa
+  de ser meta**: a Marta pediu o adiamento da entrega e vai ter de se inscrever no 2.º
+  semestre. **Data nova por definir.** (A meta de Outubro não estava escrita neste ficheiro;
+  fica aqui a mudança, com a data.)
+- **O bloco de alertas da página inicial está no site de propósito (decisão de 25/09/2026).**
+  `Index.tsx` l.390 mostra "Alertas — semana de…"; a 24/09 os alertas saíram só das colunas.
+  Fica por agora como lembrete. **Condição: sai antes de o site ser mostrado a alguém
+  (orientador, júri).** Ver `docs/sessoes/2026-09-25.md` §3a.
 
 - **Site publicado (desde 15/09/2026):** https://dizquedisse.martamadeira.pt —
   Cloudflare Pages, projecto `health-pulse-portugal`, ramo `main`, a ler a instância
@@ -1103,6 +1114,20 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **Antes de mostrar o site a alguém (orientador, júri): tirar o bloco de alertas da
+      página inicial** (`Index.tsx` l.390). Decisão de 25/09 — ver "Projecto".
+- [ ] **Guiões vazios desde 03/08/2026 — falha silenciosa.** `[sessão 19][bd]` As 32 linhas
+      de `guioes_semanais` desde a semana de 03/08 têm 0 perguntas cada; o único guião com
+      5 + 5 é de 16/03. A função corre, grava e o workflow dá sucesso. Causa por investigar.
+      O registo de 24/09 §1 contou-as como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
+- [ ] **O `/sobre` diz coisas que não são verdade.** `[sessão 19]` "42 fontes", "em tempo
+      real", "sinais emergentes antes de chegarem aos media", "5 banco + 5 IA", "PDF",
+      "pytrends semanal", "55 canais", e na base (`sobre_conteudo`) os limiares de 30/50/40 %
+      que o marco de 27/03 diz abandonados. Lista e prova em `docs/sessoes/2026-09-25.md`
+      §3e. Corrigir noutra sessão (decisão da Marta).
+- [ ] **Linha do tempo do `/sobre`:** escrever a nota geral da assistência (lugar reservado);
+      rever o marco de 24/09 depois de 28/09 e quando a recolha a partir do servidor estiver
+      feita.
 - [ ] **Terça 22/09, por esta ordem:** corrida de segunda pelo efeito → migrações da lista de
       100 (`20260918180000`) e das colunas de auditoria de `news_items` (`20260918190000`) →
       publicar `fetch-rss-feeds` reescrita (palavra inteira, categoria do feed, CDATA) →
@@ -1262,6 +1287,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       estado do site e provavelmente **remover a fonte** de `fetch-rss-feeds` (está na lista
       `FEEDS`). Mostra que `source_type` é atribuído pela **origem do feed**, não por
       qualquer verificação do conteúdo.
+      **25/09/2026 `[sessão 19]`: continua activa** — está na `FEEDS` do código local e da
+      v2 publicada a 24/09 (lida com `get_edge_function`). A Marta lembra-se de ter sido
+      decidido tirá-la; não há registo de que tenha saído. Retirar e publicar: decisão dela,
+      noutra sessão. De passagem: a `FEEDS` tem 41 entradas mas 40 feeds, porque "Público" e
+      "Público — Ciência" usam o mesmo URL; o "42 → 41" fica sem explicação conhecida.
 - [ ] **Guardar as categorias RSS e o texto que produziu o rótulo.** `[sessão 14][ficheiro]`
       Os feeds trazem habitualmente `<category>`, e o `extractItems`
       (`fetch-rss-feeds/index.ts:117-135`) extrai título, link, data e descrição — **nunca lê
