@@ -141,21 +141,14 @@ jobs:
         run: |
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
-      # ── PASSO 6: Guiões semanais (4 eixos) ──────────────────────────────
-      - name: 6 — Guiões semanais
-        run: |
-          echo "A gerar guiões da semana..."
-          RESP=$(curl -s -w "\n%{http_code}" -X POST \
-            "$SUPABASE_URL/functions/v1/generate-guioes-weekly" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{}')
-          BODY=$(echo "$RESP" | head -n -1)
-          CODE=$(echo "$RESP" | tail -n 1)
-          echo "HTTP $CODE — $BODY"
-          if [ "$CODE" != "200" ]; then
-            echo "::warning::generate-guioes-weekly devolveu HTTP $CODE"
-          fi
+      # ── ORDEM DOS PASSOS 7 E 6 — trocada a 28/09/2026 ────────────────────
+      # O arquivo (7) corre ANTES dos guiões (6). Os guiões passam a pedir à IA
+      # o top 5 medido da semana, e esse top 5 é o que o passo 7 grava em
+      # eixos_archive: uma só regra e uma só conta, em vez de a mesma calculada
+      # em dois sítios. Os números dos passos ficam os mesmos para não partir as
+      # referências no CONTEXT.md e nos registos das sessões.
+      # Se o passo 7 falhar, o passo 6 não encontra o top 5 da semana, não
+      # chama a IA e grava o guião com o erro.
 
       # ── PASSO 7: Arquivo semanal (dashboard + briefing) ─────────────────
       - name: 7 — Arquivo semanal
@@ -171,6 +164,22 @@ jobs:
           echo "HTTP $CODE — $BODY"
           if [ "$CODE" != "200" ]; then
             echo "::warning::archive-weekly devolveu HTTP $CODE"
+          fi
+
+      # ── PASSO 6: Guiões semanais (4 eixos) ──────────────────────────────
+      - name: 6 — Guiões semanais
+        run: |
+          echo "A gerar guiões da semana..."
+          RESP=$(curl -s -w "\n%{http_code}" -X POST \
+            "$SUPABASE_URL/functions/v1/generate-guioes-weekly" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          BODY=$(echo "$RESP" | head -n -1)
+          CODE=$(echo "$RESP" | tail -n 1)
+          echo "HTTP $CODE — $BODY"
+          if [ "$CODE" != "200" ]; then
+            echo "::warning::generate-guioes-weekly devolveu HTTP $CODE"
           fi
 
       - name: Resumo

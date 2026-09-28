@@ -8,7 +8,9 @@
 # O QUE FAZ
 #   1. Corre o script 5 sobre as keywords activas, 5 anos, e grava o lote.
 #   2. A seguir CONFIRMA o que interessa: a semana do Trends que a corrida de segunda vai
-#      precisar veio completa, ou veio parcial?
+#      precisar veio completa, ou veio parcial? Corrido numa segunda, verifica a corrida
+#      desse mesmo dia, não a da segunda seguinte (corrigido a 28/09/2026); e se o
+#      arquivo dessa semana já estiver escrito, diz TARDE DEMAIS (saída 3).
 #
 # PORQUE É QUE O PASSO 2 EXISTE
 #   O arquivo de segunda fecha a semana de segunda a domingo anterior; a semana do Google
@@ -53,7 +55,10 @@ def get(caminho):
     return json.load(urllib.request.urlopen(urllib.request.Request(URL + "/rest/v1/" + caminho, headers=h)))
 
 hoje = date.today()
-segunda = hoje + timedelta(days=(7 - hoje.weekday()) % 7 or 7)   # a próxima segunda
+# A segunda cuja corrida interessa: hoje, se hoje for segunda; senão, a próxima.
+# Até 28/09/2026 era sempre "a próxima", e numa segunda saltava uma semana: a 28/09
+# verificou a semana de 27/09 em vez da de 20/09, que era a que a corrida desse dia usava.
+segunda = hoje + timedelta(days=(7 - hoje.weekday()) % 7)
 semana  = segunda - timedelta(days=8)                            # o domingo que a corrida usa
 
 lote = get("trends_lotes?select=id,iniciado_em&estado=eq.completo&order=iniciado_em.desc&limit=1")
@@ -71,6 +76,20 @@ print("corrida de segunda:      %s" % segunda.isoformat())
 print("semana do Trends usada:  %s (domingo a sábado)" % semana.isoformat())
 print("lote gravado:            %s de %s" % (lote_id[:8], lote[0]["iniciado_em"][:16]))
 print()
+
+# Numa segunda, a corrida desse dia pode já ter passado. O archive-weekly não reescreve
+# uma semana que já está arquivada ("already archived"), logo um lote gravado depois
+# disso já não entra nesse arquivo, sirva ou não sirva. (Sugestão aceite a 28/09/2026.)
+if hoje == segunda:
+    arquivo = get("eixos_archive?select=created_at&week_start=eq.%s&order=created_at.asc&limit=1"
+                  % (segunda - timedelta(days=7)).isoformat())
+    if arquivo:
+        print(">>> TARDE DEMAIS: o arquivo da semana de %s já foi escrito (%s UTC)."
+              % ((segunda - timedelta(days=7)).isoformat(), arquivo[0]["created_at"][:16]))
+        print(">>> A corrida de hoje já passou e não reescreve a semana. O lote fica para o")
+        print(">>> dashboard; para o arquivo, só a próxima segunda.")
+        sys.exit(3)
+
 if not pontos:
     print(">>> NÃO SERVE: o lote não tem ponto nenhum para essa semana.")
     print(">>> Na segunda o arquivo escreve VAZIO, com a razão.")
@@ -78,7 +97,11 @@ if not pontos:
 if pontos[0]["is_partial"]:
     print(">>> NÃO SERVE: essa semana veio PARCIAL (o Google ainda não a fechou).")
     print(">>> Na segunda o arquivo escreve VAZIO, com a razão.")
-    print(">>> Voltar a correr este comando mais tarde, antes do meio-dia de segunda.")
+    print(">>> Voltar a correr este comando mais tarde, antes de a corrida de segunda arrancar.")
+    print(">>> A corrida está pedida para as 07:00 de Lisboa (06:00 UTC). O GitHub tem-na")
+    print(">>> atrasado — arranques entre as 08:03 e as 14:23, de 17/08 a 28/09 —, mas o")
+    print(">>> atraso varia e não se pode contar com ele: repetir na segunda de manhã só")
+    print(">>> serve se o GitHub atrasar a corrida nesse dia.")
     sys.exit(2)
 print(">>> SERVE: a semana veio COMPLETA.")
 print(">>> Na segunda o arquivo escreve o top 5 de cada eixo com estes dados.")

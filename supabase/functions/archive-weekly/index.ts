@@ -40,6 +40,102 @@ function deslocaDias(iso: string, n: number) {
   return d.toISOString().split("T")[0];
 }
 
+/**
+ * O tecto do script 6 (`min(growth, 9999)`) e o `breakout` do Google, que o
+ * script 6 converte em 5000. Nenhum dos dois é medida: o primeiro lê-se "pelo
+ * menos isto", o segundo não tem limiar publicado. Vão para o arquivo como
+ * "fora de escala", sem número.
+ *
+ * Limitação: um crescimento medido de exactamente 5000% seria lido como
+ * breakout. Nas recolhas de 14/09 a 28/09 não há nenhum 5000.
+ */
+const TECTO = 9999;
+const BREAKOUT = 5000;
+
+function foraDeEscala(q: any) {
+  return q.growth_percent === TECTO || q.growth_percent === BREAKOUT;
+}
+
+function medidaDaPergunta(q: any) {
+  const fora = foraDeEscala(q);
+  return {
+    growth_percent: fora ? null : q.growth_percent,
+    fora_de_escala: fora,
+    posicao: q.posicao ?? null,
+  };
+}
+
+/**
+ * Ordem das perguntas (decisão de 28/09/2026):
+ *   1. as "fora de escala" primeiro — subiram pelo menos tanto como qualquer
+ *      medida —, sem as ordenar pelo número, que não é medida;
+ *   2. depois as medidas, pela subida;
+ *   3. desempate pela posição em que o Google as devolveu (`posicao`).
+ *
+ * A `posicao` é a ordem DENTRO da lista de cada termo. Duas perguntas de
+ * termos diferentes podem estar ambas na posição 1, e aí o Google não dá
+ * ordem nenhuma entre elas: o último desempate é a ordem da recolha
+ * (`updated_at`), que segue a ordem da lista de keywords. Não é critério — é
+ * só para não voltar a ser o alfabeto.
+ */
+function ordenarPerguntas(qs: any[]) {
+  const pos = (q: any) => q.posicao ?? Number.MAX_SAFE_INTEGER;
+  return [...qs].sort((a, b) => {
+    const fa = foraDeEscala(a), fb = foraDeEscala(b);
+    if (fa !== fb) return fa ? -1 : 1;
+    if (!fa && a.growth_percent !== b.growth_percent) {
+      return (b.growth_percent ?? 0) - (a.growth_percent ?? 0);
+    }
+    if (pos(a) !== pos(b)) return pos(a) - pos(b);
+    return String(a.updated_at).localeCompare(String(b.updated_at));
+  });
+}
+
+/**
+ * "Depressão" no sentido meteorológico. O termo `depressão sintomas` tem
+ * "depressão" como sinónimo, e com a fronteira de palavra da fetch-rss-feeds
+ * v2 continua a casar com a depressão do boletim do tempo — é homónimo, não
+ * pedaço de palavra. Caso de 24/09/2026: "Chuva regressa domingo e pode ser
+ * intensa terça e quarta" (Observador, categoria "Céu e Terra").
+ *
+ * Só se aplica às notícias que casaram por "depressão". O texto da descrição
+ * não é guardado na base, logo decide-se pelo título e pelas categorias do
+ * feed.
+ */
+const CATEGORIA_METEO = /c[ée]u e terra|meteorolog|\btempo\b/i;
+const TITULO_METEO =
+  /\b(chuvas?|trovoadas?|ipma|tempestades?|precipitação|ventos?|agitação marítima)\b|aviso (amarelo|laranja|vermelho)|meteorol/i;
+
+function eDepressaoMeteorologica(n: any) {
+  const casou = String(n.casou_por ?? n.related_term ?? "").toLowerCase();
+  if (!casou.includes("depress")) return false;
+  const cats = (n.categorias || []).join(" · ");
+  return CATEGORIA_METEO.test(cats) || TITULO_METEO.test(n.title || "");
+}
+
+/**
+ * Notícia de fact-check: categoria "Fact Check" no feed, ou vinda de um feed
+ * de fact-check (source_type 'factcheck', ex. observador.pt/factchecks).
+ */
+function eFactCheck(n: any) {
+  return (
+    n.source_type === "factcheck" ||
+    (n.categorias || []).some((c: string) => /fact[- ]?check/i.test(c))
+  );
+}
+
+function desmentidoDaNoticia(n: any) {
+  return {
+    term: n.related_term,
+    title: n.title,
+    // O feed não traz o veredicto. Fica nulo em vez de inventar um.
+    classification: null,
+    source: n.outlet,
+    url: n.url,
+    date: n.date,
+  };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -53,9 +149,14 @@ Deno.serve(async (req) => {
     const prev = getPreviousWeek();
     const results: string[] = [];
 
+    // A segunda que fecha a semana — o dia desta corrida, quando o GitHub a
+    // corre na segunda. A recolha de perguntas do passo 2 é feita nesta mesma
+    // corrida, antes deste passo.
+    const segundaQueFecha = deslocaDias(prev.isoEnd, 1);
+
     // ── 1. Fetch all data needed for archives ────────────────────────────
 
-    const [kwRes, questionsRes, debunkingRes, newsRes, youtubeRes] =
+    const [kwRes, questionsRes, newsRes, youtubeRes] =
       await Promise.all([
         supabase
           .from("keywords")
@@ -73,19 +174,26 @@ Deno.serve(async (req) => {
           //  source=pytrends   → só esta fonte mede crescimento
           //  is_question=true  → a coluna existia e nunca era usada; é ela que
           //                      separa a pergunta do ruído
-          //  nullsFirst: false → desde 16/09/2026 o script 7 grava NULL em
-          //                      growth_percent, e num ORDER BY DESC os NULL
-          //                      vêm primeiro
+          //  updated_at        → só a recolha da semana (28/09/2026). Até aqui
+          //                      a consulta lia as 207 perguntas acumuladas
+          //                      desde Março, e o briefing de 21/09 saiu com
+          //                      cinco perguntas escritas entre 23/03 e 25/05.
+          //                      O script 6 reescreve updated_at a cada
+          //                      pergunta que volta a aparecer, logo isto é
+          //                      "o que o Google devolveu nesta recolha".
+          //
+          // A ordem faz-se abaixo, em ordenarPerguntas().
           .eq("source", "pytrends")
           .eq("is_question", true)
-          .order("growth_percent", { ascending: false, nullsFirst: false })
-          .order("question", { ascending: true }),
-        supabase
-          .from("debunking")
-          .select("*"),
+          .gte("updated_at", segundaQueFecha),
         supabase
           .from("news_items")
           .select("*")
+          // Só as da semana, de segunda a domingo (28/09/2026). Até aqui eram
+          // as mais recentes da tabela, e o passo 4 corre antes deste na mesma
+          // corrida: o briefing de 21/09 saiu com 4 notícias de 28/09.
+          .gte("date", prev.isoStart)
+          .lte("date", prev.isoEnd)
           .order("date", { ascending: false }),
         supabase
           .from("youtube_trends")
@@ -93,11 +201,25 @@ Deno.serve(async (req) => {
           .order("views", { ascending: false }),
       ]);
 
+    // A tabela `debunking` deixou de ser lida a 28/09/2026. Os 36 desmentidos
+    // são da Marta, de fact-checks de jornalismo, mas estão sem link
+    // (`fonte_estado = 'sem fonte verificada'`), e até aqui entravam sempre os
+    // mesmos cinco — a consulta não tinha ordem e ficava a ordem física da
+    // tabela. Voltam quando tiverem link. Os desmentidos da semana vêm agora
+    // das notícias de fact-check (factChecks, abaixo).
+
     const keywords = kwRes.data || [];
-    const questions = questionsRes.data || [];
-    const debunking = debunkingRes.data || [];
-    const news = newsRes.data || [];
+    const questions = ordenarPerguntas(questionsRes.data || []);
+    const newsDaSemana = newsRes.data || [];
+    const news = newsDaSemana.filter((n: any) => !eDepressaoMeteorologica(n));
+    const factChecks = news.filter(eFactCheck);
     const youtube = youtubeRes.data || [];
+
+    results.push(
+      `perguntas: ${questions.length} da recolha de ${segundaQueFecha} · ` +
+        `notícias: ${news.length} da semana (${newsDaSemana.length - news.length} ` +
+        `"depressão" meteorológica fora) · fact-checks: ${factChecks.length}`,
+    );
 
     // ── 1b. A medição da semana ──────────────────────────────────────────
     //
@@ -239,17 +361,18 @@ Deno.serve(async (req) => {
         .slice(0, 5)
         .map((q: any) => ({
           question: q.question,
-          growth_percent: q.growth_percent,
+          ...medidaDaPergunta(q),
         }));
 
-      const topDebunking = debunking
-        .filter((d: any) => axisTerms.has((d.term || "").toLowerCase()))
+      // Até 28/09/2026 vinha da tabela `debunking` casada por `term` — que lá
+      // é o título, logo nunca casava com os termos do eixo e ficava sempre
+      // vazio. Passa a ser o mesmo que o briefing: fact-checks da semana.
+      const topDebunking = factChecks
+        .filter((n: any) =>
+          axisTerms.has((n.related_term || "").toLowerCase())
+        )
         .slice(0, 3)
-        .map((d: any) => ({
-          term: d.term,
-          title: d.title,
-          classification: d.classification,
-        }));
+        .map(desmentidoDaNoticia);
 
       const topNews = news
         .filter((n: any) =>
@@ -308,15 +431,55 @@ Deno.serve(async (req) => {
     if (briefingExists) {
       results.push("briefing: already archived");
     } else {
-      // NOTA (24/09/2026): este bloco produz uma lista vazia e sempre produziu.
-      // Nenhuma das 82 keywords activas tem `is_emergent` a true — verificado na
-      // base de dados nesta data —, logo `top_emerging` está vazio nos 11
-      // briefings arquivados. Não se mexeu aqui de propósito: o substituto
-      // natural são os alertas (`trends_alertas`, regra de 18/09/2026), e essa
-      // é uma decisão por tomar, não uma tradução da regra do top 5.
-      const emergent = keywords
-        .filter((k: any) => k.is_emergent)
-        .sort((a: any, b: any) => b.change_percent - a.change_percent);
+      // Sinais emergentes: VAZIO, com a razão, por decisão de 28/09/2026.
+      //
+      // Correcção a uma nota de 24/09/2026 que estava aqui e dizia que este
+      // bloco "produz uma lista vazia e sempre produziu". Não é verdade: os
+      // briefings de Março têm 5 sinais e o de 27/07 tem 3. Quem escrevia
+      // `keywords.is_emergent` era o antigo script 5 (subida >= 50% e volume
+      // >= 10). A 10/08 os 429 do Google escreveram zeros e os sinais
+      // expiraram todos; a 14/08 o passo foi comentado e ninguém voltou a
+      // escrever a coluna. Desde o briefing de 03/08 fica vazio.
+      //
+      // O substituto são os alertas (`trends_alertas`, regra de 18/09/2026).
+      // Entram quando passarem o teste que falta; até lá, a lista fica vazia
+      // e a nota diz porquê.
+      const notas: Record<string, string> = {
+        emergentes:
+          "vazio até os alertas (trends_alertas) passarem o teste que falta; " +
+          "keywords.is_emergent não é escrita desde 14/08/2026",
+      };
+
+      const topQuestions = questions.slice(0, 5).map((q: any) => ({
+        term: q.question,
+        // NÃO se grava `relative_volume` aqui. Nunca foi um volume — era a
+        // posição na lista — e ficava no arquivo permanente debaixo de um
+        // nome que dizia o contrário. O que se mede é a subida.
+        ...medidaDaPergunta(q),
+      }));
+      if (topQuestions.length === 0) {
+        notas.perguntas =
+          `sem perguntas do Google Trends na recolha de ${segundaQueFecha}`;
+      }
+
+      const topDebunking = factChecks.slice(0, 5).map(desmentidoDaNoticia);
+      if (topDebunking.length === 0) {
+        notas.desmentidos =
+          `nenhuma notícia de fact-check com data entre ${prev.isoStart} e ` +
+          `${prev.isoEnd}; os desmentidos da tabela debunking não entram até ` +
+          `terem link verificado`;
+      }
+
+      const topNews = news.slice(0, 5).map((n: any) => ({
+        title: n.title,
+        outlet: n.outlet,
+        date: n.date,
+        source_type: n.source_type,
+      }));
+      if (topNews.length === 0) {
+        notas.noticias =
+          `nenhuma notícia com data entre ${prev.isoStart} e ${prev.isoEnd}`;
+      }
 
       const { error: briefingErr } = await supabase
         .from("briefings_archive")
@@ -324,30 +487,11 @@ Deno.serve(async (req) => {
           week_start: prev.isoStart,
           week_end: prev.isoEnd,
           week_label: prev.shortLabel,
-          top_emerging: emergent.slice(0, 5).map((k: any) => ({
-            term: k.term,
-            axis: k.axis,
-            change_percent: k.change_percent,
-          })),
-          top_questions: questions.slice(0, 5).map((q: any) => ({
-            term: q.question,
-            // NÃO se grava `relative_volume` aqui. Nunca foi um volume — era a
-            // posição na lista — e ficava no arquivo permanente debaixo de um
-            // nome que dizia o contrário. O que se mede é a subida.
-            growth_percent: q.growth_percent,
-          })),
-          top_debunking: debunking.slice(0, 5).map((d: any) => ({
-            term: d.term,
-            title: d.title,
-            classification: d.classification,
-            source: d.source,
-          })),
-          top_news: news.slice(0, 5).map((n: any) => ({
-            title: n.title,
-            outlet: n.outlet,
-            date: n.date,
-            source_type: n.source_type,
-          })),
+          top_emerging: [],
+          top_questions: topQuestions,
+          top_debunking: topDebunking,
+          top_news: topNews,
+          notas,
         });
 
       if (briefingErr) {

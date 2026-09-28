@@ -36,6 +36,10 @@ type GuiaoSemanal = {
   perguntas: Pergunta[];
   estado: string;
   gerado_por_ia: boolean;
+  // Desde 28/09/2026: as fontes da resposta do Perplexity (do guião inteiro,
+  // não de uma pergunta) e o que falhou na geração automática.
+  fontes_resposta?: string[];
+  erro?: string | null;
   created_at: string;
 };
 
@@ -732,6 +736,33 @@ const Guioes = () => {
               Clica em "Gerar perguntas da semana" para criar o guião de{" "}
               {TEMAS.find((t) => t.value === activeTema)?.label}
             </p>
+          </div>
+        )}
+
+        {/* Estado, erro e fontes da resposta do guião gerado pelo workflow (28/09/2026) */}
+        {currentGuiao && (currentGuiao.erro || (currentGuiao.fontes_resposta?.length ?? 0) > 0) && (
+          <div className="border border-border p-4 mb-10 text-xs">
+            <p className="text-[10px] font-bold uppercase tracking-wider mb-2">
+              Estado: {currentGuiao.estado}
+            </p>
+            {currentGuiao.erro && (
+              <p className="mb-3 text-muted-foreground">Erro: {currentGuiao.erro}</p>
+            )}
+            {(currentGuiao.fontes_resposta?.length ?? 0) > 0 && (
+              <>
+                <p className="text-[10px] font-bold uppercase tracking-wider mb-1">Fontes da resposta</p>
+                <p className="text-muted-foreground mb-2">
+                  Devolvidas pelo Perplexity para o guião inteiro. Não correspondem a uma pergunta em particular.
+                </p>
+                <ol className="list-decimal pl-5 space-y-1">
+                  {currentGuiao.fontes_resposta!.map((u, i) => (
+                    <li key={i}>
+                      <a href={u} target="_blank" rel="noopener noreferrer" className="underline break-all">{u}</a>
+                    </li>
+                  ))}
+                </ol>
+              </>
+            )}
           </div>
         )}
       </main>

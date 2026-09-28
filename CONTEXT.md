@@ -1,10 +1,10 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-25 (sessão 19) — os nove marcos da linha do tempo fechados
-> (Cowork) e a linha do tempo no `/sobre` (commit `f1533ec`, por publicar); os guiões vazios
-> desde 03/08; o "POC" que casava com "época"; a `spesf.pt` ainda activa. **A meta de
-> Outubro de 2026 deixou de o ser** — ver "Projecto". Anterior: 2026-09-24 (sessão 18), o
-> primeiro push desde 16/09, 55 commits às 21:17 UTC.
+> Última actualização: 2026-09-28 (sessão 20) — primeira semana do arquivo com a regra do
+> top 5 (21/09, escrita às 13:44 UTC com o lote `87b4fba4`, recolhido à mão na segunda às
+> 08:45 UTC); `recolher_domingo.sh` corrigido para segundas; diagnóstico do briefing semanal,
+> por corrigir. Anterior: 2026-09-25 (sessão 19), os nove marcos e a linha do tempo no
+> `/sobre`; **a meta de Outubro de 2026 deixou de o ser** — ver "Projecto".
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
 > passar a escrever com `service_role`. Nenhum dado foi apagado. **O `/admin` deixou de
@@ -46,6 +46,8 @@
 
 | Afirmação | Data | Método | Resultado |
 |---|---|---|---|
+| Às 08:45 UTC da segunda seguinte, o Google já dá a semana anterior como fechada | 28/09/2026 | `[sessão 20][bd]` `is_partial` da semana de 20/09 no lote `87b4fba4` (28/09 08:45 UTC) contra o `11031356` (24/09) | `false` contra `true`. **Às 06:00 UTC continua por medir**: nenhum lote foi recolhido a essa hora |
+| Arranques agendados do GitHub, 03/08 a 28/09 | 28/09/2026 | `[sessão 20][github]` API pública `actions/runs` | Lisboa: 10:54 · 08:49 · 08:03 · 08:06 · 14:11 · 13:02 · 13:18 · 13:26 · 14:23. O atraso varia e não se pode contar com ele |
 | O `pytrends` funciona a partir do Mac da Marta e dá os mesmos números que a descarga manual | 18/09/2026 | `[sessão 16][google]` ~120 pedidos ao longo do dia; `menopausa` sozinha, 5 anos, semanal, contra o CSV manual de 15/09 | 262 semanas, correlação **0,987**, diferença média 1,9 pontos, 190 de 262 a ≤ 2. Zero 429 nos primeiros ~50 pedidos; a partir daí o Google trava e o script espera 60 s e repete. Os bloqueios de Agosto eram dos IPs do GitHub, não da ferramenta |
 | Uma descarga de grupo dá o comparativo **e** o comportamento individual | 18/09/2026 | `[sessão 16][ficheiro]` Série de cada termo na comparação de 15/09 contra a descarga solo do mesmo termo | Correlação 0,998 (menopausa, ansiedade); 0,981 na obesidade, esmagada a máximo 10. Regra: máximo < 15 no grupo = repetir com âncora mais pequena |
 | A janela decide o detalhe; "com período anterior" é outra régua | 18/09/2026 | `[sessão 16][ficheiro]` Seis descargas de `menopausa` (11:25–11:29), pares simples/com período anterior comparados | 5 anos → mensal (61), 12 meses → semanal (53), 90/30 dias → diário, 7 dias → ~4 h. 3 dos 4 pares diferem: o 100 passa a ser o máximo dos dois períodos |
@@ -714,6 +716,11 @@ com a razão — **e isso é o resultado aceitável**, não um erro a corrigir �
 **O que NÃO se faz até lá:** rotular de novo as notícias (não tem prazo, e reescreve 344
 rótulos), e pôr os alertas no ecrã (esperam pelo teste que falta).
 
+**Balanço de segunda 28/09.** Domingo: **não feito**. O comando correu na segunda às 08:45
+UTC, e o passo 2 verificou a semana de 27/09 em vez da de 20/09 (erro do script, corrigido:
+`docs/sessoes/2026-09-28.md` §2). Segunda: o arquivo de 21/09 saiu com top 5 real nos
+quatro eixos. Chegou a tempo só porque o GitHub arrancou a corrida às 14:23.
+
 ## Pendentes
 
 ### Críticos — por esta ordem (09/09/2026)
@@ -1116,10 +1123,26 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 - [ ] **Antes de mostrar o site a alguém (orientador, júri): tirar o bloco de alertas da
       página inicial** (`Index.tsx` l.390). Decisão de 25/09 — ver "Projecto".
-- [ ] **Guiões vazios desde 03/08/2026 — falha silenciosa.** `[sessão 19][bd]` As 32 linhas
-      de `guioes_semanais` desde a semana de 03/08 têm 0 perguntas cada; o único guião com
-      5 + 5 é de 16/03. A função corre, grava e o workflow dá sucesso. Causa por investigar.
-      O registo de 24/09 §1 contou-as como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
+- [ ] **Briefing semanal — corrigido no código, por publicar.** `[sessão 20]` Diagnóstico e
+      decisões em `docs/sessoes/2026-09-28.md` §3–6. Falta, por esta ordem e com aprovação
+      da Marta: aplicar a migração `20260928120000` e depois a `20260928130000` (os 4
+      links); publicar `archive-weekly`, `generate-guioes-weekly` e
+      `generate-guiao-questions`; confirmar pelo efeito na segunda 05/10. Os arquivos já
+      gravados não se tocam.
+- [ ] **Desmentidos sem link.** Os 36 de `debunking` são da Marta, de fact-checks de
+      jornalismo; ficam "sem fonte verificada" e fora do arquivo até terem link. 4 links
+      aprovados a 28/09 (migração `20260928130000`, por aplicar); 32 por procurar.
+- [ ] **Homónimos nas notícias.** Só a "depressão" meteorológica sai do arquivo; os outros
+      (`docs/sessoes/2026-09-28.md` §3) esperam decisão. Os rótulos da v1 continuam na base.
+- [ ] **A página `/briefing` ao vivo tem os mesmos defeitos** — lê `debunking` e as notícias
+      sem filtro de semana (`Briefing.tsx` l.127–128). Não mexido; fica para a próxima
+      sessão (decisão da Marta, 28/09).
+- [ ] **Guiões vazios desde 03/08/2026 — causa encontrada a 28/09.** `[sessão 20][bd]` Duas
+      causas (`docs/sessoes/2026-09-28.md` §3): `referencia_url` inexistente em `guioes` e
+      `generate-guiao-questions` por publicar. Código corrigido; falta publicar a função e
+      pôr no painel o segredo **`PERPLEXITY_API_KEY`** (renomeado a 28/09; era
+      `VITE_PERPLEXITY_API_KEY`). Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
+      registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
 - [ ] **O `/sobre` diz coisas que não são verdade.** `[sessão 19]` "42 fontes", "em tempo
       real", "sinais emergentes antes de chegarem aos media", "5 banco + 5 IA", "PDF",
       "pytrends semanal", "55 canais", e na base (`sobre_conteudo`) os limiares de 30/50/40 %

@@ -31,47 +31,85 @@ Deno.serve(async (req) => {
     monday.setHours(0, 0, 0, 0);
     const semanaStr = monday.toISOString().split("T")[0];
 
-    // Fetch active keywords
-    const { data: keywords } = await supabase
-      .from("keywords")
-      .select("term, axis, current_volume, change_percent")
-      .eq("is_active", true);
+    // A semana medida que o guião usa: a que acabou de fechar, de segunda a
+    // domingo — a mesma que o passo 7 acabou de arquivar.
+    const semanaMedida = new Date(`${semanaStr}T00:00:00Z`);
+    semanaMedida.setUTCDate(semanaMedida.getUTCDate() - 7);
+    const semanaMedidaStr = semanaMedida.toISOString().split("T")[0];
 
-    if (!keywords || keywords.length === 0) {
-      return new Response(
-        JSON.stringify({ message: "No keywords found" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    // Até 28/09/2026 a IA recebia os termos da tabela `keywords` com o
+    // `current_volume` e o `change_percent` de lá — números parados desde
+    // Março — apresentados como "as keywords mais pesquisadas esta semana".
+    // Passa a receber o top 5 MEDIDO da semana, tal como o arquivo o gravou em
+    // eixos_archive. Por isso o passo 7 (arquivo) corre agora antes deste no
+    // workflow. Uma só conta, feita num sítio só.
+    const { data: arquivo } = await supabase
+      .from("eixos_archive")
+      .select("axis, top_keywords, nota_medicao")
+      .eq("week_start", semanaMedidaStr);
+    const arquivoPorEixo: Record<string, any> = {};
+    for (const a of (arquivo as any[] | null) || []) arquivoPorEixo[a.axis] = a;
 
     const results: string[] = [];
 
     for (const tema of TEMAS) {
-      // Check if already generated this week
-      const { data: existing } = await supabase
+      // Um guião já existente só bloqueia a semana se tiver perguntas por
+      // rever ou já revistas. 'falhou', ou uma linha vazia antiga ('gerado'
+      // com 0 perguntas, de 03/08 a 28/09), gera-se de novo — na mesma linha,
+      // e o que lá estava fica escrito em `erro`, para não se perder o registo
+      // da falha.
+      const { data: existentes } = await supabase
         .from("guioes_semanais")
-        .select("id")
+        .select("id, estado, perguntas, erro, created_at")
         .eq("semana", semanaStr)
         .eq("tema", tema.value)
-        .maybeSingle();
+        .order("created_at", { ascending: false })
+        .limit(1);
+      const existing = (existentes as any[] | null)?.[0];
 
-      if (existing) {
-        results.push(`${tema.value}: already generated`);
+      if (existing && ["por rever", "gravado"].includes(existing.estado)) {
+        results.push(`${tema.value}: já existe (${existing.estado})`);
         continue;
       }
 
-      // Get top keywords for this tema
-      const temaKeywords = keywords
-        .filter((k: any) => k.axis === tema.value)
-        .sort((a: any, b: any) => b.change_percent - a.change_percent)
-        .slice(0, 10);
+      // O que falhou, em texto, para ficar gravado em `erro`. Até 28/09/2026
+      // as duas falhas abaixo davam listas vazias em silêncio, e a linha era
+      // gravada com estado 'gerado' e gerado_por_ia = true: 36 guiões vazios
+      // de 03/08 a 28/09, sem nada que o dissesse.
+      const erros: string[] = [];
+
+      // O top 5 medido do eixo, por ordem. Só o termo e a posição: o valor
+      // calibrado é relativo ao eixo e não quer dizer nada à IA.
+      const doEixo = arquivoPorEixo[tema.value];
+      const top5 = ((doEixo?.top_keywords as any[] | null) || []).map((k: any) => ({
+        term: k.term,
+        posicao: k.posicao,
+      }));
+      if (top5.length === 0) {
+        erros.push(
+          `IA não chamada: sem top 5 medido para a semana de ${semanaMedidaStr}` +
+            (!doEixo
+              ? " (o arquivo dessa semana não existe)"
+              : doEixo.nota_medicao ? ` (${doEixo.nota_medicao})` : "")
+        );
+      }
 
       // Fetch 5 banco base questions
-      const { data: bancoData } = await supabase
+      //
+      // Sem `referencia_url`: a coluna não existe em `guioes` na instância
+      // nova, e pedi-la fazia a consulta inteira falhar (42703). Na antiga
+      // existia, mas vazia nas 46 linhas — não se perde nenhum link.
+      const { data: bancoData, error: bancoErr } = await supabase
         .from("guioes")
-        .select("pergunta, resposta, referencia_cientifica, referencia_url")
+        .select("pergunta, resposta, referencia_cientifica")
         .ilike("tema", tema.db)
         .limit(50);
+
+      if (bancoErr) {
+        erros.push(`banco: ${bancoErr.message}`);
+      } else if (!bancoData || bancoData.length === 0) {
+        erros.push(`banco: nenhuma pergunta com tema '${tema.db}'`);
+      }
 
       const shuffled = (bancoData || [])
         .sort(() => Math.random() - 0.5)
@@ -82,50 +120,86 @@ Deno.serve(async (req) => {
         resposta_simples: r.resposta || "",
         contexto_cientifico: "",
         referencia_nome: r.referencia_cientifica || "",
-        referencia_url: r.referencia_url || "",
+        referencia_url: "",
         source: "banco",
       }));
 
       // Generate 5 AI questions via the existing edge function
-      try {
-        const { data: aiData, error: aiError } = await supabase.functions.invoke(
-          "generate-guiao-questions",
-          { body: { tema: tema.label, keywords: temaKeywords } }
-        );
+      let aiPerguntas: any[] = [];
+      // As fontes que o Perplexity devolve são da resposta inteira, não de
+      // cada pergunta: guardam-se ao nível do guião, em `fontes_resposta`, e
+      // a pergunta da IA fica com referencia_url vazio (28/09/2026).
+      let fontesResposta: string[] = [];
+      // Sem top 5 medido não se pede nada à IA — o erro já ficou em `erros`.
+      if (top5.length > 0) {
+        try {
+          const { data: aiData, error: aiError } = await supabase.functions.invoke(
+            "generate-guiao-questions",
+            { body: { tema: tema.label, keywords: top5, semana: semanaMedidaStr } }
+          );
 
-        const aiPerguntas = aiError ? [] : (aiData?.perguntas || []).slice(0, 5).map((p: any) => ({
-          ...p,
-          source: "ia",
-        }));
-
-        const allPerguntas = [...bancoPerguntas, ...aiPerguntas];
-
-        // Save to guioes_semanais
-        const { error: insertErr } = await supabase
-          .from("guioes_semanais")
-          .insert({
-            semana: semanaStr,
-            tema: tema.value,
-            perguntas: allPerguntas,
-            estado: "gerado",
-            gerado_por_ia: true,
-          });
-
-        if (insertErr) {
-          results.push(`${tema.value}: ERROR — ${insertErr.message}`);
-        } else {
-          results.push(`${tema.value}: ${bancoPerguntas.length} banco + ${aiPerguntas.length} IA`);
+          if (aiError) {
+            // O corpo da resposta diz mais do que "non-2xx status code" — por
+            // exemplo o 404 de uma função que não está publicada.
+            let detalhe = "";
+            try {
+              const ctx = (aiError as any).context;
+              if (ctx) detalhe = ` (HTTP ${ctx.status}: ${(await ctx.text()).slice(0, 200)})`;
+            } catch { /* fica só a mensagem */ }
+            erros.push(`IA: ${aiError.message}${detalhe}`);
+          } else {
+            aiPerguntas = (aiData?.perguntas || []).slice(0, 5).map((p: any) => ({
+              ...p,
+              referencia_url: "",
+              source: "ia",
+            }));
+            fontesResposta = ((aiData?.fontes_resposta as unknown[]) || []).map(String);
+            if (aiPerguntas.length === 0) erros.push("IA: a resposta não trouxe perguntas");
+          }
+        } catch (e) {
+          erros.push(`IA: ${e instanceof Error ? e.message : "erro desconhecido"}`);
         }
-      } catch (e) {
-        results.push(`${tema.value}: AI ERROR — ${e instanceof Error ? e.message : "unknown"}`);
-        // Save banco-only version
-        await supabase.from("guioes_semanais").insert({
-          semana: semanaStr,
-          tema: tema.value,
-          perguntas: bancoPerguntas,
-          estado: "parcial",
-          gerado_por_ia: false,
-        });
+      }
+
+      const allPerguntas = [...bancoPerguntas, ...aiPerguntas];
+
+      // Estado (28/09/2026):
+      //   'por rever' → há perguntas; a Marta ainda não as reviu. Pode ter
+      //                 falhado uma das fontes — isso fica em `erro`.
+      //   'falhou'    → não há perguntas nenhumas. Nunca uma lista vazia como
+      //                 se a geração tivesse corrido bem.
+      // 'gravado' continua a ser o estado que a página /guioes escreve quando
+      // a Marta revê e grava.
+      if (existing) {
+        const n = Array.isArray(existing.perguntas) ? existing.perguntas.length : 0;
+        erros.push(
+          `substitui a tentativa de ${String(existing.created_at).slice(0, 16)} ` +
+            `(estado '${existing.estado}', ${n} perguntas` +
+            (existing.erro ? `, erro: ${existing.erro}` : "") + ")"
+        );
+      }
+
+      const linha = {
+        semana: semanaStr,
+        tema: tema.value,
+        perguntas: allPerguntas,
+        estado: allPerguntas.length > 0 ? "por rever" : "falhou",
+        gerado_por_ia: aiPerguntas.length > 0,
+        fontes_resposta: fontesResposta,
+        erro: erros.length > 0 ? erros.join(" · ") : null,
+      };
+
+      const { error: insertErr } = existing
+        ? await supabase.from("guioes_semanais").update(linha).eq("id", existing.id)
+        : await supabase.from("guioes_semanais").insert(linha);
+
+      if (insertErr) {
+        results.push(`${tema.value}: ERROR — ${insertErr.message}`);
+      } else {
+        results.push(
+          `${tema.value}: ${bancoPerguntas.length} banco + ${aiPerguntas.length} IA` +
+            (erros.length > 0 ? ` — ${erros.join(" · ")}` : "")
+        );
       }
     }
 

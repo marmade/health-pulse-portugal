@@ -116,7 +116,9 @@ export async function generateEixoPdf(entry: {
     entry.top_questions.forEach((q: any, i: number) => {
       checkPage(7);
       const num = String(i + 1).padStart(2, "0");
-      const growth = q.growth_percent >= 9999 ? "NOVO" : q.growth_percent != null ? `+${Number(q.growth_percent).toFixed(0)}%` : "";
+      // 9999 é o tecto do script 6, não "novo". Desde 28/09/2026 o arquivo marca-o
+      // (e o breakout) com fora_de_escala e sem número; os arquivos antigos têm o 9999.
+      const growth = q.fora_de_escala || q.growth_percent >= 9999 ? "FORA DE ESCALA" : q.growth_percent != null ? `+${Number(q.growth_percent).toFixed(0)}%` : "";
       pdf.setFontSize(8);
       pdf.setFont("helvetica", "normal");
       pdf.setTextColor(BLACK);

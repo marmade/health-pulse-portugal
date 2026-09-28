@@ -12,17 +12,27 @@ serve(async (req) => {
   }
 
   try {
-    const { tema, keywords } = await req.json();
-    const PERPLEXITY_KEY = Deno.env.get("VITE_PERPLEXITY_API_KEY");
-    if (!PERPLEXITY_KEY) throw new Error("VITE_PERPLEXITY_API_KEY is not configured");
+    const { tema, keywords, semana } = await req.json();
+    // Segredo renomeado a 28/09/2026: era VITE_PERPLEXITY_API_KEY. O prefixo
+    // VITE_ é o que o Vite põe no bundle do browser quando a variável está no
+    // .env; uma chave secreta não deve ter um nome que convide a isso.
+    const PERPLEXITY_KEY = Deno.env.get("PERPLEXITY_API_KEY");
+    if (!PERPLEXITY_KEY) throw new Error("PERPLEXITY_API_KEY is not configured");
 
+    // Só os nomes, por ordem. Até 28/09/2026 iam com o `current_volume` e o
+    // `change_percent` da tabela `keywords` — parados desde Março — e o pedido
+    // chamava-lhes "as keywords mais pesquisadas esta semana". A
+    // generate-guioes-weekly passa agora o top 5 medido da semana (`semana`).
     const keywordList = (keywords || [])
-      .map((k: any) => `${k.term} (volume: ${k.current_volume}, crescimento: ${k.change_percent}%)`)
+      .map((k: any) => String(k.term))
       .join(", ");
+    const frasePesquisa = semana
+      ? `Os termos mais procurados no Google em Portugal para este tema na semana de ${semana}, por ordem, foram: ${keywordList}.`
+      : `Termos do tema: ${keywordList}.`;
 
     const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
-    const userPrompt = `Gera exactamente 5 perguntas de vox pop sobre ${tema} para o programa Diz que Disse — vamos para as ruas perguntar a cidadãos comuns em Portugal. As perguntas testam literacia em saúde, são directas e concretas, em português europeu. TODAS devem ter resposta_simples e contexto_cientifico preenchidos (nunca vazios). As keywords mais pesquisadas esta semana em Portugal para este tema são: ${keywordList}. Inspira-te nessas keywords para gerar perguntas relevantes e actuais.
+    const userPrompt = `Gera exactamente 5 perguntas de vox pop sobre ${tema} para o programa Diz que Disse — vamos para as ruas perguntar a cidadãos comuns em Portugal. As perguntas testam literacia em saúde, são directas e concretas, em português europeu. TODAS devem ter resposta_simples e contexto_cientifico preenchidos (nunca vazios). ${frasePesquisa} Inspira-te nesses termos para gerar perguntas relevantes e actuais.
 
 Para cada pergunta inclui:
 - resposta_simples: 1-2 frases directas para o cidadão (linguagem acessível)
@@ -100,17 +110,21 @@ Responde APENAS com este JSON:
 
     perguntas = perguntas
       .filter((p: any) => p && typeof p === "object" && p.pergunta)
-      .map((p: any, i: number) => ({
+      .map((p: any) => ({
         pergunta: String(p.pergunta || ""),
         resposta_simples: String(p.resposta_simples || "Consulte a fonte indicada para mais informações."),
         contexto_cientifico: String(p.contexto_cientifico || ""),
         referencia_nome: String(p.referencia_nome || ""),
-        referencia_url: citations[i] || String(p.referencia_url || ""),
+        // Vazio de propósito (28/09/2026). Até aqui era `citations[i]`: a
+        // i-ésima fonte da resposta inteira atribuída à i-ésima pergunta, como
+        // se correspondessem — não correspondem. As fontes vão ao nível do
+        // guião, em `fontes_resposta`, e a Marta confere-as ao rever.
+        referencia_url: "",
       }));
 
     console.log(`Generated ${perguntas.length} questions via Perplexity Sonar`);
 
-    return new Response(JSON.stringify({ perguntas }), {
+    return new Response(JSON.stringify({ perguntas, fontes_resposta: citations }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {

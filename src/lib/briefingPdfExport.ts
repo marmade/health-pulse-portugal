@@ -10,9 +10,9 @@ type BriefingPdfData = {
   generatedAt: Date;
   topGrowing: { term: string; axis: string; change_percent: number; current_volume: number | null }[];
   emergent: { term: string; axis: string; change_percent: number }[];
-  topVolume: { term: string; growth_percent?: number | null; current_volume?: number | null }[];
+  topVolume: { term: string; growth_percent?: number | null; fora_de_escala?: boolean; current_volume?: number | null }[];
   news: { title: string; outlet: string; date: string; source_type: string }[];
-  debunking: { term: string; title: string; classification: string; source: string }[];
+  debunking: { term: string; title: string; classification: string | null; source: string }[];
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
   youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
@@ -194,7 +194,10 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     // 16/09/2026 guardavam em `current_volume` a POSIÇÃO na lista, não uma
     // medida — para esses não se imprime nada, em vez de imprimir um valor que
     // não quer dizer o que o cabeçalho promete.
-    if (kw.growth_percent != null) {
+    // Desde 28/09/2026 o tecto (9999) e o breakout chegam sem número, marcados.
+    if (kw.fora_de_escala) {
+      pdf.text("fora de escala", pageWidth - MARGIN, y, { align: "right" });
+    } else if (kw.growth_percent != null) {
       pdf.text(`+${Math.round(kw.growth_percent)}%`, pageWidth - MARGIN, y, { align: "right" });
     }
     y += 6;
@@ -245,9 +248,14 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     setFont("bold", 7);
     pdf.setTextColor(BLUE);
     pdf.setDrawColor(BLUE);
-    const cw = pdf.getTextWidth(d.classification.toUpperCase()) + 3;
-    pdf.rect(MARGIN, y - 3, cw, 5);
-    pdf.text(d.classification.toUpperCase(), MARGIN + 1.5, y);
+    // Os desmentidos arquivados desde 28/09/2026 vêm de notícias de fact-check,
+    // sem veredicto: sem classificação não se desenha o selo.
+    let cw = 0;
+    if (d.classification) {
+      cw = pdf.getTextWidth(d.classification.toUpperCase()) + 3;
+      pdf.rect(MARGIN, y - 3, cw, 5);
+      pdf.text(d.classification.toUpperCase(), MARGIN + 1.5, y);
+    }
     setFont("normal", 8);
     pdf.setTextColor(GREY);
     pdf.text(d.source, MARGIN + cw + 3, y);

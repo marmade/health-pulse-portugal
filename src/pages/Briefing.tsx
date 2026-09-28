@@ -41,8 +41,21 @@ type ArchivedBriefing = {
   top_questions: any[];
   top_debunking: any[];
   top_news: any[];
+  // Desde 28/09/2026: a razão de cada secção vazia. Os arquivos anteriores têm {}.
+  notas?: Record<string, string>;
   created_at: string;
 };
+
+// Uma secção do arquivo que ficou vazia mostra-se com a razão, em vez de desaparecer.
+const SeccaoVazia = ({ titulo, nota }: { titulo: string; nota?: string }) =>
+  nota ? (
+    <div className="mb-5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: "#0000FF" }}>
+        {titulo}
+      </p>
+      <p className="text-xs opacity-60">Vazio: {nota}.</p>
+    </div>
+  ) : null;
 
 type DizQueDisse = {
   perguntas_voxpop: string[];
@@ -712,6 +725,9 @@ const Briefing = () => {
                           ))}
                         </div>
                       )}
+                      {!(archive.top_emerging?.length > 0) && (
+                        <SeccaoVazia titulo="Sinais emergentes" nota={archive.notas?.emergentes} />
+                      )}
 
                       {/* Questions */}
                       {archive.top_questions?.length > 0 && (
@@ -725,7 +741,11 @@ const Briefing = () => {
                               {/* Arquivos anteriores a 16/09/2026 guardavam a
                                   posição na lista em `current_volume`. Não é
                                   medida nenhuma — não se mostra. */}
-                              {q.growth_percent != null && (
+                              {/* O tecto (9999) e o breakout não são medida:
+                                  desde 28/09/2026 chegam sem número. */}
+                              {q.fora_de_escala ? (
+                                <span className="text-xs font-bold">fora de escala</span>
+                              ) : q.growth_percent != null && (
                                 <span className="text-xs font-bold tabular-nums">
                                   +{Math.round(q.growth_percent)}%
                                 </span>
@@ -733,6 +753,9 @@ const Briefing = () => {
                             </div>
                           ))}
                         </div>
+                      )}
+                      {!(archive.top_questions?.length > 0) && (
+                        <SeccaoVazia titulo="Perguntas mais pesquisadas" nota={archive.notas?.perguntas} />
                       )}
 
                       {/* News */}
@@ -752,6 +775,9 @@ const Briefing = () => {
                           ))}
                         </div>
                       )}
+                      {!(archive.top_news?.length > 0) && (
+                        <SeccaoVazia titulo="Media" nota={archive.notas?.noticias} />
+                      )}
 
                       {/* Debunking */}
                       {archive.top_debunking?.length > 0 && (
@@ -761,11 +787,21 @@ const Briefing = () => {
                           </p>
                           {archive.top_debunking.map((d: any, i: number) => (
                             <div key={i} className="mb-2">
-                              <span className="tag-emergent mr-2">{d.classification}</span>
+                              {/* Desde 28/09/2026 os desmentidos vêm das notícias
+                                  de fact-check, que não trazem veredicto. */}
+                              {d.classification && (
+                                <span className="tag-emergent mr-2">{d.classification}</span>
+                              )}
                               <span className="text-sm">{d.title}</span>
+                              {d.source && !d.classification && (
+                                <span className="text-[10px] opacity-50 ml-2">{d.source}</span>
+                              )}
                             </div>
                           ))}
                         </div>
+                      )}
+                      {!(archive.top_debunking?.length > 0) && (
+                        <SeccaoVazia titulo="Debunking" nota={archive.notas?.desmentidos} />
                       )}
                     </div>
                   )}

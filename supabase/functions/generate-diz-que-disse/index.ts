@@ -15,8 +15,10 @@ serve(async (req) => {
     const { keyword } = await req.json();
     if (!keyword) throw new Error("keyword is required");
 
-    const PERPLEXITY_KEY = Deno.env.get("VITE_PERPLEXITY_API_KEY");
-    if (!PERPLEXITY_KEY) throw new Error("VITE_PERPLEXITY_API_KEY is not configured");
+    // Segredo renomeado a 28/09/2026 (era VITE_PERPLEXITY_API_KEY), igual à
+    // generate-guiao-questions. Esta função não está publicada.
+    const PERPLEXITY_KEY = Deno.env.get("PERPLEXITY_API_KEY");
+    if (!PERPLEXITY_KEY) throw new Error("PERPLEXITY_API_KEY is not configured");
 
     const systemPrompt = `És especialista em comunicação de ciência e saúde pública em Portugal. Respondes sempre em português europeu de Portugal, nunca em português do Brasil — usa o vocabulário, ortografia e expressões de Portugal. Respondes APENAS com JSON válido, sem texto antes ou depois, sem markdown, sem backticks.`;
 
