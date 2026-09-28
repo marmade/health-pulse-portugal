@@ -257,7 +257,11 @@ function exportGuiaoPdf(tema: string, semana: string, perguntas: Pergunta[]) {
     doc.setFont("helvetica", "italic");
     doc.setFontSize(6.5);
     doc.setTextColor(120, 120, 120);
-    const refLines = doc.splitTextToSize(row.referencia_nome, pageWidth * 0.28);
+    // Na pergunta da IA, a referência é a que o modelo declara (28/09/2026).
+    const refTexto = row.source === "ia" && row.referencia_nome
+      ? `${row.referencia_nome} (indicada pelo modelo, não conferida)`
+      : row.referencia_nome;
+    const refLines = doc.splitTextToSize(refTexto, pageWidth * 0.28);
     doc.text(refLines, col3, y);
 
     const maxLines = Math.max(qLines.length, rLines.length, refLines.length);
@@ -721,6 +725,14 @@ const Guioes = () => {
                             onClick={() => startEdit(i, "referencia_nome", p.referencia_nome)}
                           >
                             {p.referencia_nome || <span className="opacity-30">—</span>}
+                          </span>
+                        )}
+                        {/* 28/09/2026: a referência de uma pergunta da IA é a que o modelo
+                            declara; ninguém a conferiu. As fontes que a resposta de facto
+                            usou estão em "Fontes da resposta", no fim do guião. */}
+                        {isAI && p.referencia_nome && (
+                          <span className="block text-[10px] not-italic text-muted-foreground mt-1">
+                            indicada pelo modelo, não conferida
                           </span>
                         )}
                       </TableCell>

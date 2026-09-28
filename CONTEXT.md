@@ -1143,6 +1143,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       pôr no painel o segredo **`PERPLEXITY_API_KEY`** (renomeado a 28/09; era
       `VITE_PERPLEXITY_API_KEY`). Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
       registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
+- [ ] **`guioes_semanais.erro` diz "substitui a tentativa de…" quando a geração correu bem.** `[sessão 20]` Lê-se como falha. Decidir se passa para uma coluna própria ou muda de prefixo. Não mexido (decisão da Marta, 28/09).
 - [ ] **O `/sobre` diz coisas que não são verdade.** `[sessão 19]` "42 fontes", "em tempo
       real", "sinais emergentes antes de chegarem aos media", "5 banco + 5 IA", "PDF",
       "pytrends semanal", "55 canais", e na base (`sobre_conteudo`) os limiares de 30/50/40 %

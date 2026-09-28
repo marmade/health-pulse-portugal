@@ -136,9 +136,36 @@ function desmentidoDaNoticia(n: any) {
   };
 }
 
+/**
+ * O papel do JWT do pedido (28/09/2026). Esta função só aceita a service_role:
+ * a chave anon é pública (está no workflow e no bundle do site) e bastava para
+ * escrever no arquivo. A ASSINATURA do token é verificada antes, pelo
+ * `verify_jwt: true` da publicação — sem ele, este papel podia ser forjado.
+ * Publicar sempre com verify_jwt: true.
+ */
+function papelDoPedido(req: Request): string | null {
+  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  const partes = token.split(".");
+  if (partes.length !== 3) return null;
+  try {
+    const b64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4)));
+    return typeof payload.role === "string" ? payload.role : null;
+  } catch {
+    return null;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  if (papelDoPedido(req) !== "service_role") {
+    return new Response(
+      JSON.stringify({ error: "só a service_role pode chamar esta função" }),
+      { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 
   try {

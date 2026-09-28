@@ -6,9 +6,76 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+/**
+ * Os únicos sítios onde o Perplexity pode pesquisar (lista aprovada pela Marta a
+ * 28/09/2026). Até aqui o pedido dizia "usa APENAS estas fontes" e a resposta
+ * vinha com MSD em espanhol e italiano, agências de Espanha e do Chile, g1, R7,
+ * EDP. Um pedido não é um filtro: passa a ir no `search_domain_filter` da API,
+ * e o texto do pedido lista exactamente os mesmos domínios.
+ *
+ * Regras da API (docs.perplexity.ai, "Search Domain Filter"): máximo 20; um
+ * domínio inclui os subdomínios (`dgs.pt` apanha `alimentacaosaudavel.dgs.pt`,
+ * `min-saude.pt` apanha `insa.min-saude.pt`); aceita caminho. A documentação não
+ * diz se o filtro é garantido — confere-se pelas fontes devolvidas.
+ */
+const DOMINIOS_PERMITIDOS = [
+  // Referência clínica — só a edição em português (não es, it, pt-br)
+  "msdmanuals.com/pt/casa",
+  "msdmanuals.com/pt/profissional",
+  // Revistas e revisões
+  "actamedicaportuguesa.com",
+  "rpmgf.pt",
+  "scielo.pt",
+  "cochranelibrary.com",
+  // Institucionais portuguesas
+  "dgs.pt",
+  "sns24.gov.pt",
+  "sns.gov.pt",
+  "min-saude.pt",
+  "infarmed.pt",
+  "ordemdosmedicos.pt",
+  "ordemdospsicologos.pt",
+  "nutrimento.pt",
+  "spginecologia.pt",
+  // Internacionais
+  "who.int",
+  "ecdc.europa.eu",
+];
+
+/**
+ * O papel do JWT do pedido (28/09/2026). Esta função só aceita a service_role:
+ * cada chamada gasta créditos do Perplexity, e a chave anon é pública. Quem a
+ * chama é a generate-guioes-weekly, com a service_role do seu ambiente. A
+ * ASSINATURA do token é verificada antes, pelo `verify_jwt: true` da
+ * publicação — sem ele, este papel podia ser forjado. Publicar sempre com
+ * verify_jwt: true.
+ *
+ * Efeito lateral: o botão "Gerar perguntas da semana" da página /guioes chama
+ * esta função com a sessão anónima do browser e passa a receber 403.
+ */
+function papelDoPedido(req: Request): string | null {
+  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  const partes = token.split(".");
+  if (partes.length !== 3) return null;
+  try {
+    const b64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4)));
+    return typeof payload.role === "string" ? payload.role : null;
+  } catch {
+    return null;
+  }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  if (papelDoPedido(req) !== "service_role") {
+    return new Response(
+      JSON.stringify({ error: "só a service_role pode chamar esta função" }),
+      { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 
   try {
@@ -38,20 +105,21 @@ Para cada pergunta inclui:
 - resposta_simples: 1-2 frases directas para o cidadão (linguagem acessível)
 - contexto_cientifico: 3-5 frases com base científica para o comunicador preparar a entrevista (pode incluir dados, mecanismos, prevalência)
 
-Usa APENAS estas fontes científicas e institucionais para referencia_nome e referencia_url, por ordem de prioridade:
+Usa APENAS estas fontes para referencia_nome e referencia_url — são as únicas onde a pesquisa está autorizada:
 
-Fontes peer-reviewed em português (prioritárias):
-- MSD Manuals: https://www.msdmanuals.com/pt/casa (referência clínica peer-reviewed, gratuita)
-- Acta Médica Portuguesa: https://www.actamedicaportuguesa.com (principal revista médica portuguesa, open access)
-- Revista Portuguesa de Medicina Geral e Familiar: https://www.rpmgf.pt (cuidados primários, open access)
-- SciELO Portugal: https://www.scielo.pt (agregador de revistas científicas portuguesas)
-- Cochrane Library: https://www.cochranelibrary.com (revisões sistemáticas, resumos em linguagem simples)
+Referência clínica e revistas:
+- MSD Manuals, edição em português (msdmanuals.com/pt/casa e msdmanuals.com/pt/profissional)
+- Acta Médica Portuguesa (actamedicaportuguesa.com)
+- Revista Portuguesa de Medicina Geral e Familiar (rpmgf.pt)
+- SciELO Portugal (scielo.pt)
+- Cochrane Library (cochranelibrary.com)
 
-Fontes institucionais portuguesas:
-Para SAÚDE MENTAL: DGS (dgs.pt) · SNS24 (sns24.gov.pt/tema/saude-mental/) · OMS (who.int) · Ordem dos Psicólogos (ordemdospsicologos.pt)
-Para ALIMENTAÇÃO: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · INSA (insa.min-saude.pt) · Nutrimento (nutrimento.pt)
-Para MENOPAUSA: DGS (dgs.pt) · SNS24 (sns24.gov.pt) · OMS (who.int) · SPG (spginecologia.pt)
-Para EMERGENTES: DGS (dgs.pt) · ECDC (ecdc.europa.eu) · OMS (who.int) · INSA (insa.min-saude.pt)
+Institucionais portuguesas:
+- DGS (dgs.pt) · SNS 24 (sns24.gov.pt) · SNS (sns.gov.pt) · Ministério da Saúde e organismos, incluindo o INSA (min-saude.pt) · Infarmed (infarmed.pt)
+- Ordem dos Médicos (ordemdosmedicos.pt) · Ordem dos Psicólogos (ordemdospsicologos.pt) · Nutrimento (nutrimento.pt) · Sociedade Portuguesa de Ginecologia (spginecologia.pt)
+
+Internacionais:
+- OMS (who.int) · ECDC (ecdc.europa.eu)
 
 Se não encontrares uma fonte destas para uma pergunta, deixa referencia_url vazio — não inventes outras fontes.
 
@@ -68,6 +136,7 @@ Responde APENAS com este JSON:
       },
       body: JSON.stringify({
         model: "sonar",
+        search_domain_filter: DOMINIOS_PERMITIDOS,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },

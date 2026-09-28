@@ -151,12 +151,18 @@ jobs:
       # chama a IA e grava o guião com o erro.
 
       # ── PASSO 7: Arquivo semanal (dashboard + briefing) ─────────────────
+      # Desde 28/09/2026 os passos 7 e 6 chamam as funções com a service_role, e
+      # as funções recusam qualquer outra chave: a anon é pública (está neste
+      # ficheiro e no site) e bastava para escrever na base e gastar créditos do
+      # Perplexity.
       - name: 7 — Arquivo semanal
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "A arquivar dados da semana anterior..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
             "$SUPABASE_URL/functions/v1/archive-weekly" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
             -H "Content-Type: application/json" \
             -d '{}')
           BODY=$(echo "$RESP" | head -n -1)
@@ -168,11 +174,13 @@ jobs:
 
       # ── PASSO 6: Guiões semanais (4 eixos) ──────────────────────────────
       - name: 6 — Guiões semanais
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           echo "A gerar guiões da semana..."
           RESP=$(curl -s -w "\n%{http_code}" -X POST \
             "$SUPABASE_URL/functions/v1/generate-guioes-weekly" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
             -H "Content-Type: application/json" \
             -d '{}')
           BODY=$(echo "$RESP" | head -n -1)
