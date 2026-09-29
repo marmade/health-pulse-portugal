@@ -43,8 +43,17 @@ AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"]
 
 # ── ligação à base ──────────────────────────────────────────────────────────
 def env_publico():
+    """URL e chave pública (só leitura). Primeiro do ambiente — no GitHub Actions são
+    SUPABASE_URL e SUPABASE_ANON_KEY, definidos no topo do workflow; se não estiverem
+    os dois, do .env (Mac, recolher_domingo.sh)."""
+    url, anon = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_ANON_KEY")
+    if url and anon:
+        return url, anon
+    caminho = os.path.join(RAIZ, ".env")
+    if not os.path.exists(caminho):
+        sys.exit("ERRO: faltam SUPABASE_URL e SUPABASE_ANON_KEY no ambiente, e não há .env.")
     env = {}
-    for l in open(os.path.join(RAIZ, ".env")):
+    for l in open(caminho):
         if "=" in l and not l.startswith("#"):
             k, v = l.strip().split("=", 1); env[k] = v.strip('"')
     return env["VITE_SUPABASE_URL"], env["VITE_SUPABASE_PUBLISHABLE_KEY"]
