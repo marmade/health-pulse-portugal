@@ -1,9 +1,12 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-28 (sessão 20) — primeira semana do arquivo com a regra do
-> top 5 (21/09, escrita às 13:44 UTC com o lote `87b4fba4`, recolhido à mão na segunda às
-> 08:45 UTC); `recolher_domingo.sh` corrigido para segundas; diagnóstico do briefing semanal,
-> por corrigir. Anterior: 2026-09-25 (sessão 19), os nove marcos e a linha do tempo no
+> Última actualização: 2026-09-29 — só o acerto ao estado da sessão 20. Sessão 20
+> (2026-09-28): primeira semana do arquivo com a regra do top 5 (21/09, escrita às 13:44 UTC
+> com o lote `87b4fba4`, recolhido à mão na segunda às 08:45 UTC); `recolher_domingo.sh`
+> corrigido para segundas; **briefing semanal corrigido e publicado**: as duas migrações
+> aplicadas e as três funções publicadas (código no commit `ef651c2`; publicação e prova
+> registadas no `243d846`; confirmado na base a 29/09); a prova pelo efeito é a corrida de
+> segunda 05/10. Anterior: 2026-09-25 (sessão 19), os nove marcos e a linha do tempo no
 > `/sobre`; **a meta de Outubro de 2026 deixou de o ser** — ver "Projecto".
 > Incidente em curso desde Maio/2026 — ver `AUDIT.md` para o diagnóstico completo.
 > **Escrita anónima fechada a 09/09/2026** em `ijpxjpbjudaddfatibfl`, depois de o pipeline
@@ -1112,36 +1115,47 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   claro — **a série congelou a 14/04/2026** e os 105 dias seguintes são o mesmo valor
   repetido. O período que a instância nova não cobre é exactamente o período congelado.
   Não há nada que varie para importar
-- [ ] **Decidir o destino do Google Trends no projecto** — em aberto desde 07/09/2026. Ver
-  Crítico nº 6, onde a decisão de schema já está fechada. Sem esta decisão, os passos 1 e 3
-  ficam comentados.
-  **Facto novo de 09/09/2026:** candidatura ao **alpha da Google Trends API submetida a
-  09/09/2026, sem resposta**. Decisão da Marta: **não esperar por ela.** Uma candidatura sem
-  data de resposta não é um plano — se a resposta chegar, reabre-se o assunto
+- [ ] **Google Trends: falta a via B.** Corrigido a 29/09: o texto anterior ("decidir o
+  destino do Google Trends", em aberto desde 07/09) estava desactualizado. O Crítico nº 6
+  está feito em três quartos desde 18/09: script reescrito, o dashboard lê do lote, lista de
+  100 aplicada a 24/09. O que falta é a **via B**, decidida a 24/09
+  (`docs/sessoes/2026-09-24.md` §12). Hoje a recolha é feita à mão, a partir do Mac, e o
+  arquivo semanal depende de alguém se lembrar. O passo 1 do workflow continua desligado
+  (confirmado a 29/09). Plano e decisões de 28/09 em `docs/sessoes/2026-09-28-c.md` §9–10.
+  **Alpha da Google Trends API:** candidatura submetida a 09/09/2026, ainda sem resposta,
+  continuamos o nosso trabalho.
 
 ### Restantes
 
 - [ ] **Antes de mostrar o site a alguém (orientador, júri): tirar o bloco de alertas da
       página inicial** (`Index.tsx` l.390). Decisão de 25/09 — ver "Projecto".
-- [ ] **Briefing semanal — corrigido no código, por publicar.** `[sessão 20]` Diagnóstico e
-      decisões em `docs/sessoes/2026-09-28.md` §3–6. Falta, por esta ordem e com aprovação
-      da Marta: aplicar a migração `20260928120000` e depois a `20260928130000` (os 4
-      links); publicar `archive-weekly`, `generate-guioes-weekly` e
-      `generate-guiao-questions`; confirmar pelo efeito na segunda 05/10. Os arquivos já
-      gravados não se tocam.
+- [ ] **Briefing semanal — corrigido e publicado; falta a prova pelo efeito a 05/10.**
+      `[sessão 20][bd]` Diagnóstico e decisões em `docs/sessoes/2026-09-28.md` §3–6;
+      aplicação e publicação em §7, §8 e §12. Migrações `20260928120000` e
+      `20260928130000` aplicadas a 28/09 (na base com os números `20260928172959` e
+      `20260928173101` — ver `CLAUDE.md` regra 2). `archive-weekly`,
+      `generate-guioes-weekly` e `generate-guiao-questions` publicadas entre as 18:37 e as
+      18:43 UTC, com `verify_jwt: true`. Confirmado na base a 29/09: as duas migrações na
+      lista e as colunas novas presentes; as três funções activas, sem publicação
+      posterior. Só a corrida de segunda 05/10 prova o primeiro arquivo escrito pelas
+      regras novas, a ordem nova dos passos (7 antes do 6) e a chamada interna à
+      `generate-guiao-questions` com a `service_role` (`docs/sessoes/2026-09-28-c.md` §9).
+      Os arquivos já gravados não se tocam.
 - [ ] **Desmentidos sem link.** Os 36 de `debunking` são da Marta, de fact-checks de
-      jornalismo; ficam "sem fonte verificada" e fora do arquivo até terem link. 4 links
-      aprovados a 28/09 (migração `20260928130000`, por aplicar); 32 por procurar.
+      jornalismo; ficam "sem fonte verificada" e fora do arquivo até terem link. 4 com link
+      desde 28/09 (migração `20260928130000`, aplicada; confirmado na base a 29/09: 4
+      "verificada", 32 "sem fonte verificada"); 32 por procurar.
 - [ ] **Homónimos nas notícias.** Só a "depressão" meteorológica sai do arquivo; os outros
       (`docs/sessoes/2026-09-28.md` §3) esperam decisão. Os rótulos da v1 continuam na base.
 - [ ] **A página `/briefing` ao vivo tem os mesmos defeitos** — lê `debunking` e as notícias
       sem filtro de semana (`Briefing.tsx` l.127–128). Não mexido; fica para a próxima
       sessão (decisão da Marta, 28/09).
-- [ ] **Guiões vazios desde 03/08/2026 — causa encontrada a 28/09.** `[sessão 20][bd]` Duas
-      causas (`docs/sessoes/2026-09-28.md` §3): `referencia_url` inexistente em `guioes` e
-      `generate-guiao-questions` por publicar. Código corrigido; falta publicar a função e
-      pôr no painel o segredo **`PERPLEXITY_API_KEY`** (renomeado a 28/09; era
-      `VITE_PERPLEXITY_API_KEY`). Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
+- [ ] **Guiões vazios desde 03/08/2026 — causa encontrada e corrigida a 28/09; falta a prova
+      pelo efeito a 05/10.** `[sessão 20][bd]` Duas causas (`docs/sessoes/2026-09-28.md`
+      §3): `referencia_url` inexistente em `guioes` e `generate-guiao-questions` por
+      publicar. Código corrigido (`ef651c2`); função publicada a 28/09 e segredo
+      **`PERPLEXITY_API_KEY`** no painel às 17:58 UTC do mesmo dia (renomeado; era
+      `VITE_PERPLEXITY_API_KEY`). A prova é a corrida de segunda 05/10. Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
       registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
 - [ ] **`guioes_semanais.erro` diz "substitui a tentativa de…" quando a geração correu bem.** `[sessão 20]` Lê-se como falha. Decidir se passa para uma coluna própria ou muda de prefixo. Não mexido (decisão da Marta, 28/09).
 - [ ] **O `/sobre` diz coisas que não são verdade.** `[sessão 19]` "42 fontes", "em tempo
