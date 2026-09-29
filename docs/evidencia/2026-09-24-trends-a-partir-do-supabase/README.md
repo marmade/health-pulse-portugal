@@ -106,6 +106,15 @@ função viva do projecto.
 | `resultado-v1-sem-cookie.json.log` | respostas em bruto da v1 |
 | `resultado-v2-com-cookie.json.log` | respostas em bruto da v2 |
 | `resultado-v3-33-pedidos.json.log` | respostas em bruto da corrida inteira, 33 pedidos |
+| `desarmada-v7-no-painel.ts` | o que estava publicado a 29/09 (v7, desarmada, responde 410). **Não é a v3** |
 
 A v3 é a v2 com uma diferença só: os grupos vêm no corpo do pedido em vez de estarem fixos no
 código. O texto dela está no comentário da função desarmada, no servidor.
+
+> **Correcção de 29/09/2026.** A frase acima está errada: a v3 **não** está no comentário da
+> função desarmada. O que está publicado é a v7, desarmada, com um comentário que só resume os
+> resultados; guardada nesta pasta a 29/09 como `desarmada-v7-no-painel.ts`. O código da v3 não
+> ficou guardado em lado nenhum. Resta a descrição acima e as respostas em bruto em
+> `resultado-v3-33-pedidos.json.log`, compatíveis com ela mas sem a provar. Este README chama
+> "v5" à versão desarmada e o painel diz v7: a mesma diferença de numeração que está por
+> explicar em `docs/sessoes/2026-09-29.md` §2.
