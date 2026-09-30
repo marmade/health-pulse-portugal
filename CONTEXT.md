@@ -1,6 +1,11 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-29 — só o acerto ao estado da sessão 20. Sessão 20
+> Última actualização: 2026-09-30 (sessão 22) — **a via B está em teste**: a
+> `trends-buscar-grupo` publicada com `verify_jwt: true` (401/401/403 provados pelos
+> cabeçalhos das respostas); o script 5 com `--via funcao`, que ainda não grava; workflow de
+> teste e comparador (`4a2fcff`). **1.ª corrida de teste: NÃO PASSOU** pelo critério aprovado
+> antes dela; o critério mudou depois do resultado, declarado como tal — ver o pendente do
+> Google Trends. Anterior: 2026-09-29 — só o acerto ao estado da sessão 20. Sessão 20
 > (2026-09-28): primeira semana do arquivo com a regra do top 5 (21/09, escrita às 13:44 UTC
 > com o lote `87b4fba4`, recolhido à mão na segunda às 08:45 UTC); `recolher_domingo.sh`
 > corrigido para segundas; **briefing semanal corrigido e publicado**: as duas migrações
@@ -1115,20 +1120,33 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   claro — **a série congelou a 14/04/2026** e os 105 dias seguintes são o mesmo valor
   repetido. O período que a instância nova não cobre é exactamente o período congelado.
   Não há nada que varie para importar
-- [ ] **Google Trends: falta a via B.** Corrigido a 29/09: o texto anterior ("decidir o
-  destino do Google Trends", em aberto desde 07/09) estava desactualizado. O Crítico nº 6
-  está feito em três quartos desde 18/09: script reescrito, o dashboard lê do lote, lista de
-  100 aplicada a 24/09. O que falta é a **via B**, decidida a 24/09
-  (`docs/sessoes/2026-09-24.md` §12). Hoje a recolha é feita à mão, a partir do Mac, e o
-  arquivo semanal depende de alguém se lembrar. O passo 1 do workflow continua desligado
-  (confirmado a 29/09). Plano e decisões de 28/09 em `docs/sessoes/2026-09-28-c.md` §9–10.
-  **Alpha da Google Trends API:** candidatura submetida a 09/09/2026, ainda sem resposta,
-  continuamos o nosso trabalho.
+- [ ] **Google Trends: a via B está em teste (30/09).** O Crítico nº 6 está feito em três
+  quartos desde 18/09 (script reescrito, o dashboard lê do lote, lista de 100 aplicada a
+  24/09); falta a via B, decidida a 24/09 (`docs/sessoes/2026-09-24.md` §12). Estado a 30/09
+  (`docs/sessoes/2026-09-30.md`): `trends-buscar-grupo` publicada com `verify_jwt: true`; o
+  script 5 tem `--via funcao`, só em `--dry-run` — a via funcao não grava enquanto não se
+  decidir como fica em `trends_lotes.fonte`; o `pytrends` fica por omissão até a via B passar
+  uma segunda-feira, e o `recolher_domingo.sh` continua à mão. **1.ª corrida de teste (30/09):
+  NÃO PASSOU** pelo critério aprovado antes dela (`docs/sessoes/2026-09-30-cowork.md` §12) —
+  não se reclassifica; o top 5 de cada eixo saiu igual nas duas vias. **Critério novo,
+  decidido pela Marta depois do resultado:** "A via B fica aprovada se, em três corridas de
+  teste — quinta 01/10, sexta 02/10 e segunda 05/10 —, chegarem todos os pedidos e o top 5
+  de cada eixo coincidir com o do pytrends do mesmo dia." (§14 do mesmo registo). Não cobre
+  os alertas. Prova em `docs/evidencia/2026-09-30-via-b-corrida-1/`. O passo 1 do workflow
+  principal continua desligado. **Alpha da Google Trends API:** candidatura submetida a
+  09/09/2026, ainda sem resposta, continuamos o nosso trabalho.
 
 ### Restantes
 
 - [ ] **Antes de mostrar o site a alguém (orientador, júri): tirar o bloco de alertas da
       página inicial** (`Index.tsx` l.390). Decisão de 25/09 — ver "Projecto".
+- [ ] **Via B — registar a via no lote** antes da 1.ª gravação com `--via funcao`: migração que acrescenta um valor a `trends_lotes.fonte` (regra `trends_lotes_fonte_check`) ou a via em `origem`. Por decidir pela Marta (30/09).
+- [ ] **Alertas de volta ao site** (a Marta, 30/09) — antes, testá-los à parte com a via B: disparos de um lote da via funcao contra os de um lote pytrends do mesmo dia (`docs/sessoes/2026-09-30-cowork.md` §14).
+- [ ] **`ubuntu-latest` passa a Ubuntu 26 a 19/10/2026** (aviso do GitHub, 30/09) — toca o workflow principal e o de teste; e Node.js 20 obsoleto nas actions.
+- [ ] **O cron de quinta do `via-b-corrida-de-teste.yml` é temporário** — sai quando as corridas de teste acabarem.
+- [ ] **Mural da página inicial** — duas listas com escalas próprias e termos quase repetidos; observação da Marta a 30/09, sem diagnóstico (`docs/sessoes/2026-09-30-cowork.md` §8).
+- [ ] **Âncoras de cada eixo — pergunta de método em aberto**, separada da aprovação da via B (30/09).
+- [ ] **Testes do `--via`** (`scripts/testar_via_funcao.py`): o teste por estragos não foi corrido; não está provado que conseguem falhar.
 - [ ] **Briefing semanal — corrigido e publicado; falta a prova pelo efeito a 05/10.**
       `[sessão 20][bd]` Diagnóstico e decisões em `docs/sessoes/2026-09-28.md` §3–6;
       aplicação e publicação em §7, §8 e §12. Migrações `20260928120000` e
