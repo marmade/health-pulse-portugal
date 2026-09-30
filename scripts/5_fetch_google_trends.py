@@ -31,7 +31,14 @@ COMO CORRER
 
   --timeframe   'today 12-m' (por omissão; semanal) ou 'today 5-y' (semanal, base histórica)
   --amostras N  repete cada pedido N vezes (o Trends é uma amostra) — v1: só 1
-  Ambiente: .venv-trends (pytrends==4.9.2, urllib3<2.0)
+  --via         'pytrends' (por omissão) ou 'funcao': cada grupo pedido à Edge Function
+                trends-buscar-grupo (via B, 24/09/2026), com SUPABASE_URL e
+                SUPABASE_SERVICE_ROLE_KEY lidos SÓ do ambiente. Se faltarem, pára — nunca
+                volta ao pytrends sem aviso. A via passa a omissão só depois de passar uma
+                segunda-feira (decisão de 30/09/2026); até lá o recolher_domingo.sh usa o pytrends.
+                Com --gravar, a via funcao PÁRA: falta decidir como fica registada em
+                trends_lotes (a regra trends_lotes_fonte_check). Só --dry-run, por agora.
+  Ambiente: .venv-trends (pytrends==4.9.2, urllib3<2.0); com --via funcao o pytrends não é preciso
 """
 import argparse, json, os, statistics, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
@@ -75,11 +82,51 @@ def keywords_activas(url, anon):
     return por_eixo
 
 # ── pedidos ao Google ───────────────────────────────────────────────────────
+class Funcao:
+    """--via funcao: a trends-buscar-grupo no lugar do TrendReq. Faz o mesmo papel do `pt`:
+    um grupo de termos → uma série. A resposta da função traz `estado` (recolhido,
+    sem_dados, falhou), `erro` e `pontos` [{t: segundos UNIX, valores: {termo: n}, parcial}]."""
+    def __init__(self):
+        self.url = os.environ.get("SUPABASE_URL")
+        self.key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        faltam = [n for n, v in (("SUPABASE_URL", self.url), ("SUPABASE_SERVICE_ROLE_KEY", self.key)) if not v]
+        if faltam:
+            sys.exit("ERRO: --via funcao precisa de %s no ambiente. Não volta ao pytrends sozinho: "
+                     "para usar o pytrends, correr sem --via funcao." % " e ".join(faltam))
+        self.endereco = self.url.rstrip("/") + "/functions/v1/trends-buscar-grupo"
+
+    def pedir(self, termos, timeframe):
+        """(vazio, {termo: [(data, valor, parcial)]}). `falhou` levanta excepção com o erro da
+        função no texto ("explore: HTTP 429"), para entrar na espera e repetição da pedir()."""
+        corpo = dict(termos=termos, timeframe=timeframe, categoria=CFG["categoria"], geo=CFG["geo"])
+        req = urllib.request.Request(self.endereco, method="POST", data=json.dumps(corpo).encode(),
+            headers={"Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
+        try:
+            # a função aquece o cookie e faz dois pedidos de até 30 s cada
+            with urllib.request.urlopen(req, timeout=120) as r:
+                d = json.loads(r.read().decode())
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):   # chave errada: todos os pedidos iam falhar — parar já
+                sys.exit("ERRO: a trends-buscar-grupo recusou a chave (HTTP %d). Confirmar que "
+                         "SUPABASE_SERVICE_ROLE_KEY é a service_role deste projecto." % e.code)
+            raise RuntimeError("trends-buscar-grupo: HTTP %d %s" % (e.code, e.read().decode()[:150]))
+        if d["estado"] == "falhou":
+            raise RuntimeError(d["erro"])
+        if d["estado"] == "sem_dados":
+            return True, {}
+        # como o pytrends: data em UTC a partir de `time`, valor inteiro, parcial booleano
+        return False, {t: [(datetime.fromtimestamp(p["t"], timezone.utc), int(p["valores"][t]), bool(p["parcial"]))
+                           for p in d["pontos"]] for t in termos}
+
 def pedir(pt, termos, timeframe):
-    """Um pedido = uma régua. Devolve (status, {termo: [(data, valor, parcial)]}, erro)."""
+    """Um pedido = uma régua. Devolve (status, {termo: [(data, valor, parcial)]}, erro).
+    `pt` é o TrendReq do pytrends ou a Funcao (--via funcao); a espera e repetição são as mesmas."""
     df = None
     for tentativa in (1, 2):
         try:
+            if isinstance(pt, Funcao):
+                vazio, out = pt.pedir(termos, timeframe)
+                return ("sem_dados", {}, None) if vazio else ("recolhido", out, None)
             pt.build_payload(termos, cat=CFG["categoria"], geo=CFG["geo"], timeframe=timeframe)
             df = pt.interest_over_time(); break
         except Exception as e:
@@ -126,14 +173,19 @@ def grupos(termos, ancora, n):
 
 # ── a corrida ───────────────────────────────────────────────────────────────
 def correr(args):
-    from pytrends.request import TrendReq
+    log = lambda s: print(s, flush=True)
+    if args.via == "funcao":
+        pt = Funcao()   # pára aqui, antes de qualquer pedido, se faltar alguma variável
+        log("VIA funcao — %s" % pt.endereco)
+    else:
+        from pytrends.request import TrendReq
+        pt = TrendReq(hl="pt-PT", tz=0, timeout=(10, 30), retries=0)
+        log("VIA pytrends")
     url, anon = env_publico()
     por_eixo = keywords_activas(url, anon)
     eixos = [args.eixo] if args.eixo else AXES
-    pt = TrendReq(hl="pt-PT", tz=0, timeout=(10, 30), retries=0)
     pausa = CFG["pausa_segundos"]
     pedidos = []   # dicts: eixo, passo, amostra, termos, ancora, status, erro, series{termo:[(d,v,p)]}
-    log = lambda s: print(s, flush=True)
 
     def executa(eixo, passo, termos, ancora, amostra=1):
         status, series, erro = pedir(pt, termos, args.timeframe)
@@ -230,7 +282,7 @@ def correr(args):
         abaixo = [t for t in por_eixo[eixo] if t not in med_por_termo]
         if abaixo: log("  [%s] sem valor calibrado (pedido falhou): %s" % (eixo, ", ".join(abaixo)))
 
-    resumo = dict(pedidos=len(pedidos), recolhidos=sum(p["status"] == "recolhido" for p in pedidos),
+    resumo = dict(via=args.via, pedidos=len(pedidos), recolhidos=sum(p["status"] == "recolhido" for p in pedidos),
                   sem_dados=sum(p["status"] == "sem_dados" for p in pedidos),
                   falhados=sum(p["status"] == "falhou" for p in pedidos),
                   pontos=sum(len(s) for p in pedidos for s in p["series"].values()),
@@ -309,11 +361,19 @@ def main():
     ap.add_argument("--timeframe", default="today 12-m")
     ap.add_argument("--eixo", choices=AXES)
     ap.add_argument("--amostras", type=int, default=1)
+    ap.add_argument("--via", choices=["pytrends", "funcao"], default="pytrends",
+                    help="funcao: pede cada grupo à trends-buscar-grupo (SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY do ambiente)")
     ap.add_argument("--origem", default="manual " + os.uname().nodename)
     ap.add_argument("--dump", help="grava o resultado (pedidos, calibrados, top5) em JSON — evidência sem repetir pedidos")
     ap.add_argument("--carregar", help="com --gravar: lê um dump em vez de pedir ao Google (mesmos pedidos, mesma hora de recolha)")
     args = ap.parse_args()
     if args.amostras != 1: sys.exit("v1: --amostras só suporta 1 (a repetição fica para quando houver dados para a justificar).")
+    # tranca de 30/09/2026: o gravar() escreve fonte="pytrends" e a regra da base só aceita
+    # pytrends, manual e api_oficial. Um dump feito com --via funcao também não grava.
+    if args.gravar and (args.via == "funcao" or
+                        (args.carregar and json.load(open(args.carregar))["resumo"].get("via") == "funcao")):
+        sys.exit("ERRO: A via funcao ainda não pode gravar: falta decidir como a via fica registada em "
+                 "trends_lotes (a regra trends_lotes_fonte_check só aceita pytrends, manual e api_oficial).")
     if args.gravar:
         chave_service_role()   # pára AQUI, antes de gastar 10 minutos de pedidos, se a chave faltar
     if args.carregar:
