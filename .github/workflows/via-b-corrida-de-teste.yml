@@ -1,0 +1,48 @@
+name: Via B — corrida de teste (não grava)
+
+# 30/09/2026. Corre o script 5 pela via B (a Edge Function trends-buscar-grupo) em ensaio:
+# --dry-run, nada é gravado na base. Serve para comparar, no mesmo dia, com uma corrida pelo
+# pytrends no Mac — critério em docs/sessoes/2026-09-30-cowork.md §12; comparação com
+# scripts/comparar_vias.py.
+#
+# Não substitui o youtube-trends.yml, e não toca nele.
+#
+# O CRON DE QUINTA É TEMPORÁRIO (plano de 28/09-c §10): sai deste ficheiro quando as
+# corridas de teste acabarem. Não deixar ficar por esquecimento.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 4'   # quintas, 06:00 UTC (07:00 Lisboa) — sai quando os testes acabarem
+
+env:
+  SUPABASE_URL: https://ijpxjpbjudaddfatibfl.supabase.co
+  SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqcHhqcGJqdWRhZGRmYXRpYmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NzEzODUsImV4cCI6MjA4ODU0NzM4NX0.SfOLBTYyIhk-CxzvtlvFu1E-GqBNXN3CbFqz8qx-BoM
+
+jobs:
+  via-funcao:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Só biblioteca padrão: com --via funcao o pytrends não é importado.
+      # --dry-run: a tranca do script 5 impede a via funcao de gravar, mas aqui nem se pede.
+      - name: Script 5 pela via funcao (--dry-run)
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          python scripts/5_fetch_google_trends.py --dry-run --via funcao \
+            --timeframe 'today 5-y' --dump dump-via-funcao.json
+
+      - name: Guardar o dump
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dump-via-funcao-${{ github.run_id }}
+          path: dump-via-funcao.json
+          if-no-files-found: warn
