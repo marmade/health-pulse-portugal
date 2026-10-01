@@ -16,5 +16,8 @@
     40
   ],
   "espera_apos_429": 60,
+  "regiao_funcao": "eu-west-1",
+  "espera_segunda_volta": 300,
+  "_regiao_funcao": "Só com --via funcao. Decisão da Marta, 01/10/2026 (docs/sessoes/2026-10-01-cowork.md §3 e §5): a função corre na região pedida no cabeçalho x-region, e não perto da máquina do GitHub. eu-west-1 é a região da base — uma aposta, a primeira a testar. Com região fixa não há reencaminhamento automático. espera_segunda_volta: segundos antes de pedir outra vez, no fim de cada passo, os pedidos que ficaram falhou.",
   "_categoria": "45 = Saúde. Decisão da Marta, 18/09/2026: fica. RESSALVA: é o que o Google entende por saúde, por regras que não publica; não filtra homónimos (testado com depressão: 18/25 tempestades com filtro, 16/25 sem) e esconde termos classificados noutro sítio (psicólogo: 0 com filtro, mediana 16–36 sem). Ver docs/metodo/2026-09-18-reguas-e-ancoras.md secção 5b."
 }

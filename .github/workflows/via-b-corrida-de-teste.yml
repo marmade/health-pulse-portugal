@@ -7,13 +7,21 @@ name: Via B — corrida de teste (não grava)
 #
 # Não substitui o youtube-trends.yml, e não toca nele.
 #
-# O CRON DE QUINTA É TEMPORÁRIO (plano de 28/09-c §10): sai deste ficheiro quando as
-# corridas de teste acabarem. Não deixar ficar por esquecimento.
+# 01/10/2026: VERSÃO NOVA da via B (região fixa eu-west-1, registo por tentativa, segunda
+# volta — docs/sessoes/2026-10-01-cowork.md §5). As três corridas de teste recomeçam:
+# 01/10 (à mão), 02/10 (à mão) e segunda 05/10 (cron), cada uma com o pytrends no Mac no
+# mesmo dia. Critério: 2026-09-30-cowork.md §14.
+#
+# O CRON DE SEGUNDA É TEMPORÁRIO: sai deste ficheiro depois da corrida de 05/10. Se ficar,
+# corre outra vez a 12/10. Não deixar ficar por esquecimento.
+# Fora da hora certa. Leitura não verificada (documentação do GitHub não consultada a
+# 01/10): o GitHub atrasa, e pode descartar, agendamentos à hora certa. Verificado: a
+# corrida de 01/10 marcada para as 06:00 UTC arrancou às 11:53 UTC.
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * 4'   # quintas, 06:00 UTC (07:00 Lisboa) — sai quando os testes acabarem
+    - cron: '23 5 * * 1'  # segundas, 05:23 UTC (06:23 Lisboa, hora de Verão) — sai depois de 05/10
 
 env:
   SUPABASE_URL: https://ijpxjpbjudaddfatibfl.supabase.co
@@ -22,7 +30,7 @@ env:
 jobs:
   via-funcao:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60   # a segunda volta pode juntar até 15 min (3 passos × 300 s, mais os pedidos)
     steps:
       - uses: actions/checkout@v4
 

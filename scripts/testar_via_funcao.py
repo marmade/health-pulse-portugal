@@ -19,6 +19,15 @@ O QUE PROVA
   · --gravar com a via funcao (ou com um dump feito por ela) pára antes de qualquer pedido;
   · por omissão a via é o pytrends e a função não é chamada;
   · a via fica escrita no output (linha VIA e RESUMO).
+  Versão de 01/10/2026 (secções 11–17):
+  · x-region: eu-west-1 em cada chamada; AVISO quando a resposta vem de outra região ou sem
+    o cabeçalho x-sb-edge-region, e a corrida segue;
+  · cada tentativa (região, tem_nid, milissegundos, erro) no log e no dump, também a 1.ª;
+  · 429 → falhou → recuperado na segunda volta, depois de 300 s, antes do passo 2; falha
+    também na segunda volta → "não recuperado"; sem_dados na segunda volta → "não recuperado";
+    segunda volta também no passo 2; RESUMO com os campos antigos e os dois novos;
+  · a via pytrends dá o mesmo output e o mesmo dump que o script do commit 5077681, numa
+    corrida com um 429 recuperado e um pedido falhado.
 O QUE NÃO PROVA
   · que a função verdadeira responde assim — isso é a 1.ª janela, com a service_role verdadeira.
 """
@@ -37,16 +46,19 @@ socket.socket.connect = _so_local
 
 # ── o servidor falso ────────────────────────────────────────────────────────
 class Falso:
-    respostas = []      # fila: (status_http, corpo_dict) para a função
+    respostas = []      # fila: (status_http, corpo_dict) para a função; None = gerar(termos)
     chamadas = []       # (auth, corpo) de cada POST à função
+    cabecalhos = []     # o x-region de cada POST à função
     leituras = []       # caminho de cada GET à base
     keywords = []       # linhas devolvidas pelo /rest/v1/keywords
+    regiao = "eu-west-1"   # o x-sb-edge-region da resposta; None = sem cabeçalho
 
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
     def _responde(self, status, corpo):
         b = json.dumps(corpo).encode()
         self.send_response(status); self.send_header("Content-Type", "application/json")
+        if Falso.regiao: self.send_header("x-sb-edge-region", Falso.regiao)
         self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b)
     def do_GET(self):
         Falso.leituras.append(self.path)
@@ -55,8 +67,10 @@ class H(BaseHTTPRequestHandler):
     def do_POST(self):
         corpo = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         Falso.chamadas.append((self.headers.get("Authorization"), corpo))
+        Falso.cabecalhos.append(self.headers.get("x-region"))
         if self.path != "/functions/v1/trends-buscar-grupo": return self._responde(404, {})
-        status, r = Falso.respostas.pop(0) if Falso.respostas else (200, gerar(corpo["termos"]))
+        prox = Falso.respostas.pop(0) if Falso.respostas else None
+        status, r = prox if prox else (200, gerar(corpo["termos"]))
         self._responde(status, r)
 
 srv = HTTPServer(("127.0.0.1", 0), H)
@@ -80,19 +94,24 @@ def gerar(termos):
             "aquecimento": {"tem_nid": True}, "milissegundos": 1}
 
 def ok(status, pontos): return (200, {"estado": status, "erro": None, "pontos": pontos})
-def falhou(erro): return (200, {"estado": "falhou", "erro": erro, "pontos": []})
+def falhou(erro): return (200, {"estado": "falhou", "erro": erro, "pontos": [],
+                                "aquecimento": {"tem_nid": False}, "milissegundos": 1234})
 
 # ── o script 5 ──────────────────────────────────────────────────────────────
 spec = importlib.util.spec_from_file_location("script5", os.path.join(RAIZ, "scripts", "5_fetch_google_trends.py"))
 S5 = importlib.util.module_from_spec(spec); spec.loader.exec_module(S5)
 S5.CFG["espera_apos_429"] = 0; S5.CFG["pausa_segundos"] = 0
+# a espera da segunda volta fica com o valor verdadeiro, mas o sleep não dorme: só regista
+ESPERAS = []
+S5.time = types.SimpleNamespace(sleep=ESPERAS.append)
 
 def ambiente(**kv):
     for k in ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_ANON_KEY"): os.environ.pop(k, None)
     os.environ.update(kv)
 
-def novo(respostas=()):
-    Falso.respostas = list(respostas); Falso.chamadas = []; Falso.leituras = []
+def novo(respostas=(), regiao="eu-west-1"):
+    Falso.respostas = list(respostas); Falso.chamadas = []; Falso.cabecalhos = []; Falso.leituras = []
+    Falso.regiao = regiao; ESPERAS.clear()
 
 def saiu(f):
     """corre f; devolve (mensagem do sys.exit ou None, stdout, valor devolvido por f)"""
@@ -220,6 +239,130 @@ verifica("output diz 'VIA pytrends'", "VIA pytrends" in out, out[:300])
 verifica("o TrendReq foi criado como antes", usado == [dict(hl="pt-PT", tz=0, timeout=(10, 30), retries=0)], repr(usado))
 verifica("nenhuma chamada à função", not Falso.chamadas, repr(Falso.chamadas))
 verifica("RESUMO traz via=pytrends", '"via": "pytrends"' in out)
+sys.modules.pop("pytrends", None); sys.modules.pop("pytrends.request", None)
+
+# ── versão de 01/10/2026: região fixa, tentativas, segunda volta ───────────
+def corrida(respostas, keywords=TERMOS, regiao="eu-west-1"):
+    """--dry-run --via funcao --eixo menopausa contra a função falsa → (msg, out, resumo, dump)"""
+    Falso.keywords = [{"term": t, "axis": "menopausa"} for t in keywords]
+    novo(respostas, regiao)
+    msg, out, _ = main_com("--dry-run", "--via", "funcao", "--eixo", "menopausa", "--dump", DUMP)
+    resumo = json.loads(out.split("RESUMO ", 1)[1].splitlines()[0]) if "RESUMO " in out else {}
+    return msg, out, resumo, (json.load(open(DUMP)) if msg is None else {})
+
+R429 = falhou("explore: HTTP 429")
+
+print("11. região fixa — x-region em cada chamada; AVISO se a função correr noutra")
+msg, out, resumo, d = corrida([])
+verifica("x-region: eu-west-1 em todas as chamadas (do trends_grupos.json)",
+         Falso.cabecalhos and all(c == "eu-west-1" for c in Falso.cabecalhos), repr(Falso.cabecalhos))
+verifica("resposta de eu-west-1: nenhum AVISO", "AVISO" not in out, out)
+_, out, _, d = corrida([], regiao="us-east-2")
+verifica("resposta de us-east-2: AVISO com as duas regiões, e a corrida segue",
+         "AVISO: a função correu em us-east-2, e foi pedida eu-west-1" in out and d.get("resumo", {}).get("recolhidos") == 1, out)
+verifica("a região efectiva fica no dump", (d["pedidos"][0].get("tentativas") or [{}])[0].get("regiao") == "us-east-2", repr(d["pedidos"][0].get("tentativas")))
+_, out, _, _ = corrida([], regiao=None)
+verifica("resposta sem cabeçalho: AVISO de região desconhecida", "região desconhecida" in out, out)
+
+print("12. cada tentativa fica no log e no dump — também a primeira")
+_, out, resumo, d = corrida([R429])
+tent = d["pedidos"][0].get("tentativas") or []
+verifica("duas tentativas no dump, a 1.ª com o erro do 429",
+         len(tent) == 2 and tent[0].get("erro") == "RuntimeError: explore: HTTP 429" and tent[1].get("erro") is None, repr(tent))
+verifica("tem_nid e milissegundos guardados (vêm da função)",
+         [(x.get("tem_nid"), x.get("milissegundos")) for x in tent] == [(False, 1234), (True, 1)], repr(tent))
+verifica("a 1.ª tentativa aparece no log, antes da espera de 60 s",
+         "tentativa 1 · região eu-west-1 · tem_nid não · 1234 ms · RuntimeError: explore: HTTP 429" in out
+         and out.index("tentativa 1 ·") < out.index("429 — espera de"), out)
+verifica("sem segunda volta (não falhou)", resumo.get("segunda_volta") == 0 and "SEGUNDA VOLTA" not in out, repr(resumo))
+
+print("13. 429 → falhou → recuperado na segunda volta, ANTES do passo 2")
+_, out, resumo, d = corrida([R429, R429])   # depois da fila, a função falsa responde bem
+p = d["pedidos"][0]
+verifica("RESUMO: 1 pedido, recolhido, 0 falhados, 1 na segunda volta, 1 recuperado",
+         {k: resumo.get(k) for k in ("pedidos", "recolhidos", "falhados", "segunda_volta", "recuperados")}
+         == dict(pedidos=1, recolhidos=1, falhados=0, segunda_volta=1, recuperados=1), repr(resumo))
+verifica("os campos antigos do RESUMO estão todos, com os mesmos nomes",
+         list(resumo)[:7] == ["via", "pedidos", "recolhidos", "sem_dados", "falhados", "pontos", "calibrados"], repr(list(resumo)))
+verifica("o pedido fica com o resultado final e a marca 'recuperado'",
+         p["status"] == "recolhido" and p["erro"] is None and p.get("segunda_volta") == "recuperado", repr({k: p.get(k) for k in ("status", "erro", "segunda_volta")}))
+verifica("três tentativas no dump: as duas da 1.ª volta e a da 2.ª", [t.get("erro") is None for t in p.get("tentativas", [])] == [False, False, True], repr(p.get("tentativas")))
+verifica("espera de 300 s (espera_segunda_volta) antes da segunda volta", 300 in ESPERAS, repr(ESPERAS))
+verifica("a segunda volta do passo 1 vem antes do PASSO 2",
+         "SEGUNDA VOLTA — passo 1" in out and out.index("SEGUNDA VOLTA — passo 1") < out.index("PASSO 2"), out)
+verifica("o pedido recuperado entra na calibração (top 5 calculado)", d["top5"].get("menopausa"), repr(d["top5"]))
+
+print("14. falha também na segunda volta — 'não recuperado'")
+_, out, resumo, d = corrida([R429, R429, R429, R429])
+p = d["pedidos"][0]
+verifica("4 chamadas (2 por volta, a mesma espera de 429), e não há terceira volta", len(Falso.chamadas) == 4, repr(len(Falso.chamadas)))
+verifica("falhou, 'não recuperado'; RESUMO 1 falhado, 0 recuperados",
+         p["status"] == "falhou" and p.get("segunda_volta") == "não recuperado" and resumo.get("falhados") == 1
+         and resumo.get("recuperados") == 0, repr((p["status"], p.get("segunda_volta"), resumo)))
+
+print("15. sem_dados na segunda volta — 'não recuperado' (decisão de 01/10)")
+_, _, resumo, d = corrida([R429, R429, ok("sem_dados", [])])
+p = d["pedidos"][0]
+verifica("sem_dados, 'não recuperado', 0 recuperados",
+         p["status"] == "sem_dados" and p.get("segunda_volta") == "não recuperado" and resumo.get("recuperados") == 0,
+         repr((p["status"], p.get("segunda_volta"), resumo)))
+
+print("16. segunda volta também no passo 2")
+# 5 termos: na função falsa valem 50, 40, 30, 20, 10 — o último fica esmagado (< 15)
+CINCO = ["menopausa", "afrontamentos", "perimenopausa", "suores", "insonia"]
+_, out, resumo, d = corrida([None, R429, R429], keywords=CINCO)
+p2 = [p for p in d["pedidos"] if p["passo"] == 2]
+verifica("houve passo 2, falhou, e foi recuperado na segunda volta do passo 2",
+         len(p2) == 1 and p2[0].get("segunda_volta") == "recuperado" and "SEGUNDA VOLTA — passo 2" in out
+         and "SEGUNDA VOLTA — passo 1" not in out, out)
+
+print("17. via pytrends — o mesmo output e o mesmo dump que o script de 5077681 (antes de 01/10)")
+try:
+    import subprocess, warnings
+    antigo = os.path.join(tempfile.mkdtemp(), "scripts")
+    os.makedirs(antigo)
+    for f in ("5_fetch_google_trends.py", "trends_grupos.json"):
+        open(os.path.join(antigo, f), "w").write(subprocess.run(
+            ["git", "-C", RAIZ, "show", "5077681:scripts/" + f], capture_output=True, text=True, check=True).stdout)
+    spec = importlib.util.spec_from_file_location("script5_antigo", os.path.join(antigo, "5_fetch_google_trends.py"))
+    S5A = importlib.util.module_from_spec(spec); spec.loader.exec_module(S5A)
+    S5A.CFG["espera_apos_429"] = 0; S5A.CFG["pausa_segundos"] = 0
+    S5A.time = types.SimpleNamespace(sleep=lambda s: None)
+    from pytrends.request import TrendReq
+    TrendReq.GetGoogleCookie = lambda self: {}
+    def dados(self, url, **k):
+        # chamadas: 1 explore (429 → espera e repete), 2 explore, 3 multiline | 4 e 5 explore
+        # (429 duas vezes → o 2.º grupo falha de vez) | 6, 7 o passo 2
+        dados.n += 1
+        if url == TrendReq.GENERAL_URL and dados.n in (1, 4, 5):
+            raise Exception("The request failed: Google returned a response with code 429")
+        if url == TrendReq.GENERAL_URL: return {"widgets": [{"id": "TIMESERIES", "token": "t", "request": {}}]}
+        return {"default": {"timelineData": [{"time": p["time"], "value": [50, 40, 30, 20, 10]} for p in TL]}}
+    TrendReq._get_data = dados
+    Falso.keywords = [{"term": t, "axis": "menopausa"} for t in CINCO + ["calor", "ciclo", "estrogenio", "libido"]]
+    saidas = []
+    for modulo in (S5A, S5):
+        dados.n = 0; novo()
+        sys.argv[1:] = ["--dry-run", "--eixo", "menopausa", "--dump", DUMP]
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", FutureWarning)
+            msg, out, _ = saiu(modulo.main)
+        dd = json.load(open(DUMP))
+        for p in dd["pedidos"]: p.pop("fetched_at")
+        saidas.append((msg, out, dd))
+    (ma, oa, da), (mn, on, dn) = saidas
+    verifica("a corrida de teste passou pela espera de 429 e teve um falhado (o caso que importa)",
+             "429 — espera de" in on and da.get("resumo", {}).get("falhados") == 1, on)
+    verifica("output igual, linha a linha", oa == on,
+             "\n".join("  antigo: %r\n  novo:   %r" % (a, b) for a, b in zip(oa.splitlines(), on.splitlines()) if a != b)
+             or "número de linhas: %d contra %d" % (len(oa.splitlines()), len(on.splitlines())))
+    verifica("dump igual (sem as horas de recolha)", da == dn)
+    verifica("nada da via funcao no caminho pytrends (tentativas, segunda volta, x-region)",
+             "SEGUNDA VOLTA" not in on and "tentativa" not in on and not Falso.chamadas
+             and not any("tentativas" in p or "segunda_volta" in p for p in dn["pedidos"]))
+    sys.modules.pop("pytrends", None); sys.modules.pop("pytrends.request", None)
+except ImportError:
+    verifica("pytrends disponível (correr com .venv-trends/bin/python)", False)
 
 srv.shutdown()
 print()

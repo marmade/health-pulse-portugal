@@ -38,6 +38,11 @@ COMO CORRER
                 segunda-feira (decisão de 30/09/2026); até lá o recolher_domingo.sh usa o pytrends.
                 Com --gravar, a via funcao PÁRA: falta decidir como fica registada em
                 trends_lotes (a regra trends_lotes_fonte_check). Só --dry-run, por agora.
+                Versão de 01/10/2026, só nesta via: região fixa (regiao_funcao, cabeçalho
+                x-region; AVISO se a função correr noutra); por pedido, no log e no dump, as
+                tentativas (região efectiva, tem_nid, milissegundos, erro); e a SEGUNDA VOLTA:
+                no fim de cada passo, os falhados são pedidos outra vez depois de
+                espera_segunda_volta. O caminho pytrends não mudou.
   Ambiente: .venv-trends (pytrends==4.9.2, urllib3<2.0); com --via funcao o pytrends não é preciso
 """
 import argparse, json, os, statistics, sys, time, urllib.request, urllib.error
@@ -94,34 +99,61 @@ class Funcao:
             sys.exit("ERRO: --via funcao precisa de %s no ambiente. Não volta ao pytrends sozinho: "
                      "para usar o pytrends, correr sem --via funcao." % " e ".join(faltam))
         self.endereco = self.url.rstrip("/") + "/functions/v1/trends-buscar-grupo"
+        self.regiao = CFG["regiao_funcao"]
+        self.tentativas = []   # as chamadas do pedido em curso; a pedir() limpa, a executa() guarda
 
     def pedir(self, termos, timeframe):
         """(vazio, {termo: [(data, valor, parcial)]}). `falhou` levanta excepção com o erro da
-        função no texto ("explore: HTTP 429"), para entrar na espera e repetição da pedir()."""
+        função no texto ("explore: HTTP 429"), para entrar na espera e repetição da pedir().
+        Região fixa (01/10/2026): cabeçalho x-region; a região onde correu vem em
+        x-sb-edge-region. Cada chamada fica em self.tentativas e no log: região efectiva,
+        aquecimento.tem_nid, milissegundos e erro — também o da primeira tentativa."""
         corpo = dict(termos=termos, timeframe=timeframe, categoria=CFG["categoria"], geo=CFG["geo"])
         req = urllib.request.Request(self.endereco, method="POST", data=json.dumps(corpo).encode(),
-            headers={"Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
+            headers={"Authorization": "Bearer " + self.key, "Content-Type": "application/json",
+                     "x-region": self.regiao})
+        tent = dict(regiao=None, tem_nid=None, milissegundos=None, erro=None)
+        self.tentativas.append(tent)
         try:
-            # a função aquece o cookie e faz dois pedidos de até 30 s cada
-            with urllib.request.urlopen(req, timeout=120) as r:
-                d = json.loads(r.read().decode())
-        except urllib.error.HTTPError as e:
-            if e.code in (401, 403):   # chave errada: todos os pedidos iam falhar — parar já
-                sys.exit("ERRO: a trends-buscar-grupo recusou a chave (HTTP %d). Confirmar que "
-                         "SUPABASE_SERVICE_ROLE_KEY é a service_role deste projecto." % e.code)
-            raise RuntimeError("trends-buscar-grupo: HTTP %d %s" % (e.code, e.read().decode()[:150]))
-        if d["estado"] == "falhou":
-            raise RuntimeError(d["erro"])
-        if d["estado"] == "sem_dados":
-            return True, {}
-        # como o pytrends: data em UTC a partir de `time`, valor inteiro, parcial booleano
-        return False, {t: [(datetime.fromtimestamp(p["t"], timezone.utc), int(p["valores"][t]), bool(p["parcial"]))
-                           for p in d["pontos"]] for t in termos}
+            try:
+                # a função aquece o cookie e faz dois pedidos de até 30 s cada
+                with urllib.request.urlopen(req, timeout=120) as r:
+                    tent["regiao"] = r.headers.get("x-sb-edge-region")
+                    d = json.loads(r.read().decode())
+            except urllib.error.HTTPError as e:
+                tent["regiao"] = e.headers.get("x-sb-edge-region")
+                if e.code in (401, 403):   # chave errada: todos os pedidos iam falhar — parar já
+                    sys.exit("ERRO: a trends-buscar-grupo recusou a chave (HTTP %d). Confirmar que "
+                             "SUPABASE_SERVICE_ROLE_KEY é a service_role deste projecto." % e.code)
+                raise RuntimeError("trends-buscar-grupo: HTTP %d %s" % (e.code, e.read().decode()[:150]))
+            tent.update(tem_nid=(d.get("aquecimento") or {}).get("tem_nid"), milissegundos=d.get("milissegundos"))
+            if d["estado"] == "falhou":
+                raise RuntimeError(d["erro"])
+            if d["estado"] == "sem_dados":
+                return True, {}
+            # como o pytrends: data em UTC a partir de `time`, valor inteiro, parcial booleano
+            return False, {t: [(datetime.fromtimestamp(p["t"], timezone.utc), int(p["valores"][t]), bool(p["parcial"]))
+                               for p in d["pontos"]] for t in termos}
+        except Exception as e:
+            tent["erro"] = "%s: %s" % (type(e).__name__, str(e)[:200])   # o mesmo formato da pedir()
+            raise
+        finally:
+            self.mostrar(tent)
+
+    def mostrar(self, tent):
+        sim_nao = {True: "sim", False: "não", None: "?"}
+        print("    tentativa %d · região %s · tem_nid %s · %s ms · %s" % (
+            len(self.tentativas), tent["regiao"] or "?", sim_nao[tent["tem_nid"]],
+            "?" if tent["milissegundos"] is None else tent["milissegundos"], tent["erro"] or "ok"), flush=True)
+        if tent["regiao"] != self.regiao:   # avisa e segue: a corrida não pára por isto
+            print("    AVISO: a função correu em %s, e foi pedida %s (x-region)" % (
+                tent["regiao"] or "região desconhecida (sem cabeçalho x-sb-edge-region)", self.regiao), flush=True)
 
 def pedir(pt, termos, timeframe):
     """Um pedido = uma régua. Devolve (status, {termo: [(data, valor, parcial)]}, erro).
     `pt` é o TrendReq do pytrends ou a Funcao (--via funcao); a espera e repetição são as mesmas."""
     df = None
+    if isinstance(pt, Funcao): pt.tentativas = []
     for tentativa in (1, 2):
         try:
             if isinstance(pt, Funcao):
@@ -187,16 +219,40 @@ def correr(args):
     pausa = CFG["pausa_segundos"]
     pedidos = []   # dicts: eixo, passo, amostra, termos, ancora, status, erro, series{termo:[(d,v,p)]}
 
+    def mostra(p, volta=""):
+        res = "  ".join("%s=%d" % (t[:18], maximo([v for _, v, _ in p["series"].get(t, [])])) for t in p["termos"]) \
+              if p["status"] == "recolhido" else (p["erro"] or p["status"])
+        log("  [%s p%d%s] %s" % (p["eixo"] or "entre-eixos", p["passo"], volta, res))
+
     def executa(eixo, passo, termos, ancora, amostra=1):
         status, series, erro = pedir(pt, termos, args.timeframe)
         p = dict(eixo=eixo, passo=passo, amostra=amostra, termos=termos, ancora=ancora,
                  status=status, erro=erro, series=series, fetched_at=datetime.now(timezone.utc))
+        if isinstance(pt, Funcao): p["tentativas"] = pt.tentativas
         pedidos.append(p)
-        res = "  ".join("%s=%d" % (t[:18], maximo([v for _, v, _ in series.get(t, [])])) for t in termos) \
-              if status == "recolhido" else (erro or status)
-        log("  [%s p%d] %s" % (eixo or "entre-eixos", passo, res))
+        mostra(p)
         time.sleep(pausa)
         return p
+
+    def segunda_volta(passo):
+        """Só --via funcao (decisão de 01/10/2026). No fim do passo, os pedidos que ficaram
+        `falhou` são pedidos mais uma vez — pela mesma pedir(), com a mesma espera de 429 —
+        depois de espera_segunda_volta. O pedido fica no MESMO lugar da lista, com o resultado
+        final, as tentativas das duas voltas e segunda_volta = recuperado | não recuperado
+        (recuperado só se vier recolhido: sem_dados não é um pedido que chegou)."""
+        if not isinstance(pt, Funcao): return
+        falhados = [p for p in pedidos if p["passo"] == passo and p["status"] == "falhou"]
+        if not falhados: return
+        log("SEGUNDA VOLTA — passo %d: %d pedido(s) falhado(s), espera de %ds" % (
+            passo, len(falhados), CFG["espera_segunda_volta"]))
+        time.sleep(CFG["espera_segunda_volta"])
+        for p in falhados:
+            status, series, erro = pedir(pt, p["termos"], args.timeframe)
+            p.update(status=status, erro=erro, series=series, fetched_at=datetime.now(timezone.utc),
+                     tentativas=p["tentativas"] + pt.tentativas,
+                     segunda_volta="recuperado" if status == "recolhido" else "não recuperado")
+            mostra(p, ", 2.ª volta")
+            time.sleep(pausa)
 
     # passo 1
     log("PASSO 1 — grupos com a âncora do eixo  (%s)" % args.timeframe)
@@ -204,6 +260,7 @@ def correr(args):
         anc = CFG["ancoras"][eixo]
         for g in grupos(por_eixo[eixo], anc, CFG["termos_por_pedido"]):
             executa(eixo, 1, g, anc)
+    segunda_volta(1)   # ANTES do passo 2: o passo 2 escolhe os esmagados pelos números do passo 1
 
     # passo 2 — esmagados, com âncora secundária escolhida pelos resultados do passo 1
     log("PASSO 2 — os esmagados (máx < %d), com âncora secundária" % CFG["esmagado_abaixo_de"])
@@ -234,11 +291,13 @@ def correr(args):
             % (eixo, sec, tam[sec]["med"], len(esmagados)))
         for g in grupos(esmagados, sec, CFG["termos_por_pedido"]):
             executa(eixo, 2, g, sec)
+    segunda_volta(2)
 
     # passo 3 — as âncoras juntas
     if not args.eixo:
         log("PASSO 3 — as quatro âncoras juntas")
         executa(None, 3, [CFG["ancoras"][e] for e in AXES], None)
+        segunda_volta(3)
 
     # calibração
     log("CALIBRAÇÃO — para a régua de referência de cada eixo")
@@ -287,6 +346,9 @@ def correr(args):
                   falhados=sum(p["status"] == "falhou" for p in pedidos),
                   pontos=sum(len(s) for p in pedidos for s in p["series"].values()),
                   calibrados=len(calibrados))
+    if isinstance(pt, Funcao):   # campos novos no fim; os de cima não mudam (o pytrends fica igual)
+        resumo.update(segunda_volta=sum("segunda_volta" in p for p in pedidos),
+                      recuperados=sum(p.get("segunda_volta") == "recuperado" for p in pedidos))
     log("RESUMO %s" % json.dumps(resumo, ensure_ascii=False))
     return pedidos, calibrados, top5, resumo
 
