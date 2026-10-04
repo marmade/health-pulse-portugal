@@ -1,6 +1,9 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-09-30 (sessão 22) — **a via B está em teste**: a
+> Última actualização: 2026-10-04 (sessão 25) — **via B, versão nova (`0bb626f`)**: a
+> corrida #3 (01/10) PASSOU, 1.ª de 3. A de 02/10 não se fez; as três corridas passam a ser
+> 01/10, 05/10 (#4, cron) e 06 ou 07/10 (#5, à mão), decisão da Marta a 04/10. Domingo
+> 04/10: SERVE, lote `fe58e0e5`. Anterior: 2026-09-30 (sessão 22) — **a via B está em teste**: a
 > `trends-buscar-grupo` publicada com `verify_jwt: true` (401/401/403 provados pelos
 > cabeçalhos das respostas); o script 5 com `--via funcao`, que ainda não grava; workflow de
 > teste e comparador (`4a2fcff`). **1.ª corrida de teste: NÃO PASSOU** pelo critério aprovado
@@ -1120,21 +1123,29 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   claro — **a série congelou a 14/04/2026** e os 105 dias seguintes são o mesmo valor
   repetido. O período que a instância nova não cobre é exactamente o período congelado.
   Não há nada que varie para importar
-- [ ] **Google Trends: a via B está em teste (30/09).** O Crítico nº 6 está feito em três
-  quartos desde 18/09 (script reescrito, o dashboard lê do lote, lista de 100 aplicada a
-  24/09); falta a via B, decidida a 24/09 (`docs/sessoes/2026-09-24.md` §12). Estado a 30/09
-  (`docs/sessoes/2026-09-30.md`): `trends-buscar-grupo` publicada com `verify_jwt: true`; o
-  script 5 tem `--via funcao`, só em `--dry-run` — a via funcao não grava enquanto não se
-  decidir como fica em `trends_lotes.fonte`; o `pytrends` fica por omissão até a via B passar
-  uma segunda-feira, e o `recolher_domingo.sh` continua à mão. **1.ª corrida de teste (30/09):
-  NÃO PASSOU** pelo critério aprovado antes dela (`docs/sessoes/2026-09-30-cowork.md` §12) —
-  não se reclassifica; o top 5 de cada eixo saiu igual nas duas vias. **Critério novo,
-  decidido pela Marta depois do resultado:** "A via B fica aprovada se, em três corridas de
-  teste — quinta 01/10, sexta 02/10 e segunda 05/10 —, chegarem todos os pedidos e o top 5
-  de cada eixo coincidir com o do pytrends do mesmo dia." (§14 do mesmo registo). Não cobre
-  os alertas. Prova em `docs/evidencia/2026-09-30-via-b-corrida-1/`. O passo 1 do workflow
-  principal continua desligado. **Alpha da Google Trends API:** candidatura submetida a
-  09/09/2026, ainda sem resposta, continuamos o nosso trabalho.
+- [ ] **Google Trends: a via B está em teste — versão nova desde 01/10.** O Crítico nº 6
+  está feito em três quartos desde 18/09; falta a via B, decidida a 24/09
+  (`docs/sessoes/2026-09-24.md` §12). A via funcao só corre em `--dry-run` até se decidir como
+  fica em `trends_lotes.fonte`. O `pytrends` fica por omissão até a via B passar uma
+  segunda-feira, e o `recolher_domingo.sh` continua à mão. **Critério**
+  (`docs/sessoes/2026-09-30-cowork.md` §14, decidido depois do resultado da 1.ª corrida): "A
+  via B fica aprovada se, em três corridas de teste — quinta 01/10, sexta 02/10 e segunda
+  05/10 —, chegarem todos os pedidos e o top 5 de cada eixo coincidir com o do pytrends do
+  mesmo dia." Não cobre os alertas. **Corridas:**
+  - #1 (30/09): NÃO PASSOU pelo critério anterior; não se reclassifica.
+  - #2 (01/10, cron, versão antiga): NÃO PASSOU.
+  - **Versão nova** (`0bb626f`: região eu-west-1, registo por tentativa, segunda volta). As
+    três corridas recomeçam:
+    - #3 (01/10): **PASSOU**, 1.ª de 3.
+    - A de 02/10 não se fez.
+    - **Datas mudadas a 04/10 (Marta):** #4 a seg 05/10 pelo cron, #5 a ter 06/10 ou qua
+      07/10 à mão, cada uma com o pytrends no Mac no mesmo dia (`docs/sessoes/2026-10-04.md`
+      §3).
+
+  Prova em `docs/evidencia/2026-09-30-via-b-corrida-1/` e
+  `docs/evidencia/2026-10-01-via-b-corrida-3/`. O passo 1 do workflow principal continua
+  desligado. **Alpha da Google Trends API:** candidatura submetida a 09/09/2026, ainda sem
+  resposta.
 
 ### Restantes
 
@@ -1143,10 +1154,12 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Via B — registar a via no lote** antes da 1.ª gravação com `--via funcao`: migração que acrescenta um valor a `trends_lotes.fonte` (regra `trends_lotes_fonte_check`) ou a via em `origem`. Por decidir pela Marta (30/09).
 - [ ] **Alertas de volta ao site** (a Marta, 30/09) — antes, testá-los à parte com a via B: disparos de um lote da via funcao contra os de um lote pytrends do mesmo dia (`docs/sessoes/2026-09-30-cowork.md` §14).
 - [ ] **`ubuntu-latest` passa a Ubuntu 26 a 19/10/2026** (aviso do GitHub, 30/09) — toca o workflow principal e o de teste; e Node.js 20 obsoleto nas actions.
-- [ ] **O cron de quinta do `via-b-corrida-de-teste.yml` é temporário** — sai quando as corridas de teste acabarem.
+- [ ] **O cron de segunda do `via-b-corrida-de-teste.yml` é temporário** (`'23 5 * * 1'`, desde 01/10) — sai depois da #4 de 05/10, num commit à parte, com o comentário do cabeçalho actualizado. Se ficar, volta a correr a 12/10.
 - [ ] **Mural da página inicial** — duas listas com escalas próprias e termos quase repetidos; observação da Marta a 30/09, sem diagnóstico (`docs/sessoes/2026-09-30-cowork.md` §8).
 - [ ] **Âncoras de cada eixo — pergunta de método em aberto**, separada da aprovação da via B (30/09).
-- [ ] **Testes do `--via`** (`scripts/testar_via_funcao.py`): o teste por estragos não foi corrido; não está provado que conseguem falhar.
+- [x] ~~**Testes do `--via`**~~ — o teste por estragos foi corrido a 01/10 e os testes apanham os estragos (`docs/sessoes/2026-10-01.md` §6).
+- [ ] **Regra de desempate do top 5** — a 04/10, em emergentes, gripe A e covid sintomas ficaram empatadas a 11,3 (4.º e 5.º). Planeamento de 06/10 (`docs/sessoes/2026-10-04.md` §1).
+- [ ] 39 038 no RESUMO contra 26 200 no GRAVADO do lote fe58e0e5 (04/10) — razão não vista. Planeamento de 06/10.
 - [ ] **Briefing semanal — corrigido e publicado; falta a prova pelo efeito a 05/10.**
       `[sessão 20][bd]` Diagnóstico e decisões em `docs/sessoes/2026-09-28.md` §3–6;
       aplicação e publicação em §7, §8 e §12. Migrações `20260928120000` e
