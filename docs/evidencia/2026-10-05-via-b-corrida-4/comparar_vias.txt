@@ -1,0 +1,19 @@
+Critério de 30/09 (docs/sessoes/2026-09-30-cowork.md §14) — vale para as corridas de teste a partir de 01/10.
+1. CHEGARAM (sem_dados não conta como chegado)
+   via funcao:   29 de 31 recolhidos, 0 sem_dados, 2 falhados
+   via pytrends: 33 de 33 recolhidos, 0 sem_dados, 0 falhados
+   funcao saude-mental p1 psiquiatra·bipolar·calmantes naturais·crise de ansiedade·demência: segunda volta — não recuperado
+   funcao alimentacao p1 colesterol alto·dieta·dieta mediterrânica·doença celíaca·emagrecer: segunda volta — recuperado
+   funcao alimentacao p1 colesterol alto·fígado gorduroso·glúten·hipertensão·intestino irritável: segunda volta — recuperado
+   funcao alimentacao p1 colesterol alto·intolerância à lactose·jejum intermitente·obesidade·ozempic: segunda volta — recuperado
+   funcao alimentacao p1 colesterol alto·pré-diabetes·refluxo·suplementos·ultraprocessados: segunda volta — recuperado
+   funcao menopausa p1 menopausa·candidíase·climacare·endometriose·estradiol: segunda volta — recuperado
+   funcao menopausa p1 menopausa·ginecologista·idade menopausa·incontinência urinária·menopausa precoce: segunda volta — recuperado
+   funcao emergentes p1 avc·sépsis·vacinas·vírus do nilo ocidental·vírus nipah: segunda volta — recuperado
+   funcao menopausa p2 tiroide·sop·suores noturnos·suplemento menopausa: segunda volta — não recuperado
+   funcao entre-eixos p3 psiquiatra·colesterol alto·menopausa·avc: segunda volta — recuperado
+   funcao saude-mental p1 psiquiatra·bipolar·calmantes naturais·crise de ansiedade·demência: falhou RuntimeError: multiline: HTTP 429
+   funcao menopausa p2 tiroide·sop·suores noturnos·suplemento menopausa: falhou RuntimeError: multiline: HTTP 429
+
+NÃO PASSOU — chegaram 29 de 31 pedidos pela via funcao (2 falhados, 0 sem_dados), contando a segunda volta.
+Termos abaixo da referência de 18/09 (só informação): não calculado (parou antes dos números)

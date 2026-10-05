@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/marmade/Documents/health-pulse-portugal/scripts/5_fetch_google_trends.py", line 464, in <module>
+    main()
+  File "/Users/marmade/Documents/health-pulse-portugal/scripts/5_fetch_google_trends.py", line 451, in main
+    pedidos, calibrados, top5, resumo = correr(args)
+  File "/Users/marmade/Documents/health-pulse-portugal/scripts/5_fetch_google_trends.py", line 213, in correr
+    from pytrends.request import TrendReq
+ModuleNotFoundError: No module named 'pytrends'
