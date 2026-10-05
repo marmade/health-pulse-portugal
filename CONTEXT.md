@@ -1,6 +1,13 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-04 (sessão 25) — **via B, versão nova (`0bb626f`)**: a
+> Última actualização: 2026-10-05 (sessão 26) — **via B, corrida #4 (05/10): NÃO PASSOU** —
+> 29 de 31 pedidos pela via funcao, dois 429 do Google depois da segunda volta; o passo 2 de
+> saúde mental não correu (prova em `34b4036`). Guiões de 05/10 sem perguntas da IA: 403 na
+> chamada interna, que leva chave `sb_secret_`; o mecanismo exacto está por verificar.
+> `supabase/config.toml` tem `verify_jwt = false` em três das quatro funções com restrição (a
+> `trends-buscar-grupo` não consta), publicadas a `true`. Os empates do top 5 são decididos
+> pela ordem de inserção — defeito de método. Pendentes em `docs/sessoes/2026-10-05.md` §6.
+> Anterior: 2026-10-04 (sessão 25) — **via B, versão nova (`0bb626f`)**: a
 > corrida #3 (01/10) PASSOU, 1.ª de 3. A de 02/10 não se fez; as três corridas passam a ser
 > 01/10, 05/10 (#4, cron) e 06 ou 07/10 (#5, à mão), decisão da Marta a 04/10. Domingo
 > 04/10: SERVE, lote `fe58e0e5`. Anterior: 2026-09-30 (sessão 22) — **a via B está em teste**: a
