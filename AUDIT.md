@@ -831,11 +831,17 @@ a lado**, e aqui a coisa afirmada era uma tabela que ninguém tinha contado.
       nome exactamente igual nos dois lotes também mudaram**: 47 disparos e 48 semanas em
       curso a 18/09, contra 39 e 74 a 24/09. Isto é, menos acontecimentos, cada um a durar
       mais — e isso não se explica por vocabulário novo.
-      **Próximo teste, por correr:** comparar a resolução das séries dos mesmos 33 termos nos
+      ~~**Próximo teste, por correr:** comparar a resolução das séries dos mesmos 33 termos nos
       dois lotes. A suspeita é que um termo esmagado num grupo vinha em inteiros pequenos
       (0, 1, 0, 1) e agora, noutro grupo ou pelo passo 2, vem com resolução — e uma série com
       resolução aguenta-se acima do limiar mais semanas seguidas. **É suspeita, não
-      resultado.**
+      resultado.**~~ **Corrido a 06/10/2026: INCONCLUSIVO** pelo critério fixado antes
+      (`docs/sessoes/2026-10-06.md` §6) — nenhum dos 33 termos ganhou resolução pela definição
+      escrita antes do resultado. Observado depois, sem reclassificar: as +26 semanas "em
+      curso" são todas de um termo, o jejum intermitente, num único acontecimento (Janeiro de
+      2022: 12 semanas no lote de 18/09, 39 no de 24/09), sem ganho de resolução.
+      **Leitura, não verificada:** sensibilidade da referência congelada no início da janela
+      de 5 anos. **Próximo teste:** esse, quarta 07/10, com critério escrito antes.
 - [ ] **Os alertas estão fora do ecrã** desde 24/09/2026 por causa desta pergunta em aberto,
       com nota na página. Os dados continuam a ser recolhidos e gravados.
 
