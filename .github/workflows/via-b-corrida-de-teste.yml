@@ -12,16 +12,14 @@ name: Via B — corrida de teste (não grava)
 # 01/10 (à mão), 02/10 (à mão) e segunda 05/10 (cron), cada uma com o pytrends no Mac no
 # mesmo dia. Critério: 2026-09-30-cowork.md §14.
 #
-# O CRON DE SEGUNDA É TEMPORÁRIO: sai deste ficheiro depois da corrida de 05/10. Se ficar,
-# corre outra vez a 12/10. Não deixar ficar por esquecimento.
+# 06/10/2026: o cron de teste saiu, depois da corrida #4 (05/10, NÃO PASSOU —
+# docs/sessoes/2026-10-05.md). Corridas futuras só à mão (workflow_dispatch).
 # Fora da hora certa. Leitura não verificada (documentação do GitHub não consultada a
 # 01/10): o GitHub atrasa, e pode descartar, agendamentos à hora certa. Verificado: a
 # corrida de 01/10 marcada para as 06:00 UTC arrancou às 11:53 UTC.
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 5 * * 1'  # segundas, 05:23 UTC (06:23 Lisboa, hora de Verão) — sai depois de 05/10
 
 env:
   SUPABASE_URL: https://ijpxjpbjudaddfatibfl.supabase.co
