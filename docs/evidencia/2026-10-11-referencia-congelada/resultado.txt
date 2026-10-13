@@ -1,0 +1,7 @@
+lote ec6cc6fc: 84 termos, 1.ª semana 2021-09-12, recalculadas 394, gravadas 394 -> IGUAL
+lote 11031356: 100 termos, 1.ª semana 2021-09-19, recalculadas 1170, gravadas 1185 -> DIFERENTE
+lote 87b4fba4: 100 termos, 1.ª semana 2021-09-26, recalculadas 1165, gravadas 1184 -> DIFERENTE
+lote fe58e0e5: 100 termos, 1.ª semana 2021-10-03, recalculadas 1173, gravadas 1199 -> DIFERENTE
+lote 3bbae660: 100 termos, 1.ª semana 2021-10-10, recalculadas 1218, gravadas 1230 -> DIFERENTE
+par 1 pelo nome: 33 termos; 18/09 disparos/em curso (47, 48); 24/09 (39, 74) -> REPRODUZ 47/48 e 39/74
+VERIFICAÇÃO PRÉVIA FALHOU — sem veredicto.

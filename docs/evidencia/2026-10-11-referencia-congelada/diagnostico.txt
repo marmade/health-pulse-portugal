@@ -1,0 +1,74 @@
+
+== lote ec6cc6fc: gravadas 394, recalculadas 394; só gravadas 0, só recalculadas 0; chaves gravadas repetidas 0
+  valores gravados ≠ valor_eixo da base (>0,0015): 0
+  termos com diferenças: 0; tabela (pedido mais de uma vez, tem diferença): {(False, False): 53, (True, False): 31}
+  recálculo com bruto × factor (sem arredondar o valor_eixo): 400 linhas; só gravadas 11, só recalculadas 17
+  últimas 8 semanas (2026-07-19 a 2026-09-06): só gravadas 0, só recalculadas 0
+
+== lote 11031356: gravadas 1185, recalculadas 1170; só gravadas 26, só recalculadas 11; chaves gravadas repetidas 0
+  valores gravados ≠ valor_eixo da base (>0,0015): 0
+  termos com diferenças: 10; tabela (pedido mais de uma vez, tem diferença): {(False, False): 56, (True, False): 34, (False, True): 9, (True, True): 1}
+    alimentacao/fígado gorduroso: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    alimentacao/hipertensão: só gravadas 3, só recalculadas 0; pedidos (passos) [1]
+    emergentes/dengue: só gravadas 17, só recalculadas 0; pedidos (passos) [1]
+    emergentes/lipedema: só gravadas 0, só recalculadas 4; pedidos (passos) [1]
+    menopausa/candidíase: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    menopausa/endometriose: só gravadas 0, só recalculadas 4; pedidos (passos) [1]
+    saude-mental/alzheimer: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    saude-mental/anorexia: só gravadas 3, só recalculadas 0; pedidos (passos) [1]
+    saude-mental/antidepressivos: só gravadas 1, só recalculadas 1; pedidos (passos) [1]
+    saude-mental/fobia social: só gravadas 0, só recalculadas 1; pedidos (passos) [1, 2]
+  recálculo com bruto × factor (sem arredondar o valor_eixo): 1197 linhas; só gravadas 5, só recalculadas 17
+  últimas 8 semanas (2026-07-26 a 2026-09-13): só gravadas 0, só recalculadas 0
+
+== lote 87b4fba4: gravadas 1184, recalculadas 1165; só gravadas 30, só recalculadas 11; chaves gravadas repetidas 0
+  valores gravados ≠ valor_eixo da base (>0,0015): 0
+  termos com diferenças: 11; tabela (pedido mais de uma vez, tem diferença): {(False, False): 58, (True, False): 31, (False, True): 10, (True, True): 1}
+    alimentacao/hipertensão: só gravadas 2, só recalculadas 0; pedidos (passos) [1]
+    alimentacao/ozempic: só gravadas 1, só recalculadas 0; pedidos (passos) [1, 2]
+    emergentes/covid sintomas: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    emergentes/dengue: só gravadas 21, só recalculadas 1; pedidos (passos) [1]
+    emergentes/gripe A: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    emergentes/lipedema: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    menopausa/candidíase: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    menopausa/endometriose: só gravadas 1, só recalculadas 4; pedidos (passos) [1]
+    menopausa/estradiol: só gravadas 0, só recalculadas 3; pedidos (passos) [1]
+    saude-mental/antidepressivos: só gravadas 2, só recalculadas 1; pedidos (passos) [1]
+    saude-mental/autismo: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+  recálculo com bruto × factor (sem arredondar o valor_eixo): 1190 linhas; só gravadas 6, só recalculadas 12
+  últimas 8 semanas (2026-08-02 a 2026-09-20): só gravadas 0, só recalculadas 0
+
+== lote fe58e0e5: gravadas 1199, recalculadas 1173; só gravadas 35, só recalculadas 9; chaves gravadas repetidas 0
+  valores gravados ≠ valor_eixo da base (>0,0015): 0
+  termos com diferenças: 12; tabela (pedido mais de uma vez, tem diferença): {(False, False): 52, (True, False): 36, (False, True): 11, (True, True): 1}
+    alimentacao/anemia: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    alimentacao/diabetes tipo 2: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    alimentacao/hipertensão: só gravadas 3, só recalculadas 2; pedidos (passos) [1]
+    alimentacao/refluxo: só gravadas 2, só recalculadas 2; pedidos (passos) [1]
+    alimentacao/suplementos: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    emergentes/dengue: só gravadas 20, só recalculadas 0; pedidos (passos) [1]
+    emergentes/gripe A: só gravadas 5, só recalculadas 0; pedidos (passos) [1]
+    emergentes/lipedema: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    saude-mental/alzheimer: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    saude-mental/anorexia: só gravadas 3, só recalculadas 0; pedidos (passos) [1]
+    saude-mental/autismo: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    saude-mental/automutilação: só gravadas 1, só recalculadas 0; pedidos (passos) [1, 2]
+  recálculo com bruto × factor (sem arredondar o valor_eixo): 1206 linhas; só gravadas 5, só recalculadas 12
+  últimas 8 semanas (2026-08-09 a 2026-09-27): só gravadas 1, só recalculadas 0
+    só gravada: ('emergentes', 'dengue', '2026-09-13', 'a_observar')
+
+== lote 3bbae660: gravadas 1230, recalculadas 1218; só gravadas 19, só recalculadas 7; chaves gravadas repetidas 0
+  valores gravados ≠ valor_eixo da base (>0,0015): 0
+  termos com diferenças: 10; tabela (pedido mais de uma vez, tem diferença): {(False, False): 61, (True, False): 29, (False, True): 10}
+    alimentacao/diabetes tipo 2: só gravadas 3, só recalculadas 0; pedidos (passos) [1]
+    alimentacao/hipertensão: só gravadas 4, só recalculadas 0; pedidos (passos) [1]
+    alimentacao/jejum intermitente: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    alimentacao/refluxo: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    emergentes/dengue: só gravadas 4, só recalculadas 0; pedidos (passos) [1]
+    emergentes/gripe A: só gravadas 3, só recalculadas 0; pedidos (passos) [1]
+    emergentes/lipedema: só gravadas 1, só recalculadas 5; pedidos (passos) [1]
+    menopausa/endometriose: só gravadas 1, só recalculadas 0; pedidos (passos) [1]
+    saude-mental/anorexia: só gravadas 0, só recalculadas 1; pedidos (passos) [1]
+    saude-mental/toc: só gravadas 1, só recalculadas 1; pedidos (passos) [1]
+  recálculo com bruto × factor (sem arredondar o valor_eixo): 1229 linhas; só gravadas 11, só recalculadas 10
+  últimas 8 semanas (2026-08-16 a 2026-10-04): só gravadas 0, só recalculadas 0

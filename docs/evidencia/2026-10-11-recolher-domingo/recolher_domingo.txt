@@ -1,0 +1,123 @@
+== 1. recolher ==
+VIA pytrends
+PASSO 1 — grupos com a âncora do eixo  (today 5-y)
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=33  alzheimer=41  anorexia=14  ansiedade=100  ansiedade social=7
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=49  antidepressivos=22  ataque de pânico=8  autismo=100  automutilação=8
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=100  bipolar=50  calmantes naturais=12  crise de ansiedade=20  demência=93
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=100  dependências=16  depressão pós-part=13  depressão sintomas=39  fobia social=13
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=100  insónias=15  psicologa=31  síndrome de burnou=18  stress pós-traumát=19
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p1] psiquiatra=92  stress sintomas=15  suicídio=11  tdah=100  toc=67
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=67  alergias alimentar=21  alimentação anti-i=17  alimentação saudáv=100  alimentos ricos em=53
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=16  anemia=47  canetas para emagr=7  creatina=100  diabetes tipo 2=46
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=17  dieta=100  dieta mediterrânic=10  doença celíaca=4  emagrecer=77
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=14  fígado gorduroso=100  glúten=5  hipertensão=57  intestino irritáve=8
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=39  intolerância à lac=10  jejum intermitente=62  obesidade=100  ozempic=74
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p1] colesterol alto=16  pré-diabetes=4  refluxo=100  suplementos=44  ultraprocessados=0
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=100  adenomiose=34  afrontamentos=9  andropausa=18  cancro da mama=43
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=57  candidíase=14  climacare=5  endometriose=100  estradiol=12
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=100  ginecologista=72  idade menopausa=9  incontinência urin=8  menopausa precoce=7
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=100  menstruação=89  mioma=22  osteopenia=8  osteoporose=20
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=100  perimenopausa=19  pré-menopausa=0  reposição hormonal=7  sintomas menopausa=19
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p1] menopausa=100  sop=7  suores noturnos=7  suplemento menopau=6  tiroide=54
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=26  candida auris=75  covid sintomas=100  creutzfeldt-jakob=9  dengue=21
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=10  difteria=9  doenças cardiovasc=1  enxaqueca=4  gripe A=100
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=33  gripe das aves=16  hantavírus=100  infeção sexualment=36  lipedema=23
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=100  long covid=17  lúpus=18  microplásticos=4  mosquito tigre=57
+    429 — espera de 60s e repete
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=100  mpox=97  norovírus=6  onda de calor=5  sarampo=86
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p1] avc=48  sépsis=2  vacinas=100  vírus do nilo ocid=22  vírus nipah=24
+PASSO 2 — os esmagados (máx < 15), com âncora secundária
+  [saude-mental] âncora secundária: bipolar (mediana 28 na régua de referência); esmagados: 4
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [saude-mental p2] bipolar=100  calmantes naturais=24  depressão pós-part=27  fobia social=26  suicídio=24
+  [alimentacao] âncora secundária: ozempic (mediana 33 na régua de referência); esmagados: 1
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [alimentacao p2] ozempic=100  ultraprocessados=1
+  [menopausa] âncora secundária: tiroide (mediana 31 na régua de referência); esmagados: 11
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p2] tiroide=100  afrontamentos=17  climacare=16  idade menopausa=17  incontinência urin=14
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p2] tiroide=100  menopausa precoce=12  osteopenia=15  pré-menopausa=1  reposição hormonal=14
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [menopausa p2] tiroide=100  sop=14  suores noturnos=13  suplemento menopau=10
+  [emergentes] âncora secundária: vacinas (mediana 38 na régua de referência); esmagados: 5
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p2] vacinas=100  doenças cardiovasc=5  microplásticos=2  norovírus=3  onda de calor=3
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [emergentes p2] vacinas=100  sépsis=2
+PASSO 3 — as quatro âncoras juntas
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+  [entre-eixos p3] psiquiatra=42  colesterol alto=22  menopausa=100  avc=98
+CALIBRAÇÃO — para a régua de referência de cada eixo
+  [saude-mental] referência: psiquiatra·bipolar·calmantes naturais·crise de ansiedade·demência | termos calibrados: 25 | TOP 5: ansiedade 214.3, autismo 86.1, psiquiatra 62.5, alzheimer 53.6, tdah 49.3
+  [alimentacao] referência: colesterol alto·alergias alimentares·alimentação anti-inflamatória·alimentação saudável·alimentos ricos em ferro | termos calibrados: 25 | TOP 5: dieta 235.2, creatina 221.0, emagrecer 190.6, anemia 146.0, suplementos 129.8
+  [menopausa] referência: menopausa·adenomiose·afrontamentos·andropausa·cancro da mama | termos calibrados: 25 | TOP 5: menstruação 59.0, ginecologista 48.0, menopausa 46.0, tiroide 31.0, endometriose 24.8
+  [emergentes] referência: avc·long covid·lúpus·microplásticos·mosquito tigre | termos calibrados: 25 | TOP 5: vacinas 38.2, avc 34.0, enxaqueca 22.7, gripe A 22.7, covid sintomas 11.3
+RESUMO {"via": "pytrends", "pedidos": 32, "recolhidos": 32, "sem_dados": 0, "falhados": 0, "pontos": 39824, "calibrados": 36942}
+GRAVADO lote 3bbae660-a565-41c5-a470-ea436bdc37d0 (completo): 32 pedidos, 39824 pontos, 26200 calibrados
+ALERTAS: 1230 linhas em trends_alertas (regra de 18/09/2026)
+
+== 2. confirmar ==
+
+corrida de segunda:      2026-10-12
+semana do Trends usada:  2026-10-04 (domingo a sábado)
+lote gravado:            3bbae660 de 2026-10-11T12:04
+
+>>> SERVE: a semana veio COMPLETA.
+>>> Na segunda o arquivo escreve o top 5 de cada eixo com estes dados.

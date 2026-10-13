@@ -1,0 +1,51 @@
+
+== lote 11031356
+  alimentacao/fígado gorduroso 2025-11-30 (só gravada): bruto x=19.999973 ref=0.0 ruído=2.0 → razão 0.000000, z 0.000000
+  alimentacao/hipertensão 2025-01-12 (só gravada): bruto x=11.999945 ref=8.000028 ruído=2.0 → razão 1.499988, z 1.999958
+  emergentes/dengue 2023-04-30 (só gravada): bruto x=2.999912 ref=2.000118 ruído=2.0 → razão 1.499868, z 0.499897; em curso, x/ref congelada 1.499868
+  emergentes/lipedema 2025-04-13 (só recalculada): bruto x=9.999971 ref=5.999853 ruído=2.0 → razão 1.666703, z 2.000059
+  menopausa/candidíase 2023-08-20 (só recalculada): bruto x=14.000051 ref=9.999878 ruído=2.0 → razão 1.400022, z 2.000086
+  menopausa/endometriose 2023-09-03 (só recalculada): bruto x=18.000224 ref=14.000051 ruído=2.0 → razão 1.285726, z 2.000086
+  saude-mental/alzheimer 2024-08-18 (só gravada): bruto x=18.999835 ref=14.999852 ruído=2.0 → razão 1.266668, z 1.999992
+  saude-mental/anorexia 2022-10-02 (só gravada): bruto x=9.000049 ref=5.000065 ruído=2.0 → razão 1.799986, z 1.999992
+  saude-mental/antidepressivos 2023-04-23 (só gravada, recalculada): bruto x=17.000167 ref=11.000166 ruído=2.0 → razão 1.545446, z 3.000000
+  saude-mental/fobia social 2022-05-15 (só recalculada): bruto x=20.000896 ref=0.0 ruído=2.0 → razão 0.000000, z 0.000000
+
+== lote 87b4fba4
+  alimentacao/hipertensão 2025-04-27 (só gravada): bruto x=10.999917 ref=7.0 ruído=2.0 → razão 1.571417, z 1.999958
+  alimentacao/ozempic 2023-03-26 (só gravada): bruto x=23.999894 ref=18.500226 ruído=6.671454 → razão 1.297276, z 0.824358; em curso, x/ref congelada 1.499988
+  emergentes/covid sintomas 2023-08-20 (só gravada): bruto x=6.999882 ref=2.999912 ruído=2.0 → razão 2.333363, z 1.999985
+  emergentes/dengue 2023-04-23 (só gravada): bruto x=2.999912 ref=2.000118 ruído=2.0 → razão 1.499868, z 0.499897; em curso, x/ref congelada 1.499868
+  emergentes/gripe A 2025-03-30 (só gravada): bruto x=3.0 ref=7.5 ruído=3.706457 → razão 0.400000, z -1.214098; em curso, x/ref congelada 1.499978
+  emergentes/lipedema 2025-06-01 (só recalculada): bruto x=9.999971 ref=5.999853 ruído=2.0 → razão 1.666703, z 2.000059
+  menopausa/candidíase 2022-10-23 (só recalculada): bruto x=10.000044 ref=5.999916 ruído=2.0 → razão 1.666697, z 2.000064
+  menopausa/endometriose 2022-01-16 (só gravada, recalculada): bruto x=14.99979 ref=10.000044 ruído=2.0 → razão 1.499972, z 2.499873; em curso, x/ref congelada 1.499972
+  menopausa/estradiol 2023-04-16 (só recalculada): bruto x=7.000086 ref=2.999958 ruído=2.0 → razão 2.333395, z 2.000064
+  saude-mental/antidepressivos 2022-07-31 (só recalculada): bruto x=14.000162 ref=9.999842 ruído=2.0 → razão 1.400038, z 2.000160
+  saude-mental/autismo 2024-04-14 (só gravada): bruto x=57.000009 ref=47.500088 ruído=4.750009 → razão 1.199998, z 1.999980
+
+== lote fe58e0e5
+  alimentacao/anemia 2026-07-12 (só recalculada): bruto x=35.999997 ref=29.999998 ruído=3.0 → razão 1.200000, z 2.000000
+  alimentacao/diabetes tipo 2 2024-11-10 (só recalculada): bruto x=8.999999 ref=4.99992 ruído=2.0 → razão 1.800029, z 2.000040
+  alimentacao/hipertensão 2023-10-15 (só gravada): bruto x=9.99992 ref=6.000027 ruído=2.0 → razão 1.666646, z 1.999947
+  alimentacao/refluxo 2023-11-05 (só gravada): bruto x=19.999918 ref=16.000079 ruído=2.0 → razão 1.249989, z 1.999920
+  alimentacao/suplementos 2026-01-04 (só recalculada): bruto x=35.999997 ref=29.999998 ruído=3.0 → razão 1.200000, z 2.000000
+  emergentes/dengue 2023-10-15 (só gravada): bruto x=2.999912 ref=2.500015 ruído=2.0 → razão 1.199958, z 0.249949; em curso, x/ref congelada 1.499868
+  emergentes/gripe A 2024-02-11 (só gravada): bruto x=3.0 ref=22.500001 ruído=20.015101 → razão 0.133333, z -0.974264; em curso, x/ref congelada 1.499978
+  emergentes/lipedema 2026-04-05 (só recalculada): bruto x=8.999941 ref=5.999853 ruído=2.0 → razão 1.500027, z 1.500044; em curso, x/ref congelada 1.500027
+  saude-mental/alzheimer 2022-03-27 (só gravada): bruto x=23.999951 ref=20.000129 ruído=2.000013 → razão 1.199990, z 1.999898
+  saude-mental/anorexia 2022-10-09 (só gravada): bruto x=8.999855 ref=5.000032 ruído=2.0 → razão 1.799959, z 1.999911
+  saude-mental/autismo 2022-10-23 (só recalculada): bruto x=56.999991 ref=47.499912 ruído=4.749991 → razão 1.200002, z 2.000020
+  saude-mental/automutilação 2022-03-06 (só gravada): bruto x=19.999627 ref=0.0 ruído=2.0 → razão 0.000000, z 0.000000
+
+== lote 3bbae660
+  alimentacao/diabetes tipo 2 2022-09-18 (só gravada): bruto x=7.99989 ref=3.999945 ruído=2.0 → razão 2.000000, z 1.999972
+  alimentacao/hipertensão 2022-09-18 (só gravada): bruto x=10.000027 ref=6.000054 ruído=2.0 → razão 1.666656, z 1.999986
+  alimentacao/jejum intermitente 2025-06-22 (só gravada): bruto x=14.999755 ref=10.999974 ruído=2.0 → razão 1.363617, z 1.999891
+  alimentacao/refluxo 2026-07-19 (só gravada): bruto x=17.999998 ref=14.000053 ruído=2.0 → razão 1.285709, z 1.999972
+  emergentes/dengue 2023-10-08 (só gravada): bruto x=2.999912 ref=2.000118 ruído=2.0 → razão 1.499868, z 0.499897; em curso, x/ref congelada 1.499868
+  emergentes/gripe A 2024-02-11 (só gravada): bruto x=3.0 ref=24.499986 ruído=22.980279 → razão 0.122449, z -0.935584; em curso, x/ref congelada 1.499978
+  emergentes/lipedema 2025-04-13 (só recalculada): bruto x=9.999971 ref=5.999853 ruído=2.0 → razão 1.666703, z 2.000059
+  menopausa/endometriose 2025-10-05 (só gravada): bruto x=14.999737 ref=11.000259 ruído=2.0 → razão 1.363580, z 1.999739
+  saude-mental/anorexia 2024-09-29 (só recalculada): bruto x=9.000097 ref=5.000017 ruído=2.0 → razão 1.800013, z 2.000040
+  saude-mental/toc 2022-09-25 (só gravada, recalculada): bruto x=36.000295 ref=23.999741 ruído=2.965224 → razão 1.500029, z 4.047098

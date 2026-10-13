@@ -1,0 +1,5 @@
+lote ec6cc6fc: gravadas 394 · base 394 · inteiros 413 | diferenças (a mais, a menos) — base vs gravado [0, 0], inteiros vs gravado [23, 4], inteiros vs base [23, 4]
+lote 11031356: gravadas 1185 · base 1170 · inteiros 1201 | diferenças (a mais, a menos) — base vs gravado [165, 180], inteiros vs gravado [170, 154], inteiros vs base [39, 8]
+lote 87b4fba4: gravadas 1184 · base 1165 · inteiros 1196 | diferenças (a mais, a menos) — base vs gravado [163, 182], inteiros vs gravado [164, 152], inteiros vs base [35, 4]
+lote fe58e0e5: gravadas 1199 · base 1173 · inteiros 1212 | diferenças (a mais, a menos) — base vs gravado [15, 41], inteiros vs gravado [13, 0], inteiros vs base [45, 6]
+lote 3bbae660: gravadas 1230 · base 1218 · inteiros 1239 | diferenças (a mais, a menos) — base vs gravado [7, 19], inteiros vs gravado [11, 2], inteiros vs base [21, 0]

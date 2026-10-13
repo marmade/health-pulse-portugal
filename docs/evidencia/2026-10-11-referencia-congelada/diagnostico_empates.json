@@ -1,0 +1,744 @@
+{
+ "11031356": [
+  {
+   "eixo": "alimentacao",
+   "termo": "fígado gorduroso",
+   "semana": "2025-11-30",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 5.142857,
+   "x_bruto": 19.999973,
+   "ref_bruta": 0.0,
+   "razao": 0.0,
+   "z": 0.0,
+   "ruido_bruto": 2.0,
+   "elegivel": false,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "hipertensão",
+   "semana": "2025-01-12",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 5.142857,
+   "x_bruto": 11.999945,
+   "ref_bruta": 8.000028,
+   "razao": 1.4999878472644192,
+   "z": 1.9999583888877328,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "dengue",
+   "semana": "2023-04-30",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 3.777778,
+   "x_bruto": 2.999912,
+   "ref_bruta": 2.000118,
+   "razao": 1.4998676548438328,
+   "z": 0.4998970294178218,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4998676548438328
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "lipedema",
+   "semana": "2025-04-13",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 3.090909,
+   "x_bruto": 9.999971,
+   "ref_bruta": 5.999853,
+   "razao": 1.6667026152601778,
+   "z": 2.0000588823546726,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "candidíase",
+   "semana": "2023-08-20",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 1.803922,
+   "x_bruto": 14.000051,
+   "ref_bruta": 9.999878,
+   "razao": 1.4000221741781693,
+   "z": 2.0000864782401893,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "endometriose",
+   "semana": "2023-09-03",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 1.803922,
+   "x_bruto": 18.000224,
+   "ref_bruta": 14.000051,
+   "razao": 1.2857255988913086,
+   "z": 2.0000864782401893,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "alzheimer",
+   "semana": "2024-08-18",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 2.904762,
+   "x_bruto": 18.999835,
+   "ref_bruta": 14.999852,
+   "razao": 1.2666681967363613,
+   "z": 1.999991737705189,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "anorexia",
+   "semana": "2022-10-02",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 2.904762,
+   "x_bruto": 9.000049,
+   "ref_bruta": 5.000065,
+   "razao": 1.7999862296887912,
+   "z": 1.9999917377051892,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "antidepressivos",
+   "semana": "2023-04-23",
+   "so_em": [
+    "gravada",
+    "recalculada"
+   ],
+   "factor": 2.033333,
+   "x_bruto": 17.000167,
+   "ref_bruta": 11.000166,
+   "razao": 1.545446416595878,
+   "z": 3.0000004918033594,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "fobia social",
+   "semana": "2022-05-15",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 0.491228,
+   "x_bruto": 20.000896,
+   "ref_bruta": 0.0,
+   "razao": 0.0,
+   "z": 0.0,
+   "ruido_bruto": 2.0,
+   "elegivel": false,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  }
+ ],
+ "87b4fba4": [
+  {
+   "eixo": "alimentacao",
+   "termo": "hipertensão",
+   "semana": "2025-04-27",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 5.142857,
+   "x_bruto": 10.999917,
+   "ref_bruta": 7.0,
+   "razao": 1.5714166666666667,
+   "z": 1.9999583888877328,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "ozempic",
+   "semana": "2023-03-26",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 1.285714,
+   "x_bruto": 23.999894,
+   "ref_bruta": 18.500226,
+   "razao": 1.297275708399899,
+   "z": 0.8243581644212259,
+   "ruido_bruto": 6.671454,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4999878472644192
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "covid sintomas",
+   "semana": "2023-08-20",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 3.777778,
+   "x_bruto": 6.999882,
+   "ref_bruta": 2.999912,
+   "razao": 2.3333627459631163,
+   "z": 1.99998517647146,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "dengue",
+   "semana": "2023-04-23",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 3.777778,
+   "x_bruto": 2.999912,
+   "ref_bruta": 2.000118,
+   "razao": 1.4998676548438328,
+   "z": 0.4998970294178218,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4998676548438328
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "gripe A",
+   "semana": "2025-03-30",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 11.333333,
+   "x_bruto": 3.0,
+   "ref_bruta": 7.5,
+   "razao": 0.4,
+   "z": -1.2140976505596428,
+   "ruido_bruto": 3.706457,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4999779415008603
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "lipedema",
+   "semana": "2025-06-01",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 3.090909,
+   "x_bruto": 9.999971,
+   "ref_bruta": 5.999853,
+   "razao": 1.6667026152601778,
+   "z": 2.0000588823546726,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "candidíase",
+   "semana": "2022-10-23",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 1.807692,
+   "x_bruto": 10.000044,
+   "ref_bruta": 5.999916,
+   "razao": 1.6666973999631203,
+   "z": 2.000064170223689,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "endometriose",
+   "semana": "2022-01-16",
+   "so_em": [
+    "gravada",
+    "recalculada"
+   ],
+   "factor": 1.807692,
+   "x_bruto": 14.99979,
+   "ref_bruta": 10.000044,
+   "razao": 1.4999723405432315,
+   "z": 2.499872765935789,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4999723405432315
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "estradiol",
+   "semana": "2023-04-16",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 1.807692,
+   "x_bruto": 7.000086,
+   "ref_bruta": 2.999958,
+   "razao": 2.33339479992624,
+   "z": 2.0000641702236885,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "antidepressivos",
+   "semana": "2022-07-31",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 2.083333,
+   "x_bruto": 14.000162,
+   "ref_bruta": 9.999842,
+   "razao": 1.40003840061441,
+   "z": 2.000160320025652,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "autismo",
+   "semana": "2024-04-14",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 2.083333,
+   "x_bruto": 57.000009,
+   "ref_bruta": 47.500088,
+   "razao": 1.1999979789507722,
+   "z": 1.9999797895077227,
+   "ruido_bruto": 4.750009,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  }
+ ],
+ "fe58e0e5": [
+  {
+   "eixo": "alimentacao",
+   "termo": "anemia",
+   "semana": "2026-07-12",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 4.166667,
+   "x_bruto": 35.999997,
+   "ref_bruta": 29.999998,
+   "razao": 1.2,
+   "z": 2.0,
+   "ruido_bruto": 3.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "diabetes tipo 2",
+   "semana": "2024-11-10",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 4.166667,
+   "x_bruto": 8.999999,
+   "ref_bruta": 4.99992,
+   "razao": 1.8000288004608076,
+   "z": 2.0000398399968127,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "hipertensão",
+   "semana": "2023-10-15",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 5.357143,
+   "x_bruto": 9.99992,
+   "ref_bruta": 6.000027,
+   "razao": 1.6666459260181066,
+   "z": 1.9999466133347568,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "refluxo",
+   "semana": "2023-11-05",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 4.166667,
+   "x_bruto": 19.999918,
+   "ref_bruta": 16.000079,
+   "razao": 1.2499887500562497,
+   "z": 1.9999198400064122,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "suplementos",
+   "semana": "2026-01-04",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 4.166667,
+   "x_bruto": 35.999997,
+   "ref_bruta": 29.999998,
+   "razao": 1.2,
+   "z": 2.0,
+   "ruido_bruto": 3.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "dengue",
+   "semana": "2023-10-15",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 3.777778,
+   "x_bruto": 2.999912,
+   "ref_bruta": 2.500015,
+   "razao": 1.1999576473079572,
+   "z": 0.24994851470891097,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4998676548438328
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "gripe A",
+   "semana": "2024-02-11",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 11.333333,
+   "x_bruto": 3.0,
+   "ref_bruta": 22.500001,
+   "razao": 0.13333333333333333,
+   "z": -0.9742644303550819,
+   "ruido_bruto": 20.015101,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4999779415008603
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "lipedema",
+   "semana": "2026-04-05",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 3.090909,
+   "x_bruto": 8.999941,
+   "ref_bruta": 5.999853,
+   "razao": 1.5000269614451334,
+   "z": 1.5000441617660047,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.5000269614451334
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "alzheimer",
+   "semana": "2022-03-27",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 2.952381,
+   "x_bruto": 23.999951,
+   "ref_bruta": 20.000129,
+   "razao": 1.1999898387752337,
+   "z": 1.9998983877523364,
+   "ruido_bruto": 2.000013,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "anorexia",
+   "semana": "2022-10-09",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 2.952381,
+   "x_bruto": 8.999855,
+   "ref_bruta": 5.000032,
+   "razao": 1.799959355100935,
+   "z": 1.9999112580659477,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "autismo",
+   "semana": "2022-10-23",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 2.066667,
+   "x_bruto": 56.999991,
+   "ref_bruta": 47.499912,
+   "razao": 1.200002037354902,
+   "z": 2.0000203735490207,
+   "ruido_bruto": 4.749991,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "automutilação",
+   "semana": "2022-03-06",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 0.482759,
+   "x_bruto": 19.999627,
+   "ref_bruta": 0.0,
+   "razao": 0.0,
+   "z": 0.0,
+   "ruido_bruto": 2.0,
+   "elegivel": false,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  }
+ ],
+ "3bbae660": [
+  {
+   "eixo": "alimentacao",
+   "termo": "diabetes tipo 2",
+   "semana": "2022-09-18",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 4.055556,
+   "x_bruto": 7.99989,
+   "ref_bruta": 3.999945,
+   "razao": 2.0,
+   "z": 1.9999723835646703,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "hipertensão",
+   "semana": "2022-09-18",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 5.214286,
+   "x_bruto": 10.000027,
+   "ref_bruta": 6.000054,
+   "razao": 1.6666560122738605,
+   "z": 1.9999861917815782,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "jejum intermitente",
+   "semana": "2025-06-22",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 1.738095,
+   "x_bruto": 14.999755,
+   "ref_bruta": 10.999974,
+   "razao": 1.3636173440033474,
+   "z": 1.9998906849165328,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "alimentacao",
+   "termo": "refluxo",
+   "semana": "2026-07-19",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 4.055556,
+   "x_bruto": 17.999998,
+   "ref_bruta": 14.000053,
+   "razao": 1.2857092535841348,
+   "z": 1.9999723835646703,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "dengue",
+   "semana": "2023-10-08",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 3.777778,
+   "x_bruto": 2.999912,
+   "ref_bruta": 2.000118,
+   "razao": 1.4998676548438328,
+   "z": 0.4998970294178218,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4998676548438328
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "gripe A",
+   "semana": "2024-02-11",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 11.333333,
+   "x_bruto": 3.0,
+   "ref_bruta": 24.499986,
+   "razao": 0.1224490530906681,
+   "z": -0.9355842044100827,
+   "ruido_bruto": 22.980279,
+   "elegivel": true,
+   "em_curso_antes": true,
+   "x_sobre_ref_congelada": 1.4999779415008603
+  },
+  {
+   "eixo": "emergentes",
+   "termo": "lipedema",
+   "semana": "2025-04-13",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 3.090909,
+   "x_bruto": 9.999971,
+   "ref_bruta": 5.999853,
+   "razao": 1.6667026152601778,
+   "z": 2.0000588823546726,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "menopausa",
+   "termo": "endometriose",
+   "semana": "2025-10-05",
+   "so_em": [
+    "gravada"
+   ],
+   "factor": 1.769231,
+   "x_bruto": 14.999737,
+   "ref_bruta": 11.000259,
+   "razao": 1.3635803103483712,
+   "z": 1.999738869599278,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "anorexia",
+   "semana": "2024-09-29",
+   "so_em": [
+    "recalculada"
+   ],
+   "factor": 2.97619,
+   "x_bruto": 9.000097,
+   "ref_bruta": 5.000017,
+   "razao": 1.8000134399569923,
+   "z": 2.0000403200064514,
+   "ruido_bruto": 2.0,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  },
+  {
+   "eixo": "saude-mental",
+   "termo": "toc",
+   "semana": "2022-09-25",
+   "so_em": [
+    "gravada",
+    "recalculada"
+   ],
+   "factor": 1.096491,
+   "x_bruto": 36.000295,
+   "ref_bruta": 23.999741,
+   "razao": 1.5000285003135032,
+   "z": 4.047098339522471,
+   "ruido_bruto": 2.965224,
+   "elegivel": true,
+   "em_curso_antes": false,
+   "x_sobre_ref_congelada": null
+  }
+ ]
+}

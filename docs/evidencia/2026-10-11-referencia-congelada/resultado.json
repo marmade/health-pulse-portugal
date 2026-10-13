@@ -1,0 +1,118 @@
+{
+ "lotes": {
+  "ec6cc6fc": {
+   "id": "ec6cc6fc-f6c5-4b53-a7df-ed9b1bd6b656",
+   "termos": 84,
+   "primeira_semana": "2021-09-12",
+   "linhas_recalculadas": 394,
+   "linhas_gravadas": 394,
+   "por_tipo_recalc": {
+    "a_observar": 219,
+    "subida": 149,
+    "aparecimento": 8,
+    "sazonal": 18
+   },
+   "por_tipo_gravado": {
+    "a_observar": 219,
+    "subida": 149,
+    "aparecimento": 8,
+    "sazonal": 18
+   },
+   "igual": true
+  },
+  "11031356": {
+   "id": "11031356-63ed-4ab5-b45b-e8fc99a088b0",
+   "termos": 100,
+   "primeira_semana": "2021-09-19",
+   "linhas_recalculadas": 1170,
+   "linhas_gravadas": 1185,
+   "por_tipo_recalc": {
+    "a_observar": 476,
+    "subida": 624,
+    "sazonal": 45,
+    "aparecimento": 25
+   },
+   "por_tipo_gravado": {
+    "a_observar": 445,
+    "subida": 677,
+    "aparecimento": 21,
+    "sazonal": 42
+   },
+   "igual": false
+  },
+  "87b4fba4": {
+   "id": "87b4fba4-0755-4644-838a-4e9056a5dc66",
+   "termos": 100,
+   "primeira_semana": "2021-09-26",
+   "linhas_recalculadas": 1165,
+   "linhas_gravadas": 1184,
+   "por_tipo_recalc": {
+    "subida": 644,
+    "a_observar": 467,
+    "sazonal": 35,
+    "aparecimento": 19
+   },
+   "por_tipo_gravado": {
+    "a_observar": 427,
+    "subida": 706,
+    "aparecimento": 16,
+    "sazonal": 35
+   },
+   "igual": false
+  },
+  "fe58e0e5": {
+   "id": "fe58e0e5-a336-4cae-a511-aa42bfb859a3",
+   "termos": 100,
+   "primeira_semana": "2021-10-03",
+   "linhas_recalculadas": 1173,
+   "linhas_gravadas": 1199,
+   "por_tipo_recalc": {
+    "subida": 621,
+    "a_observar": 477,
+    "aparecimento": 28,
+    "sazonal": 47
+   },
+   "por_tipo_gravado": {
+    "a_observar": 479,
+    "subida": 644,
+    "aparecimento": 29,
+    "sazonal": 47
+   },
+   "igual": false
+  },
+  "3bbae660": {
+   "id": "3bbae660-a565-41c5-a470-ea436bdc37d0",
+   "termos": 100,
+   "primeira_semana": "2021-10-10",
+   "linhas_recalculadas": 1218,
+   "linhas_gravadas": 1230,
+   "por_tipo_recalc": {
+    "a_observar": 504,
+    "subida": 653,
+    "sazonal": 43,
+    "aparecimento": 18
+   },
+   "por_tipo_gravado": {
+    "a_observar": 515,
+    "subida": 654,
+    "aparecimento": 18,
+    "sazonal": 43
+   },
+   "igual": false
+  }
+ },
+ "verificacoes": {
+  "linhas_iguais": false,
+  "par1_nomes_comuns": 33,
+  "par1_18_09": [
+   47,
+   48
+  ],
+  "par1_24_09": [
+   39,
+   74
+  ],
+  "par1_reproduz": true
+ },
+ "pares": {}
+}
