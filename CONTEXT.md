@@ -1,6 +1,12 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-06 (sessão 27) — **via B parada** (decisão da Marta): a
+> Última actualização: 2026-10-13 (sessão 29) — **top 10 do arquivo publicado** (`6b732e0`):
+> empates na mesma posição, página inicial a mostrar os primeiros do mesmo top; arranque da
+> `archive-weekly` v9 provado pelo Cowork. **403 dos guiões corrigido e provado sem escrita**
+> (`2f374a1`). Plano revisto: correcção dos empates na quarta 14; sexta 16 e sábado 17 de
+> reserva; provas na segunda 19. Registos em `docs/sessoes/2026-10-13.md` e
+> `docs/sessoes/2026-10-13-cowork.md`.
+> Anterior: 2026-10-06 (sessão 27) — **via B parada** (decisão da Marta): a
 > recolha semanal fica ao domingo, à mão; cron de teste fora (`8602fac`). **Plano até 30/10**
 > em `docs/sessoes/2026-10-06-cowork.md` §7 — alertas e briefing obrigatórios para a
 > demonstração. 39 038 vs 26 200 explicado: é a deduplicação. Corte silencioso de 1000 linhas
@@ -1175,7 +1181,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Mural da página inicial** — duas listas com escalas próprias e termos quase repetidos; observação da Marta a 30/09, sem diagnóstico (`docs/sessoes/2026-09-30-cowork.md` §8).
 - [ ] **Âncoras de cada eixo — pergunta de método em aberto**, separada da aprovação da via B (30/09).
 - [x] ~~**Testes do `--via`**~~ — o teste por estragos foi corrido a 01/10 e os testes apanham os estragos (`docs/sessoes/2026-10-01.md` §6).
-- [ ] **Regra de desempate do top 5** — a 04/10, em emergentes, gripe A e covid sintomas ficaram empatadas a 11,3 (4.º e 5.º). Planeamento de 06/10 (`docs/sessoes/2026-10-04.md` §1). E na semana de 27/09, vacinas = gripe A no 1.º lugar em emergentes (`docs/sessoes/2026-10-06.md` §4); quinta 08.
+- [x] ~~**Regra de desempate do top 5** — a 04/10, em emergentes, gripe A e covid sintomas ficaram empatadas a 11,3 (4.º e 5.º). Planeamento de 06/10 (`docs/sessoes/2026-10-04.md` §1). E na semana de 27/09, vacinas = gripe A no 1.º lugar em emergentes (`docs/sessoes/2026-10-06.md` §4); quinta 08.~~ Fechado a 13/10: top 10 com empates na mesma posição (`6b732e0`); prova na segunda 19 — `docs/sessoes/2026-10-13.md` §1.
 - [x] ~~39 038 no RESUMO contra 26 200 no GRAVADO do lote fe58e0e5 (04/10) — razão não vista. Planeamento de 06/10.~~ É a deduplicação — `docs/sessoes/2026-10-06.md` §1.
 - [ ] **Corte de 1000 linhas nas leituras do site** (`useTrendsLote` l.131) — `docs/sessoes/2026-10-06.md` §3; quinta 08.
 - [ ] **Deduplicação guarda a série da âncora do 1.º pedido do passo 1**, não a do de referência — pendente de método (`docs/sessoes/2026-10-06.md` §2).
@@ -1200,13 +1206,17 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **A página `/briefing` ao vivo tem os mesmos defeitos** — lê `debunking` e as notícias
       sem filtro de semana (`Briefing.tsx` l.127–128). Não mexido; fica para a próxima
       sessão (decisão da Marta, 28/09).
-- [ ] **Guiões vazios desde 03/08/2026 — causa encontrada e corrigida a 28/09; falta a prova
+- [x] ~~**Guiões vazios desde 03/08/2026 — causa encontrada e corrigida a 28/09; falta a prova
       pelo efeito a 05/10.** `[sessão 20][bd]` Duas causas (`docs/sessoes/2026-09-28.md`
       §3): `referencia_url` inexistente em `guioes` e `generate-guiao-questions` por
       publicar. Código corrigido (`ef651c2`); função publicada a 28/09 e segredo
       **`PERPLEXITY_API_KEY`** no painel às 17:58 UTC do mesmo dia (renomeado; era
       `VITE_PERPLEXITY_API_KEY`). A prova é a corrida de segunda 05/10. Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
-      registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.
+      registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.~~ Fechado a 13/10: o 403 de 05/10 e 12/10 era a chamada interna sem `Authorization`; corrigido e provado sem escrita (`2f374a1`); geração real na segunda 19 — `docs/sessoes/2026-10-13.md` §6.
+- [x] ~~**`supabase/config.toml` com `verify_jwt = false` nas funções com restrição**, publicadas a `true` (05/10).~~ Fechado a 13/10: `true` nas quatro, igual ao publicado (`2f374a1`).
+- [ ] **Protecção do passo 7 se a função única parar no domingo** — se a correcção dos empates abortar perante ambiguidade, a recolha do Google tem de ficar gravada e só os alertas falham. A confirmar e proteger com a correcção (`docs/sessoes/2026-10-13-cowork.md` §7).
+- [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
+- [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
 - [ ] **`guioes_semanais.erro` diz "substitui a tentativa de…" quando a geração correu bem.** `[sessão 20]` Lê-se como falha. Decidir se passa para uma coluna própria ou muda de prefixo. Não mexido (decisão da Marta, 28/09).
 - [ ] **O `/sobre` diz coisas que não são verdade.** `[sessão 19]` "42 fontes", "em tempo
       real", "sinais emergentes antes de chegarem aos media", "5 banco + 5 IA", "PDF",
