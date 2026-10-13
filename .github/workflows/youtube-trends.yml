@@ -186,9 +186,9 @@ jobs:
           BODY=$(echo "$RESP" | head -n -1)
           CODE=$(echo "$RESP" | tail -n 1)
           echo "HTTP $CODE — $BODY"
-          if [ "$CODE" != "200" ]; then
-            echo "::warning::generate-guioes-weekly devolveu HTTP $CODE"
-          fi
+          # Falha (não aviso) se a função não der 200 ou se alguma chamada à IA
+          # falhar — docs/sessoes/2026-10-05.md §5, passo 1 (13/10/2026).
+          printf '%s' "$BODY" | bash .github/scripts/passo6_verifica.sh "$CODE"
 
       - name: Resumo
         run: |

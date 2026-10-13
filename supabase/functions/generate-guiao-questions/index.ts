@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { descreverPedido, pedidoDeServico } from "../_shared/papel.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -42,36 +43,26 @@ const DOMINIOS_PERMITIDOS = [
   "ecdc.europa.eu",
 ];
 
-/**
- * O papel do JWT do pedido (28/09/2026). Esta função só aceita a service_role:
- * cada chamada gasta créditos do Perplexity, e a chave anon é pública. Quem a
- * chama é a generate-guioes-weekly, com a service_role do seu ambiente. A
- * ASSINATURA do token é verificada antes, pelo `verify_jwt: true` da
- * publicação — sem ele, este papel podia ser forjado. Publicar sempre com
- * verify_jwt: true.
- *
- * Efeito lateral: o botão "Gerar perguntas da semana" da página /guioes chama
- * esta função com a sessão anónima do browser e passa a receber 403.
- */
-function papelDoPedido(req: Request): string | null {
-  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
-  const partes = token.split(".");
-  if (partes.length !== 3) return null;
-  try {
-    const b64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
-    const payload = JSON.parse(atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4)));
-    return typeof payload.role === "string" ? payload.role : null;
-  } catch {
-    return null;
-  }
-}
+// Esta função só aceita a service_role (28/09/2026): cada chamada gasta créditos
+// do Perplexity, e a chave anon é pública. Quem a chama é a
+// generate-guioes-weekly, com a chave secreta do seu ambiente, que chega no
+// `apikey` e não no Authorization (diagnóstico de 13/10/2026): por isso aceita
+// o JWT com service_role OU a chave secreta do ambiente — ver pedidoDeServico
+// em _shared/papel.ts. Publicar sempre com verify_jwt: true.
+//
+// Efeito lateral: o botão "Gerar perguntas da semana" da página /guioes chama
+// esta função com a sessão anónima do browser e recebe 403.
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (papelDoPedido(req) !== "service_role") {
+  // Diagnóstico do 403 (13/10/2026, docs/sessoes/2026-10-05.md §5, passo 2):
+  // o que chega, em partes, tipo e role — nunca a chave.
+  const aceite = pedidoDeServico(req, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
+  console.log(`pedido recebido — ${descreverPedido(req)} · aceite: ${aceite ?? "não"}`);
+  if (!aceite) {
     return new Response(
       JSON.stringify({ error: "só a service_role pode chamar esta função" }),
       { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -79,7 +70,16 @@ serve(async (req) => {
   }
 
   try {
-    const { tema, keywords, semana } = await req.json();
+    const corpo = await req.json();
+    // Modo de diagnóstico (13/10/2026): a verificação do papel passou. Responde
+    // já, sem chamar o Perplexity e sem gastar créditos.
+    if (corpo?.diagnostico === true) {
+      return new Response(
+        JSON.stringify({ diagnostico: "papel aceite", pedido: descreverPedido(req) }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+    const { tema, keywords, semana } = corpo;
     // Segredo renomeado a 28/09/2026: era VITE_PERPLEXITY_API_KEY. O prefixo
     // VITE_ é o que o Vite põe no bundle do browser quando a variável está no
     // .env; uma chave secreta não deve ter um nome que convide a isso.

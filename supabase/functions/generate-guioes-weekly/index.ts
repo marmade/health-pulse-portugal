@@ -1,4 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { descreverPedido, lerChave, papelDoPedido } from "../_shared/papel.ts";
+import { termosParaIA } from "../_shared/top_eixo.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,31 +15,17 @@ const TEMAS = [
   { value: "emergentes", label: "EMERGENTES", db: "emergentes" },
 ];
 
-/**
- * O papel do JWT do pedido (28/09/2026). Esta função só aceita a service_role:
- * a chave anon é pública (está no workflow e no bundle do site) e bastava para
- * escrever na base e gastar créditos do Perplexity. A ASSINATURA do token é
- * verificada antes, pelo `verify_jwt: true` da publicação — sem ele, este papel
- * podia ser forjado. Publicar sempre com verify_jwt: true.
- */
-function papelDoPedido(req: Request): string | null {
-  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
-  const partes = token.split(".");
-  if (partes.length !== 3) return null;
-  try {
-    const b64 = partes[1].replace(/-/g, "+").replace(/_/g, "/");
-    const payload = JSON.parse(atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4)));
-    return typeof payload.role === "string" ? payload.role : null;
-  } catch {
-    return null;
-  }
-}
+// Esta função só aceita a service_role (28/09/2026): a chave anon é pública (está
+// no workflow e no bundle do site) e bastava para escrever na base e gastar
+// créditos do Perplexity. O papelDoPedido está em _shared/papel.ts. Publicar
+// sempre com verify_jwt: true.
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  console.log(`pedido recebido — ${descreverPedido(req)}`);
   if (papelDoPedido(req) !== "service_role") {
     return new Response(
       JSON.stringify({ error: "só a service_role pode chamar esta função" }),
@@ -49,6 +37,43 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
+
+    // Diagnóstico do 403 (13/10/2026, docs/sessoes/2026-10-05.md §5, passo 2): a
+    // chave com que esta função chama a generate-guiao-questions. Regista-se o
+    // tipo, as partes e o role — nunca a chave.
+    const chaveDoAmbiente = lerChave(serviceKey);
+    console.log(
+      `chave do ambiente (SUPABASE_SERVICE_ROLE_KEY): partes=${chaveDoAmbiente.partes} ` +
+        `tipo=${chaveDoAmbiente.tipo} role=${chaveDoAmbiente.papel ?? "—"}`,
+    );
+
+    // Modo de diagnóstico, só para a service_role: faz a chamada interna real à
+    // generate-guiao-questions, com `diagnostico: true` (que responde logo a
+    // seguir à verificação do papel, sem chamar o Perplexity), e devolve o que
+    // voltou. NÃO lê nem escreve nada na base. É o caminho para ver o 403 sem
+    // criar linhas em guioes_semanais.
+    const corpo = await req.json().catch(() => ({}));
+    if (corpo?.diagnostico === true) {
+      const { data, error } = await supabase.functions.invoke("generate-guiao-questions", {
+        body: { diagnostico: true },
+      });
+      let resposta: unknown = data;
+      let status = 200;
+      if (error) {
+        const ctx = (error as any).context;
+        status = ctx?.status ?? 0;
+        try { resposta = ctx ? await ctx.text() : error.message; } catch { resposta = error.message; }
+      }
+      return new Response(
+        JSON.stringify({
+          diagnostico: {
+            chave_do_ambiente: chaveDoAmbiente,
+            chamada_interna: { status, resposta },
+          },
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     // Calculate current week (Monday)
     const now = new Date();
@@ -78,6 +103,13 @@ Deno.serve(async (req) => {
     for (const a of (arquivo as any[] | null) || []) arquivoPorEixo[a.axis] = a;
 
     const results: string[] = [];
+    // As falhas da IA DESTA tentativa, por tema (13/10/2026). O passo 6 do
+    // workflow falha se esta lista não vier vazia — docs/sessoes/2026-10-05.md §5,
+    // passo 1. Não se lê do `results`: esse texto também leva o erro da tentativa
+    // substituída, que pode ter "IA:" de uma semana já resolvida.
+    const falhasIA: string[] = [];
+    // Quantos termos foram à IA, por tema — prova do filtro (posicao <= 5).
+    const termosIA: Record<string, number> = {};
 
     for (const tema of TEMAS) {
       // Um guião já existente só bloqueia a semana se tiver perguntas por
@@ -106,12 +138,13 @@ Deno.serve(async (req) => {
       const erros: string[] = [];
 
       // O top 5 medido do eixo, por ordem. Só o termo e a posição: o valor
-      // calibrado é relativo ao eixo e não quer dizer nada à IA.
+      // calibrado é relativo ao eixo e não quer dizer nada à IA. Desde 13/10/2026
+      // o arquivo grava um top 10: vão só os itens com posicao <= 5, a mesma
+      // regra da página inicial (com empate no 5.º lugar, 6 ou mais). Os
+      // arquivos sem posição (até 14/09/2026) dão os 5 primeiros gravados.
       const doEixo = arquivoPorEixo[tema.value];
-      const top5 = ((doEixo?.top_keywords as any[] | null) || []).map((k: any) => ({
-        term: k.term,
-        posicao: k.posicao,
-      }));
+      const top5 = termosParaIA(doEixo?.top_keywords as any[] | null);
+      termosIA[tema.value] = top5.length;
       if (top5.length === 0) {
         erros.push(
           `IA não chamada: sem top 5 medido para a semana de ${semanaMedidaStr}` +
@@ -188,6 +221,8 @@ Deno.serve(async (req) => {
         }
       }
 
+      falhasIA.push(...erros.filter((e) => e.startsWith("IA:")).map((e) => `${tema.value}: ${e}`));
+
       const allPerguntas = [...bancoPerguntas, ...aiPerguntas];
 
       // Estado (28/09/2026):
@@ -224,7 +259,8 @@ Deno.serve(async (req) => {
         results.push(`${tema.value}: ERROR — ${insertErr.message}`);
       } else {
         results.push(
-          `${tema.value}: ${bancoPerguntas.length} banco + ${aiPerguntas.length} IA` +
+          `${tema.value}: ${bancoPerguntas.length} banco + ${aiPerguntas.length} IA ` +
+            `(${top5.length} termos à IA)` +
             (erros.length > 0 ? ` — ${erros.join(" · ")}` : "")
         );
       }
@@ -234,6 +270,8 @@ Deno.serve(async (req) => {
       JSON.stringify({
         semana: semanaStr,
         results,
+        falhas_ia: falhasIA,
+        termos_ia: termosIA,
         timestamp: new Date().toISOString(),
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }

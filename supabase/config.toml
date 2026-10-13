@@ -1,5 +1,12 @@
 project_id = "ijpxjpbjudaddfatibfl"
 
+# verify_jwt: igual ao que está publicado (conferido a 13/10/2026 na lista de funções).
+# As quatro funções com restrição à service_role — archive-weekly, generate-guioes-weekly,
+# generate-guiao-questions e trends-buscar-grupo — estão a true: a restrição lê o papel
+# do JWT sem verificar a assinatura, e é o verify_jwt da plataforma que a verifica. Uma
+# publicação que lesse aqui false deixava o papel forjável. docs/sessoes/2026-10-05.md §5,
+# passo 4; docs/sessoes/2026-10-13.md §6.
+
 [functions.google-trends]
 verify_jwt = false
 
@@ -10,13 +17,16 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.generate-guiao-questions]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-diz-que-disse]
 verify_jwt = false
 
 [functions.archive-weekly]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-guioes-weekly]
-verify_jwt = false
+verify_jwt = true
+
+[functions.trends-buscar-grupo]
+verify_jwt = true

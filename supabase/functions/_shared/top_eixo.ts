@@ -103,3 +103,25 @@ export function notaSemMedicao(lista: SemMedicao[], semana: string): string | nu
   return `sem medição na semana de ${semana} para ${n} ${n === 1 ? "termo activo, que fica" : "termos activos, que ficam"} ` +
     `fora do top: ${lista.map((s) => `${s.term} (${RAZAO_POR_EXTENSO[s.razao]})`).join(", ")}`;
 }
+
+/**
+ * Os termos que a generate-guioes-weekly passa à IA (13/10/2026): os itens com
+ * `posicao <= 5` do top gravado no arquivo — a mesma regra da página inicial, por isso
+ * com empate no 5.º lugar vão 6 ou mais.
+ *
+ * Os arquivos até à semana de 14/09/2026 foram gravados sem `posicao` (formato
+ * {term, change_percent, current_volume}), já pela ordem do top. Nesse caso vão os
+ * primeiros `n`, com a posição pela ordem gravada. Um item sem `term` não vai.
+ */
+export type ItemArquivo = { term?: unknown; posicao?: unknown };
+
+export function termosParaIA(itens: ItemArquivo[] | null | undefined, n = 5): { term: string; posicao: number }[] {
+  const comTermo = (itens || []).filter((k) => typeof k?.term === "string" && k.term !== "");
+  const temPosicao = comTermo.some((k) => typeof k.posicao === "number");
+  if (!temPosicao) {
+    return comTermo.slice(0, n).map((k, i) => ({ term: k.term as string, posicao: i + 1 }));
+  }
+  return comTermo
+    .filter((k) => typeof k.posicao === "number" && (k.posicao as number) <= n)
+    .map((k) => ({ term: k.term as string, posicao: k.posicao as number }));
+}

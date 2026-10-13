@@ -459,10 +459,12 @@ const Index = () => {
         )}
         {activeAxis === 'all' && (
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
-            Alertas de pesquisa — fora do ecrã desde 24/09/2026. Um alerta diz que um termo
-            subiu mais do que costuma subir. A regra existe e corre sobre a medição, mas o
-            número de subidas cresceu de um modo que ainda só sabemos explicar em parte.
-            Mostrar isto agora seria mostrar uma contagem em que não confiamos.
+            {/* Texto da Marta, 13/10/2026: o bloco de alertas mantém-se e esta nota deixa de
+                dizer "fora do ecrã desde 24/09", que o contradizia. Textos finais a 27/10. */}
+            Alertas de pesquisa — em revisão. Um alerta diz que um termo subiu mais do que
+            costuma subir. Encontrámos um erro na forma como a regra trata os valores
+            exactamente iguais aos limites, e está a ser corrigido. Até lá, os alertas desta
+            página podem mudar.
           </p>
         )}
       </main>

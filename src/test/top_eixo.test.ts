@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { topDoEixo, semMedicao, notaSemMedicao } from "../../supabase/functions/_shared/top_eixo";
+import { topDoEixo, semMedicao, notaSemMedicao, termosParaIA } from "../../supabase/functions/_shared/top_eixo";
 
 // Dados reais: emergentes, lote fe58e0e5, semana do Trends de 27/09/2026 (arquivo de 05/10),
 // valor_eixo como está na base. Lidos a 13/10/2026 — docs/sessoes/2026-10-13.md.
@@ -108,5 +108,42 @@ describe("semMedicao e notaSemMedicao", () => {
   it("todos os termos com linha (como nos lotes reais até 13/10), a lista fica vazia", () => {
     const m = EMERGENTES_2709.map((r) => ({ ...r }));
     expect(semMedicao(m, termos(m), [{ termos: termos(m), collection_status: "recolhido" }])).toEqual([]);
+  });
+});
+
+describe("termosParaIA (guiões)", () => {
+  it("com posição: os itens com posição <= 5, empate no 5.º incluído", () => {
+    const top = [
+      { term: "a", posicao: 1 }, { term: "b", posicao: 2 }, { term: "c", posicao: 3 },
+      { term: "d", posicao: 4 }, { term: "e", posicao: 5 }, { term: "f", posicao: 5 },
+      { term: "g", posicao: 7 }, { term: "h", posicao: 8 },
+    ];
+    expect(termosParaIA(top)).toEqual([
+      { term: "a", posicao: 1 }, { term: "b", posicao: 2 }, { term: "c", posicao: 3 },
+      { term: "d", posicao: 4 }, { term: "e", posicao: 5 }, { term: "f", posicao: 5 },
+    ]);
+  });
+
+  it("o top 10 que a v9 grava: vão só os 5 primeiros", () => {
+    const top = topDoEixo(EMERGENTES_2709, termos(EMERGENTES_2709));
+    expect(top).toHaveLength(10);
+    expect(termosParaIA(top).map((t) => `${t.posicao} ${t.term}`)).toEqual([
+      "1 gripe A", "1 vacinas", "3 avc", "4 enxaqueca", "5 lipedema",
+    ]);
+  });
+
+  it("arquivo sem posição (formato até 14/09/2026): os 5 primeiros pela ordem gravada", () => {
+    const antigo = ["dependências", "terapia online", "PTSD", "demência", "pânico", "stress"]
+      .map((term, i) => ({ term, change_percent: 30 - i, current_volume: 0 }));
+    expect(termosParaIA(antigo)).toEqual([
+      { term: "dependências", posicao: 1 }, { term: "terapia online", posicao: 2 },
+      { term: "PTSD", posicao: 3 }, { term: "demência", posicao: 4 }, { term: "pânico", posicao: 5 },
+    ]);
+  });
+
+  it("vazio, nulo ou itens sem termo: nada vai à IA", () => {
+    expect(termosParaIA([])).toEqual([]);
+    expect(termosParaIA(null)).toEqual([]);
+    expect(termosParaIA([{ posicao: 1 }, { term: "", posicao: 2 }])).toEqual([]);
   });
 });
