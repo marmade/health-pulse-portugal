@@ -239,6 +239,7 @@ const Index = () => {
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                     top5Lote={loteEixo?.[axisId]?.top5}
+                    topSemana={loteEixo?.[axisId]?.topSemana}
                     alertas={loteEixo?.[axisId]?.alertas}
                     hideChart
                     /* Alertas RETIRADOS do site a 24/09/2026, decisão da Marta: "os alertas
@@ -289,7 +290,7 @@ const Index = () => {
           </p>
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mb-8">
             Período 7 | 30 dias | 12 meses — retirado a 18/09/2026: cada bloco tem a sua janela,
-            escrita ao lado (gráfico = anos; top 5 = 52 semanas; alertas = esta semana). Se fizer
+            escrita ao lado (gráfico = anos; top 5 = a semana do último arquivo; alertas = esta semana). Se fizer
             falta, será dentro de cada eixo.
           </p>
           {!RANKING_RETIRADO && urgencyRanking.length > 0 && (
@@ -378,6 +379,7 @@ const Index = () => {
                   period={filters.period}
                   grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                   top5Lote={loteEixo?.[axisId]?.top5}
+                  topSemana={loteEixo?.[axisId]?.topSemana}
                   hideChart
                   hideHeader
                   hideAlertas

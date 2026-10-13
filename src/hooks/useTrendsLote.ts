@@ -5,19 +5,24 @@ import type { GrupoResumo } from "@/lib/trendsGrupo";
 /**
  * O dashboard lê SEMPRE de um lote só do Google Trends (trends_lotes) — nunca cola lotes.
  * Este hook vai buscar o último lote completo de 5 anos e, por eixo, devolve:
- *   - o top 5 dos termos (mediana calibrada nas últimas 52 semanas, na régua da âncora);
- *   - o gráfico: a média mensal DESSES 5 termos, ano corrente vs anterior — a média de
+ *   - o top 5: os itens com posição <= 5 do top 10 do ÚLTIMO ARQUIVO SEMANAL do eixo
+ *     (eixos_archive.top_keywords, escrito pelo archive-weekly). Aqui não se ordena nada:
+ *     a ordenação é uma só, a do arquivo (supabase/functions/_shared/top_eixo.ts). Com
+ *     empate no 5.º lugar vêm 6 ou mais. Decidido pela Marta a 13/10/2026; até aí o top 5
+ *     era a mediana de 52 semanas, outra conta (docs/sessoes/2026-10-13.md). Entre a
+ *     recolha de domingo e o arquivo de segunda, o top é o da semana anterior;
+ *   - o gráfico: a média mensal DESSES termos, ano corrente vs anterior — a média de
  *     todos os termos do eixo seria arrastada pelos que estão a zero;
  *   - as leituras: mais interesse, mais sobe (média anual, anos completos), mês mais alto.
- * Tudo vem das vistas trends_termo_52s / trends_termo_mensal / trends_termo_anual, que
+ * O gráfico e as leituras vêm das vistas trends_termo_mensal / trends_termo_anual, que
  * fazem a conta no servidor. Sem lote, devolve null e o Index cai no googleTrends.json.
  * Decidido a 18/09/2026; método em docs/metodo/2026-09-18-reguas-e-ancoras.md.
  */
 
-export type Top5Item = {
-  termo: string; mediana: number; maximo: number; picoEm: string | null;
-  medianaAnterior: number | null; variacao: number | null;   // 52s vs 52s anteriores, %
-};
+/** Um item do top do arquivo: valor da semana na régua do eixo, posição partilhada nos empates. */
+export type Top5Item = { termo: string; valor: number; posicao: number };
+/** De que arquivo vem o top: a semana, e a nota quando falta medição (semana vazia ou termos sem número). */
+export type TopSemana = { weekStart: string; weekLabel: string; semanaTrends: string | null; nota: string | null };
 /** Uma linha de trends_alertas (regra de 18/09/2026, docs/metodo/2026-09-18-alertas-regra.md). */
 export type AlertaItem = {
   termo: string; tipo: "subida" | "aparecimento" | "sazonal" | "a_observar";
@@ -26,7 +31,7 @@ export type AlertaItem = {
 };
 /** Os alertas do eixo na última semana completa do lote. `semana` é essa semana (domingo). */
 export type AlertasEixo = { semana: string; itens: AlertaItem[] };
-export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; alertas: AlertasEixo | null };
+export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; topSemana: TopSemana | null; alertas: AlertasEixo | null };
 export type LoteInfo = { id: string; iniciadoEm: string; origem: string | null; timeframe: string };
 
 const AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -34,7 +39,8 @@ const MES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
 const ORDEM: Record<AlertaItem["tipo"], number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3 };
 
-/** termosDoEixo: os termos activos de cada eixo (a âncora pode não ser keyword — sai do top). */
+/** termosDoEixo: os termos activos de cada eixo. Desde 13/10/2026 o filtro dos activos faz-se
+    no archive-weekly; aqui só marca quando a página tem os dados para pedir o lote. */
 export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
   const [lote, setLote] = useState<LoteInfo | null>(null);
   const [porEixo, setPorEixo] = useState<Record<string, LoteEixo> | null>(null);
@@ -56,30 +62,31 @@ export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
         const loteId = p.lote_id;
         const info: LoteInfo = { id: loteId, iniciadoEm: p.trends_lotes.iniciado_em, origem: p.trends_lotes.origem, timeframe: p.timeframe };
 
-        // 2. por termo: mediana e máximo nas últimas 52 semanas
-        const { data: t52, error: e2 } = await supabase
-          .from("trends_termo_52s" as never).select("*").eq("lote_id", loteId);
+        // 2. o top de cada eixo: o do último arquivo semanal, tal como foi gravado. Os
+        //    itens chegam já ordenados e com a posição; aqui só se escolhem os de posição <= 5.
+        const { data: arq, error: e2 } = await supabase
+          .from("eixos_archive" as never).select("axis, week_start, week_label, top_keywords, nota_medicao")
+          .in("axis", AXES).order("week_start", { ascending: false }).limit(AXES.length * 2);
         if (e2) throw e2;
-        type T52 = { eixo: string; termo: string; mediana_52s: number | null; maximo_52s: number | null; pico_em: string | null; mediana_52s_anteriores: number | null };
-        const rows52 = (t52 as unknown as T52[]) || [];
+        type Arq = { axis: string; week_start: string; week_label: string; nota_medicao: string | null;
+                     top_keywords: { term: string; valor: number; posicao: number | null; semana_trends?: string }[] | null };
+        const ultimoArquivo: Record<string, Arq> = {};
+        for (const a of (arq as unknown as Arq[]) || []) ultimoArquivo[a.axis] ??= a;
 
         const resultado: Record<string, LoteEixo> = {};
         const termosTop: { eixo: string; termo: string }[] = [];
         for (const eixo of AXES) {
-          const activos = new Set((termosDoEixo[eixo] || []).map(t => t.toLowerCase()));
-          const top5 = rows52
-            // só termos com procura: um "top 5 dos mais pesquisados" não pode ter medianas a 0
-            .filter(r => r.eixo === eixo && activos.has(r.termo.toLowerCase()) && r.mediana_52s != null && +r.mediana_52s > 0)
-            .sort((a, b) => (b.mediana_52s || 0) - (a.mediana_52s || 0))
-            .slice(0, 5)
-            .map(r => ({
-              termo: r.termo, mediana: +(r.mediana_52s || 0), maximo: +(r.maximo_52s || 0), picoEm: r.pico_em,
-              medianaAnterior: r.mediana_52s_anteriores == null ? null : +r.mediana_52s_anteriores,
-              variacao: r.mediana_52s_anteriores && +r.mediana_52s_anteriores > 0
-                ? Math.round(((+(r.mediana_52s || 0) - +r.mediana_52s_anteriores) / +r.mediana_52s_anteriores) * 100) : null,
-            }));
+          const a = ultimoArquivo[eixo];
+          const itens = a?.top_keywords || [];
+          const top5 = itens
+            .filter(k => k.posicao != null && k.posicao <= 5)
+            .map(k => ({ termo: k.term, valor: +k.valor, posicao: k.posicao as number }));
           top5.forEach(t => termosTop.push({ eixo, termo: t.termo }));
-          resultado[eixo] = { top5, resumo: null as unknown as GrupoResumo, alertas: null };
+          const topSemana = a ? {
+            weekStart: a.week_start, weekLabel: a.week_label,
+            semanaTrends: itens[0]?.semana_trends ?? null, nota: a.nota_medicao,
+          } : null;
+          resultado[eixo] = { top5, topSemana, resumo: null as unknown as GrupoResumo, alertas: null };
         }
 
         // 2b. os alertas da última semana COMPLETA do lote (a semana parcial nunca conta —

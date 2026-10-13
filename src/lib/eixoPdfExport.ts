@@ -18,6 +18,7 @@ export async function generateEixoPdf(entry: {
   axis_label: string;
   week_label: string;
   top_keywords?: any[];
+  nota_medicao?: string | null;
   top_questions?: any[];
   top_debunking?: any[];
   top_news?: any[];
@@ -92,12 +93,21 @@ export async function generateEixoPdf(entry: {
   y += 8;
 
   // ── TOP KEYWORDS ─────────────────────────────────────────────────
+  // Três formatos gravados, e cada arquivo fica com o seu:
+  //   · até 21/09/2026: {term, change_percent, current_volume} — mostra-se a subida;
+  //   · de 28/09/2026: {term, valor, posicao} — o valor da semana na régua do eixo. Até
+  //     13/10/2026 o PDF lia aqui `change_percent`, que não existe, e saía sem número;
+  //   · de 19/10/2026: o mesmo, top 10, com `valor_eixo` e empates na mesma posição.
+  // O número à esquerda é a `posicao` gravada (partilhada nos empates); sem ela, a ordem.
+  const novoFormato = (entry.top_keywords || []).some((k: any) => k.valor != null);
   if (entry.top_keywords && entry.top_keywords.length > 0) {
-    sectionHeader("Top Keywords");
+    sectionHeader(novoFormato ? "Top keywords — valor da semana, na régua do eixo" : "Top Keywords");
     entry.top_keywords.forEach((k: any, i: number) => {
       checkPage(7);
-      const num = String(i + 1).padStart(2, "0");
-      const change = k.change_percent != null ? `${Number(k.change_percent) > 0 ? "+" : ""}${Number(k.change_percent).toFixed(0)}%` : "";
+      const num = String(k.posicao ?? i + 1).padStart(2, "0");
+      const change = k.valor != null
+        ? Number(k.valor).toLocaleString("pt-PT", { maximumFractionDigits: 1 })
+        : k.change_percent != null ? `${Number(k.change_percent) > 0 ? "+" : ""}${Number(k.change_percent).toFixed(0)}%` : "";
       pdf.setFontSize(8);
       pdf.setFont("helvetica", "bold");
       pdf.setTextColor(BLACK);
@@ -108,6 +118,18 @@ export async function generateEixoPdf(entry: {
       y += LINE_H;
     });
     y += 4;
+  }
+  // A razão de uma semana vazia, ou dos termos activos que ficaram sem número.
+  if (entry.nota_medicao) {
+    if (!(entry.top_keywords && entry.top_keywords.length > 0)) sectionHeader("Top keywords");
+    checkPage(8);
+    pdf.setFontSize(7);
+    pdf.setFont("helvetica", "italic");
+    pdf.setTextColor(GREY);
+    const linhas = pdf.splitTextToSize(`Nota: ${entry.nota_medicao}.`, pageWidth - MARGIN * 2);
+    pdf.text(linhas, MARGIN, y);
+    y += linhas.length * 4 + 4;
+    pdf.setTextColor(BLACK);
   }
 
   // ── PERGUNTAS ─────────────────────────────────────────────────────

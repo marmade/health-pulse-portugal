@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { notaSemMedicao, semMedicao, topDoEixo, type Medicao, type Pedido } from "../_shared/top_eixo.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -255,6 +256,9 @@ Deno.serve(async (req) => {
     //   · o top 5 de uma semana são os cinco termos com maior valor MEDIDO
     //     nessa semana, no eixo — não a maior subida;
     //   · a semana sem medição fica VAZIA, com a razão registada.
+    // A 13/10/2026 passou a top 10, com empates a partilhar a posição, e a
+    // página inicial a mostrar os primeiros deste mesmo top (posicao <= 5) —
+    // ver _shared/top_eixo.ts e docs/sessoes/2026-10-13.md.
     //
     // Até 24/09/2026 o top 5 saía da tabela `keywords`, ordenado por
     // `change_percent`. Essa tabela não é escrita desde 20/03/2026, e o
@@ -272,7 +276,10 @@ Deno.serve(async (req) => {
 
     let loteId: string | null = null;
     let notaMedicao: string | null = null;
-    const medicaoPorEixo: Record<string, { termo: string; valor: number }[]> = {};
+    const medicaoPorEixo: Record<string, Medicao[]> = {};
+    // Os pedidos do lote, para dizer porque é que um termo activo não tem
+    // medição (sem_dados, falhou, não pedido). Só se usam com medição.
+    let pedidosDoLote: Pedido[] = [];
 
     {
       // O último lote completo de 5 anos — o mesmo critério do dashboard
@@ -292,10 +299,11 @@ Deno.serve(async (req) => {
         loteId = p.lote_id;
         const { data: pedidos } = await supabase
           .from("trends_pedidos")
-          .select("id")
+          .select("id, termos, collection_status")
           .eq("lote_id", loteId)
           .eq("timeframe", "today 5-y");
-        const ids = ((pedidos as any[] | null) || []).map((r) => r.id);
+        pedidosDoLote = (pedidos as any[] | null) || [];
+        const ids = pedidosDoLote.map((r: any) => r.id);
 
         // A semana parcial não conta: o lote é recolhido a meio da semana e o
         // último ponto vem cortado. Escrevê-lo seria comparar seis dias com
@@ -323,9 +331,11 @@ Deno.serve(async (req) => {
             .gte("data", semanaTrends)
             .lt("data", semanaTrendsFim);
           for (const r of ((cal as any[] | null) || [])) {
+            // valor_eixo tal como vem (texto com 3 casas, ou nulo): a
+            // topDoEixo compara em milésimas inteiras.
             (medicaoPorEixo[r.eixo] ||= []).push({
               termo: r.termo,
-              valor: Number(r.valor_eixo),
+              valor: r.valor_eixo,
             });
           }
         }
@@ -364,24 +374,33 @@ Deno.serve(async (req) => {
         axisKeywords.map((k: any) => (k.term as string).toLowerCase())
       );
 
-      const topKeywords = (medicaoPorEixo[axis] || [])
-        .filter((m) => axisTerms.has(m.termo.toLowerCase()) && m.valor > 0)
-        .sort((a, b) => b.valor - a.valor)
-        .slice(0, 5)
-        .map((m, i) => ({
-          term: m.termo,
-          valor: Math.round(m.valor * 10) / 10,
-          posicao: i + 1,
-          semana_trends: semanaTrends,
-          lote_id: loteId,
-        }));
+      // Top 10, empates na mesma posição, todos os empatados no corte. A
+      // ordenação é só esta: a página inicial lê daqui e não volta a ordenar.
+      const termosActivos = axisKeywords.map((k: any) => k.term as string);
+      const medicao = medicaoPorEixo[axis] || [];
+      const topKeywords = topDoEixo(medicao, termosActivos, 10).map((t) => ({
+        ...t,
+        semana_trends: semanaTrends,
+        lote_id: loteId,
+      }));
 
       // Semana sem medição: fica vazia, com a razão. Nunca se repete a semana
       // anterior, nunca se escreve zero.
+      //
+      // Com medição, a nota diz que termos activos ficaram sem número, e
+      // porquê (13/10/2026). Sem isto um pedido sem_dados tirava o termo do
+      // top em silêncio. Fica na nota, e não numa coluna nova: nunca houve um
+      // caso real, e a nota já existe para dizer o que falta à medição.
+      const faltam = notaMedicao
+        ? null
+        : notaSemMedicao(semMedicao(medicao, termosActivos, pedidosDoLote), semanaTrends);
       const notaEixo = notaMedicao ??
-        (topKeywords.length === 0
-          ? `sem termos activos com medição na semana de ${semanaTrends} (lote ${loteId})`
-          : null);
+        ([
+          topKeywords.length === 0
+            ? `sem termos activos com medição na semana de ${semanaTrends} (lote ${loteId})`
+            : null,
+          faltam,
+        ].filter(Boolean).join("; ") || null);
 
       const topQuestions = questions
         .filter((q: any) => q.axis === axis)
@@ -443,7 +462,12 @@ Deno.serve(async (req) => {
         console.error(`eixos/${axis} insert error:`, insertErr);
         results.push(`eixos/${axis}: ERROR — ${insertErr.message}`);
       } else {
-        results.push(`eixos/${axis}: archived`);
+        const empatados = topKeywords.length - new Set(topKeywords.map((t) => t.posicao)).size;
+        results.push(
+          `eixos/${axis}: archived — top ${topKeywords.length}` +
+            (empatados ? `, ${empatados} empate(s)` : "") +
+            (faltam ? ` · ${faltam}` : ""),
+        );
       }
     }
 

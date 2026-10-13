@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
-import type { Top5Item, AlertasEixo as DadosAlertas } from "@/hooks/useTrendsLote";
+import type { Top5Item, TopSemana, AlertasEixo as DadosAlertas } from "@/hooks/useTrendsLote";
 import Top5Table from "./Top5Table";
 import AlertasEixo from "./AlertasEixo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
@@ -17,9 +17,13 @@ type Props = {
   /** Resumo da descarga de grupo do eixo (página inicial). Se vier, o gráfico usa-o
       em vez de `trendData` — ver src/lib/trendsGrupo.ts para o porquê. */
   grupo?: GrupoResumo | null;
-  /** Top 5 do lote do Google Trends (mediana calibrada, 52 semanas). Se vier, substitui o
-      top 5 da tabela `keywords`, que é a série parada de 10/08/2026. */
+  /** Os itens de posição <= 5 do último arquivo semanal do eixo (13/10/2026: a página não
+      ordena, mostra o arquivo). Se vier, substitui o top 5 da tabela `keywords`, que é a
+      série parada de 10/08/2026. */
   top5Lote?: Top5Item[] | null;
+  /** De que arquivo vem o top 5. Com arquivo e top vazio, mostra-se a nota — nunca o
+      top 5 antigo da tabela `keywords`. */
+  topSemana?: TopSemana | null;
   /** Alertas do eixo na última semana completa do lote (fase 3, regra de 18/09/2026). Vêm
       logo a seguir ao top 5, dentro da coluna — decisão da Marta: nada de linhas de um lado
       ao outro; cada eixo na sua régua. */
@@ -34,13 +38,16 @@ type Props = {
   hideAlertas?: boolean;
 };
 
-export const NOTA_TOP5 = "Mediana das últimas 52 semanas, calibrada para a régua da âncora do eixo (a âncora ≈ 100); a variação compara com as 52 semanas anteriores; o pico é a semana mais alta do ano. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos.";
+export const NOTA_TOP5 = "Valor de uma semana do Google Trends (domingo a sábado), calibrado para a régua da âncora do eixo (a âncora ≈ 100). São os primeiros do top 10 do arquivo semanal, que fecha à segunda: entre a recolha de domingo e o arquivo, mostra-se a semana anterior. Valores iguais partilham a posição, e entram todos — com empate no 5.º lugar, aparecem 6 ou mais. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos.";
+
+/** "2026-10-04" → "4 Out" (a semana do Trends começa ao domingo) */
+const diaCurto = (iso: string) => `${+iso.slice(8, 10)} ${MES_LONGO[+iso.slice(5, 7) - 1].slice(0, 3)}`;
 
 // O "Var. média" calculado sobre a tabela `keywords` (série parada desde 10/08/2026) deixou
 // de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
 const VAR_MEDIA_ANTIGA = false;
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, alertas, archive = [], hideChart, hideKeywords, hideHeader, hideAlertas }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, topSemana, alertas, archive = [], hideChart, hideKeywords, hideHeader, hideAlertas }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
@@ -181,24 +188,44 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
         <>
           {!hideHeader && <div className="border-t border-foreground/10" />}
           <Top5Table
-            rotulo={hideHeader ? label : "Top 5 — mais pesquisados, na régua do eixo"}
+            rotulo={hideHeader ? label : "Top 5 — mais pesquisados na semana, na régua do eixo"}
             rotuloCor={hideHeader ? "#0000FF" : undefined}
-            aviso={top5Lote.length < 5
-              ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo tem" : "termos têm"} procura regular neste eixo.`
-              : hideHeader ? "Os 5 mais pesquisados, na régua do eixo." : undefined}
+            aviso={[
+              topSemana?.semanaTrends
+                ? `Semana de ${diaCurto(topSemana.semanaTrends)} (arquivo de ${topSemana.weekLabel}).`
+                : topSemana ? `Arquivo de ${topSemana.weekLabel}.` : null,
+              top5Lote.length < 5
+                ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo teve" : "termos tiveram"} procura medida nesta semana.`
+                : null,
+              topSemana?.nota ? `${topSemana.nota[0].toUpperCase()}${topSemana.nota.slice(1)}.` : null,
+            ].filter(Boolean).join(" ") || undefined}
+            soValor
             keywords={top5Lote.map(t => ({
               term: t.termo, synonyms: [], category: "", axis: axisId, source: "trends",
-              currentVolume: Math.round(t.mediana), previousVolume: Math.round(t.medianaAnterior ?? 0),
-              changePercent: t.variacao ?? 0,
-              trend: (t.variacao ?? 0) > 10 ? "up" : (t.variacao ?? 0) < -10 ? "down" : "stable",
-              lastPeak: t.picoEm ? `${MES_LONGO[+t.picoEm.slice(5, 7) - 1].slice(0, 3)} ${t.picoEm.slice(0, 4)}` : "",
-              isEmergent: false,
+              currentVolume: t.valor, previousVolume: 0, changePercent: 0, trend: "stable" as const,
+              lastPeak: "", isEmergent: false, posicao: t.posicao,
             }))}
             nota={hideHeader ? undefined : NOTA_TOP5}
           />
         </>
       )}
-      {!hideKeywords && !(top5Lote && top5Lote.length > 0) && (
+      {/* Há arquivo mas a semana ficou sem top: diz-se porquê. Nunca se cai no top 5 da
+          tabela `keywords`, que não é medição. */}
+      {!hideKeywords && topSemana && !(top5Lote && top5Lote.length > 0) && (
+        <>
+          {!hideHeader && <div className="border-t border-foreground/10" />}
+          <div>
+            <p className="editorial-label mb-1" style={hideHeader ? { color: "#0000FF" } : undefined}>
+              {hideHeader ? label : "Top 5 — mais pesquisados na semana, na régua do eixo"}
+            </p>
+            <p className="text-[10px] leading-relaxed text-foreground/60">
+              Sem top no arquivo de {topSemana.weekLabel}
+              {topSemana.nota ? <>: {topSemana.nota}.</> : "."}
+            </p>
+          </div>
+        </>
+      )}
+      {!hideKeywords && !topSemana && !(top5Lote && top5Lote.length > 0) && (
         <>
           {!hideHeader && <div className="border-t border-foreground/10" />}
           <Top5Table keywords={top5} rotulo={hideHeader ? label : undefined} rotuloCor={hideHeader ? "#0000FF" : undefined} />

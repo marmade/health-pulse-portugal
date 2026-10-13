@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import type { Keyword } from "@/data/mockData";
 
 type Props = {
-  keywords: Keyword[];
+  /** `posicao`, quando vem, é a do arquivo (empates partilham-na); sem ela, numera-se pela ordem. */
+  keywords: (Keyword & { posicao?: number })[];
+  /** Só o termo e o valor da semana: sem variação nem pico, que o top do arquivo não tem (13/10/2026). */
+  soValor?: boolean;
   /** rótulo por cima da lista (por omissão "Top 5 — Keywords") e nota de proveniência por baixo */
   rotulo?: string;
   rotuloCor?: string;
@@ -11,7 +14,7 @@ type Props = {
   nota?: string;
 };
 
-const Top5Table = ({ keywords, rotulo, rotuloCor, aviso, nota }: Props) => {
+const Top5Table = ({ keywords, soValor, rotulo, rotuloCor, aviso, nota }: Props) => {
   const maxVolume = useMemo(
     () => Math.max(...keywords.map((k) => k.currentVolume), 1),
     [keywords]
@@ -29,7 +32,7 @@ const Top5Table = ({ keywords, rotulo, rotuloCor, aviso, nota }: Props) => {
             <div key={kw.term}>
               <div className="flex items-start gap-3 py-2.5">
                 <span className="text-[10px] font-bold text-foreground/30 mt-0.5 w-3 shrink-0">
-                  {String(i + 1).padStart(2, "0")}
+                  {String(kw.posicao ?? i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -51,18 +54,18 @@ const Top5Table = ({ keywords, rotulo, rotuloCor, aviso, nota }: Props) => {
                         />
                       </div>
                       <span className="text-[10px] text-foreground/50">
-                        {kw.currentVolume}
+                        {soValor ? kw.currentVolume.toLocaleString("pt-PT", { maximumFractionDigits: 1 }) : kw.currentVolume}
                       </span>
                     </div>
-                    <span
+                    {!soValor && <span
                       className={`text-[10px] font-semibold ${
                         kw.changePercent > 0 ? "text-foreground" : "text-foreground/40"
                       }`}
                     >
                       {kw.changePercent > 0 ? "↑" : kw.changePercent < 0 ? "↓" : "→"}{" "}
                       {Math.abs(kw.changePercent).toFixed(1)}%
-                    </span>
-                    {kw.lastPeak && (
+                    </span>}
+                    {!soValor && kw.lastPeak && (
                       <span className="text-[10px] text-foreground/30">
                         Pico: {kw.lastPeak}
                       </span>
