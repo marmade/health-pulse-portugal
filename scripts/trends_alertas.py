@@ -12,38 +12,53 @@ Usado de duas maneiras:
       python3 scripts/trends_alertas.py --lote <id ou prefixo> --gravar   # e grava (service_role)
 
 Lê com a chave pública; grava só com --gravar. Apaga e reescreve as linhas do lote
-(o cálculo é determinístico a partir de trends_calibrados + is_partial).
+(o cálculo é determinístico a partir de trends_calibrados + trends_pontos).
+
+EMPATES (14/10/2026, docs/sessoes/2026-10-11.md §3.5 e §4.1): as decisões correm sobre os
+valores BRUTOS inteiros do pedido, em fracções exactas — "≥ 1,5" e "≥ 3" contam o igual, como
+a regra diz. Antes corriam sobre o valor na régua do eixo em vírgula flutuante, e um empate
+exacto (12 contra 8 = 1,5) decidia-se pelo último algarismo. A regra é invariante à escala
+dentro de um termo, por isso decidir nos brutos dá a decisão da régua do eixo. O factor só
+entra depois, nos números que se gravam e mostram.
 """
 import argparse, json, os, statistics as st, sys, urllib.request
 from collections import defaultdict
 from datetime import date
+from fractions import Fraction as F
 
 # ---- parâmetros (docs/metodo/2026-09-18-alertas-regra.md, secções 3 e 7) ---------------
+# Como fracções exactas desde 14/10/2026; os valores são os de 18/09.
 N_REF         = 8      # semanas completas de referência
 MIN_COM_DADOS = 6      # das N_REF, quantas > 0 para o termo ter "procura regular"
-PISO_ABS      = 2.0    # pontos na régua do PEDIDO (amostragem do Google: dif. média 1,9)
-PISO_REL      = 0.10   # ou 10 % da referência
-Z_MIN         = 3.0    # alerta
-Z_OBS         = 2.0    # "a observar"
-RAZAO_MIN     = 1.5
-TOL_SAZONAL   = 1.25
-RAW_MIN       = 20.0   # aparecimento: acima do piscar (10–19) na régua do pedido
-MULT_APAREC   = 2.0    # aparecimento: contra o máximo das 52 semanas anteriores
+PISO_ABS      = F(2)          # pontos na régua do PEDIDO (amostragem do Google: dif. média 1,9)
+PISO_REL      = F(1, 10)      # ou 10 % da referência
+Z_MIN         = F(3)          # alerta
+Z_OBS         = F(2)          # "a observar"
+RAZAO_MIN     = F(3, 2)
+TOL_SAZONAL   = F(5, 4)
+RAW_MIN       = F(20)         # aparecimento: acima do piscar (10–19) na régua do pedido
+MULT_APAREC   = F(2)          # aparecimento: contra o máximo das 52 semanas anteriores
+K_MAD         = F('1.4826')
 # ----------------------------------------------------------------------------------------
+
+class SerieAmbigua(Exception):
+    """A série de um termo não tem um só pedido e um só factor nas semanas do lote. A função
+    única aborta em vez de escolher (2026-10-11.md §4.1 b). É uma Exception, não um
+    sys.exit: o passo 7 do script 5 apanha-a e o lote fica gravado."""
 
 def mad(xs, m): return st.median(abs(x - m) for x in xs)
 
-def avalia(vals, i, fac, historico=None):
-    """vals: [(data, valor_eixo)] ordenado, sem a semana parcial; i: a semana avaliada;
-    fac: factor de calibração do termo (valor_eixo = valor * fac); historico: a série
-    inteira do termo no lote (para a sazonalidade). Devolve um dicionário ou None."""
+def avalia(vals, i, historico=None):
+    """vals: [(data, bruto)] ordenado, sem a semana parcial, com os brutos INTEIROS do pedido
+    (ou Fraction); i: a semana avaliada; historico: a série inteira do termo no lote (para a
+    sazonalidade). Tudo na régua do pedido e em aritmética exacta. Devolve um dicionário ou None."""
     if i < N_REF: return None
-    x = vals[i][1]; ref_vals = [v for _, v in vals[i-N_REF:i]]
+    x = F(vals[i][1]); ref_vals = [F(v) for _, v in vals[i-N_REF:i]]
     com_dados = sum(1 for v in ref_vals if v > 0); ref = st.median(ref_vals)
     elegivel = com_dados >= MIN_COM_DADOS and ref > 0
-    ruido = max(1.4826 * mad(ref_vals, ref), PISO_ABS * fac, PISO_REL * ref)
-    z = (x - ref) / ruido if ref > 0 else 0.0
-    razao = x / ref if ref > 0 else 0.0
+    ruido = max(K_MAD * mad(ref_vals, ref), PISO_ABS, PISO_REL * ref)
+    z = (x - ref) / ruido if ref > 0 else F(0)
+    razao = x / ref if ref > 0 else F(0)
     fator = None
     if historico and elegivel:
         d = vals[i][0]; datas = [h[0] for h in historico]; vh = [h[1] for h in historico]
@@ -51,30 +66,34 @@ def avalia(vals, i, fac, historico=None):
         for anos in (1, 2, 3, 4):
             k = j - 52 * anos
             if j < 0 or k - N_REF < 0: break
-            base_vals = vh[k-N_REF:k]; base = st.median(base_vals)
+            base_vals = [F(v) for v in vh[k-N_REF:k]]; base = st.median(base_vals)
             if base > 0 and sum(1 for v in base_vals if v > 0) >= MIN_COM_DADOS:
-                fatores.append(max(vh[m] for m in (k-1, k, k+1)) / base)
+                fatores.append(F(max(vh[m] for m in (k-1, k, k+1))) / base)
         if fatores: fator = st.median(fatores)
     esperado = ref * fator if fator else None
     sazonal = esperado is not None and fator >= RAZAO_MIN and x <= esperado * TOL_SAZONAL
     subida = elegivel and z >= Z_MIN and razao >= RAZAO_MIN
-    raw = x / fac; prev = [v for _, v in vals[max(0, i-52):i]]; max52 = max(prev)
-    aparecimento = (not elegivel) and raw >= RAW_MIN and x >= MULT_APAREC * max(max52, 1e-9)
+    raw = x; prev = [F(v) for _, v in vals[max(0, i-52):i]]; max52 = max(prev)
+    aparecimento = (not elegivel) and raw >= RAW_MIN and x >= MULT_APAREC * max(max52, F(1, 10**9))
     return dict(x=x, ref=ref, ruido=ruido, z=z, razao=razao, fator=fator, sazonal=sazonal,
                 elegivel=elegivel, subida=subida, aparecimento=aparecimento, raw=raw, max52=max52)
 
 def alertas_do_termo(vals, fac):
-    """Percorre a série completa de um termo e devolve as linhas de trends_alertas (sem
-    lote/eixo/termo). O "em curso" sai daqui: um acontecimento começa num disparo e continua
+    """Percorre a série completa de um termo (brutos do pedido) e devolve as linhas de
+    trends_alertas (sem lote/eixo/termo), com os números na régua do eixo (× fac) e em float.
+    As decisões ficam todas na régua do pedido, exactas. O "em curso" sai daqui: um acontecimento começa num disparo e continua
     — subida: enquanto o valor se mantiver ≥ RAZAO_MIN × a referência de antes do 1.º disparo;
     — aparecimento: enquanto ficar ≥ RAW_MIN na régua do pedido E o termo ainda não tiver
       procura regular (quando passa a ter, deixou de ser "normalmente sem procura" e é a
       regra de subida que o julga daí em diante).
     A referência E o ruído ficam congelados nos de antes do 1.º disparo, para `z` gravado ser
     sempre (valor − referência) / ruído, como a coluna diz."""
+    fe = F(fac)
+    def eixo(v): return None if v is None else float(v * fe)      # régua do eixo, para gravar
+    def num(v): return None if v is None else float(v)            # razão, z, factor sazonal
     linhas = []; curso = None   # curso = dict(tipo, inicio, ref, ruido, n)
     for i in range(N_REF, len(vals)):
-        r = avalia(vals, i, fac, vals); d = vals[i][0]; x = r['x']
+        r = avalia(vals, i, vals); d = vals[i][0]; x = r['x']
         if curso:
             if curso['tipo'] == 'subida':
                 continua = x >= RAZAO_MIN * curso['ref']
@@ -82,33 +101,56 @@ def alertas_do_termo(vals, fac):
                 continua = r['raw'] >= RAW_MIN and not r['elegivel']
             if continua:
                 curso['n'] += 1
-                linhas.append(dict(semana=d, tipo=curso['tipo'], valor=x, referencia=curso['ref'],
-                                   razao=x / curso['ref'] if curso['ref'] > 0 else 0.0,
-                                   z=(x - curso['ref']) / curso['ruido'] if curso['tipo'] == 'subida' else None,
-                                   ruido=curso['ruido'],
-                                   fator_sazonal=r['fator'], max_anterior=r['max52'] if curso['tipo'] == 'aparecimento' else None,
+                linhas.append(dict(semana=d, tipo=curso['tipo'], valor=eixo(x), referencia=eixo(curso['ref']),
+                                   razao=num(x / curso['ref'] if curso['ref'] > 0 else F(0)),
+                                   z=num((x - curso['ref']) / curso['ruido']) if curso['tipo'] == 'subida' else None,
+                                   ruido=eixo(curso['ruido']),
+                                   fator_sazonal=num(r['fator']), max_anterior=eixo(r['max52']) if curso['tipo'] == 'aparecimento' else None,
                                    semana_n=curso['n'], inicio=curso['inicio']))
                 continue
             curso = None
+        base = dict(semana=d, valor=eixo(x), referencia=eixo(r['ref']), razao=num(r['razao']),
+                    ruido=eixo(r['ruido']), semana_n=1, inicio=d)
         if r['subida'] and not r['sazonal']:
             curso = dict(tipo='subida', inicio=d, ref=r['ref'], ruido=r['ruido'], n=1)
-            linhas.append(dict(semana=d, tipo='subida', valor=x, referencia=r['ref'], razao=r['razao'], z=r['z'],
-                               ruido=r['ruido'], fator_sazonal=r['fator'], max_anterior=None, semana_n=1, inicio=d))
+            linhas.append(dict(base, tipo='subida', z=num(r['z']), fator_sazonal=num(r['fator']), max_anterior=None))
         elif r['aparecimento']:
             curso = dict(tipo='aparecimento', inicio=d, ref=r['ref'], ruido=r['ruido'], n=1)
-            linhas.append(dict(semana=d, tipo='aparecimento', valor=x, referencia=r['ref'], razao=r['razao'], z=None,
-                               ruido=r['ruido'], fator_sazonal=None, max_anterior=r['max52'], semana_n=1, inicio=d))
+            linhas.append(dict(base, tipo='aparecimento', z=None, fator_sazonal=None, max_anterior=eixo(r['max52'])))
         elif r['subida'] and r['sazonal']:
-            linhas.append(dict(semana=d, tipo='sazonal', valor=x, referencia=r['ref'], razao=r['razao'], z=r['z'],
-                               ruido=r['ruido'], fator_sazonal=r['fator'], max_anterior=None, semana_n=1, inicio=d))
+            linhas.append(dict(base, tipo='sazonal', z=num(r['z']), fator_sazonal=num(r['fator']), max_anterior=None))
         elif r['elegivel'] and r['z'] >= Z_OBS:
-            linhas.append(dict(semana=d, tipo='a_observar', valor=x, referencia=r['ref'], razao=r['razao'], z=r['z'],
-                               ruido=r['ruido'], fator_sazonal=r['fator'], max_anterior=None, semana_n=1, inicio=d))
+            linhas.append(dict(base, tipo='a_observar', z=num(r['z']), fator_sazonal=num(r['fator']), max_anterior=None))
     return linhas
 
+def series_brutas(linhas):
+    """A FUNÇÃO ÚNICA da série (14/10/2026, 2026-10-11.md §4.1 b). O passo 7 do script 5 e o
+    --lote daqui chamam-na com os mesmos dados — os brutos inteiros do pedido escolhido pela
+    deduplicação: o passo 7 tira-os da memória, o --lote de trends_pontos pelo pedido_id de
+    trends_calibrados.
+    linhas: dicts com eixo, termo, data ('AAAA-MM-DD'), pedido_id, factor, valor (bruto inteiro)
+    e parcial (o is_partial DESSE ponto, no pedido escolhido).
+    Devolve ({(eixo, termo): {data: bruto}} sem as semanas parciais, {(eixo, termo): factor}).
+    Aborta com SerieAmbigua se um (eixo, termo) tiver mais de um pedido_id ou mais de um
+    factor, ou uma data repetida, ou um bruto que não seja inteiro."""
+    series, factor, pedido, vistas = defaultdict(dict), {}, {}, set()
+    for l in linhas:
+        k, d, v = (l['eixo'], l['termo']), l['data'], l['valor']
+        if pedido.setdefault(k, l['pedido_id']) != l['pedido_id']:
+            raise SerieAmbigua('%s/%s: mais de um pedido_id nas semanas do lote (%s, %s)' % (k + (pedido[k], l['pedido_id'])))
+        if factor.setdefault(k, l['factor']) != l['factor']:
+            raise SerieAmbigua('%s/%s: mais de um factor nas semanas do lote (%s, %s)' % (k + (factor[k], l['factor'])))
+        if isinstance(v, bool) or not isinstance(v, int):
+            raise SerieAmbigua('%s/%s %s: bruto não inteiro (%r)' % (k + (d, v)))
+        if (k, d) in vistas:
+            raise SerieAmbigua('%s/%s: a data %s aparece duas vezes' % (k + (d,)))
+        vistas.add((k, d))
+        if not l['parcial']: series[k][d] = v
+    return dict(series), factor
+
 def calcula(series, factor):
-    """series: {(eixo, termo): {data: valor_eixo}} SEM a semana parcial; factor: {(eixo, termo): f}.
-    Devolve as linhas para trends_alertas (sem lote_id)."""
+    """series: {(eixo, termo): {data: bruto}} SEM a semana parcial (de series_brutas);
+    factor: {(eixo, termo): f}. Devolve as linhas para trends_alertas (sem lote_id)."""
     out = []
     for (eixo, termo), s in series.items():
         vals = sorted(s.items())
@@ -141,17 +183,33 @@ def rest(url, key, path, method='GET', body=None, pagesize=1000):
         if len(chunk) < pagesize: return out
         start += pagesize
 
-def series_do_lote(url, key, lote_id):
-    """{(eixo, termo): {data: valor_eixo}} sem a semana parcial, e os factores."""
-    parciais = {(p['pedido_id'], p['termo'], p['data'][:10])
-                for p in rest(url, key, 'trends_pontos?select=pedido_id,termo,data&is_partial=eq.true')}
+def linhas_do_lote(url, key, lote_id):
+    """As linhas da series_brutas, pela base: trends_calibrados diz que pedido e que factor
+    ficaram para cada (eixo, termo, data); o bruto e o is_partial vêm de trends_pontos desse
+    pedido. Confere que bruto × factor dá o valor_eixo gravado (só o arredondamento a 3 casas
+    os separa); se não der, a junção está errada e aborta."""
     cal = rest(url, key, f'trends_calibrados?select=eixo,termo,data,valor_eixo,factor,pedido_id&lote_id=eq.{lote_id}&order=eixo,termo,data')
-    series, factor = defaultdict(dict), {}
+    ids = sorted({c['pedido_id'] for c in cal})
+    pontos = {}
+    for i in range(0, len(ids), 20):
+        for p in rest(url, key, 'trends_pontos?select=pedido_id,termo,data,valor,is_partial'
+                                f'&pedido_id=in.({",".join(ids[i:i+20])})&order=pedido_id,termo,data'):
+            pontos[(p['pedido_id'], p['termo'], p['data'][:10])] = p
+    out = []
     for c in cal:
-        d = c['data'][:10]
-        if (c['pedido_id'], c['termo'], d) in parciais: continue
-        k = (c['eixo'], c['termo']); series[k][d] = float(c['valor_eixo']); factor[k] = float(c['factor'])
-    return series, factor
+        d = c['data'][:10]; p = pontos.get((c['pedido_id'], c['termo'], d))
+        if p is None:
+            raise SerieAmbigua('%s/%s %s: sem ponto em trends_pontos para o pedido %s' % (c['eixo'], c['termo'], d, c['pedido_id']))
+        if p['valor'] is not None and abs(p['valor'] * float(c['factor']) - float(c['valor_eixo'])) > 1e-3:
+            raise SerieAmbigua('%s/%s %s: bruto %s × factor %s ≠ valor_eixo %s' % (
+                c['eixo'], c['termo'], d, p['valor'], c['factor'], c['valor_eixo']))
+        out.append(dict(eixo=c['eixo'], termo=c['termo'], data=d, pedido_id=c['pedido_id'],
+                        factor=float(c['factor']), valor=p['valor'], parcial=p['is_partial']))
+    return out
+
+def series_do_lote(url, key, lote_id):
+    """{(eixo, termo): {data: bruto}} sem a semana parcial, e os factores — pela função única."""
+    return series_brutas(linhas_do_lote(url, key, lote_id))
 
 def chave_service_role():
     key = os.environ.get('SUPABASE_SERVICE_ROLE_KEY')

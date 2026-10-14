@@ -1,0 +1,122 @@
+{
+ "4dad25b9-c816-4563-ab2d-fe3d77b3b3aa": {
+  "iniciado": "2026-09-18T13:04",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 0,
+  "novas": 77,
+  "so_gravadas": 0,
+  "so_novas": 77,
+  "tipos_gravadas": {},
+  "tipos_novas": {
+   "a_observar": 36,
+   "subida": 33,
+   "aparecimento": 8
+  }
+ },
+ "ec6cc6fc-f6c5-4b53-a7df-ed9b1bd6b656": {
+  "iniciado": "2026-09-18T13:26",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 394,
+  "novas": 413,
+  "so_gravadas": 4,
+  "so_novas": 23,
+  "tipos_gravadas": {
+   "a_observar": 219,
+   "subida": 149,
+   "aparecimento": 8,
+   "sazonal": 18
+  },
+  "tipos_novas": {
+   "a_observar": 235,
+   "subida": 151,
+   "aparecimento": 9,
+   "sazonal": 18
+  }
+ },
+ "11031356-63ed-4ab5-b45b-e8fc99a088b0": {
+  "iniciado": "2026-09-24T16:38",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 1185,
+  "novas": 1201,
+  "so_gravadas": 3,
+  "so_novas": 19,
+  "tipos_gravadas": {
+   "a_observar": 478,
+   "subida": 637,
+   "sazonal": 45,
+   "aparecimento": 25
+  },
+  "tipos_novas": {
+   "a_observar": 487,
+   "subida": 643,
+   "sazonal": 45,
+   "aparecimento": 26
+  }
+ },
+ "87b4fba4-0755-4644-838a-4e9056a5dc66": {
+  "iniciado": "2026-09-28T08:45",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 1184,
+  "novas": 1196,
+  "so_gravadas": 0,
+  "so_novas": 12,
+  "tipos_gravadas": {
+   "subida": 668,
+   "a_observar": 463,
+   "sazonal": 34,
+   "aparecimento": 19
+  },
+  "tipos_novas": {
+   "subida": 668,
+   "a_observar": 475,
+   "sazonal": 34,
+   "aparecimento": 19
+  }
+ },
+ "fe58e0e5-a336-4cae-a511-aa42bfb859a3": {
+  "iniciado": "2026-10-04T21:44",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 1199,
+  "novas": 1212,
+  "so_gravadas": 0,
+  "so_novas": 13,
+  "tipos_gravadas": {
+   "subida": 644,
+   "a_observar": 479,
+   "aparecimento": 29,
+   "sazonal": 47
+  },
+  "tipos_novas": {
+   "subida": 645,
+   "a_observar": 491,
+   "aparecimento": 29,
+   "sazonal": 47
+  }
+ },
+ "3bbae660-a565-41c5-a470-ea436bdc37d0": {
+  "iniciado": "2026-10-11T12:04",
+  "estado": "completo",
+  "erro": null,
+  "gravadas": 1230,
+  "novas": 1239,
+  "so_gravadas": 2,
+  "so_novas": 11,
+  "tipos_gravadas": {
+   "a_observar": 515,
+   "subida": 654,
+   "sazonal": 43,
+   "aparecimento": 18
+  },
+  "tipos_novas": {
+   "a_observar": 520,
+   "subida": 658,
+   "sazonal": 43,
+   "aparecimento": 18
+  }
+ }
+}

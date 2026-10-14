@@ -25,6 +25,8 @@ _spec = _iu.spec_from_file_location('trends_alertas', os.path.join(os.path.dirna
 TA = _iu.module_from_spec(_spec); _spec.loader.exec_module(TA)
 N_REF, MIN_COM_DADOS, Z_MIN, RAZAO_MIN = TA.N_REF, TA.MIN_COM_DADOS, TA.Z_MIN, TA.RAZAO_MIN
 avalia = TA.avalia
+# 14/10/2026: a série e o avalia passaram a estar na régua do PEDIDO (brutos inteiros, decisões
+# exactas — 2026-10-11.md §4.1); os números que este teste mostra são brutos, não da régua do eixo.
 
 def carrega():
     url, key = TA.env_publico()
@@ -40,9 +42,9 @@ def carrega():
 def fmt(d, eixo, termo, r):
     tipo = ('APARECIMENTO' if r['aparecimento'] else 'sazonal     ' if r['sazonal']
             else 'SUBIDA      ' if r['subida'] else 'a observar  ')
-    f = f"{r['fator']:.1f}" if r['fator'] else ' — '
-    return (f"{d} {tipo} {eixo:13s} {termo:34s} x={r['x']:6.1f} ref={r['ref']:6.1f} "
-            f"ruído={r['ruido']:5.1f} z={r['z']:5.1f} ×{r['razao']:4.1f} saz×{f}")
+    f = f"{float(r['fator']):.1f}" if r['fator'] else ' — '   # Fraction não aceita :.1f no Python 3.9
+    return (f"{d} {tipo} {eixo:13s} {termo:34s} x={float(r['x']):6.1f} ref={float(r['ref']):6.1f} "
+            f"ruído={float(r['ruido']):5.1f} z={float(r['z']):5.1f} ×{float(r['razao']):4.1f} saz×{f}")
 
 def main():
     modo = sys.argv[1] if len(sys.argv) > 1 else 'resumo'
@@ -65,7 +67,7 @@ def main():
                         if l != lote5: continue
                         vals = sorted(s.items())
                         for i in range(N_REF, len(vals)):
-                            r = avalia(vals, i, factor[(l, eixo, termo)], hist(eixo, termo)); n += 1; e += r['elegivel']
+                            r = avalia(vals, i, hist(eixo, termo)); n += 1; e += r['elegivel']
                             if r['subida']: a.append((vals[i][0], r))
                     ns = [x for x in a if not x[1]['sazonal']]; sem = collections.Counter(x[0] for x in ns)
                     print(f"N_REF={nref} z≥{z} ×{rz}: elegíveis {e}/{n} · subidas {len(a)} · sazonais {len(a)-len(ns)} "
@@ -77,10 +79,10 @@ def main():
             print(f"\n== lote {lote[:8]} ({lotes[lote]['notas'] or ''}) — última semana completa")
             for (l, eixo, termo), s in sorted(series.items()):
                 if l != lote: continue
-                vals = sorted(s.items()); r = avalia(vals, len(vals)-1, factor[(l, eixo, termo)], hist(eixo, termo))
+                vals = sorted(s.items()); r = avalia(vals, len(vals)-1, hist(eixo, termo))
                 if r and (r['subida'] or r['aparecimento'] or (r['elegivel'] and r['z'] >= 2)):
                     print('  ' + fmt(vals[-1][0], eixo, termo, r))
-            eleg = collections.Counter((k[1], avalia(sorted(s.items()), len(s)-1, factor[k])['elegivel'])
+            eleg = collections.Counter((k[1], avalia(sorted(s.items()), len(s)-1)['elegivel'])
                                        for k, s in series.items() if k[0] == lote)
             print('  elegíveis para subida, por eixo:', {e: f"{eleg[(e, True)]}/{eleg[(e, True)]+eleg[(e, False)]}" for e in sorted({k[0] for k in eleg})})
         return
@@ -91,7 +93,7 @@ def main():
         if l != lote5: continue
         vals = sorted(s.items())
         for i in range(N_REF, len(vals)):
-            r = avalia(vals, i, factor[(l, eixo, termo)], vals); n += 1; e += r['elegivel']
+            r = avalia(vals, i, vals); n += 1; e += r['elegivel']
             if r['subida'] or r['aparecimento']: disparos.append((vals[i][0], eixo, termo, r))
     sub = [d for d in disparos if d[3]['subida'] and not d[3]['sazonal']]
     saz = [d for d in disparos if d[3]['subida'] and d[3]['sazonal']]

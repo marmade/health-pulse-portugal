@@ -22,7 +22,9 @@ O QUE FAZ
   7. Calcula os ALERTAS do lote (fase 3, scripts/trends_alertas.py — regra em
      docs/metodo/2026-09-18-alertas-regra.md) e grava-os em trends_alertas. Se este passo
      falhar, o lote fica gravado na mesma: os alertas recalculam-se com
-     `python3 scripts/trends_alertas.py --lote <id> --gravar`.
+     `python3 scripts/trends_alertas.py --lote <id> --gravar`. Desde 14/10/2026 a série sai
+     da mesma função que esse recálculo usa (series_brutas), e o script sai com 4
+     (SAIDA_ALERTAS_FALHARAM) quando o lote ficou gravado mas os alertas não.
 
 COMO CORRER
   python3 scripts/5_fetch_google_trends.py --dry-run                # não grava nada
@@ -52,6 +54,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, "scripts"))   # trends_alertas.py, ao lado deste
 CFG = json.load(open(os.path.join(RAIZ, "scripts", "trends_grupos.json")))
 AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"]
+SAIDA_ALERTAS_FALHARAM = 4   # o lote está gravado; só o passo 7 falhou (recolher_domingo.sh sabe)
 
 # ── ligação à base ──────────────────────────────────────────────────────────
 def env_publico():
@@ -372,7 +375,7 @@ def gravar(pedidos, calibrados, resumo, args):
                 "return=representation")[0]
     ids = []
     try:
-      escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids)
+      return escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids)
     except Exception as e:
         rest(url, key, "trends_lotes?id=eq." + lote["id"], "PATCH",
              dict(terminado_em=datetime.now(timezone.utc).isoformat(), estado="falhou",
@@ -401,19 +404,33 @@ def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
          dict(terminado_em=datetime.now(timezone.utc).isoformat(), estado=estado))
     print("GRAVADO lote %s (%s): %d pedidos, %d pontos, %d calibrados" % (
         lote["id"], estado, len(pedidos), resumo["pontos"], len(cal)))
-    # 7. os alertas do lote — a semana parcial fica de fora, como na regra
+    # 7. os alertas do lote — pela função única (14/10/2026): os mesmos brutos que o recálculo
+    # lê da base, por isso o gravado aqui é igual ao de trends_alertas.py --lote. Se a série
+    # abortar (SerieAmbigua) ou a escrita falhar, o lote JÁ está gravado e completo: só os
+    # alertas falham, o TA.gravar não chega a apagar nada, e o main sai com 4.
     try:
         import trends_alertas as TA
-        parciais = {(t, d.date().isoformat()) for p in pedidos for t, s in p["series"].items() for d, _, pc in s if pc}
-        series, factor = {}, {}
-        for e, t, d, ve, f, i in dedup_passo2(pedidos, calibrados):
-            if (t, d.date().isoformat()) in parciais: continue
-            series.setdefault((e, t), {})[d.date().isoformat()] = ve; factor[(e, t)] = f
+        series, factor = TA.series_brutas(linhas_brutas(pedidos, calibrados))
         n = TA.gravar(url, key, lote["id"], TA.calcula(series, factor))
-        print("ALERTAS: %d linhas em trends_alertas (regra de 18/09/2026)" % n)
+        print("ALERTAS: %d linhas em trends_alertas (regra de 18/09/2026, empates de 14/10/2026)" % n)
+        return True
     except Exception as ex:
-        print("AVISO: alertas não calculados (%s: %s) — o lote está gravado; correr "
+        print("AVISO: ALERTAS NÃO CALCULADOS (%s: %s) — o lote está gravado; correr "
               "scripts/trends_alertas.py --lote %s --gravar" % (type(ex).__name__, str(ex)[:200], lote["id"][:8]))
+        return False
+
+def linhas_brutas(pedidos, calibrados):
+    """As linhas da trends_alertas.series_brutas, da memória: o pedido e o factor que a
+    deduplicação escolheu e, desse pedido, o bruto inteiro e o is_partial. O factor vai
+    arredondado a 6 casas, como fica em trends_calibrados, para os números gravados serem
+    os mesmos que o recálculo pela base dá."""
+    brutos = {(i, t, d): (v, pc) for i, p in enumerate(pedidos) for t, s in p["series"].items() for d, v, pc in s}
+    out = []
+    for e, t, d, ve, f, i in dedup_passo2(pedidos, calibrados):
+        v, pc = brutos[(i, t, d)]
+        out.append(dict(eixo=e, termo=t, data=d.date().isoformat(), pedido_id=i,
+                        factor=round(f, 6), valor=v, parcial=pc))
+    return out
 
 def main():
     ap = argparse.ArgumentParser()
@@ -457,7 +474,8 @@ def main():
                        calibrados=[(e, t, d.isoformat(), round(ve, 3), round(f, 6), i) for e, t, d, ve, f, i in calibrados]),
                   open(args.dump, "w"), ensure_ascii=False)
         print("dump:", args.dump)
-    if args.gravar: gravar(pedidos, calibrados, resumo, args)
+    if args.gravar:
+        if not gravar(pedidos, calibrados, resumo, args): sys.exit(SAIDA_ALERTAS_FALHARAM)
     else: print("DRY-RUN: nada gravado.")
 
 if __name__ == "__main__":

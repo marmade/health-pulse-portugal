@@ -27,7 +27,14 @@ cd "$(dirname "$0")/.." || exit 1
 echo "== 1. recolher =="
 .venv-trends/bin/python scripts/5_fetch_google_trends.py \
   --gravar --timeframe 'today 5-y' --origem "domingo, à mão, $(date +%Y-%m-%d)"
-if [ $? -ne 0 ]; then
+SAIDA=$?
+# 4 = o lote ficou gravado e completo, só os alertas (passo 7) falharam (14/10/2026). A
+# recolha do Google não se perde: segue para a confirmação, e os alertas recalculam-se à parte.
+if [ $SAIDA -eq 4 ]; then
+  echo
+  echo ">>> OS ALERTAS FALHARAM — o lote está gravado. Ver o AVISO acima e correr o comando"
+  echo ">>> que ele indica (scripts/trends_alertas.py --lote ... --gravar) depois de ver a causa."
+elif [ $SAIDA -ne 0 ]; then
   echo
   echo "A RECOLHA FALHOU. Nada mais a fazer — o lote anterior fica como estava."
   exit 1
