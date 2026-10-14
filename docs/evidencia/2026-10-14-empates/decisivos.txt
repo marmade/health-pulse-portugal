@@ -1,0 +1,18 @@
+ec6cc6fc depressão       2025-03-09 base (valor_eixo a 3 casas)  z=2.999950721313091 razão=1.5999881967600105 x=108.444 1,5×ref=101.667
+ec6cc6fc depressão       2025-03-23 base (valor_eixo a 3 casas)  z=2.2499999262295107 razão=1.4285694212205096 x=101.667 1,5×ref=106.7505
+ec6cc6fc depressão       2025-03-09 memória (bruto × factor)     z=3.0000000000000004 razão=1.6 x=108.444448 1,5×ref=101.66666999999998
+ec6cc6fc depressão       2025-03-23 memória (bruto × factor)     z=2.250000000000001 razão=1.4285714285714288 x=101.66667 1,5×ref=106.75000349999998
+   continuação depressão 2025-03-23 vs ref congelada de 2025-03-09 (base): x=101.667 ≥ 1,5×ref=101.667? True
+   continuação depressão 2025-03-23 vs ref congelada de 2025-03-09 (memória): x=101.66667 ≥ 1,5×ref=101.66666999999998? True
+11031356 hipertensão     2025-02-23 base (valor_eixo a 3 casas)  z=2.9999861944440607 razão=1.7499939236322095 x=72.0 1,5×ref=61.7145
+11031356 hipertensão     2025-11-16 base (valor_eixo a 3 casas)  z=2.9999861944440607 razão=1.7499939236322095 x=72.0 1,5×ref=61.7145
+11031356 hipertensão     2025-02-23 memória (bruto × factor)     z=3.0 razão=1.75 x=71.999998 1,5×ref=61.714284000000006
+11031356 hipertensão     2025-11-16 memória (bruto × factor)     z=3.0 razão=1.75 x=71.999998 1,5×ref=61.714284000000006
+11031356 antidepressivos 2023-04-23 base (valor_eixo a 3 casas)  z=3.0000004918033594 razão=1.545446416595878 x=34.567 1,5×ref=33.5505
+11031356 antidepressivos 2023-04-23 memória (bruto × factor)     z=2.9999999999999996 razão=1.5454545454545454 x=34.566660999999996 1,5×ref=33.5499945
+3bbae660 lipedema        2025-06-22 base (valor_eixo a 3 casas)  z=0.8994180058421719 razão=1.2857274912183396 x=27.818 1,5×ref=32.45400000000001
+3bbae660 lipedema        2025-06-22 memória (bruto × factor)     z=0.8993210126354603 razão=1.2857142857142858 x=27.818181 1,5×ref=32.4545445
+   continuação lipedema 2025-06-22 vs ref congelada de 2025-06-08 (base): x=27.818 ≥ 1,5×ref=27.817500000000003? True
+   continuação lipedema 2025-06-22 vs ref congelada de 2025-06-08 (memória): x=27.818181 ≥ 1,5×ref=27.818181? True
+3bbae660 toc             2022-09-25 base (valor_eixo a 3 casas)  z=4.047098339522471 razão=1.5000285003135032 x=39.474 1,5×ref=39.47325
+3bbae660 toc             2022-09-25 memória (bruto × factor)     z=4.046944556859571 razão=1.5000000000000002 x=39.473676000000005 1,5×ref=39.473676
