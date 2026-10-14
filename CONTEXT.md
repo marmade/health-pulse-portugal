@@ -1,6 +1,16 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-13 (sessão 29) — **top 10 do arquivo publicado** (`6b732e0`):
+> Última actualização: 2026-10-14 (sessão 30) — **correcção dos empates no código** (`5c0391f`):
+> decisões nos brutos inteiros em fracções exactas, função única da série para o passo 7 e o
+> recálculo, saída 4 quando o lote fica gravado e os alertas não. **Cópia
+> `trends_alertas_regra_20260918` aplicada e provada** (5192 linhas, `md5` igual, sem
+> cascade). **O `--gravar` falhou no 1.º lote** (`ec6cc6fc`, SSL no POST depois do DELETE) e
+> o lote foi reposto a partir da cópia. A base está igual à de antes. Achado: o `gravar()` não
+> é atómico, e o passo 7 de domingo está exposto ao mesmo risco. Sexta 16: gravação
+> tudo-ou-nada com teste, e só depois o `--gravar` dos 5 lotes (o `4dad25b9` fica fora).
+> Registo em `docs/sessoes/2026-10-14.md`. Via B confirmada fora do cron; função
+> teste-429-trends apagada pela Marta no painel do Supabase (ficam 7 funções).
+> Anterior: 2026-10-13 (sessão 29) — **top 10 do arquivo publicado** (`6b732e0`):
 > empates na mesma posição, página inicial a mostrar os primeiros do mesmo top; arranque da
 > `archive-weekly` v9 provado pelo Cowork. **403 dos guiões corrigido e provado sem escrita**
 > (`2f374a1`). Plano revisto: correcção dos empates na quarta 14; sexta 16 e sábado 17 de
@@ -1167,6 +1177,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   `docs/evidencia/2026-10-01-via-b-corrida-3/`. O passo 1 do workflow principal continua
   desligado. **Alpha da Google Trends API:** candidatura submetida a 09/09/2026, ainda sem
   resposta.
+  Confirmado a 14/10: nenhuma corrida pelo cron depois da #4 (05/10); 4 corridas no total, 2 pelo cron e 2 à mão (docs/sessoes/2026-10-14.md §1).
 
 ### Restantes
 
@@ -1214,7 +1225,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       `VITE_PERPLEXITY_API_KEY`). A prova é a corrida de segunda 05/10. Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
       registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.~~ Fechado a 13/10: o 403 de 05/10 e 12/10 era a chamada interna sem `Authorization`; corrigido e provado sem escrita (`2f374a1`); geração real na segunda 19 — `docs/sessoes/2026-10-13.md` §6.
 - [x] ~~**`supabase/config.toml` com `verify_jwt = false` nas funções com restrição**, publicadas a `true` (05/10).~~ Fechado a 13/10: `true` nas quatro, igual ao publicado (`2f374a1`).
-- [ ] **Protecção do passo 7 se a função única parar no domingo** — se a correcção dos empates abortar perante ambiguidade, a recolha do Google tem de ficar gravada e só os alertas falham. A confirmar e proteger com a correcção (`docs/sessoes/2026-10-13-cowork.md` §7).
+- [ ] ~~**Protecção do passo 7 se a função única parar no domingo**~~ Feito a 14/10 para o aborto da série: o lote fica gravado, e o script sai com 4, que o `recolher_domingo.sh` trata (`5c0391f`). **Não cobre uma falha de rede dentro do `gravar()`:** essa apaga os alertas do lote e deixa-os vazios ou a meio (`docs/sessoes/2026-10-14.md` §10.4). Ver o pendente seguinte.
+- [ ] **`gravar()` dos alertas tudo-ou-nada** — hoje apaga num pedido e escreve em blocos noutros, sem transacção (`trends_alertas.py` l.223–228; o passo 7 usa-o). A forma é escolhida e declarada pelo Claude Code, com um teste que simule a falha a meio; corrigir também o comentário das l.407–410 do script 5. Sexta 16, antes do `--gravar` dos 5 lotes (`docs/sessoes/2026-10-14.md` §10.4). Domingo 18 continua exposto até lá.
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
 - [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
 - [ ] **`guioes_semanais.erro` diz "substitui a tentativa de…" quando a geração correu bem.** `[sessão 20]` Lê-se como falha. Decidir se passa para uma coluna própria ou muda de prefixo. Não mexido (decisão da Marta, 28/09).
@@ -1559,6 +1571,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       colunas, políticas sem nome e políticas **com** nome, que era a última a divergir.
       **Fica por verificar uma coisa só:** o comportamento pelo caminho `psql` sem
       `--single-transaction`. Ver `AUDIT.md` secção 6, de 6.1 a 6.7.
+      14/10/2026: a tabela trends_alertas_regra_20260918 (migração 20261014180000, aplicada pelo MCP com a versão remota 20261014182635) não está na consolidada; o desfasamento de versão soma-se ao da regra 2 do CLAUDE.md. A incluir na próxima auditoria (docs/sessoes/2026-10-14.md §10).
 - [ ] **`scripts/switch_supabase.sh` já só faz metade do que diz.** Verificado a 14/09/2026.
       Foi feito para trocar todas as referências da instância antiga para a nova, em cinco
       alvos. **Depois de 09/09/2026 os sete scripts Python leem a chave do ambiente**, logo
