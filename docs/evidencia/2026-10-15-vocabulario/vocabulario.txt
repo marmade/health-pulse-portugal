@@ -1,0 +1,95 @@
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+{
+ "termos": [
+  "burnout",
+  "síndrome de burnout"
+ ],
+ "status": "recolhido",
+ "erro": null,
+ "hora": "2026-10-15T19:55:27.064010+00:00",
+ "formas": {
+  "burnout": {
+   "semanas_na_serie": 262,
+   "parciais": 1,
+   "ultimas_52": {
+    "de": "2025-10-12",
+    "a": "2026-10-04",
+    "media": 18.1,
+    "semanas_acima_de_0": 51,
+    "maximo": 33
+   },
+   "cinco_anos": {
+    "media": 20.36,
+    "semanas_acima_de_0": 260,
+    "semanas": 261,
+    "maximo": 100
+   }
+  },
+  "síndrome de burnout": {
+   "semanas_na_serie": 262,
+   "parciais": 1,
+   "ultimas_52": {
+    "de": "2025-10-12",
+    "a": "2026-10-04",
+    "media": 0.0,
+    "semanas_acima_de_0": 0,
+    "maximo": 0
+   },
+   "cinco_anos": {
+    "media": 0.07,
+    "semanas_acima_de_0": 2,
+    "semanas": 261,
+    "maximo": 10
+   }
+  }
+ }
+}
+/Users/marmade/Documents/health-pulse-portugal/.venv-trends/lib/python3.9/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  df = df.fillna(False)
+{
+ "termos": [
+  "pânico",
+  "ataque de pânico"
+ ],
+ "status": "recolhido",
+ "erro": null,
+ "hora": "2026-10-15T19:55:42.763061+00:00",
+ "formas": {
+  "pânico": {
+   "semanas_na_serie": 262,
+   "parciais": 1,
+   "ultimas_52": {
+    "de": "2025-10-12",
+    "a": "2026-10-04",
+    "media": 3.21,
+    "semanas_acima_de_0": 6,
+    "maximo": 100
+   },
+   "cinco_anos": {
+    "media": 3.98,
+    "semanas_acima_de_0": 56,
+    "semanas": 261,
+    "maximo": 100
+   }
+  },
+  "ataque de pânico": {
+   "semanas_na_serie": 262,
+   "parciais": 1,
+   "ultimas_52": {
+    "de": "2025-10-12",
+    "a": "2026-10-04",
+    "media": 0.1,
+    "semanas_acima_de_0": 2,
+    "maximo": 3
+   },
+   "cinco_anos": {
+    "media": 0.8,
+    "semanas_acima_de_0": 14,
+    "semanas": 261,
+    "maximo": 21
+   }
+  }
+ }
+}
+SAÍDA 0
