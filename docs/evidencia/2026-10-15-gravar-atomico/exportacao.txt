@@ -1,0 +1,1 @@
+{"linhas": 5261, "count_exact": 5261, "repetidas": 0, "por_lote": {"11031356": 1201, "3bbae660": 1239, "87b4fba4": 1196, "ec6cc6fc": 413, "fe58e0e5": 1212}}

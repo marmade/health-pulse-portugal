@@ -1,0 +1,13 @@
+lote 3bbae660 (completo, 32 pedidos): 100 termos, última semana completa 2026-10-04 · linhas: {'a_observar': 520, 'subida': 658, 'sazonal': 43, 'aparecimento': 18}
+
+2026-10-04:
+  alimentacao   [subida      ] creatina 239 — 5.4 vezes acima do valor normal (45) — em curso, 249.ª semana
+  alimentacao   [subida      ] obesidade 174 — 4.7 vezes acima do valor normal (37)
+  alimentacao   [subida      ] hipertensão 78 — 2.1 vezes acima do valor normal (37) — em curso, 2.ª semana
+  alimentacao   [a_observar  ] refluxo 77 — 1.3 vezes acima do valor normal (61) (a observar)
+  emergentes    [subida      ] sarampo 86 — 7.8 vezes acima do valor normal (11)
+  emergentes    [subida      ] gripe A 57 — 5.0 vezes acima do valor normal (11) — em curso, 2.ª semana
+  menopausa     [sazonal     ] cancro da mama 25 — 1.8 vezes acima do valor normal (14) — sazonal: nesta época é habitual (×2.7)
+
+GRAVADO: 1239 linhas em trends_alertas para o lote 3bbae660
+SAÍDA 0

@@ -1,0 +1,9 @@
+lote 87b4fba4 (completo, 33 pedidos): 100 termos, última semana completa 2026-09-20 · linhas: {'subida': 668, 'a_observar': 475, 'sazonal': 34, 'aparecimento': 19}
+
+2026-09-20:
+  alimentacao   [subida      ] creatina 236 — 5.4 vezes acima do valor normal (44) — em curso, 247.ª semana
+  saude-mental  [a_observar  ] tdah 44 — 1.3 vezes acima do valor normal (35) (a observar)
+  saude-mental  [a_observar  ] psiquiatra 78 — 1.2 vezes acima do valor normal (62) (a observar)
+
+GRAVADO: 1196 linhas em trends_alertas para o lote 87b4fba4
+SAÍDA 0

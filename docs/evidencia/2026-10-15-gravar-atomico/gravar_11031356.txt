@@ -1,0 +1,12 @@
+lote 11031356 (completo, 33 pedidos): 100 termos, última semana completa 2026-09-13 · linhas: {'a_observar': 487, 'subida': 643, 'sazonal': 45, 'aparecimento': 26}
+
+2026-09-13:
+  alimentacao   [subida      ] creatina 240 — 5.5 vezes acima do valor normal (44) — em curso, 246.ª semana
+  emergentes    [subida      ] sarampo 46 — 4.4 vezes acima do valor normal (10)
+  emergentes    [a_observar  ] vacinas 51 — 1.3 vezes acima do valor normal (38) (a observar)
+  emergentes    [aparecimento] mosquito tigre 61 — apareceu; normalmente sem procura (máx. anterior 0)
+  menopausa     [sazonal     ] osteoporose 16 — 1.9 vezes acima do valor normal (8) — sazonal: nesta época é habitual (×1.6)
+  menopausa     [a_observar  ] cancro da mama 19 — 1.4 vezes acima do valor normal (14) (a observar)
+
+GRAVADO: 1201 linhas em trends_alertas para o lote 11031356
+SAÍDA 0

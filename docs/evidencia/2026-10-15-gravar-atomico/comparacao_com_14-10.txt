@@ -1,0 +1,5 @@
+ec6cc6fc previsto 14/10 413 {'a_observar': 235, 'aparecimento': 9, 'sazonal': 18, 'subida': 151} | gravado 413 {'a_observar': 235, 'aparecimento': 9, 'sazonal': 18, 'subida': 151} | IGUAL
+11031356 previsto 14/10 1201 {'a_observar': 487, 'aparecimento': 26, 'sazonal': 45, 'subida': 643} | gravado 1201 {'a_observar': 487, 'aparecimento': 26, 'sazonal': 45, 'subida': 643} | IGUAL
+87b4fba4 previsto 14/10 1196 {'a_observar': 475, 'aparecimento': 19, 'sazonal': 34, 'subida': 668} | gravado 1196 {'a_observar': 475, 'aparecimento': 19, 'sazonal': 34, 'subida': 668} | IGUAL
+fe58e0e5 previsto 14/10 1212 {'a_observar': 491, 'aparecimento': 29, 'sazonal': 47, 'subida': 645} | gravado 1212 {'a_observar': 491, 'aparecimento': 29, 'sazonal': 47, 'subida': 645} | IGUAL
+3bbae660 previsto 14/10 1239 {'a_observar': 520, 'aparecimento': 18, 'sazonal': 43, 'subida': 658} | gravado 1239 {'a_observar': 520, 'aparecimento': 18, 'sazonal': 43, 'subida': 658} | IGUAL

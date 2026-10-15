@@ -1,0 +1,5 @@
+{"lote": "ec6cc6fc", "lidas": 394, "count_exact": 394, "repetidas": 0, "tipos": {"a_observar": 219, "aparecimento": 8, "sazonal": 18, "subida": 149}, "calculado_em": 1}
+{"lote": "11031356", "lidas": 1185, "count_exact": 1185, "repetidas": 0, "tipos": {"a_observar": 478, "aparecimento": 25, "sazonal": 45, "subida": 637}, "calculado_em": 3}
+{"lote": "87b4fba4", "lidas": 1184, "count_exact": 1184, "repetidas": 0, "tipos": {"a_observar": 463, "aparecimento": 19, "sazonal": 34, "subida": 668}, "calculado_em": 3}
+{"lote": "fe58e0e5", "lidas": 1199, "count_exact": 1199, "repetidas": 0, "tipos": {"a_observar": 479, "aparecimento": 29, "sazonal": 47, "subida": 644}, "calculado_em": 3}
+{"lote": "3bbae660", "lidas": 1230, "count_exact": 1230, "repetidas": 0, "tipos": {"a_observar": 515, "aparecimento": 18, "sazonal": 43, "subida": 654}, "calculado_em": 3}

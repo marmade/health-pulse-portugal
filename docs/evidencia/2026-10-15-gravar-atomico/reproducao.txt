@@ -1,0 +1,7 @@
+{"lote": "11031356", "recalculo": 1201, "gravado": 1201, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+{"lote": "3bbae660", "recalculo": 1239, "gravado": 1239, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+{"lote": "87b4fba4", "recalculo": 1196, "gravado": 1196, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+{"lote": "ec6cc6fc", "recalculo": 413, "gravado": 413, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+{"lote": "fe58e0e5", "recalculo": 1212, "gravado": 1212, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+TODOS IGUAIS
+SAÍDA 0

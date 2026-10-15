@@ -1,0 +1,12 @@
+lote fe58e0e5 (completo, 34 pedidos): 100 termos, última semana completa 2026-09-27 · linhas: {'subida': 645, 'a_observar': 491, 'aparecimento': 29, 'sazonal': 47}
+
+2026-09-27:
+  alimentacao   [subida      ] creatina 267 — 5.8 vezes acima do valor normal (46) — em curso, 248.ª semana
+  alimentacao   [subida      ] hipertensão 107 — 2.9 vezes acima do valor normal (38)
+  emergentes    [a_observar  ] gripe A 68 — 6.0 vezes acima do valor normal (11) (a observar)
+  emergentes    [a_observar  ] vacinas 68 — 1.5 vezes acima do valor normal (45) (a observar)
+  menopausa     [a_observar  ] cancro da mama 22 — 1.5 vezes acima do valor normal (14) (a observar)
+  saude-mental  [a_observar  ] psiquiatra 74 — 1.2 vezes acima do valor normal (61) (a observar)
+
+GRAVADO: 1212 linhas em trends_alertas para o lote fe58e0e5
+SAÍDA 0

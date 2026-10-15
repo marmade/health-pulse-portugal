@@ -1,0 +1,8 @@
+lote ec6cc6fc (completo, 30 pedidos): 84 termos, última semana completa 2026-09-06 · linhas: {'a_observar': 235, 'subida': 151, 'aparecimento': 9, 'sazonal': 18}
+
+2026-09-06:
+  emergentes    [a_observar  ] avc 40 — 1.4 vezes acima do valor normal (28) (a observar)
+  saude-mental  [a_observar  ] psiquiatra 73 — 1.2 vezes acima do valor normal (59) (a observar)
+
+GRAVADO: 413 linhas em trends_alertas para o lote ec6cc6fc
+SAÍDA 0

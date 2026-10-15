@@ -1,0 +1,1 @@
+{"lote": "3bbae660", "lidas": 1239, "count_exact": 1239, "repetidas": 0, "tipos": {"a_observar": 520, "aparecimento": 18, "sazonal": 43, "subida": 658}, "calculado_em": [["2026-10-15T19:14:26.467772+00:00", 1239]]}
