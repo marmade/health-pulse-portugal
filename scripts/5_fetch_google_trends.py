@@ -405,9 +405,13 @@ def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
     print("GRAVADO lote %s (%s): %d pedidos, %d pontos, %d calibrados" % (
         lote["id"], estado, len(pedidos), resumo["pontos"], len(cal)))
     # 7. os alertas do lote — pela função única (14/10/2026): os mesmos brutos que o recálculo
-    # lê da base, por isso o gravado aqui é igual ao de trends_alertas.py --lote. Se a série
-    # abortar (SerieAmbigua) ou a escrita falhar, o lote JÁ está gravado e completo: só os
-    # alertas falham, o TA.gravar não chega a apagar nada, e o main sai com 4.
+    # lê da base, por isso o gravado aqui é igual ao de trends_alertas.py --lote. Se este passo
+    # falhar, o lote JÁ está gravado e completo: só os alertas falham, e o main sai com 4.
+    # Corrigido a 15/10/2026 (2026-10-15.md §4): o texto de 14/10 dizia que "o TA.gravar não
+    # chega a apagar nada", o que só era verdade quando a série abortava (SerieAmbigua, antes
+    # do gravar). Uma falha de rede DENTRO do gravar apagava, e deixava os alertas vazios ou a
+    # meio. Desde 15/10 o TA.gravar é tudo-ou-nada (função gravar_alertas_lote, uma
+    # transacção): se falhar, os alertas do lote ficaram como estavam ou novos inteiros.
     try:
         import trends_alertas as TA
         series, factor = TA.series_brutas(linhas_brutas(pedidos, calibrados))
@@ -415,7 +419,8 @@ def escrever_lote(url, key, lote, pedidos, calibrados, resumo, args, ids):
         print("ALERTAS: %d linhas em trends_alertas (regra de 18/09/2026, empates de 14/10/2026)" % n)
         return True
     except Exception as ex:
-        print("AVISO: ALERTAS NÃO CALCULADOS (%s: %s) — o lote está gravado; correr "
+        print("AVISO: ALERTAS NÃO GRAVADOS (%s: %s) — o lote está gravado. Os alertas dele ficaram como "
+              "estavam ou novos inteiros, nunca a meio: ler a contagem em trends_alertas antes de correr "
               "scripts/trends_alertas.py --lote %s --gravar" % (type(ex).__name__, str(ex)[:200], lote["id"][:8]))
         return False
 

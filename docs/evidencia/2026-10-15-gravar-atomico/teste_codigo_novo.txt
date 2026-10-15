@@ -1,0 +1,20 @@
+
+--LOTE … --GRAVAR
+  ok   sem falha: o lote fica com as 1201 linhas novas (1 pedido(s) de escrita)
+  ok   rede cai antes do pedido 1 de 1 → lote como estava
+  ok      e o --lote não diz que gravou
+  ok   rede cai depois do pedido 1 de 1 → lote novo inteiro
+  ok      e o --lote não diz que gravou
+
+PASSO 7 DO SCRIPT 5
+  ok   sem falha: o lote fica com as 1201 linhas novas (1 pedido(s) de escrita)
+  ok   rede cai antes do pedido 1 de 1 → lote como estava
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  ok   rede cai depois do pedido 1 de 1 → lote novo inteiro
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+
+LISTA VAZIA — não apaga o lote
+  ok   gravar(…, []) levanta erro e o lote fica como estava
+
+TODOS OS CASOS PASSARAM
+SAÍDA 0

@@ -1,0 +1,44 @@
+
+--LOTE … --GRAVAR
+  ok   sem falha: o lote fica com as 1201 linhas novas (4 pedido(s) de escrita)
+  ok   rede cai antes do pedido 1 de 4 → lote como estava
+  ok      e o --lote não diz que gravou
+  FALHA rede cai depois do pedido 1 de 4 → lote 0 linhas  — esperado: como estava ou novo inteiro
+  ok      e o --lote não diz que gravou
+  FALHA rede cai antes do pedido 2 de 4 → lote 0 linhas  — esperado: como estava
+  ok      e o --lote não diz que gravou
+  FALHA rede cai depois do pedido 2 de 4 → lote 500 linhas  — esperado: como estava ou novo inteiro
+  ok      e o --lote não diz que gravou
+  FALHA rede cai antes do pedido 3 de 4 → lote 500 linhas  — esperado: como estava
+  ok      e o --lote não diz que gravou
+  FALHA rede cai depois do pedido 3 de 4 → lote 1000 linhas  — esperado: como estava ou novo inteiro
+  ok      e o --lote não diz que gravou
+  FALHA rede cai antes do pedido 4 de 4 → lote 1000 linhas  — esperado: como estava
+  ok      e o --lote não diz que gravou
+  ok   rede cai depois do pedido 4 de 4 → lote novo inteiro
+  ok      e o --lote não diz que gravou
+
+PASSO 7 DO SCRIPT 5
+  ok   sem falha: o lote fica com as 1201 linhas novas (4 pedido(s) de escrita)
+  ok   rede cai antes do pedido 1 de 4 → lote como estava
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai depois do pedido 1 de 4 → lote 0 linhas  — esperado: como estava ou novo inteiro
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai antes do pedido 2 de 4 → lote 0 linhas  — esperado: como estava
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai depois do pedido 2 de 4 → lote 500 linhas  — esperado: como estava ou novo inteiro
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai antes do pedido 3 de 4 → lote 500 linhas  — esperado: como estava
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai depois do pedido 3 de 4 → lote 1000 linhas  — esperado: como estava ou novo inteiro
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  FALHA rede cai antes do pedido 4 de 4 → lote 1000 linhas  — esperado: como estava
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+  ok   rede cai depois do pedido 4 de 4 → lote novo inteiro
+  ok      e o passo 7 diz que os alertas falharam (saída 4) e nomeia o recálculo
+
+LISTA VAZIA — não apaga o lote
+  FALHA gravar(…, []) levanta erro e o lote fica como estava  — erro None, 0 linhas
+
+13 FALHA(S)
+SAÍDA 1

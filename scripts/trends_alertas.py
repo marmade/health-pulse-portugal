@@ -12,7 +12,8 @@ Usado de duas maneiras:
       python3 scripts/trends_alertas.py --lote <id ou prefixo> --gravar   # e grava (service_role)
 
 Lê com a chave pública; grava só com --gravar. Apaga e reescreve as linhas do lote
-(o cálculo é determinístico a partir de trends_calibrados + trends_pontos).
+(o cálculo é determinístico a partir de trends_calibrados + trends_pontos) — desde 15/10/2026
+numa só transacção, pela função gravar_alertas_lote: tudo ou nada.
 
 EMPATES (14/10/2026, docs/sessoes/2026-10-11.md §3.5 e §4.1): as decisões correm sobre os
 valores BRUTOS inteiros do pedido, em fracções exactas — "≥ 1,5" e "≥ 3" contam o igual, como
@@ -221,11 +222,20 @@ def chave_service_role():
     sys.exit('ERRO: falta SUPABASE_SERVICE_ROLE_KEY — no ambiente ou em ~/.config/health-pulse/env.')
 
 def gravar(url, key, lote_id, linhas):
-    """Apaga o que houver deste lote e escreve de novo. Devolve o n.º de linhas."""
-    rest(url, key, f'trends_alertas?lote_id=eq.{lote_id}', 'DELETE')
-    rows = [dict(lote_id=lote_id, **{k: (round(v, 3) if isinstance(v, float) else v) for k, v in l.items()}) for l in linhas]
-    for i in range(0, len(rows), 500): rest(url, key, 'trends_alertas', 'POST', rows[i:i+500])
-    return len(rows)
+    """Substitui as linhas deste lote, TUDO OU NADA (15/10/2026, docs/sessoes/2026-10-15.md §1):
+    um só pedido à função gravar_alertas_lote, que apaga e escreve numa transacção. Antes eram
+    um DELETE e blocos de 500, cada um com o seu commit, e uma falha de rede a meio deixava o
+    lote vazio ou parcial (14/10, 2026-10-14.md §10). Se este pedido falhar, o lote ficou como
+    estava OU novo inteiro (se a resposta se perdeu depois do commit) — nunca a meio: ler a
+    contagem e o calculado_em antes de repetir. A lista vazia é recusada (aqui e na função).
+    Devolve o n.º de linhas."""
+    if not linhas:
+        raise ValueError('gravar: lista vazia recusada — não apaga os alertas do lote sem escrever nada')
+    rows = [{k: (round(v, 3) if isinstance(v, float) else v) for k, v in l.items()} for l in linhas]
+    n = rest(url, key, 'rpc/gravar_alertas_lote', 'POST', dict(p_lote_id=lote_id, p_linhas=rows))
+    if n != len(rows):
+        raise RuntimeError(f'gravar: a função devolveu {n!r}, esperado {len(rows)}')
+    return n
 
 def frase(l):
     """A linha do ecrã, na formulação da Marta (decisão 5)."""
@@ -260,7 +270,12 @@ def main():
         print(f"  {l['eixo']:13s} [{l['tipo']:12s}] {frase(l)}")
     if not any(l['semana'] == semana for l in linhas): print('  (nada)')
     if args.gravar:
-        n = gravar(url, chave_service_role(), lote['id'], linhas)
+        try:
+            n = gravar(url, chave_service_role(), lote['id'], linhas)
+        except Exception as e:
+            sys.exit(f'\nERRO NA GRAVAÇÃO ({type(e).__name__}: {str(e)[:200]}). O lote {lote["id"][:8]} ficou '
+                     'como estava OU com as linhas novas inteiras, nunca a meio. Ler a contagem e o '
+                     'calculado_em em trends_alertas ANTES de repetir.')
         print(f'\nGRAVADO: {n} linhas em trends_alertas para o lote {lote["id"][:8]}')
 
 if __name__ == '__main__':
