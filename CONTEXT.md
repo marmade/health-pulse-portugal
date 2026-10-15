@@ -8,9 +8,10 @@
 > c016462b…; a cópia continua intacta. Domingo 18 já não está exposto à falha a meio do gravar();
 > a prova de que o passo 7 grava o mesmo que o recálculo é a de domingo. Semana no ecrã de domingo
 > a sábado ("4 a 10 Out", 785722c), vista no site. Guiões de 05/10 e 12/10 ficam sem perguntas da
-> IA, com o 403 registado (decisão da Marta). Burnout e pânico comparados com a forma longa no
-> mesmo pedido (só leitura, §11): burnout com procura em 51/52 semanas e síndrome de burnout a 0;
-> pânico inconclusivo. Registos em docs/sessoes/2026-10-15.md e 2026-10-15-cowork.md.
+> IA, com o 403 registado (decisão da Marta). Vocabulário técnico (SNS 24 e DGS) contra uma forma
+> curta escolhida por nós, no mesmo pedido (só leitura, §11): "burnout" com procura em 51/52
+> semanas e "síndrome de burnout" a 0; "pânico" contra "ataque de pânico" inconclusivo. Registos
+> em docs/sessoes/2026-10-15.md e 2026-10-15-cowork.md.
 > Anterior: 2026-10-14 (sessão 30) — **correcção dos empates no código** (`5c0391f`):
 > decisões nos brutos inteiros em fracções exactas, função única da série para o passo 7 e o
 > recálculo, saída 4 quando o lote fica gravado e os alertas não. **Cópia
@@ -1241,7 +1242,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [x] ~~**Protecção do passo 7 se a função única parar no domingo**~~ Feito a 14/10 para o aborto da série: o lote fica gravado, e o script sai com 4, que o `recolher_domingo.sh` trata (`5c0391f`). **Não cobre uma falha de rede dentro do `gravar()`:** essa apaga os alertas do lote e deixa-os vazios ou a meio (`docs/sessoes/2026-10-14.md` §10.4). Ver o pendente seguinte. Fechado a 15/10: a falha de rede dentro do `gravar()` fica coberta (`c405827`).
 - [x] ~~**`gravar()` dos alertas tudo-ou-nada** — hoje apaga num pedido e escreve em blocos noutros, sem transacção (`trends_alertas.py` l.223–228; o passo 7 usa-o). A forma é escolhida e declarada pelo Claude Code, com um teste que simule a falha a meio; corrigir também o comentário das l.407–410 do script 5. Sexta 16, antes do `--gravar` dos 5 lotes (`docs/sessoes/2026-10-14.md` §10.4). Domingo 18 continua exposto até lá.~~ Feito a 15/10 (`c405827`); `--gravar` dos 5 lotes a 15/10 (`e1ed24a`) — `docs/sessoes/2026-10-15.md` §1–§7.
 - [ ] gravar_alertas_lote (15/10) e trends_alertas_regra_20260918 (14/10) não estão na migration_consolidada.sql. Numa reconstrução, o gravar() falharia sempre, sem apagar nada. Versões remotas e ficheiros locais com números diferentes: 20261015185519 contra 20261015180000, e 20261014182635 contra 20261014180000. Ver docs/sessoes/2026-10-15.md §2 e 2026-10-14.md §9.
-- [ ] Vocabulário institucional contra popular em todos os termos — decisão de âmbito no planeamento de seg 19 (antes ou depois de 30/10). A forma popular não é escolhida por nós: vem das fontes que o projecto já recolhe (Autocomplete, pesquisas relacionadas do Trends). Pedidos espaçados, depois da recolha de dom 18. Ver 2026-10-15-cowork.md §4.6 e 2026-10-15.md §11.
+- [ ] Vocabulário técnico (SNS 24 e DGS) contra vocabulário corrente (as palavras que as pessoas comuns usam quando pesquisam, conhecidas pelo Autocomplete e pelas pesquisas relacionadas do Trends), em todos os termos — decisão de âmbito no planeamento de seg 19 (antes ou depois de 30/10). A forma corrente não é escolhida por nós: vem dessas fontes. Pedidos espaçados, depois da recolha de dom 18. Ver 2026-10-15-cowork.md §4.6 e 2026-10-15.md §11.
 - [ ] Texto da explicação dos alertas no ecrã — rascunho por rever pela Marta, para os textos finais de 27/10. Ver 2026-10-15-cowork.md §4.4 e §4.5 (o rascunho do §4.4 tem uma afirmação que caiu no §4.5 e não pode ir para o ecrã tal como está).
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
 - [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
