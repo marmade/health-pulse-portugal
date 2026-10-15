@@ -17,7 +17,8 @@ import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
 import { grupoDoEixo } from "@/lib/trendsGrupo";
 import { useTrendsLote } from "@/hooks/useTrendsLote";
-import AlertasEixo, { NOTA_ALERTAS, semanaCurta } from "@/components/AlertasEixo";
+import AlertasEixo, { NOTA_ALERTAS } from "@/components/AlertasEixo";
+import { semanaIntervalo } from "@/lib/semana";
 import { NOTA_TOP5 } from "@/components/AxisColumn";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -395,7 +396,7 @@ const Index = () => {
               <div className="flex items-center gap-3 mb-5">
                 <span className="inline-block w-1.5 h-1.5 bg-foreground rounded-full" />
                 <p className="text-xs font-bold uppercase tracking-[0.15em]">
-                  Alertas — semana de {semanaCurta(semanaAlertas)}
+                  Alertas — semana de {semanaIntervalo(semanaAlertas)}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">

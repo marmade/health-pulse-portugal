@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
+import { semanaIntervalo } from "@/lib/semana";
 import type { Top5Item, TopSemana, AlertasEixo as DadosAlertas } from "@/hooks/useTrendsLote";
 import Top5Table from "./Top5Table";
 import AlertasEixo from "./AlertasEixo";
@@ -39,9 +40,6 @@ type Props = {
 };
 
 export const NOTA_TOP5 = "Valor de uma semana do Google Trends (domingo a sábado), calibrado para a régua da âncora do eixo (a âncora ≈ 100). São os primeiros do top 10 do arquivo semanal, que fecha à segunda: entre a recolha de domingo e o arquivo, mostra-se a semana anterior. Valores iguais partilham a posição, e entram todos — com empate no 5.º lugar, aparecem 6 ou mais. Google Trends, Portugal, categoria Saúde — que é o que o Google entende por saúde e não filtra homónimos.";
-
-/** "2026-10-04" → "4 Out" (a semana do Trends começa ao domingo) */
-const diaCurto = (iso: string) => `${+iso.slice(8, 10)} ${MES_LONGO[+iso.slice(5, 7) - 1].slice(0, 3)}`;
 
 // O "Var. média" calculado sobre a tabela `keywords` (série parada desde 10/08/2026) deixou
 // de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
@@ -192,7 +190,7 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
             rotuloCor={hideHeader ? "#0000FF" : undefined}
             aviso={[
               topSemana?.semanaTrends
-                ? `Semana de ${diaCurto(topSemana.semanaTrends)} (arquivo de ${topSemana.weekLabel}).`
+                ? `Semana de ${semanaIntervalo(topSemana.semanaTrends)} (arquivo de ${topSemana.weekLabel}).`
                 : topSemana ? `Arquivo de ${topSemana.weekLabel}.` : null,
               top5Lote.length < 5
                 ? `Só ${top5Lote.length} ${top5Lote.length === 1 ? "termo teve" : "termos tiveram"} procura medida nesta semana.`

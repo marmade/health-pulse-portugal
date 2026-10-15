@@ -1,5 +1,5 @@
 import type { AlertasEixo as Dados, AlertaItem } from "@/hooks/useTrendsLote";
-import { MES_LONGO } from "@/lib/trendsGrupo";
+import { semanaIntervalo } from "@/lib/semana";
 
 /**
  * Os alertas de um eixo, na última semana completa do lote — fase 3, regra de 18/09/2026
@@ -25,10 +25,7 @@ function frase(a: AlertaItem): string {
   return s;
 }
 
-const dataCurta = (iso: string) => `${+iso.slice(8, 10)} ${MES_LONGO[+iso.slice(5, 7) - 1].slice(0, 3)}`;
-
 export const NOTA_ALERTAS = `"Valor normal" = mediana das 8 semanas anteriores, na régua do eixo. Alerta: 3 desvios robustos e 1,5 vezes acima; "a observar" (○) fica aquém; "sazonal" (~) é o que esta época costuma fazer nos anos anteriores. Regra de 18/09/2026; a semana em curso não conta.`;
-export const semanaCurta = dataCurta;
 
 /** rotulo: na página inicial (linhas alinhadas) é o nome do eixo; sem rotulo, o título diz a
     semana. compacto: sem a nota de proveniência (a linha da página inicial mostra-a uma vez). */
@@ -38,7 +35,7 @@ const AlertasEixo = ({ dados, rotulo, rotuloCor, compacto }: { dados: Dados; rot
   return (
     <div>
       <p className="editorial-label mb-3" style={rotuloCor ? { color: rotuloCor } : undefined}>
-        {rotulo ?? <>Alertas — semana de {dataCurta(dados.semana)}</>}
+        {rotulo ?? <>Alertas — semana de {semanaIntervalo(dados.semana)}</>}
       </p>
       {alertas.length === 0 && (
         <p className="text-[10px] leading-relaxed text-foreground/60 py-1">
