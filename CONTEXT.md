@@ -1,6 +1,17 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-14 (sessão 30) — **correcção dos empates no código** (`5c0391f`):
+> Última actualização: 2026-10-15 (sessão 31) — gravar() dos alertas tudo-ou-nada (c405827): uma
+> só chamada à função gravar_alertas_lote, que apaga e escreve numa transacção e recusa a lista
+> vazia. Provado na base real (DELETE desfeito no ec6cc6fc; lista vazia recusada no 4dad25b9) e
+> por um teste de falha a meio nos dois caminhos, o --lote e o passo 7. --gravar dos 5 lotes feito
+> (e1ed24a): 413 / 1201 / 1196 / 1212 / 1239, reprodução pela base igual linha a linha, md5
+> c016462b…; a cópia continua intacta. Domingo 18 já não está exposto à falha a meio do gravar();
+> a prova de que o passo 7 grava o mesmo que o recálculo é a de domingo. Semana no ecrã de domingo
+> a sábado ("4 a 10 Out", 785722c), vista no site. Guiões de 05/10 e 12/10 ficam sem perguntas da
+> IA, com o 403 registado (decisão da Marta). Burnout e pânico comparados com a forma longa no
+> mesmo pedido (só leitura, §11): burnout com procura em 51/52 semanas e síndrome de burnout a 0;
+> pânico inconclusivo. Registos em docs/sessoes/2026-10-15.md e 2026-10-15-cowork.md.
+> Anterior: 2026-10-14 (sessão 30) — **correcção dos empates no código** (`5c0391f`):
 > decisões nos brutos inteiros em fracções exactas, função única da série para o passo 7 e o
 > recálculo, saída 4 quando o lote fica gravado e os alertas não. **Cópia
 > `trends_alertas_regra_20260918` aplicada e provada** (5192 linhas, `md5` igual, sem
@@ -1227,8 +1238,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       `VITE_PERPLEXITY_API_KEY`). A prova é a corrida de segunda 05/10. Antes: `[sessão 19]` as 32 linhas contadas a 25/09, e o
       registo de 24/09 §1 que as contou como feitas (anotado). `docs/sessoes/2026-09-25.md` §3c.~~ Fechado a 13/10: o 403 de 05/10 e 12/10 era a chamada interna sem `Authorization`; corrigido e provado sem escrita (`2f374a1`); geração real na segunda 19 — `docs/sessoes/2026-10-13.md` §6.
 - [x] ~~**`supabase/config.toml` com `verify_jwt = false` nas funções com restrição**, publicadas a `true` (05/10).~~ Fechado a 13/10: `true` nas quatro, igual ao publicado (`2f374a1`).
-- [ ] ~~**Protecção do passo 7 se a função única parar no domingo**~~ Feito a 14/10 para o aborto da série: o lote fica gravado, e o script sai com 4, que o `recolher_domingo.sh` trata (`5c0391f`). **Não cobre uma falha de rede dentro do `gravar()`:** essa apaga os alertas do lote e deixa-os vazios ou a meio (`docs/sessoes/2026-10-14.md` §10.4). Ver o pendente seguinte.
-- [ ] **`gravar()` dos alertas tudo-ou-nada** — hoje apaga num pedido e escreve em blocos noutros, sem transacção (`trends_alertas.py` l.223–228; o passo 7 usa-o). A forma é escolhida e declarada pelo Claude Code, com um teste que simule a falha a meio; corrigir também o comentário das l.407–410 do script 5. Sexta 16, antes do `--gravar` dos 5 lotes (`docs/sessoes/2026-10-14.md` §10.4). Domingo 18 continua exposto até lá.
+- [x] ~~**Protecção do passo 7 se a função única parar no domingo**~~ Feito a 14/10 para o aborto da série: o lote fica gravado, e o script sai com 4, que o `recolher_domingo.sh` trata (`5c0391f`). **Não cobre uma falha de rede dentro do `gravar()`:** essa apaga os alertas do lote e deixa-os vazios ou a meio (`docs/sessoes/2026-10-14.md` §10.4). Ver o pendente seguinte. Fechado a 15/10: a falha de rede dentro do `gravar()` fica coberta (`c405827`).
+- [x] ~~**`gravar()` dos alertas tudo-ou-nada** — hoje apaga num pedido e escreve em blocos noutros, sem transacção (`trends_alertas.py` l.223–228; o passo 7 usa-o). A forma é escolhida e declarada pelo Claude Code, com um teste que simule a falha a meio; corrigir também o comentário das l.407–410 do script 5. Sexta 16, antes do `--gravar` dos 5 lotes (`docs/sessoes/2026-10-14.md` §10.4). Domingo 18 continua exposto até lá.~~ Feito a 15/10 (`c405827`); `--gravar` dos 5 lotes a 15/10 (`e1ed24a`) — `docs/sessoes/2026-10-15.md` §1–§7.
+- [ ] gravar_alertas_lote (15/10) e trends_alertas_regra_20260918 (14/10) não estão na migration_consolidada.sql. Numa reconstrução, o gravar() falharia sempre, sem apagar nada. Versões remotas e ficheiros locais com números diferentes: 20261015185519 contra 20261015180000, e 20261014182635 contra 20261014180000. Ver docs/sessoes/2026-10-15.md §2 e 2026-10-14.md §9.
+- [ ] Vocabulário institucional contra popular em todos os termos — decisão de âmbito no planeamento de seg 19 (antes ou depois de 30/10). A forma popular não é escolhida por nós: vem das fontes que o projecto já recolhe (Autocomplete, pesquisas relacionadas do Trends). Pedidos espaçados, depois da recolha de dom 18. Ver 2026-10-15-cowork.md §4.6 e 2026-10-15.md §11.
+- [ ] Texto da explicação dos alertas no ecrã — rascunho por rever pela Marta, para os textos finais de 27/10. Ver 2026-10-15-cowork.md §4.4 e §4.5 (o rascunho do §4.4 tem uma afirmação que caiu no §4.5 e não pode ir para o ecrã tal como está).
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
 - [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
 - [ ] **`guioes_semanais.erro` diz "substitui a tentativa de…" quando a geração correu bem.** `[sessão 20]` Lê-se como falha. Decidir se passa para uma coluna própria ou muda de prefixo. Não mexido (decisão da Marta, 28/09).
