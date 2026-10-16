@@ -1,6 +1,13 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-15 (sessão 31) — gravar() dos alertas tudo-ou-nada (c405827): uma
+> Última actualização: 2026-10-16 (sexta, reserva) — workflows fixados em `ubuntu-24.04` (`eb5b5cf`)
+> para a passagem a Ubuntu 26 não coincidir com a corrida de prova de 19/10; a passagem à 26 fica
+> a rever depois de 30/10. Diagnóstico, só leitura, das notícias, dos desmentidos e dos fact-checks
+> (`docs/sessoes/2026-10-16.md` §3): as notícias caíram de 17 na 1.ª corrida da v4 (24/09) para 4,
+> 2 e 0, pelo filtro de categoria, pela janela curta dos feeds e pela hora de cada corrida; 19 de
+> 41 feeds sem resposta; as secções do Observador servem o feed geral; o fact-check nunca foi
+> ligado. Slot e âmbito no planeamento de seg 19; nada se publica antes das provas.
+> Anterior: 2026-10-15 (sessão 31) — gravar() dos alertas tudo-ou-nada (c405827): uma
 > só chamada à função gravar_alertas_lote, que apaga e escreve numa transacção e recusa a lista
 > vazia. Provado na base real (DELETE desfeito no ec6cc6fc; lista vazia recusada no 4dad25b9) e
 > por um teste de falha a meio nos dois caminhos, o --lote e o passo 7. --gravar dos 5 lotes feito
