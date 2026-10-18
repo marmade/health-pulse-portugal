@@ -6,8 +6,10 @@
 > count=exact igual, 0 chaves repetidas, um só calculado_em. **Reprodução IGUAL**: o gravado pelo
 > passo 7 (memória) é igual ao recálculo pela base, linha a linha e nos números — a outra metade
 > do ponto 2 da aceitação, cumprida neste lote. Não prova a regra nem outros lotes
-> (`docs/sessoes/2026-10-18.md` §3.2). Seg 19: prova do arquivo (`2026-10-13.md` §1), arranque
-> em 24.04, planeamento.
+> (`docs/sessoes/2026-10-18.md` §3.2). Seg 19: prova do arquivo (`2026-10-13.md` §1); prova dos
+> guiões, que a geração das perguntas da IA funciona daqui em diante, sem o 403 (decisão de 15/10,
+> `2026-10-15-cowork.md` §4.2: os guiões de 05/10 e 12/10 ficam sem perguntas da IA, com o erro
+> registado; critério em `2026-10-13.md` §6.1); arranque em 24.04; planeamento.
 > Anterior: 2026-10-16 (sexta, reserva) — workflows fixados em `ubuntu-24.04` (`eb5b5cf`)
 > para a passagem a Ubuntu 26 não coincidir com a corrida de prova de 19/10; a passagem à 26 fica
 > a rever depois de 30/10. Diagnóstico, só leitura, das notícias, dos desmentidos e dos fact-checks
