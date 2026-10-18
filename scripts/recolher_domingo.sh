@@ -111,5 +111,5 @@ if pontos[0]["is_partial"]:
     print(">>> serve se o GitHub atrasar a corrida nesse dia.")
     sys.exit(2)
 print(">>> SERVE: a semana veio COMPLETA.")
-print(">>> Na segunda o arquivo escreve o top 5 de cada eixo com estes dados.")
+print(">>> Na segunda o arquivo escreve o top 10 de cada eixo com estes dados (ou mais, se houver empate no 10.º lugar).")
 PY
