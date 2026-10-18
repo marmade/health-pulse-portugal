@@ -1,0 +1,2 @@
+{"lote": "c2a00bb6", "recalculo": 1226, "gravado": 1226, "so_recalculo": 0, "so_gravado": 0, "numeros_diferentes": 0, "exemplos": [], "veredicto": "IGUAL"}
+TODOS IGUAIS

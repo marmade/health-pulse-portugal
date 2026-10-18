@@ -1,6 +1,14 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-16 (sexta, reserva) — workflows fixados em `ubuntu-24.04` (`eb5b5cf`)
+> Última actualização: 2026-10-18 (domingo, sessão 32) — recolha de domingo feita: lote
+> `c2a00bb6` (33 pedidos, 0 falhados, um 429 recuperado), **SERVE** (semana do Trends de 11/10
+> completa), pré-condição da prova de 19/10 cumprida. Passo 7 confirmado pelo efeito: 1226 alertas,
+> count=exact igual, 0 chaves repetidas, um só calculado_em. **Reprodução IGUAL**: o gravado pelo
+> passo 7 (memória) é igual ao recálculo pela base, linha a linha e nos números — a outra metade
+> do ponto 2 da aceitação, cumprida neste lote. Não prova a regra nem outros lotes
+> (`docs/sessoes/2026-10-18.md` §3.2). Seg 19: prova do arquivo (`2026-10-13.md` §1), arranque
+> em 24.04, planeamento.
+> Anterior: 2026-10-16 (sexta, reserva) — workflows fixados em `ubuntu-24.04` (`eb5b5cf`)
 > para a passagem a Ubuntu 26 não coincidir com a corrida de prova de 19/10; a passagem à 26 fica
 > a rever depois de 30/10. Diagnóstico, só leitura, das notícias, dos desmentidos e dos fact-checks
 > (`docs/sessoes/2026-10-16.md` §3): as notícias caíram de 17 na 1.ª corrida da v4 (24/09) para 4,
