@@ -64,7 +64,9 @@ const Index = () => {
 
   // Filtrar debunking e notícias pelo eixo activo
   const axisTerms = useMemo(() => {
-    if (activeAxis === "all") return null;
+    // Sem dados ainda, não se filtra (22/10/2026): escolher um eixo antes de a página carregar
+    // lia filteredData null e deixava o site em branco — docs/sessoes/2026-10-22.md §6.
+    if (activeAxis === "all" || !filteredData) return null;
     const kws = (filteredData[activeAxis]?.allKeywords || filteredData[activeAxis]?.keywords || []).map((k: any) => k.term.toLowerCase());
     return new Set(kws);
   }, [filteredData, activeAxis]);
