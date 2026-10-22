@@ -39,6 +39,12 @@ describe("AxisColumn com dados incompletos", () => {
     expect(screen.queryByText(/Aviso:/)).toBeNull();
     expect(screen.getByText(/Mais interesse/)).toBeInTheDocument();
   });
+
+  it("a legenda do gráfico do lote diz o lote e a data da recolha, e não 'Não actualiza sozinha' (22/10)", () => {
+    render(<AxisColumn {...base} incompleto={null} />);
+    expect(screen.getByText(/Lote c2a00bb6,\s+recolhido a 2026-10-18/)).toBeInTheDocument();
+    expect(screen.queryByText(/Não actualiza sozinha/)).toBeNull();
+  });
 });
 
 describe("incompletoDoEixo", () => {

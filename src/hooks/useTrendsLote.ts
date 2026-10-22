@@ -36,7 +36,7 @@ export type AlertasEixo = { semana: string; itens: AlertaItem[] };
     meses e quantos — null quando o anual também veio incompleto e não se pode saber. O gráfico
     mostra-se na mesma, com o aviso (decisão da Marta, 21/10/2026). */
 export type Incompleto = { n: number; m: number; termos: { termo: string; faltam: number }[] | null };
-export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; topSemana: TopSemana | null; alertas: AlertasEixo | null; incompleto: Incompleto | null };
+export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; top10: Top5Item[]; topSemana: TopSemana | null; alertas: AlertasEixo | null; incompleto: Incompleto | null };
 export type LoteInfo = { id: string; iniciadoEm: string; origem: string | null; timeframe: string };
 
 const AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -101,14 +101,16 @@ export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
         for (const eixo of AXES) {
           const a = ultimoArquivo[eixo];
           const itens = a?.top_keywords || [];
-          const top5 = itens
-            .filter(k => k.posicao != null && k.posicao <= 5)
+          // a vista do eixo mostra os de posição <= 10 (22/10/2026); a página inicial, os <= 5
+          const top10 = itens
+            .filter(k => k.posicao != null && k.posicao <= 10)
             .map(k => ({ termo: k.term, valor: +k.valor, posicao: k.posicao as number }));
+          const top5 = top10.filter(k => k.posicao <= 5);
           const topSemana = a ? {
             weekStart: a.week_start, weekLabel: a.week_label,
             semanaTrends: itens[0]?.semana_trends ?? null, nota: a.nota_medicao,
           } : null;
-          resultado[eixo] = { top5, topSemana, resumo: null as unknown as GrupoResumo, alertas: null, incompleto: null };
+          resultado[eixo] = { top5, top10, topSemana, resumo: null as unknown as GrupoResumo, alertas: null, incompleto: null };
         }
 
         // 2b. os alertas da última semana COMPLETA do lote (a semana parcial nunca conta —

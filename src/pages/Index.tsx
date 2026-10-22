@@ -17,6 +17,9 @@ import { useHistoricalData } from "@/hooks/useHistoricalData";
 import { generateEixoPdf } from "@/lib/eixoPdfExport";
 import { grupoDoEixo } from "@/lib/trendsGrupo";
 import { useTrendsLote } from "@/hooks/useTrendsLote";
+import { useVistaEixo } from "@/hooks/useVistaEixo";
+import ArquivoPosicoes from "@/components/ArquivoPosicoes";
+import Top5Table from "@/components/Top5Table";
 import AlertasEixo, { NOTA_ALERTAS } from "@/components/AlertasEixo";
 import { semanaIntervalo } from "@/lib/semana";
 import { NOTA_TOP5 } from "@/components/AxisColumn";
@@ -50,6 +53,9 @@ const Index = () => {
     return m;
   }, [filteredData]);
   const { porEixo: loteEixo, lote } = useTrendsLote(termosDoEixo);
+  // Só a vista do eixo: o último ano e a série de cada termo activo, do mesmo lote (22/10/2026).
+  const eixoVista = activeAxis !== "all" ? activeAxis : null;
+  const { dados: vistaEixo, erro: erroVistaEixo } = useVistaEixo(eixoVista, lote?.id ?? null, eixoVista ? termosDoEixo?.[eixoVista] ?? null : null);
   const semanaAlertas = axisOrder.map(a => loteEixo?.[a]?.alertas?.semana).find(Boolean) ?? null;
 
   // Use only real DB data — no mock fallback
@@ -223,16 +229,16 @@ const Index = () => {
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                     incompleto={loteEixo?.[axisId]?.incompleto}
-                    archive={eixosArchives[axisId] || []}
                     hideKeywords
                   />
                 );
               })}
               {visibleAxes.map((axisId) => {
                 const axis = filteredData[axisId];
+                const ultimoAno = vistaEixo?.ultimoAno;
                 return (
+                  <div key={`${axisId}-${filters.period}-keywords`} className="flex flex-col gap-8">
                   <AxisColumn
-                    key={`${axisId}-${filters.period}-keywords`}
                     axisId={axisId}
                     label={axis.label}
                     keywords={axis.keywords}
@@ -241,7 +247,8 @@ const Index = () => {
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
                     incompleto={loteEixo?.[axisId]?.incompleto}
-                    top5Lote={loteEixo?.[axisId]?.top5}
+                    limiteTop={10}
+                    top5Lote={loteEixo?.[axisId]?.top10}
                     topSemana={loteEixo?.[axisId]?.topSemana}
                     alertas={loteEixo?.[axisId]?.alertas}
                     hideChart
@@ -255,12 +262,50 @@ const Index = () => {
                        é a apresentação. Volta quando as duas ficarem fechadas. */
                     hideAlertas
                   />
+                  {/* Os mais procurados do último ano (22/10/2026): a regra do arquivo sobre a
+                      mediana das 52 semanas do lote — docs/sessoes/2026-10-22.md. */}
+                  {!ultimoAno ? (
+                    <p className="text-[10px] text-foreground/50">
+                      {erroVistaEixo ? `Os mais procurados do último ano: não foi possível ler o lote (${erroVistaEixo}).` : "A ler os mais procurados do último ano…"}
+                    </p>
+                  ) : (
+                    <Top5Table
+                      rotulo="Os mais procurados do último ano — mediana das últimas 52 semanas, na régua do eixo"
+                      aviso={[
+                        vistaEixo?.ultimoAnoIncompleto
+                          ? `Aviso: os dados chegaram incompletos — ${vistaEixo.ultimoAnoIncompleto.n} de ${vistaEixo.ultimoAnoIncompleto.m} linhas; a lista foi feita só com essas.`
+                          : null,
+                        ultimoAno.length < 10 && (ultimoAno[ultimoAno.length - 1]?.posicao ?? 0) < 10
+                          ? `Só ${ultimoAno.length} ${ultimoAno.length === 1 ? "termo teve" : "termos tiveram"} procura medida no último ano.`
+                          : null,
+                      ].filter(Boolean).join(" ") || undefined}
+                      soValor
+                      keywords={ultimoAno.map(t => ({
+                        term: t.termo, synonyms: [], category: "", axis: axisId, source: "trends",
+                        currentVolume: t.valor, previousVolume: 0, changePercent: 0, trend: "stable" as const,
+                        lastPeak: "", isEmergent: false, posicao: t.posicao,
+                      }))}
+                      nota={`Mediana do valor semanal de cada termo nas últimas 52 semanas completas do lote${lote ? ` ${lote.id.slice(0, 8)}` : ""}, na régua do eixo (a âncora ≈ 100). Só termos com mediana acima de zero. Valores iguais partilham a posição.`}
+                    />
+                  )}
+                  </div>
                 );
               })}
             </div>
 
-            {/* Linha 1B: interesse de pesquisa deste eixo, logo a seguir às keywords */}
-            <GoogleTrendsPanel axis={activeAxis} />
+            {/* Linha 1A: o arquivo semanal por posição (22/10/2026), a toda a largura */}
+            <ArquivoPosicoes entradas={eixosArchives[activeAxis] || []} />
+
+            {/* Linha 1B: interesse de pesquisa deste eixo, do lote (22/10/2026; até aí lia o
+                googleTrends.json de 18/09) */}
+            <GoogleTrendsPanel
+              rotulo={filteredData[activeAxis]?.label ?? activeAxis}
+              termos={vistaEixo?.termosPorProcura ?? termosDoEixo?.[activeAxis] ?? []}
+              series={vistaEixo?.series ?? null}
+              lote={lote}
+              incompleto={vistaEixo?.seriesIncompleto}
+              erro={erroVistaEixo}
+            />
 
             {/* Linha 2: perguntas. Os alertas passaram para a coluna das keywords (fase 3,
                 18/09/2026); o bloco antigo, da série parada, foi retirado — ver o fim da página inicial. */}
