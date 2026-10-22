@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { GrupoResumo } from "@/lib/trendsGrupo";
+import { lerTudo, type Leitura, type Pagina } from "@/lib/lerTudo";
 
 /**
  * O dashboard lê SEMPRE de um lote só do Google Trends (trends_lotes) — nunca cola lotes.
@@ -31,12 +32,35 @@ export type AlertaItem = {
 };
 /** Os alertas do eixo na última semana completa do lote. `semana` é essa semana (domingo). */
 export type AlertasEixo = { semana: string; itens: AlertaItem[] };
-export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; topSemana: TopSemana | null; alertas: AlertasEixo | null };
+/** Mensal e anual do eixo lidos a menos do que a base conta: n lidas de m. `termos`: a quem faltam
+    meses e quantos — null quando o anual também veio incompleto e não se pode saber. O gráfico
+    mostra-se na mesma, com o aviso (decisão da Marta, 21/10/2026). */
+export type Incompleto = { n: number; m: number; termos: { termo: string; faltam: number }[] | null };
+export type LoteEixo = { resumo: GrupoResumo; top5: Top5Item[]; topSemana: TopSemana | null; alertas: AlertasEixo | null; incompleto: Incompleto | null };
 export type LoteInfo = { id: string; iniciadoEm: string; origem: string | null; timeframe: string };
 
 const AXES = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 const MES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 const media = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+const VAZIA: Leitura<never> = { linhas: [], contadas: 0, completa: true };
+
+type Men = { eixo: string; termo: string; mes: string; media: number };
+type Anu = { eixo: string; termo: string; ano: number; media: number; meses: number };
+
+/** null se o mensal e o anual do eixo chegaram inteiros. Senão, quantas linhas chegaram e, se o
+    anual chegou inteiro, a quem faltam meses: a soma de `meses` de um termo no anual é o número
+    de linhas mensais que ele tem na base. */
+export function incompletoDoEixo(termos: string[], men: Leitura<Men>, anu: Leitura<Anu>): Incompleto | null {
+  if (men.completa && anu.completa) return null;
+  const emFalta = anu.completa
+    ? termos.map(termo => ({
+        termo,
+        faltam: anu.linhas.filter(r => r.termo === termo).reduce((s, r) => s + +r.meses, 0)
+              - men.linhas.filter(r => r.termo === termo).length,
+      })).filter(t => t.faltam > 0)
+    : null;
+  return { n: men.linhas.length + anu.linhas.length, m: men.contadas + anu.contadas, termos: emFalta };
+}
 const ORDEM: Record<AlertaItem["tipo"], number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3 };
 
 /** termosDoEixo: os termos activos de cada eixo. Desde 13/10/2026 o filtro dos activos faz-se
@@ -74,19 +98,17 @@ export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
         for (const a of (arq as unknown as Arq[]) || []) ultimoArquivo[a.axis] ??= a;
 
         const resultado: Record<string, LoteEixo> = {};
-        const termosTop: { eixo: string; termo: string }[] = [];
         for (const eixo of AXES) {
           const a = ultimoArquivo[eixo];
           const itens = a?.top_keywords || [];
           const top5 = itens
             .filter(k => k.posicao != null && k.posicao <= 5)
             .map(k => ({ termo: k.term, valor: +k.valor, posicao: k.posicao as number }));
-          top5.forEach(t => termosTop.push({ eixo, termo: t.termo }));
           const topSemana = a ? {
             weekStart: a.week_start, weekLabel: a.week_label,
             semanaTrends: itens[0]?.semana_trends ?? null, nota: a.nota_medicao,
           } : null;
-          resultado[eixo] = { top5, topSemana, resumo: null as unknown as GrupoResumo, alertas: null };
+          resultado[eixo] = { top5, topSemana, resumo: null as unknown as GrupoResumo, alertas: null, incompleto: null };
         }
 
         // 2b. os alertas da última semana COMPLETA do lote (a semana parcial nunca conta —
@@ -132,17 +154,29 @@ export function useTrendsLote(termosDoEixo: Record<string, string[]> | null) {
           console.warn("useTrendsLote: alertas indisponíveis —", e);
         }
 
-        // 3. mensal e anual, só para os termos do top
-        const termos = termosTop.map(t => t.termo);
-        const [{ data: men, error: e3 }, { data: anu, error: e4 }] = await Promise.all([
-          supabase.from("trends_termo_mensal" as never).select("eixo, termo, mes, media").eq("lote_id", loteId).in("termo", termos).limit(5000),
-          supabase.from("trends_termo_anual" as never).select("eixo, termo, ano, media, meses").eq("lote_id", loteId).in("termo", termos).limit(1000),
-        ]);
-        if (e3) throw e3; if (e4) throw e4;
-        type Men = { eixo: string; termo: string; mes: string; media: number };
-        type Anu = { eixo: string; termo: string; ano: number; media: number; meses: number };
-        const mensal = (men as unknown as Men[]) || [];
-        const anual = (anu as unknown as Anu[]) || [];
+        // 3. mensal e anual, só para os termos do top. Um pedido por eixo, lido por páginas: a
+        //    API corta em 1000 linhas sem erro, e o lote c2a00bb6 tem 1220 para os 20 termos
+        //    (docs/sessoes/2026-10-21.md). Se o lido não bater com a contagem da base, o gráfico
+        //    mostra-se na mesma, com um aviso do que falta (decisão da Marta, 21/10/2026).
+        const leituras = await Promise.all(AXES.map(async eixo => {
+          const termos = resultado[eixo].top5.map(t => t.termo);
+          if (!termos.length) return { eixo, men: VAZIA as Leitura<Men>, anu: VAZIA as Leitura<Anu> };
+          const [men, anu] = await Promise.all([
+            lerTudo<Men>((de, ate) => supabase.from("trends_termo_mensal" as never)
+              .select("eixo, termo, mes, media", { count: "exact" }).eq("lote_id", loteId).eq("eixo", eixo)
+              .in("termo", termos).order("termo").order("mes").range(de, ate) as unknown as Promise<Pagina<Men>>),
+            lerTudo<Anu>((de, ate) => supabase.from("trends_termo_anual" as never)
+              .select("eixo, termo, ano, media, meses", { count: "exact" }).eq("lote_id", loteId).eq("eixo", eixo)
+              .in("termo", termos).order("termo").order("ano").range(de, ate) as unknown as Promise<Pagina<Anu>>),
+          ]);
+          return { eixo, men, anu };
+        }));
+        const mensal = leituras.flatMap(l => l.men.linhas);
+        const anual = leituras.flatMap(l => l.anu.linhas);
+        for (const { eixo, men, anu } of leituras) {
+          resultado[eixo].incompleto = incompletoDoEixo(resultado[eixo].top5.map(t => t.termo), men, anu);
+          if (resultado[eixo].incompleto) console.error(`useTrendsLote: ${eixo} incompleto — mensal ${men.linhas.length} de ${men.contadas}, anual ${anu.linhas.length} de ${anu.contadas}`);
+        }
 
         for (const eixo of AXES) {
           const top = resultado[eixo].top5.map(t => t.termo);

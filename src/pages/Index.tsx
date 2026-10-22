@@ -222,6 +222,7 @@ const Index = () => {
                     trendData={axis.trend}
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                    incompleto={loteEixo?.[axisId]?.incompleto}
                     archive={eixosArchives[axisId] || []}
                     hideKeywords
                   />
@@ -239,6 +240,7 @@ const Index = () => {
                     trendData={axis.trend}
                     period={filters.period}
                     grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                    incompleto={loteEixo?.[axisId]?.incompleto}
                     top5Lote={loteEixo?.[axisId]?.top5}
                     topSemana={loteEixo?.[axisId]?.topSemana}
                     alertas={loteEixo?.[axisId]?.alertas}
@@ -355,6 +357,7 @@ const Index = () => {
                   trendData={axis.trend}
                   period={filters.period}
                   grupo={loteEixo?.[axisId]?.resumo ?? grupoDoEixo(axisId)}
+                  incompleto={loteEixo?.[axisId]?.incompleto}
                   hideKeywords
                 />
               );

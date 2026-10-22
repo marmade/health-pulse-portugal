@@ -3,7 +3,7 @@ import type { Keyword, TrendPoint } from "@/data/mockData";
 import TrendChart from "./TrendChart";
 import { MES_LONGO, type GrupoResumo } from "@/lib/trendsGrupo";
 import { semanaIntervalo } from "@/lib/semana";
-import type { Top5Item, TopSemana, AlertasEixo as DadosAlertas } from "@/hooks/useTrendsLote";
+import type { Top5Item, TopSemana, AlertasEixo as DadosAlertas, Incompleto } from "@/hooks/useTrendsLote";
 import Top5Table from "./Top5Table";
 import AlertasEixo from "./AlertasEixo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
@@ -29,6 +29,9 @@ type Props = {
       logo a seguir ao top 5, dentro da coluna — decisão da Marta: nada de linhas de um lado
       ao outro; cada eixo na sua régua. */
   alertas?: DadosAlertas | null;
+  /** O mensal e o anual do lote chegaram a menos do que a base conta (21/10/2026). Há sempre
+      gráfico (decisão da Marta): mostra-se com um aviso do que falta. */
+  incompleto?: Incompleto | null;
   archive?: any[];
   hideChart?: boolean;
   hideKeywords?: boolean;
@@ -45,7 +48,7 @@ export const NOTA_TOP5 = "Valor de uma semana do Google Trends (domingo a sábad
 // de se mostrar a 18/09/2026; o bloco fica para quando a coluna voltar a ter dados vivos.
 const VAR_MEDIA_ANTIGA = false;
 
-const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, topSemana, alertas, archive = [], hideChart, hideKeywords, hideHeader, hideAlertas }: Props) => {
+const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, grupo, top5Lote, topSemana, alertas, incompleto, archive = [], hideChart, hideKeywords, hideHeader, hideAlertas }: Props) => {
   const totalChange = allKeywords.length > 0
     ? allKeywords.reduce((sum, k) => sum + k.changePercent, 0) / allKeywords.length
     : 0;
@@ -134,6 +137,15 @@ const AxisColumn = ({ axisId, label, keywords, allKeywords, trendData, period, g
       {!hideChart && grupo && (
         <>
           <div className="border-t border-foreground/10" />
+          {incompleto && (
+            <p className="text-[10px] leading-relaxed font-bold">
+              Aviso: os dados deste gráfico chegaram incompletos — {incompleto.n} de {incompleto.m} linhas.
+              O gráfico, a variação e as leituras abaixo foram calculados só com essas.
+              {incompleto.termos && incompleto.termos.length > 0 && (
+                <> Faltam meses a: {incompleto.termos.map(t => `${t.termo} (${t.faltam})`).join(", ")}.</>
+              )}
+            </p>
+          )}
           <TrendChart data={grupo.pontos} label={label} period="12m" />
           {/* Tudo o que está aqui é calculado da descarga; nada é escrito à mão. */}
           <div className="space-y-1 -mt-2">
