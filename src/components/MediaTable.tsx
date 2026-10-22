@@ -127,6 +127,13 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
         ))}
       </div>
 
+      {/* Decisão da Marta, 22/10/2026 (docs/sessoes/2026-10-22.md §8): a reclassificação diz-se
+          no ecrã, e não só no registo. */}
+      <p className="text-[8px] leading-relaxed text-foreground/50 mb-1.5 flex-shrink-0">
+        As notícias recolhidas até 21/09/2026 foram rotuladas de novo a 22/10/2026, pelo título e por
+        palavra inteira: até então bastava um pedaço de palavra («candidato» dava candidíase, «época»
+        dava toc). As 216 das 327 que não correspondem a nenhum termo saíram desta lista e ficam guardadas.
+      </p>
 
       <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">
         {filteredItems.length === 0 ? (

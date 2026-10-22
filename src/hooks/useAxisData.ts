@@ -222,6 +222,9 @@ export function useNewsData() {
         .from('news_items')
         .select('*')
         .gte('date', newsCutoff.toISOString().split('T')[0])
+        // sem termo = a regra não casou nenhum termo no título: fica na base, não se mostra
+        // (decisão da Marta, 22/10/2026 — docs/sessoes/2026-10-22.md §8)
+        .not('related_term', 'is', null)
         .order('date', { ascending: false });
 
       if (news && news.length > 0) {

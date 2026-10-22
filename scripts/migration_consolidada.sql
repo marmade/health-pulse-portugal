@@ -140,6 +140,27 @@ CREATE TABLE IF NOT EXISTS public.news_items (
   keyword_id UUID REFERENCES public.keywords(id) ON DELETE SET NULL,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
+-- 18/09/2026 (20260918190000): por que termo casou e com que categorias do feed. Faltavam aqui
+-- até 22/10/2026. 22/10/2026 (20261022180000): o rótulo da v1 guardado, a data da nova
+-- rotulagem, e related_term anulável (notícia sem termo) — docs/sessoes/2026-10-22.md §8.
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS casou_por TEXT;
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS categorias TEXT[];
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS related_term_v1 TEXT;
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS rotulado_de_novo_em TIMESTAMP WITH TIME ZONE;
+ALTER TABLE public.news_items ALTER COLUMN related_term DROP NOT NULL;
+
+-- Cópia de news_items antes da nova rotulagem (22/10/2026). Numa reconstrução fica vazia: os
+-- dados dela são evidência e não se recriam daqui. Só o serviço lê.
+CREATE TABLE IF NOT EXISTS public.news_items_20261022 (
+  id UUID PRIMARY KEY, title TEXT NOT NULL, outlet TEXT NOT NULL, date DATE NOT NULL,
+  url TEXT NOT NULL, related_term TEXT NOT NULL, source_type TEXT NOT NULL, keyword_id UUID,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL, casou_por TEXT, categorias TEXT[],
+  copiado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
+ALTER TABLE public.news_items_20261022 ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow service role read on news_items_20261022" ON public.news_items_20261022;
+CREATE POLICY "Allow service role read on news_items_20261022" ON public.news_items_20261022
+  FOR SELECT TO service_role USING (true);
 
 
 -- ----------------------------------------------------------------------------
