@@ -148,6 +148,8 @@ ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS categorias TEXT[];
 ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS related_term_v1 TEXT;
 ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS rotulado_de_novo_em TIMESTAMP WITH TIME ZONE;
 ALTER TABLE public.news_items ALTER COLUMN related_term DROP NOT NULL;
+-- 22/10/2026 (20261022190000): quando a notícia foi marcada como homónimo no quadro certo/errado.
+ALTER TABLE public.news_items ADD COLUMN IF NOT EXISTS homonimo_marcado_em TIMESTAMP WITH TIME ZONE;
 
 -- Cópia de news_items antes da nova rotulagem (22/10/2026). Numa reconstrução fica vazia: os
 -- dados dela são evidência e não se recriam daqui. Só o serviço lê.
@@ -160,6 +162,18 @@ CREATE TABLE IF NOT EXISTS public.news_items_20261022 (
 ALTER TABLE public.news_items_20261022 ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Allow service role read on news_items_20261022" ON public.news_items_20261022;
 CREATE POLICY "Allow service role read on news_items_20261022" ON public.news_items_20261022
+  FOR SELECT TO service_role USING (true);
+-- Cópia das 3 notícias marcadas como homónimo (22/10/2026). Vazia numa reconstrução, como a de cima.
+CREATE TABLE IF NOT EXISTS public.news_items_quadro_20261022 (
+  id UUID PRIMARY KEY, title TEXT NOT NULL, outlet TEXT NOT NULL, date DATE NOT NULL,
+  url TEXT NOT NULL, related_term TEXT, source_type TEXT NOT NULL, keyword_id UUID,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL, casou_por TEXT, categorias TEXT[],
+  related_term_v1 TEXT, rotulado_de_novo_em TIMESTAMP WITH TIME ZONE,
+  copiado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
+ALTER TABLE public.news_items_quadro_20261022 ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow service role read on news_items_quadro_20261022" ON public.news_items_quadro_20261022;
+CREATE POLICY "Allow service role read on news_items_quadro_20261022" ON public.news_items_quadro_20261022
   FOR SELECT TO service_role USING (true);
 
 
