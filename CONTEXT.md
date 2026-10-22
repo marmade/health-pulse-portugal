@@ -1,6 +1,13 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-21 (quarta) — provas de segunda 19/10, feitas hoje pelo Cowork só
+> Última actualização: 2026-10-22 (quinta) — corte das 1000 linhas fechado e provado no site
+> (`6d68edc`); vista do eixo publicada e provada nos 4 eixos (`b061f7c`): top 10, arquivo por
+> posição desde 21/09, os mais procurados do último ano, painel do Google Trends a ler do lote; PDF
+> de 12/10 provado pelo teste, não por ficheiro descarregado (o ponto 6 de 19/10 fecha); site em
+> branco ao escolher um eixo durante a carga corrigido e provado (`af8ee0c`). Calendário: sexta 23
+> de reserva para os homónimos; 27 alertas no ecrã e textos finais; 28 briefing; 29 varrimento; 30
+> fecho; a leitura mensal só se sobrar tempo. Registo em `docs/sessoes/2026-10-22.md`.
+> Anterior: 2026-10-21 (quarta) — provas de segunda 19/10, feitas hoje pelo Cowork só
 > com leituras; 19 e 20/10 sem trabalho. **Arranque em 24.04: passou** (corrida #43, agendada;
 > com o cron às 06:00, o GitHub criou-a às 12:39:58; a 05/10 começou às 14:06 e a 12/10 às
 > 14:55; que seja o agendador do GitHub é inferência, causa não vista). **Arquivo de 12/10: 5 de
