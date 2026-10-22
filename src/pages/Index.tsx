@@ -19,6 +19,7 @@ import { grupoDoEixo } from "@/lib/trendsGrupo";
 import { useTrendsLote } from "@/hooks/useTrendsLote";
 import { useVistaEixo } from "@/hooks/useVistaEixo";
 import ArquivoPosicoes from "@/components/ArquivoPosicoes";
+import OMes from "@/components/OMes";
 import Top5Table from "@/components/Top5Table";
 import AlertasEixo, { NOTA_ALERTAS } from "@/components/AlertasEixo";
 import { semanaIntervalo } from "@/lib/semana";
@@ -288,6 +289,15 @@ const Index = () => {
                         lastPeak: "", isEmergent: false, posicao: t.posicao,
                       }))}
                       nota={`Mediana do valor semanal de cada termo nas últimas 52 semanas completas do lote${lote ? ` ${lote.id.slice(0, 8)}` : ""}, na régua do eixo (a âncora ≈ 100). Só termos com mediana acima de zero. Valores iguais partilham a posição.`}
+                    />
+                  )}
+                  {/* O mês (22/10/2026): a leitura mensal, das mesmas séries — docs/sessoes/2026-10-22.md §11. */}
+                  {vistaEixo && (
+                    <OMes
+                      mensal={vistaEixo.mensal}
+                      termosActivos={termosDoEixo?.[axisId] ?? []}
+                      loteId={lote?.id}
+                      incompleto={vistaEixo.seriesIncompleto}
                     />
                   )}
                   </div>

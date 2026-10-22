@@ -51,7 +51,8 @@ export function termosPorProcura(linhas: Linha52s[], termosActivos: string[]): s
   return [...comProcura, ...termosActivos.filter(t => !vistos.has(t))];
 }
 
-export type LinhaMensal ={ termo: string; mes: string; media: number | string };
+/** `n` = semanas do lote nesse mês (trends_termo_mensal); diz se o mês está completo. */
+export type LinhaMensal ={ termo: string; mes: string; media: number | string; n?: number };
 export type PontoMensal = { data: string; valor: number };
 
 /** A série mensal de cada termo, por ordem de mês. Termos activos sem linhas ficam com série vazia. */
@@ -114,3 +115,64 @@ export function analisar(pontosMes: PontoMensal[]) {
 
   return { pontos, sobrepostos, corrente, anterior, mediasAnuais, alto, baixo, maximo, zeros };
 }
+
+/* ---------- O mês: a leitura mensal (22/10/2026, docs/sessoes/2026-10-22.md §9.2 e §11) ---------- */
+
+/** Quantos domingos tem o mês — as semanas do Trends começam ao domingo. `mes` = "AAAA-MM-01". */
+export function domingosNoMes(mes: string): number {
+  const ano = +mes.slice(0, 4), m = +mes.slice(5, 7) - 1;
+  const dias = new Date(Date.UTC(ano, m + 1, 0)).getUTCDate();
+  const primeiro = new Date(Date.UTC(ano, m, 1)).getUTCDay();
+  return Array.from({ length: dias }, (_, d) => (primeiro + d) % 7).filter(w => w === 0).length;
+}
+
+const mesAnterior = (mes: string) => `${+mes.slice(0, 4) - 1}${mes.slice(4, 10)}`;
+
+/** Os meses que o selector oferece, do mais recente ao mais antigo: completos (o lote tem todas
+    as semanas que começam no mês) e com o mesmo mês do ano anterior também completo. */
+export function mesesDaLeitura(linhas: LinhaMensal[]): string[] {
+  const porMes = new Map<string, boolean>();
+  for (const r of linhas) {
+    const mes = r.mes.slice(0, 10);
+    porMes.set(mes, (porMes.get(mes) ?? true) && r.n === domingosNoMes(mes));
+  }
+  const completos = new Set([...porMes].filter(([, c]) => c).map(([m]) => m));
+  return [...completos].filter(m => completos.has(mesAnterior(m))).sort().reverse();
+}
+
+export const nomeDoMes = (mes: string) => `${MES_LONGO[+mes.slice(5, 7) - 1]} de ${mes.slice(0, 4)}`;
+
+export type ItemMes = { termo: string; valor: number; posicao: number; anterior: number | null; variacao: number | null };
+
+/** Os 10 mais procurados do mês (a regra do arquivo, topDoEixo, sobre a média do mês), com a
+    variação face ao mesmo mês do ano anterior: sem percentagem quando esse valor é < 5 (o limiar
+    do "mais sobe" do gráfico do eixo). Contas em centésimas inteiras, como a vista as grava, para
+    o arredondamento ser o mesmo que o da consulta de prova. */
+export function leituraDoMes(linhas: LinhaMensal[], termosActivos: string[], mes: string) {
+  const ant = mesAnterior(mes);
+  const doMes = linhas.filter(r => r.mes.slice(0, 10) === mes);
+  const anteriores = new Map(linhas.filter(r => r.mes.slice(0, 10) === ant).map(r => [r.termo.toLowerCase(), +r.media]));
+  const itens: ItemMes[] = topDoEixo(doMes.map(r => ({ termo: r.termo, valor: r.media })), termosActivos, 10)
+    .map(t => {
+      const anterior = anteriores.get(t.term.toLowerCase()) ?? null;
+      const c = Math.round(t.valor_eixo * 100), p = anterior == null ? null : Math.round(anterior * 100);
+      const variacao = p != null && p >= 500 ? Math.round((c - p) * 100 / p) : null;
+      return { termo: t.term, valor: t.valor, posicao: t.posicao, anterior, variacao };
+    });
+  const subidas = itens.filter(i => i.variacao != null && i.variacao > 0);
+  const maximo = subidas.length ? Math.max(...subidas.map(i => i.variacao!)) : null;
+  const maisSubiu = maximo == null ? null : { termos: subidas.filter(i => i.variacao === maximo).map(i => i.termo), variacao: maximo };
+  return { itens, maisSubiu, mesAnterior: ant };
+}
+
+const num = (v: number) => v.toLocaleString("pt-PT", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+/** A variação por extenso, sem sinal (decisão de 22/10, §4.2): "sobe 12%", "desce 36%", "igual",
+    ou os dois valores quando o ano anterior é < 5. */
+export function variacaoPorExtenso(i: ItemMes): string {
+  if (i.anterior == null) return "sem valor no ano anterior";
+  if (i.variacao == null) return `de ${num(i.anterior)} para ${num(i.valor)}`;
+  if (i.variacao === 0) return "igual";
+  return `${i.variacao > 0 ? "sobe" : "desce"} ${Math.abs(i.variacao)}%`;
+}
+export { num as valorComUmaCasa };

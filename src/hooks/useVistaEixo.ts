@@ -17,6 +17,8 @@ export type VistaEixo = {
   termosPorProcura: string[];
   series: Map<string, PontoMensal[]>;
   seriesIncompleto: Incompleto | null;
+  /** As mesmas linhas mensais, com `n`: a leitura mensal ("O mês") faz as contas a partir daqui. */
+  mensal: LinhaMensal[];
 };
 
 export function useVistaEixo(eixo: string | null, loteId: string | null, termosActivos: string[] | null) {
@@ -35,7 +37,7 @@ export function useVistaEixo(eixo: string | null, loteId: string | null, termosA
             .select("termo, mediana_52s", { count: "exact" }).eq("lote_id", loteId).eq("eixo", eixo)
             .in("termo", termosActivos).order("termo").range(de, ate) as unknown as Promise<Pagina<Linha52s>>),
           lerTudo<LinhaMensal>((de, ate) => supabase.from("trends_termo_mensal" as never)
-            .select("termo, mes, media", { count: "exact" }).eq("lote_id", loteId).eq("eixo", eixo)
+            .select("termo, mes, media, n", { count: "exact" }).eq("lote_id", loteId).eq("eixo", eixo)
             .in("termo", termosActivos).order("termo").order("mes").range(de, ate) as unknown as Promise<Pagina<LinhaMensal>>),
         ]);
         const incompleto = (l: { linhas: unknown[]; contadas: number; completa: boolean }): Incompleto | null =>
@@ -46,6 +48,7 @@ export function useVistaEixo(eixo: string | null, loteId: string | null, termosA
           termosPorProcura: termosPorProcura(s52.linhas, termosActivos),
           series: seriesPorTermo(men.linhas, termosActivos),
           seriesIncompleto: incompleto(men),
+          mensal: men.linhas,
         });
       } catch (e) {
         console.error("useVistaEixo:", e);
