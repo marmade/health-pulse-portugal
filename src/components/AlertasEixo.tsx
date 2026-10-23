@@ -13,6 +13,13 @@ import { semanaIntervalo } from "@/lib/semana";
  *   ○ a observar    z ≥ 2 sem chegar a alerta — sem bandeira, nunca com a palavra "alerta"
  */
 const SIMBOLO: Record<AlertaItem["tipo"], string> = { subida: "▲", aparecimento: "●", sazonal: "~", a_observar: "○" };
+/** A cor de cada símbolo — a mesma nas linhas dos alertas e na legenda do "Como ler os alertas"
+    (decisão da Marta, 23/10/2026). Os alertas a vermelho; o sazonal e o "a observar" no cinzento
+    da linha deles. */
+const COR_SIMBOLO: Record<AlertaItem["tipo"], string> = {
+  subida: "text-destructive", aparecimento: "text-destructive", sazonal: "text-foreground/60", a_observar: "text-foreground/60",
+};
+const Simbolo = ({ tipo }: { tipo: AlertaItem["tipo"] }) => <span className={COR_SIMBOLO[tipo]}>{SIMBOLO[tipo]}</span>;
 
 const vezes = (r: number) => (r >= 10 ? r.toFixed(0) : r.toFixed(1).replace(".", ","));
 const n0 = (x: number) => Math.round(x).toString();
@@ -25,10 +32,56 @@ function frase(a: AlertaItem): string {
   return s;
 }
 
-export const NOTA_ALERTAS = `"Valor normal" = mediana das 8 semanas anteriores, na régua do eixo. Alerta: 3 desvios robustos e 1,5 vezes acima; "a observar" (○) fica aquém; "sazonal" (~) é o que esta época costuma fazer nos anos anteriores. Regra de 18/09/2026; a semana em curso não conta.`;
+/**
+ * "Como ler os alertas" — texto da Marta, aprovado a 23/10/2026, letra a letra; substitui a nota
+ * de proveniência que estava aqui (NOTA_ALERTAS). Os detalhes que saíram do ecrã (os 3 desvios
+ * robustos, a regra de 18/09/2026) vão para o /sobre, pelo rascunho
+ * docs/evidencia/2026-09-18-sobre-linha-do-tempo/rascunho-notas-de-metodo.md §1.2. O §1.1 desse
+ * rascunho tem este mesmo texto, e um teste compara-os (src/test/comoLerAlertas.test.tsx).
+ * Sempre visível, com o título como título de coluna, no mesmo rótulo dos eixos — decisão da
+ * Marta, 23/10/2026: na página inicial é a primeira coluna, à esquerda dos 4 eixos (Index.tsx).
+ * A largura fica limitada para as linhas não passarem de 70 a 80 caracteres; os símbolos têm as
+ * cores das linhas dos alertas (COR_SIMBOLO). Ver docs/sessoes/2026-10-23.md §7.
+ */
+export const ComoLerAlertas = () => (
+  <div>
+    <p className="editorial-label mb-3" style={{ color: "#0000FF" }}>
+      Como ler os alertas
+    </p>
+    <div className="text-[10px] leading-relaxed text-foreground/70 border-l-2 pl-2 space-y-1.5 max-w-[62ch]" style={{ borderColor: "#0000FF" }}>
+      <p>
+        Um alerta diz que um termo foi mais procurado numa semana do que costuma ser. Os valores vêm do
+        Google Trends e não são números de pesquisas: são relativos, numa escala própria de cada eixo, e
+        só se comparam dentro do mesmo eixo.
+      </p>
+      <p>
+        <Simbolo tipo="subida" /> <strong>Subida.</strong> O «valor normal» é a mediana das oito semanas anteriores. Há alerta
+        quando a semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do
+        termo. «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o
+        valor normal fica o de antes de começar.
+      </p>
+      <p>
+        <Simbolo tipo="aparecimento" /> <strong>Aparecimento.</strong> Um termo sem procura regular passa a ser procurado, muito acima
+        do que tinha no último ano.
+      </p>
+      <p>
+        <Simbolo tipo="sazonal" /> <strong>Sazonal.</strong> A subida é a que esta época do ano costuma trazer. Mostra-se, mas não
+        é alerta.
+      </p>
+      <p>
+        <Simbolo tipo="a_observar" /> <strong>A observar.</strong> Está a mexer sem chegar a alerta.
+      </p>
+      <p>
+        A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o
+        vê. «Nenhum alerta» quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada
+        mudou no tema.
+      </p>
+    </div>
+  </div>
+);
 
 /** rotulo: na página inicial (linhas alinhadas) é o nome do eixo; sem rotulo, o título diz a
-    semana. compacto: sem a nota de proveniência (a linha da página inicial mostra-a uma vez). */
+    semana. compacto: sem o "Como ler os alertas" (a linha da página inicial mostra-o uma vez). */
 const AlertasEixo = ({ dados, rotulo, rotuloCor, compacto }: { dados: Dados; rotulo?: string; rotuloCor?: string; compacto?: boolean }) => {
   const alertas = dados.itens.filter(a => a.tipo === "subida" || a.tipo === "aparecimento");
   const resto = dados.itens.filter(a => a.tipo === "sazonal" || a.tipo === "a_observar");
@@ -46,14 +99,14 @@ const AlertasEixo = ({ dados, rotulo, rotuloCor, compacto }: { dados: Dados; rot
         {alertas.map(a => <Linha key={a.termo} a={a} forte />)}
         {resto.map(a => <Linha key={a.termo} a={a} />)}
       </div>
-      {!compacto && <p className="text-[9px] leading-relaxed text-foreground/50 mt-2">{NOTA_ALERTAS}</p>}
+      {!compacto && <div className="mt-2"><ComoLerAlertas /></div>}
     </div>
   );
 };
 
 const Linha = ({ a, forte }: { a: AlertaItem; forte?: boolean }) => (
   <div className={`flex items-start gap-2 py-2 border-b border-foreground/10 last:border-0 ${forte ? "" : "text-foreground/60"}`}>
-    <span className={`text-[11px] w-3 shrink-0 mt-0.5 ${forte ? "text-destructive" : ""}`}>{SIMBOLO[a.tipo]}</span>
+    <span className={`text-[11px] w-3 shrink-0 mt-0.5 ${COR_SIMBOLO[a.tipo]}`}>{SIMBOLO[a.tipo]}</span>
     <div className="flex-1 min-w-0">
       <div className="flex items-baseline gap-2">
         <span className={`text-xs ${forte ? "font-bold" : "font-semibold"} truncate`}>{a.termo}</span>

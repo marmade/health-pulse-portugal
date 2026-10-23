@@ -21,7 +21,7 @@ import { useVistaEixo } from "@/hooks/useVistaEixo";
 import ArquivoPosicoes from "@/components/ArquivoPosicoes";
 import OMes from "@/components/OMes";
 import Top5Table from "@/components/Top5Table";
-import AlertasEixo, { NOTA_ALERTAS } from "@/components/AlertasEixo";
+import AlertasEixo, { ComoLerAlertas } from "@/components/AlertasEixo";
 import { semanaIntervalo } from "@/lib/semana";
 import { NOTA_TOP5 } from "@/components/AxisColumn";
 
@@ -459,15 +459,20 @@ const Index = () => {
                   Alertas — semana de {semanaIntervalo(semanaAlertas)}
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 items-start">
-                {visibleAxes.map((axisId) => {
-                  const dados = loteEixo?.[axisId]?.alertas;
-                  return dados
-                    ? <AlertasEixo key={`${axisId}-alertas`} dados={dados} rotulo={filteredData[axisId].label} rotuloCor="#0000FF" compacto />
-                    : <div key={`${axisId}-alertas`} />;
-                })}
+              {/* Disposição decidida pela Marta a 23/10/2026: a explicação à esquerda, sempre
+                  visível; os 4 eixos ao lado, em 2 × 2, pela ordem de sempre. Em ecrã estreito
+                  empilha: a explicação primeiro, depois os eixos um a um. */}
+              <div className="grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-8 items-start">
+                <ComoLerAlertas />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                  {visibleAxes.map((axisId) => {
+                    const dados = loteEixo?.[axisId]?.alertas;
+                    return dados
+                      ? <AlertasEixo key={`${axisId}-alertas`} dados={dados} rotulo={filteredData[axisId].label} rotuloCor="#0000FF" compacto />
+                      : <div key={`${axisId}-alertas`} />;
+                  })}
+                </div>
               </div>
-              <p className="text-[9px] leading-relaxed text-foreground/50 mt-4">{NOTA_ALERTAS}</p>
             </>
           )}
           </>
@@ -520,12 +525,13 @@ const Index = () => {
         )}
         {activeAxis === 'all' && (
           <p className="text-[9px] uppercase tracking-[0.15em] text-foreground/40 mt-10">
-            {/* Texto da Marta, 13/10/2026: o bloco de alertas mantém-se e esta nota deixa de
-                dizer "fora do ecrã desde 24/09", que o contradizia. Textos finais a 27/10. */}
-            Alertas de pesquisa — em revisão. Um alerta diz que um termo subiu mais do que
-            costuma subir. Encontrámos um erro na forma como a regra trata os valores
-            exactamente iguais aos limites, e está a ser corrigido. Até lá, os alertas desta
-            página podem mudar.
+            {/* Texto da Marta, 23/10/2026, que substitui o de 13/10: a correcção dos limites foi
+                feita (5c0391f, 14/10) e provada; os 5 lotes de antes foram recalculados a 15/10
+                (e1ed24a) e o lote que o ecrã mostra foi calculado já com a regra corrigida (18/10).
+                Daí "passaram a ser calculados", e não "recalculados" — docs/sessoes/2026-10-23.md §7. */}
+            Em Outubro encontrámos um erro na forma como a regra tratava os valores exactamente
+            iguais aos limites. Foi corrigido, e os alertas passaram a ser calculados com a regra
+            corrigida.
           </p>
         )}
       </main>

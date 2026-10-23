@@ -9,22 +9,24 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 
 ### 1.1 O texto do ecrã (aprovado pela Marta a 23/10, recolhido em "Como ler os alertas")
 
-> **Alertas.** Um alerta diz que um termo foi mais procurado numa semana do que costuma ser. Os
-> valores são os do Google Trends: relativos, de 0 a 100, comparáveis só dentro do mesmo eixo —
-> não são números de pesquisas.
+> Um alerta diz que um termo foi mais procurado numa semana do que costuma ser. Os valores vêm do
+> Google Trends e não são números de pesquisas: são relativos, numa escala própria de cada eixo, e
+> só se comparam dentro do mesmo eixo.
 >
-> ▲ **Subida.** O "valor normal" é a mediana das oito semanas anteriores. Há alerta quando a
-> semana fica pelo menos 1,5 vezes acima dele e bem acima da oscilação habitual do termo. "Em
-> curso, 3.ª semana" quer dizer que a subida dura há três semanas; enquanto dura, o valor normal
-> fica o de antes de começar.
+> ▲ **Subida.** O «valor normal» é a mediana das oito semanas anteriores. Há alerta quando a
+> semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do termo.
+> «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o valor
+> normal fica o de antes de começar.
 > ● **Aparecimento.** Um termo sem procura regular passa a ser procurado, muito acima do que tinha
 > no último ano.
 > ~ **Sazonal.** A subida é a que esta época do ano costuma trazer. Mostra-se, mas não é alerta.
 > ○ **A observar.** Está a mexer sem chegar a alerta.
 >
 > A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o
-> vê. "Nenhum alerta" quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada
+> vê. «Nenhum alerta» quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada
 > mudou no tema.
+
+Corrigido a 23/10 para o texto que a Marta aprovou: sai 'Alertas.' do início porque o bloco já se chama 'Como ler os alertas'; o 'de 0 a 100' saiu porque o ecrã mostra os valores na escala de cada eixo, que passa de 100 (verificação do Claude Code, docs/sessoes/2026-10-23.md §7). Aspas inglesas passadas a portuguesas (decisão minha, 23/10).
 
 ### 1.2 O que o ecrã deixa de fora (para o /sobre)
 
@@ -52,6 +54,7 @@ varrimento) e §7 (as decisões da Marta de 18/09).
 - **"Em curso".** O valor normal congela no da semana antes do primeiro disparo; o alerta
   continua enquanto o valor estiver ≥ 1,5 vezes esse valor congelado. Sem isto, o pico entrava
   na referência e o alerta calava-se à 3.ª semana (decisão 3 de 18/09).
+- Escala: o Google Trends dá 0–100 em cada pedido; o ecrã mostra os valores multiplicados pelo factor da âncora do eixo, por isso passam de 100 (ex.: creatina 218 a 23/10). Explicar aqui a âncora.
 
 ### 1.3 Porquê 1,5 — e o que isso faz às contagens
 
