@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Keyword, TrendPoint } from '@/data/mockData';
 import { buildAxisTrend } from '@/lib/buildTrend';
+import { semMeteorologicas } from '@/lib/noticias';
 
 type AxisDataResult = Record<string, {
   label: string;
@@ -218,7 +219,7 @@ export function useNewsData() {
       // Limitar a 12 meses para evitar carregar toda a tabela
       const newsCutoff = new Date();
       newsCutoff.setFullYear(newsCutoff.getFullYear() - 1);
-      const { data: news } = await supabase
+      const { data: lidas } = await supabase
         .from('news_items')
         .select('*')
         .gte('date', newsCutoff.toISOString().split('T')[0])
@@ -226,8 +227,11 @@ export function useNewsData() {
         // (decisão da Marta, 22/10/2026 — docs/sessoes/2026-10-22.md §8)
         .not('related_term', 'is', null)
         .order('date', { ascending: false });
+      // a "depressão" meteorológica sai, pela regra do arquivo semanal (decisão da Marta,
+      // 23/10/2026 — docs/sessoes/2026-10-23.md)
+      const news = semMeteorologicas(lidas || []);
 
-      if (news && news.length > 0) {
+      if (news.length > 0) {
         setData(news.map(n => ({
           title: n.title,
           outlet: n.outlet,

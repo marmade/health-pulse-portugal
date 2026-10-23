@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
+import { semMeteorologicas } from "@/lib/noticias";
 // Health questions are fetched from Supabase — no hardcoded fallback
 import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
@@ -144,7 +145,9 @@ const Briefing = () => {
       ]);
 
       if (kwRes.data) setKeywords(kwRes.data as KeywordRow[]);
-      if (newsRes.data) setNews(newsRes.data as NewsRow[]);
+      // a "depressão" meteorológica sai, pela regra do arquivo semanal (decisão da Marta,
+      // 23/10/2026 — docs/sessoes/2026-10-23.md). O resto desta leitura fica como estava.
+      if (newsRes.data) setNews(semMeteorologicas(newsRes.data as NewsRow[]));
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
       if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number | null; relative_volume: number | null; axis: string}[]);

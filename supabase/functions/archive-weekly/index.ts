@@ -1,5 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { notaSemMedicao, semMedicao, topDoEixo, type Medicao, type Pedido } from "../_shared/top_eixo.ts";
+import { eDepressaoMeteorologica } from "../_shared/meteo.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -92,27 +93,9 @@ function ordenarPerguntas(qs: any[]) {
   });
 }
 
-/**
- * "Depressão" no sentido meteorológico. O termo `depressão sintomas` tem
- * "depressão" como sinónimo, e com a fronteira de palavra da fetch-rss-feeds
- * v2 continua a casar com a depressão do boletim do tempo — é homónimo, não
- * pedaço de palavra. Caso de 24/09/2026: "Chuva regressa domingo e pode ser
- * intensa terça e quarta" (Observador, categoria "Céu e Terra").
- *
- * Só se aplica às notícias que casaram por "depressão". O texto da descrição
- * não é guardado na base, logo decide-se pelo título e pelas categorias do
- * feed.
- */
-const CATEGORIA_METEO = /c[ée]u e terra|meteorolog|\btempo\b/i;
-const TITULO_METEO =
-  /\b(chuvas?|trovoadas?|ipma|tempestades?|precipitação|ventos?|agitação marítima)\b|aviso (amarelo|laranja|vermelho)|meteorol/i;
-
-function eDepressaoMeteorologica(n: any) {
-  const casou = String(n.casou_por ?? n.related_term ?? "").toLowerCase();
-  if (!casou.includes("depress")) return false;
-  const cats = (n.categorias || []).join(" · ");
-  return CATEGORIA_METEO.test(cats) || TITULO_METEO.test(n.title || "");
-}
+// A "depressão" meteorológica (eDepressaoMeteorologica) está em
+// _shared/meteo.ts desde 23/10/2026: o site lê a mesma regra, para que o
+// arquivo e o ecrã não divirjam. Ver docs/sessoes/2026-10-23.md.
 
 /**
  * Notícia de fact-check: categoria "Fact Check" no feed, ou vinda de um feed
