@@ -7,11 +7,16 @@
 > `/briefing` ao vivo, pela regra do arquivo semanal. A regra passou para
 > `supabase/functions/_shared/meteo.ts`, e o `archive-weekly` e o site importam-na de lá. No site,
 > as contagens são iguais às de 22/10. **O `archive-weekly` publica-se na terça 27**, depois da
-> corrida de segunda 26; até lá o repositório e a v9 diferem na forma, não no comportamento. Texto
-> dos alertas no ecrã aprovado pela Marta (Cowork, `2026-10-23-cowork.md` §2), para implementar a
-> 27. Calendário: 26 corrida de segunda; 27 publicação do `archive-weekly`, alertas e textos finais;
-> 28 briefing, com o `/briefing` ao vivo sem o filtro de 22/10; 29 varrimento; 30 fecho. Registo em
-> `docs/sessoes/2026-10-23.md`.
+> corrida de segunda 26; até lá o repositório e a v9 diferem na forma, não no comportamento.
+> **Alertas no ecrã** (`5768ac8`, publicado e provado no site): "Como ler os alertas" é a primeira
+> coluna do bloco de alertas da página inicial, sempre visível, com o texto aprovado pela Marta a
+> 23/10; os 4 eixos em 2 × 2 ao lado; a nota antiga saiu para o rascunho do `/sobre`; o aviso do
+> fundo diz que o erro dos limites foi corrigido e que os alertas passaram a ser calculados com a
+> regra corrigida. Calendário: 26 corrida de segunda; 27, por esta ordem de prioridade (decisão
+> da Marta, 23/10): 1) publicação do `archive-weekly`, 2) limitações do `/sobre`, 3) diagnóstico
+> da creatina, 4) textos finais e alertas na vista do eixo — estes são os primeiros a cair se não
+> houver tempo; 28 briefing, com o `/briefing` ao vivo sem o filtro de 22/10; 29 varrimento; 30
+> fecho. Registo em `docs/sessoes/2026-10-23.md`.
 > Anterior: 2026-10-22 (quinta) — corte das 1000 linhas fechado e provado no site
 > (`6d68edc`); vista do eixo publicada e provada nos 4 eixos (`b061f7c`): top 10, arquivo por
 > posição desde 21/09, os mais procurados do último ano, painel do Google Trends a ler do lote; PDF
@@ -1252,7 +1257,19 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [x] ~~**Alertas de volta ao site** (a Marta, 30/09) — antes, testá-los à parte com a via B: disparos de um lote da via funcao contra os de um lote pytrends do mesmo dia (`docs/sessoes/2026-09-30-cowork.md` §14).~~ Sem objecto: via B parada a 06/10. O teste dos alertas continua no `AUDIT.md` §7 (referência congelada, quarta 07).
 - [ ] **`ubuntu-latest` passa a Ubuntu 26 a 19/10/2026** (aviso do GitHub, 30/09). **Adiado a 16/10:** os dois workflows ficam fixados em `ubuntu-24.04`, para a passagem não coincidir com a corrida de 19/10. A passagem à 26 fica a rever depois de 30/10. O Node.js 20 obsoleto nas actions continua por ver.
 - [x] ~~**O cron de segunda do `via-b-corrida-de-teste.yml` é temporário** (`'23 5 * * 1'`, desde 01/10) — sai depois da #4 de 05/10, num commit à parte, com o comentário do cabeçalho actualizado. Se ficar, volta a correr a 12/10.~~ Saiu a 06/10 (`8602fac`); prova pelo efeito: segunda 12/10, nenhuma corrida agendada.
-- [ ] **Creatina "em curso"** — 249.ª semana no lote `3bbae660`, início 2022-01-02, igual na cópia de 18/09; 250.ª no site a 21/10, lote `c2a00bb6`. Defeito da regra (uma subida contínua que nunca fecha) ou comportamento pretendido? Decide-se na terça 27, no bloco dos alertas no ecrã. Antes, diagnóstico só com leituras contra `docs/metodo/2026-09-18-alertas-regra.md` §7, decisão 3 (decisão da Marta, 21/10) — `docs/sessoes/2026-10-15.md` §10, `2026-10-15-cowork.md` §4.1, `2026-10-21-cowork.md` §5.
+- [ ] **Creatina "em curso"** — 249.ª semana no lote `3bbae660`, início 2022-01-02, igual na cópia de 18/09; 250.ª no site a 21/10, lote `c2a00bb6`. Defeito da regra (uma subida contínua que nunca fecha) ou comportamento pretendido? Decide-se na terça 27, no bloco dos alertas no ecrã. Antes, diagnóstico só com leituras contra `docs/metodo/2026-09-18-alertas-regra.md` §7, decisão 3 (decisão da Marta, 21/10) — `docs/sessoes/2026-10-15.md` §10, `2026-10-15-cowork.md` §4.1, `2026-10-21-cowork.md` §5. A 23/10 (decisão da Marta): o "Como ler os alertas" publica-se na mesma; o diagnóstico continua
+      na terça 27 (`docs/sessoes/2026-10-23.md` §7.13).
+- [ ] **Os alertas na vista de cada eixo** estão escondidos desde 24/09 (`hideAlertas`,
+      `Index.tsx`), com a razão desse dia, e a página inicial mostra-os desde 13/10. Decide-se na
+      terça 27, no bloco dos alertas (decisão da Marta, 23/10; `docs/sessoes/2026-10-23.md` §7.7).
+- [ ] **As limitações do `/sobre` estão desactualizadas** (`src/data/sobreContent.ts` l.96): falam
+      em "thresholds de alertas (30–50%)" e dizem que "a detecção de sazonalidade não está
+      implementada"; a regra de 18/09 tem as duas coisas de outra maneira. O `/sobre` publicado
+      afirma o contrário do que o sistema faz. A corrigir com os textos de terça 27, não depois
+      de 30/10 (decisão da Marta, 23/10; `docs/sessoes/2026-10-23.md` §7.7).
+- [ ] **No telemóvel, o cabeçalho do site transborda 20 px**: a página tem 410 px num ecrã de 390,
+      por causa do "· Editorial" da navegação. Para quinta 29, o varrimento (decisão da Marta,
+      23/10; `docs/sessoes/2026-10-23.md` §7.11).
 - [ ] **Nota do `archive-weekly` nomeia a semana pelo domingo** ("sem medição na semana de AAAA-MM-DD", `_shared/top_eixo.ts` l.103 e `archive-weekly/index.ts`) → intervalo de domingo a sábado, como o ecrã desde 15/10 (`785722c`). Com os textos finais de 27/10 (a corrida de 19/10 já está provada, `2026-10-21-cowork.md` §2): publicar antes metia uma variável nova na função em prova (decisão da Marta, 15/10) — `docs/sessoes/2026-10-15.md` §9–§10.
 - [ ] **Mural da página inicial** — duas listas com escalas próprias e termos quase repetidos; observação da Marta a 30/09, sem diagnóstico (`docs/sessoes/2026-09-30-cowork.md` §8).
 - [ ] **Âncoras de cada eixo — pergunta de método em aberto**, separada da aprovação da via B (30/09).
@@ -1314,7 +1331,9 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] gravar_alertas_lote (15/10) e trends_alertas_regra_20260918 (14/10) não estão na migration_consolidada.sql. Numa reconstrução, o gravar() falharia sempre, sem apagar nada. Versões remotas e ficheiros locais com números diferentes: 20261015185519 contra 20261015180000, e 20261014182635 contra 20261014180000. Ver docs/sessoes/2026-10-15.md §2 e 2026-10-14.md §9.
 - [ ] **As quatro vistas de resumo do Trends na `migration_consolidada.sql` leem de `trends_calibrados`** (secção 5.19b, l.783–806: `trends_eixo_mensal`, `trends_termo_52s`, `trends_termo_anual` e `trends_termo_mensal`). Na base, pelo menos a `trends_termo_mensal` lê de `trends_calibrados_completos` (migração `20260918220000`, que tira a semana parcial): Outubro de 2026 tem `n` = 2 na base, e teria 3 com a semana parcial. Uma recriação a partir da consolidada voltaria a pôr a semana parcial nas médias. Falta confirmar, só com leituras, de onde lê cada uma das quatro na base. Não se corrige antes disso (regra 2 do `CLAUDE.md`). Achado a 22/10, `docs/sessoes/2026-10-22.md` §11.3.
 - [ ] Vocabulário técnico (SNS 24 e DGS) contra vocabulário corrente (as palavras que as pessoas comuns usam quando pesquisam, conhecidas pelo Autocomplete e pelas pesquisas relacionadas do Trends), em todos os termos — passa para depois de 30/10 (decisão da Marta, 21/10, `2026-10-21-cowork.md` §5). A forma corrente não é escolhida por nós: vem dessas fontes. Pedidos espaçados, depois da recolha de dom 18. Ver 2026-10-15-cowork.md §4.6 e 2026-10-15.md §11.
-- [ ] Texto da explicação dos alertas no ecrã — rascunho por rever pela Marta, para os textos finais de 27/10. Ver 2026-10-15-cowork.md §4.4 e §4.5 (o rascunho do §4.4 tem uma afirmação que caiu no §4.5 e não pode ir para o ecrã tal como está). O aviso no fundo da página inicial ainda diz que o erro dos alertas "está a ser corrigido"; a correcção foi provada a 18/10. Muda com estes textos (`2026-10-21-cowork.md` §4).
+- [x] ~~Texto da explicação dos alertas no ecrã — rascunho por rever pela Marta, para os textos finais de 27/10. Ver 2026-10-15-cowork.md §4.4 e §4.5 (o rascunho do §4.4 tem uma afirmação que caiu no §4.5 e não pode ir para o ecrã tal como está). O aviso no fundo da página inicial ainda diz que o erro dos alertas "está a ser corrigido"; a correcção foi provada a 18/10. Muda com estes textos (`2026-10-21-cowork.md` §4).~~ Feito a 23/10 (`5768ac8`): "Como ler os
+      alertas" na página inicial, com o texto aprovado pela Marta, e o aviso do fundo novo; provado
+      no site publicado — `docs/sessoes/2026-10-23.md` §7.
 - [ ] **Notícias, desmentidos e fact-checks** — diagnóstico só com leituras em `docs/sessoes/2026-10-16.md` §3. Passa para depois de 30/10; até lá, os textos de 27/10 explicam a secção vazia (decisão da Marta, 21/10, `2026-10-21-cowork.md` §5).
 - [x] ~~**Leitura mensal com o comparativo** (vista do eixo, `2026-10-06-cowork.md` §7) — depois da vista do eixo; é a primeira a cair se faltar tempo (decisão da Marta, 21/10).~~ Feitos a 22/10, em separado: o comparativo no `b061f7c` (os gráficos de cada eixo a ler do lote); a leitura mensal no `e5a74b0` — "O mês", os 10 mais procurados de um mês completo face ao mesmo mês do ano anterior, com prova no site nos 4 eixos — `docs/sessoes/2026-10-22.md` §11.
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
