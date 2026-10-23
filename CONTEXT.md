@@ -1,6 +1,18 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-22 (quinta) — corte das 1000 linhas fechado e provado no site
+> Última actualização: 2026-10-23 (sexta) — **filtro meteorológico no site** (`78a37dc`, publicado;
+> provado no site com uma excepção: o critério pedia a consola sem erros e a do `/briefing` tem o
+> erro da `generate-diz-que-disse`, que não está publicada na instância nova — ponto não cumprido,
+> causa fora desta mudança): a "depressão" meteorológica sai da Cobertura mediática e do
+> `/briefing` ao vivo, pela regra do arquivo semanal. A regra passou para
+> `supabase/functions/_shared/meteo.ts`, e o `archive-weekly` e o site importam-na de lá. No site,
+> as contagens são iguais às de 22/10. **O `archive-weekly` publica-se na terça 27**, depois da
+> corrida de segunda 26; até lá o repositório e a v9 diferem na forma, não no comportamento. Texto
+> dos alertas no ecrã aprovado pela Marta (Cowork, `2026-10-23-cowork.md` §2), para implementar a
+> 27. Calendário: 26 corrida de segunda; 27 publicação do `archive-weekly`, alertas e textos finais;
+> 28 briefing, com o `/briefing` ao vivo sem o filtro de 22/10; 29 varrimento; 30 fecho. Registo em
+> `docs/sessoes/2026-10-23.md`.
+> Anterior: 2026-10-22 (quinta) — corte das 1000 linhas fechado e provado no site
 > (`6d68edc`); vista do eixo publicada e provada nos 4 eixos (`b061f7c`): top 10, arquivo por
 > posição desde 21/09, os mais procurados do último ano, painel do Google Trends a ler do lote; PDF
 > de 12/10 provado pelo teste, não por ficheiro descarregado (o ponto 6 de 19/10 fecha); site em
@@ -1267,10 +1279,28 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       desde 28/09 (migração `20260928130000`, aplicada; confirmado na base a 29/09: 4
       "verificada", 32 "sem fonte verificada"); 32 por procurar.
 - [ ] **Homónimos nas notícias.** Só a "depressão" meteorológica sai do arquivo; os outros
-      (`docs/sessoes/2026-09-28.md` §3) esperam decisão. Os rótulos da v1 continuam na base.
+      (`docs/sessoes/2026-09-28.md` §3) foram decididos a 22/10 (`docs/sessoes/2026-10-22.md`
+      §8.1 e §8.6): vão ao quadro certo/errado as que casaram por depressão, pânico, derrame,
+      stress; marcações da Marta: erradas a 1 (a "depressão" meteorológica, "Chuva regressa
+      domingo…", 24/09), a 2 e a 8 (os dois "derrame" de petróleo, Golfo do México e Antuérpia);
+      as outras sete certas. As 3 erradas ficaram com `related_term` e `keyword_id` a nulo e
+      `homonimo_marcado_em` preenchido. Os rótulos da v1 continuam na base.
+      Desde 23/10 a "depressão" meteorológica sai também do site (`78a37dc`), pela mesma regra
+      (`_shared/meteo.ts`). **Nota:** a semana de 21/09 do arquivo (`briefings_archive` e
+      `eixos_archive`) tem a "Chuva regressa…" gravada, porque foi gravada antes de a regra
+      existir (`100b1fb`, 28/09); o arquivo gravado não se reescreve (decisão da Marta, 23/10).
+      **Limite, para depois de 30/10:** a regra tiraria também uma notícia clínica com "vento(s)"
+      no título ou "tempo" nas categorias do feed; nenhum caso na base a 23/10
+      (`docs/sessoes/2026-10-23.md` §5).
+- [ ] **Publicar o `archive-weekly` na terça 27/10**, depois da corrida de segunda 26 (decisão da
+      Marta, 23/10). Até lá o repositório e a função publicada (v9) diferem na forma, não no
+      comportamento: no repositório a regra meteorológica vem de `_shared/meteo.ts` (`78a37dc`); na
+      v9 está escrita no `index.ts`, com o mesmo texto. A publicação conta também como a
+      verificação no Deno, que a 23/10 não se fez (não há `deno` na máquina).
+      `docs/sessoes/2026-10-23.md` §2.4 e §6.
 - [ ] **A página `/briefing` ao vivo tem os mesmos defeitos** — lê `debunking` e as notícias
       sem filtro de semana (`Briefing.tsx` l.127–128). Não mexido; fica para a próxima
-      sessão (decisão da Marta, 28/09).
+      sessão (decisão da Marta, 28/09). Desde 23/10 tira a 'depressão' meteorológica (78a37dc), mas continua sem o filtro de 22/10: mostra as notícias sem termo. Na prova de 23/10 viu-se também '+9999%' nas 'Perguntas mais pesquisadas', que é o tecto do script 6 e não uma medida (o arquivo escreve 'fora de escala'). As duas coisas vão para quarta 28, o dia do briefing (decisão da Marta, 23/10). docs/sessoes/2026-10-23.md §6.
 - [x] ~~**Guiões vazios desde 03/08/2026 — causa encontrada e corrigida a 28/09; falta a prova
       pelo efeito a 05/10.** `[sessão 20][bd]` Duas causas (`docs/sessoes/2026-09-28.md`
       §3): `referencia_url` inexistente em `guioes` e `generate-guiao-questions` por
