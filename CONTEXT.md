@@ -8,10 +8,13 @@
 > nos 4 eixos com o `2d0a7be3`, briefing escrito, guiões com perguntas da IA sem erro.
 > **"Sinais emergentes" do briefing vazio**, com a nota de 28/09 desactualizada: a ligação aos
 > `trends_alertas` faz-se na quarta 28 e tem de estar publicada antes da corrida de 2/11.
-> Calendário: 27, pela ordem de 23/10 (`archive-weekly`, limitações do `/sobre`, creatina,
-> textos finais e alertas na vista do eixo) e, se sobrar tempo, a proposta para os emergentes;
-> 28 emergentes e briefing; 29 varrimento; 30 fecho. Registo em
-> `docs/sessoes/2026-10-26-cowork.md`.
+> **`archive-weekly` v10 publicado hoje** (19:20 UTC, pelo Cowork, `verify_jwt: true`), e não na
+> terça 27: pontos 1 a 5 do critério cumpridos (v9 = `6b732e0`; v10 lida de volta igual ao `HEAD`
+> nos 3 ficheiros, `index.ts`, `_shared/top_eixo.ts` e `_shared/meteo.ts`). Falta a prova pelo
+> efeito, na corrida de 2/11. Calendário: 27, pela ordem de 23/10 sem o 1.º ponto (limitações do
+> `/sobre`, creatina, textos finais e alertas na vista do eixo) e, se sobrar tempo, a proposta
+> para os emergentes; 28 emergentes e briefing; 29 varrimento; 30 fecho. Registo em
+> `docs/sessoes/2026-10-26-cowork.md` e `docs/sessoes/2026-10-26.md`.
 > Anterior: 2026-10-23 (sexta) — **filtro meteorológico no site** (`78a37dc`, publicado;
 > provado no site com uma excepção: o critério pedia a consola sem erros e a do `/briefing` tem o
 > erro da `generate-diz-que-disse`, que não está publicada na instância nova — ponto não cumprido,
@@ -1321,12 +1324,15 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       **Limite, para depois de 30/10:** a regra tiraria também uma notícia clínica com "vento(s)"
       no título ou "tempo" nas categorias do feed; nenhum caso na base a 23/10
       (`docs/sessoes/2026-10-23.md` §5).
-- [ ] **Publicar o `archive-weekly` na terça 27/10**, depois da corrida de segunda 26 (decisão da
+- [x] ~~**Publicar o `archive-weekly` na terça 27/10**, depois da corrida de segunda 26 (decisão da
       Marta, 23/10). Até lá o repositório e a função publicada (v9) diferem na forma, não no
       comportamento: no repositório a regra meteorológica vem de `_shared/meteo.ts` (`78a37dc`); na
       v9 está escrita no `index.ts`, com o mesmo texto. A publicação conta também como a
       verificação no Deno, que a 23/10 não se fez (não há `deno` na máquina).
-      `docs/sessoes/2026-10-23.md` §2.4 e §6.
+      `docs/sessoes/2026-10-23.md` §2.4 e §6.~~ Publicado a 26/10 (v10, 19:20 UTC, pelo Cowork),
+      lido de volta e igual ao `HEAD` nos 3 ficheiros. Ficou ACTIVE, o que mostra que o Deno
+      resolveu o import novo, mas não que a função corre `[inferência]`. A prova pelo efeito é a
+      corrida de 2/11 — `docs/sessoes/2026-10-26.md` §2–§4.
 - [ ] **A página `/briefing` ao vivo tem os mesmos defeitos** — lê `debunking` e as notícias
       sem filtro de semana (`Briefing.tsx` l.127–128). Não mexido; fica para a próxima
       sessão (decisão da Marta, 28/09). Desde 23/10 tira a 'depressão' meteorológica (78a37dc), mas continua sem o filtro de 22/10: mostra as notícias sem termo. Na prova de 23/10 viu-se também '+9999%' nas 'Perguntas mais pesquisadas', que é o tecto do script 6 e não uma medida (o arquivo escreve 'fora de escala'). As duas coisas vão para quarta 28, o dia do briefing (decisão da Marta, 23/10). docs/sessoes/2026-10-23.md §6.
