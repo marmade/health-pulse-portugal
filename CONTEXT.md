@@ -1,6 +1,18 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-23 (sexta) — **filtro meteorológico no site** (`78a37dc`, publicado;
+> Última actualização: 2026-10-26 (segunda) — planeamento feito no Cowork, só com leituras.
+> **Recolha de domingo 25/10 feita à 3.ª tentativa:** os lotes `3c497c9e` e `18222e87` ficaram
+> "falhou" (`SSLError` a meio da escrita) e o `2d0a7be3` ficou completo (33/0, 1195 alertas). Os
+> lotes "falhou" ficam na base e não entram no arquivo nem no site, que só leem lotes `completo`
+> (confirmado no código, não testado). **Corrida de 26/10 passou:** arquivo da semana 19–25/10
+> nos 4 eixos com o `2d0a7be3`, briefing escrito, guiões com perguntas da IA sem erro.
+> **"Sinais emergentes" do briefing vazio**, com a nota de 28/09 desactualizada: a ligação aos
+> `trends_alertas` faz-se na quarta 28 e tem de estar publicada antes da corrida de 2/11.
+> Calendário: 27, pela ordem de 23/10 (`archive-weekly`, limitações do `/sobre`, creatina,
+> textos finais e alertas na vista do eixo) e, se sobrar tempo, a proposta para os emergentes;
+> 28 emergentes e briefing; 29 varrimento; 30 fecho. Registo em
+> `docs/sessoes/2026-10-26-cowork.md`.
+> Anterior: 2026-10-23 (sexta) — **filtro meteorológico no site** (`78a37dc`, publicado;
 > provado no site com uma excepção: o critério pedia a consola sem erros e a do `/briefing` tem o
 > erro da `generate-diz-que-disse`, que não está publicada na instância nova — ponto não cumprido,
 > causa fora desta mudança): a "depressão" meteorológica sai da Cobertura mediática e do
@@ -1335,6 +1347,16 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       alertas" na página inicial, com o texto aprovado pela Marta, e o aviso do fundo novo; provado
       no site publicado — `docs/sessoes/2026-10-23.md` §7.
 - [ ] **Notícias, desmentidos e fact-checks** — diagnóstico só com leituras em `docs/sessoes/2026-10-16.md` §3. Passa para depois de 30/10; até lá, os textos de 27/10 explicam a secção vazia (decisão da Marta, 21/10, `2026-10-21-cowork.md` §5).
+- [ ] **"Sinais emergentes" do briefing ligados aos `trends_alertas`** — vazios desde 03/08, com a
+      nota de 28/09 ("até os alertas passarem o teste que falta", `archive-weekly` l.468–484); os
+      alertas foram provados a 18/10. A regra do que entra é da Marta; a proposta (tipo, eixo,
+      quantos, que lote, o texto quando não há nenhum) prepara-se na terça 27 e a ligação faz-se
+      na quarta 28. Tem de estar publicada antes da corrida de segunda 2/11
+      (`docs/sessoes/2026-10-26-cowork.md` §4, §7).
+- [ ] **Entidades HTML numéricas nos títulos das notícias** — "Projeto DiversITy &#038; Health…"
+      (Nutrimento, 26/10). O `limpar()` do `fetch-rss-feeds` (l.125–132) não descodifica entidades
+      numéricas `[inferência: a causa]`. Não se corrige agora (decisão da Marta, 26/10;
+      `docs/sessoes/2026-10-26-cowork.md` §5).
 - [x] ~~**Leitura mensal com o comparativo** (vista do eixo, `2026-10-06-cowork.md` §7) — depois da vista do eixo; é a primeira a cair se faltar tempo (decisão da Marta, 21/10).~~ Feitos a 22/10, em separado: o comparativo no `b061f7c` (os gráficos de cada eixo a ler do lote); a leitura mensal no `e5a74b0` — "O mês", os 10 mais procurados de um mês completo face ao mesmo mês do ano anterior, com prova no site nos 4 eixos — `docs/sessoes/2026-10-22.md` §11.
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
 - [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
