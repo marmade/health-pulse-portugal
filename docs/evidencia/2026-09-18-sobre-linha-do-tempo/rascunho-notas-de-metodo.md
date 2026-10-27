@@ -80,3 +80,18 @@ varrimento) e §7 (as decisões da Marta de 18/09).
   muitas vezes em cima do limite (ex. 12 contra 8); passou a calcular-se em fracções exactas
   (`docs/sessoes/2026-10-14.md`). Ver também o candidato a marco n.º 3 em
   `marcos/rascunhos/2026-10-13-candidatos.md`.
+
+## 2. Limitações — o que o ecrã deixa de fora
+
+Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/sessoes/2026-10-27.md`).
+
+- **A validação é prospectiva.** Os limites da regra saíram de um varrimento sobre os mesmos
+  lotes que ela descreve; só as semanas seguintes a testam às cegas. Não se mexe nos parâmetros
+  à vista de uma semana: muda-se com registo e data (`docs/metodo/2026-09-18-alertas-regra.md` §6).
+- **Feeds RSS sem resposta.** A 16/10, 19 dos 41 feeds não respondiam (`docs/sessoes/2026-10-16.md`
+  §3). Número datado: refazer a contagem antes de o publicar.
+- **Desinformação.** As 36 linhas de `debunking` (25/03/2026) estão todas "a verificar" (32 sem
+  link, 4 com link; lido na base a 27/10) e o ecrã só mostra as que têm veredicto, por isso a
+  secção está vazia. O `scripts/11_fetch_fact_checks.py` (Google Fact Check Tools API, só o
+  Observador, o único editor português com ClaimReview) existe desde 18/09 e nunca correu com
+  `--gravar`; nenhum workflow o chama.
