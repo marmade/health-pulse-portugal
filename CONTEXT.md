@@ -1,6 +1,10 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-26 (segunda) — planeamento feito no Cowork, só com leituras.
+> Última actualização: 2026-10-27 (terça) — **limitações do `/sobre` corrigidas e publicadas**
+> (`871c0d9`, 21:13:16 UTC): o site lê a tabela `sobre_conteudo` antes do ficheiro, por isso
+> corrigiram-se os dois. Metodologia e Fontes de dados têm os mesmos erros: pendente antes de 30/10.
+> Registo em `docs/sessoes/2026-10-27.md`.
+> Anterior: 2026-10-26 (segunda) — planeamento feito no Cowork, só com leituras.
 > **Recolha de domingo 25/10 feita à 3.ª tentativa:** os lotes `3c497c9e` e `18222e87` ficaram
 > "falhou" (`SSLError` a meio da escrita) e o `2d0a7be3` ficou completo (33/0, 1195 alertas). Os
 > lotes "falhou" ficam na base e não entram no arquivo nem no site, que só leem lotes `completo`
@@ -1277,11 +1281,27 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Os alertas na vista de cada eixo** estão escondidos desde 24/09 (`hideAlertas`,
       `Index.tsx`), com a razão desse dia, e a página inicial mostra-os desde 13/10. Decide-se na
       terça 27, no bloco dos alertas (decisão da Marta, 23/10; `docs/sessoes/2026-10-23.md` §7.7).
-- [ ] **As limitações do `/sobre` estão desactualizadas** (`src/data/sobreContent.ts` l.96): falam
+- [x] ~~**As limitações do `/sobre` estão desactualizadas** (`src/data/sobreContent.ts` l.96): falam
       em "thresholds de alertas (30–50%)" e dizem que "a detecção de sazonalidade não está
       implementada"; a regra de 18/09 tem as duas coisas de outra maneira. O `/sobre` publicado
       afirma o contrário do que o sistema faz. A corrigir com os textos de terça 27, não depois
-      de 30/10 (decisão da Marta, 23/10; `docs/sessoes/2026-10-23.md` §7.7).
+      de 30/10 (decisão da Marta, 23/10; `docs/sessoes/2026-10-23.md` §7.7).~~ Corrigidas a 27/10
+      no `sobreContent.ts` e na linha `limitacoes` de `sobre_conteudo`, que é a que o site lê (md5
+      iguais); `871c0d9`, publicado às 21:13:16 UTC e provado no site. Frase 4 corrigida para
+      "fact-checks do Observador" (o script 11 só pesquisa esse editor): `4242ea6`, md5
+      `f96222c4…` nos dois, publicado às 23:52:06 UTC e provado no site (`docs/sessoes/2026-10-27.md`).
+- [ ] **Metodologia e Fontes de dados do `/sobre` desactualizadas** — falam em crescimento
+      superior a 50 %, limites de 30/50/40 %, 48 canais, 42 fontes e variações calculadas a partir
+      dos snapshots. Estão no `sobreContent.ts` E em `sobre_conteudo`, que é a que o site lê:
+      corrigir os dois. A corrigir antes de 30/10, pela mesma razão das limitações (decisão da
+      Marta, 27/10; `docs/sessoes/2026-10-27.md` §6).
+- [ ] **Para os textos finais:** os homónimos ("depressão" sobe com as tempestades) e a herança
+      da categoria Saúde (regra de 18/09 §6) não estão no `/sobre` (decisão da Marta, 27/10).
+- [ ] **Os fact-checks não se devem cingir a uma só fonte.** Hoje a única via é a Google Fact
+      Check Tools API, e o único editor português com ClaimReview é o Observador. O Polígrafo
+      ficou por decidir a 28/09 (`docs/sessoes/2026-09-28-c.md`, pendente 5). Depois de 30/10:
+      procurar outras fontes de fact-check em português, incluindo o Polígrafo por outra via. Por
+      agora é só nota; o script 11 não se mexe (decisão da Marta, 27/10).
 - [ ] **No telemóvel, o cabeçalho do site transborda 20 px**: a página tem 410 px num ecrã de 390,
       por causa do "· Editorial" da navegação. Para quinta 29, o varrimento (decisão da Marta,
       23/10; `docs/sessoes/2026-10-23.md` §7.11).
