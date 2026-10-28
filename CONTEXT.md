@@ -1,6 +1,14 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-27 (terça) — **limitações do `/sobre` corrigidas e publicadas**
+> Última actualização: 2026-10-28 (quarta) — **"Sinais emergentes" do briefing ligados aos
+> `trends_alertas`**, em quatro partes (novos, em curso, a observar, "Previsíveis para <mês>"),
+> regra da Marta (`dea8314`). `archive-weekly` **v11** publicada às 18:20:05 UTC com
+> `verify_jwt: true` e lida de volta (0 diferenças); site publicado (`index-OsSBL-K2.js`), com o
+> "A observar. Subiu sem chegar ao limite de alerta." no ecrã. **Prova pelo efeito na corrida de
+> segunda 2/11.** Na consola do `/briefing` continua o erro da `generate-diz-que-disse` (não
+> publicada; fora desta mudança). Fecho da ferramenta passa para sex 6/11 (Cowork, 28/10).
+> Registo em `docs/sessoes/2026-10-28.md` e `docs/sessoes/2026-10-28-cowork.md`.
+> Anterior: 2026-10-27 (terça) — **limitações do `/sobre` corrigidas e publicadas**
 > (`871c0d9`, 21:13:16 UTC): o site lê a tabela `sobre_conteudo` antes do ficheiro, por isso
 > corrigiram-se os dois. Metodologia e Fontes de dados têm os mesmos erros: pendente antes de 30/10.
 > Registo em `docs/sessoes/2026-10-27.md`.
