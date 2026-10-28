@@ -1,6 +1,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { notaSemMedicao, semMedicao, topDoEixo, type Medicao, type Pedido } from "../_shared/top_eixo.ts";
 import { eDepressaoMeteorologica } from "../_shared/meteo.ts";
+import {
+  FATOR_MIN, notasDasPartes, previsiveisDoMes, sinaisDaSemana, type LinhaAlerta,
+} from "../_shared/emergentes.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -465,24 +468,90 @@ Deno.serve(async (req) => {
     if (briefingExists) {
       results.push("briefing: already archived");
     } else {
-      // Sinais emergentes: VAZIO, com a razão, por decisão de 28/09/2026.
+      // Sinais emergentes: dos alertas (`trends_alertas`), em quatro partes —
+      // novos, em curso, a observar e previsíveis do mês. Decisão da Marta,
+      // 28/10/2026 (docs/sessoes/2026-10-28.md §6, §12); a regra está em
+      // _shared/emergentes.ts. Do briefing de 03/08 ao de 19–25/10 a secção
+      // ficou vazia: `keywords.is_emergent` não é escrita desde 14/08/2026, e
+      // os alertas só foram provados a 18/10.
       //
-      // Correcção a uma nota de 24/09/2026 que estava aqui e dizia que este
-      // bloco "produz uma lista vazia e sempre produziu". Não é verdade: os
-      // briefings de Março têm 5 sinais e o de 27/07 tem 3. Quem escrevia
-      // `keywords.is_emergent` era o antigo script 5 (subida >= 50% e volume
-      // >= 10). A 10/08 os 429 do Google escreveram zeros e os sinais
-      // expiraram todos; a 14/08 o passo foi comentado e ninguém voltou a
-      // escrever a coluna. Desde o briefing de 03/08 fica vazio.
-      //
-      // O substituto são os alertas (`trends_alertas`, regra de 18/09/2026).
-      // Entram quando passarem o teste que falta; até lá, a lista fica vazia
-      // e a nota diz porquê.
-      const notas: Record<string, string> = {
-        emergentes:
-          "vazio até os alertas (trends_alertas) passarem o teste que falta; " +
-          "keywords.is_emergent não é escrita desde 14/08/2026",
-      };
+      // O lote e a semana são os do top 10 (1b, acima). Sem medição, sem
+      // alertas no lote ou com erro de leitura, a secção fica vazia com a
+      // razão em `notas.emergentes`; as partes vazias dizem-no cada uma na sua
+      // nota. A secção nunca sai em branco.
+      const notas: Record<string, string> = {};
+      let topEmerging: Record<string, unknown>[] = [];
+      if (notaMedicao || !loteId) {
+        notas.emergentes = notaMedicao ?? "sem lote completo de 5 anos na base de dados";
+      } else {
+        try {
+          const { data: algum, error: e0 } = await supabase
+            .from("trends_alertas")
+            .select("semana")
+            .eq("lote_id", loteId)
+            .limit(1);
+          if (e0) throw e0;
+          if (!(algum as any[] | null)?.length) {
+            notas.emergentes = `lote ${loteId.slice(0, 8)} sem alertas calculados`;
+          } else {
+            // O mês vigente é o da segunda-feira em que o briefing é gerado.
+            const segunda = new Date(`${deslocaDias(prev.isoEnd, 1)}T00:00:00Z`);
+            const mes = segunda.getUTCMonth() + 1;
+            const ano = segunda.getUTCFullYear();
+
+            const { data: daSemana, error: e1 } = await supabase
+              .from("trends_alertas")
+              .select("eixo, termo, tipo, semana, valor, referencia, razao, z, fator_sazonal, max_anterior, semana_n, inicio")
+              .eq("lote_id", loteId)
+              .eq("semana", semanaTrends);
+            if (e1) throw e1;
+
+            // Os candidatos a previsíveis, de todos os meses dos anos
+            // anteriores; o mês filtra-se em previsiveisDoMes. A API corta em
+            // 1000 linhas sem erro: se a contagem não bater, pára.
+            const { data: sazonais, error: e2, count } = await supabase
+              .from("trends_alertas")
+              .select("eixo, termo, tipo, semana, valor, referencia, razao, z, fator_sazonal, semana_n, inicio", { count: "exact" })
+              .eq("lote_id", loteId)
+              .gte("fator_sazonal", FATOR_MIN)
+              .lt("semana", `${ano}-01-01`);
+            if (e2) throw e2;
+            if ((count ?? 0) !== ((sazonais as any[] | null)?.length ?? 0)) {
+              throw new Error(`leitura incompleta dos previsíveis: ${sazonais?.length} de ${count}`);
+            }
+
+            const { data: ini, error: e3 } = await supabase
+              .from("trends_calibrados")
+              .select("data")
+              .eq("lote_id", loteId)
+              .order("data", { ascending: true })
+              .limit(1);
+            if (e3) throw e3;
+            const inicioSerie = (ini as any[] | null)?.[0]?.data?.slice(0, 10);
+            if (!inicioSerie) throw new Error(`lote ${loteId.slice(0, 8)} sem série calibrada`);
+
+            const sinais = sinaisDaSemana((daSemana as LinhaAlerta[] | null) || [], semanaTrends);
+            const previsiveis = previsiveisDoMes((sazonais as LinhaAlerta[] | null) || [], mes, ano, inicioSerie);
+            Object.assign(notas, notasDasPartes(sinais, previsiveis, semanaTrends, mes));
+            topEmerging = [...sinais, ...previsiveis.itens].map((s) => ({
+              ...s,
+              lote_id: loteId,
+              semana_trends: semanaTrends,
+            }));
+          }
+        } catch (e) {
+          console.error("emergentes:", e);
+          notas.emergentes = `erro ao ler os alertas do lote ${loteId.slice(0, 8)}: ${(e as Error).message}`;
+          topEmerging = [];
+        }
+      }
+      results.push(
+        `emergentes: ` +
+          (notas.emergentes ??
+            ["novo", "em_curso", "a_observar", "previsivel"]
+              .map((p) => `${topEmerging.filter((s) => s.parte === p).length} ${p}`)
+              .join(" · ")),
+      );
 
       const topQuestions = questions.slice(0, 5).map((q: any) => ({
         term: q.question,
@@ -521,7 +590,7 @@ Deno.serve(async (req) => {
           week_start: prev.isoStart,
           week_end: prev.isoEnd,
           week_label: prev.shortLabel,
-          top_emerging: [],
+          top_emerging: topEmerging,
           top_questions: topQuestions,
           top_debunking: topDebunking,
           top_news: topNews,

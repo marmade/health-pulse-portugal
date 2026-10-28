@@ -69,7 +69,7 @@ export const ComoLerAlertas = () => (
         é alerta.
       </p>
       <p>
-        <Simbolo tipo="a_observar" /> <strong>A observar.</strong> Está a mexer sem chegar a alerta.
+        <Simbolo tipo="a_observar" /> <strong>A observar.</strong> Subiu sem chegar ao limite de alerta.
       </p>
       <p>
         A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o

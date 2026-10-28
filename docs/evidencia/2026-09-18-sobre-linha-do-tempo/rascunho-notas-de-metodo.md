@@ -20,7 +20,7 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 > ● **Aparecimento.** Um termo sem procura regular passa a ser procurado, muito acima do que tinha
 > no último ano.
 > ~ **Sazonal.** A subida é a que esta época do ano costuma trazer. Mostra-se, mas não é alerta.
-> ○ **A observar.** Está a mexer sem chegar a alerta.
+> ○ **A observar.** Subiu sem chegar ao limite de alerta.
 >
 > A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o
 > vê. «Nenhum alerta» quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada
@@ -95,3 +95,20 @@ Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/s
   secção está vazia. O `scripts/11_fetch_fact_checks.py` (Google Fact Check Tools API, só o
   Observador, o único editor português com ClaimReview) existe desde 18/09 e nunca correu com
   `--gravar`; nenhum workflow o chama.
+
+## 3. Briefing — "Sinais emergentes" e previsíveis
+
+Acrescentado a 28/10/2026 no Cowork (`docs/sessoes/2026-10-28-cowork.md` §2 e §4).
+
+- **Os previsíveis só vêem as semanas em que o termo mexeu.** A parte "Previsíveis para <mês>" sai
+  dos `trends_alertas`, que só guardam as semanas com z ≥ 2. Um termo que sobe devagar todos os
+  anos no mesmo mês não aparece. A fonte completa seria a sazonalidade calculada sobre as séries
+  inteiras (`trends_calibrados`), deixada para depois de 2/11.
+- **"Previsível" exige repetição:** o termo subiu no mesmo mês em pelo menos 2 anos anteriores, e o
+  briefing mostra em quantos ("em 3 de 3 anos" = subiu em Outubro nesses três anos, e Outubro é
+  quando costuma subir). O factor de cada ano é calculado com os anos antes dele, não com esse ano;
+  a frase não deve dizer "o factor foi ≥ 1,5 em 3 anos" (`docs/sessoes/2026-10-28.md` §12). N conta
+  só os anos em que o mês podia ter factor (no lote `2d0a7be3` a série começa a 24/10/2021; a
+  primeira semana com alertas é 19/12/2021; `docs/sessoes/2026-10-28.md` §15).
+- **"A observar" está abaixo do limite de alerta** e aparece com essa ressalva; não é um alerta.
+- `[por escrever com a Marta]` a frase final para as limitações do /sobre (semana de 2/11).

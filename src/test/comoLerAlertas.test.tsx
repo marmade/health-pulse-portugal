@@ -6,12 +6,13 @@ import AlertasEixo, { ComoLerAlertas } from "@/components/AlertasEixo";
 
 // Critério de prova escrito antes do código: docs/sessoes/2026-10-23.md §7.5, pontos 1 a 4 e 6.
 // O texto aprovado pela Marta a 23/10/2026 (§7.1 e §7.4), escrito aqui à parte do componente.
+// O "A observar" mudou a 28/10/2026, para dizer o mesmo que o briefing (2026-10-28.md §16).
 const APROVADO = [
   "Um alerta diz que um termo foi mais procurado numa semana do que costuma ser. Os valores vêm do Google Trends e não são números de pesquisas: são relativos, numa escala própria de cada eixo, e só se comparam dentro do mesmo eixo.",
   "▲ Subida. O «valor normal» é a mediana das oito semanas anteriores. Há alerta quando a semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do termo. «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o valor normal fica o de antes de começar.",
   "● Aparecimento. Um termo sem procura regular passa a ser procurado, muito acima do que tinha no último ano.",
   "~ Sazonal. A subida é a que esta época do ano costuma trazer. Mostra-se, mas não é alerta.",
-  "○ A observar. Está a mexer sem chegar a alerta.",
+  "○ A observar. Subiu sem chegar ao limite de alerta.",
   "A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o vê. «Nenhum alerta» quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada mudou no tema.",
 ];
 

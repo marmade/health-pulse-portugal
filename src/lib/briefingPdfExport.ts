@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import type { ParteSinais } from "@/lib/sinaisEmergentes";
 
 const BLUE = "#0000FF";
 const BLACK = "#000000";
@@ -10,6 +11,8 @@ type BriefingPdfData = {
   generatedAt: Date;
   topGrowing: { term: string; axis: string; change_percent: number; current_volume: number | null }[];
   emergent: { term: string; axis: string; change_percent: number }[];
+  // Briefings arquivados desde 2/11/2026: os sinais em quatro partes, em vez de `emergent`.
+  sinais?: ParteSinais[] | null;
   topVolume: { term: string; growth_percent?: number | null; fora_de_escala?: boolean; current_volume?: number | null }[];
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string | null; source: string }[];
@@ -154,7 +157,50 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
 
   // SECTION 2 — Sinal de alerta
   sectionTitle("Sinal de alerta");
-  if (data.emergent.length === 0) {
+  if (data.sinais) {
+    data.sinais.forEach((p) => {
+      checkPage(8);
+      setFont("bold", 8);
+      pdf.setTextColor(BLACK);
+      pdf.text(p.titulo.toUpperCase(), MARGIN, y);
+      y += 5;
+      if (p.ressalva && p.itens.length > 0) {
+        setFont("normal", 8);
+        pdf.setTextColor(GREY);
+        pdf.text(p.ressalva, MARGIN, y);
+        y += 5;
+      }
+      if (p.itens.length === 0) {
+        setFont("normal", 9);
+        pdf.setTextColor(GREY);
+        pdf.text(p.nota || "", MARGIN, y);
+        y += 6;
+      }
+      p.itens.forEach((kw) => {
+        checkPage(8);
+        let x = MARGIN;
+        if (p.chave === "novo") {
+          setFont("bold", 7);
+          pdf.setTextColor(BLUE);
+          pdf.setDrawColor(BLUE);
+          pdf.setLineWidth(0.3);
+          pdf.rect(MARGIN, y - 3, 22, 5);
+          pdf.text("EMERGENTE", MARGIN + 1.5, y);
+          x = MARGIN + 26;
+        }
+        setFont("normal", 9);
+        pdf.setTextColor(BLACK);
+        pdf.text(`${kw.term}  ·  ${axisLabels[kw.axis] || kw.axis}`, x, y);
+        y += 4;
+        setFont("normal", 8);
+        pdf.setTextColor(GREY);
+        const linhas = pdf.splitTextToSize(kw.frase, pageWidth - MARGIN - x);
+        pdf.text(linhas, x, y);
+        y += linhas.length * 4 + 2;
+      });
+      y += 2;
+    });
+  } else if (data.emergent.length === 0) {
     setFont("normal", 9);
     pdf.setTextColor(GREY);
     pdf.text("Nenhum sinal emergente esta semana.", MARGIN, y);

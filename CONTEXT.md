@@ -1302,6 +1302,14 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       ficou por decidir a 28/09 (`docs/sessoes/2026-09-28-c.md`, pendente 5). Depois de 30/10:
       procurar outras fontes de fact-check em português, incluindo o Polígrafo por outra via. Por
       agora é só nota; o script 11 não se mexe (decisão da Marta, 27/10).
+- [ ] **Sazonalidade sobre os `trends_calibrados`.** Os previsíveis do briefing só vêem as semanas
+      em que o termo mexeu (há linha em `trends_alertas`); um termo que sobe devagar todos os anos
+      não aparece. Calcular o factor sazonal para todos os termos e semanas. Depois de 2/11 (decisão
+      da Marta, 28/10; `docs/sessoes/2026-10-28.md` §12).
+- [ ] **Limitações do `/sobre`: a nota dos previsíveis** — só vêem as semanas em que o termo mexeu
+      (z ≥ 2). No ficheiro E em `sobre_conteudo`. Na semana de 2/11 (decisão da Marta, 28/10).
+- [ ] **A "semana corrente" do `Briefing.tsx` ainda lê `keywords.is_emergent`**, que não é
+      escrita desde 14/08/2026. Só o briefing arquivado foi ligado aos alertas (28/10).
 - [ ] **No telemóvel, o cabeçalho do site transborda 20 px**: a página tem 410 px num ecrã de 390,
       por causa do "· Editorial" da navegação. Para quinta 29, o varrimento (decisão da Marta,
       23/10; `docs/sessoes/2026-10-23.md` §7.11).

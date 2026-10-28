@@ -4,6 +4,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { semMeteorologicas } from "@/lib/noticias";
+import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
 // Health questions are fetched from Supabase — no hardcoded fallback
 import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
@@ -57,6 +58,36 @@ const SeccaoVazia = ({ titulo, nota }: { titulo: string; nota?: string }) =>
       <p className="text-xs opacity-60">Vazio: {nota}.</p>
     </div>
   ) : null;
+
+// Os "Sinais emergentes" em quatro partes (decisão da Marta, 28/10/2026). Só os novos levam a
+// etiqueta "Emergente". Uma parte vazia diz-o na sua frase: a secção nunca sai em branco.
+const SinaisEmergentes = ({ partes }: { partes: ParteSinais[] }) => (
+  <div className="mb-5">
+    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+      Sinais emergentes
+    </p>
+    {partes.map((p) => (
+      <div key={p.chave} className="mb-3">
+        <p className="text-[9px] font-bold uppercase tracking-wider mb-1 opacity-70">{p.titulo}</p>
+        {p.ressalva && p.itens.length > 0 && <p className="text-[10px] opacity-60 mb-1">{p.ressalva}</p>}
+        {p.itens.length === 0 && <p className="text-xs opacity-60">{p.nota}</p>}
+        {p.itens.map((e, i) => (
+          <div key={i} className="flex items-baseline flex-wrap gap-x-3 gap-y-1 mb-1.5">
+            {p.chave === "novo" && <span className="tag-emergent">Emergente</span>}
+            <span className="text-sm font-semibold">{e.term}</span>
+            <span
+              className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
+              style={{ backgroundColor: getAxisColors(e.axis).bg, color: getAxisColors(e.axis).text }}
+            >
+              {axisLabels[e.axis] || e.axis}
+            </span>
+            <span className="text-xs opacity-70">{e.frase}</span>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+);
 
 type DizQueDisse = {
   perguntas_voxpop: string[];
@@ -248,6 +279,25 @@ const Briefing = () => {
 
   // Export archived briefing as PDF
   const handleArchivePdf = async (archive: ArchivedBriefing) => {
+    // Desde 2/11/2026 os sinais vêm em quatro partes (partesDosSinais). "O que está a subir"
+    // passa a ser os alertas da semana — novos e em curso — e a sugestão, o primeiro novo.
+    const partes = partesDosSinais(archive.top_emerging, archive.notas);
+    if (partes) {
+      const alertas = (archive.top_emerging || []).filter((e: any) => e.parte === "novo" || e.parte === "em_curso");
+      const primeiroNovo = (archive.top_emerging || []).find((e: any) => e.parte === "novo");
+      await generateBriefingPdf({
+        weekLabel: archive.week_label,
+        generatedAt: new Date(archive.created_at),
+        topGrowing: alertas.map((e: any) => ({ ...e, current_volume: null })),
+        emergent: [],
+        sinais: partes,
+        topVolume: archive.top_questions || [],
+        news: (archive.top_news || []).map((n: any) => ({ ...n, url: "" })),
+        debunking: (archive.top_debunking || []).map((d: any) => ({ ...d, url: "" })),
+        topEmergent: primeiroNovo ? { ...primeiroNovo, is_emergent: true } : null,
+      });
+      return;
+    }
     await generateBriefingPdf({
       weekLabel: archive.week_label,
       generatedAt: new Date(archive.created_at),
@@ -705,8 +755,11 @@ const Briefing = () => {
 
                   {isExpanded && (
                     <div className="py-6 pl-4 border-l-2 ml-2 mb-4" style={{ borderColor: "#0000FF" }}>
-                      {/* Emerging */}
-                      {archive.top_emerging?.length > 0 && (
+                      {/* Emerging — quatro partes desde 2/11/2026; os anteriores como estavam */}
+                      {partesDosSinais(archive.top_emerging, archive.notas) && (
+                        <SinaisEmergentes partes={partesDosSinais(archive.top_emerging, archive.notas)!} />
+                      )}
+                      {!partesDosSinais(archive.top_emerging, archive.notas) && archive.top_emerging?.length > 0 && (
                         <div className="mb-5">
                           <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
                             Sinais emergentes
@@ -728,7 +781,7 @@ const Briefing = () => {
                           ))}
                         </div>
                       )}
-                      {!(archive.top_emerging?.length > 0) && (
+                      {!partesDosSinais(archive.top_emerging, archive.notas) && !(archive.top_emerging?.length > 0) && (
                         <SeccaoVazia titulo="Sinais emergentes" nota={archive.notas?.emergentes} />
                       )}
 
