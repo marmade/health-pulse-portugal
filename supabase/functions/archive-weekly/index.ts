@@ -7,6 +7,7 @@ import {
 import {
   notaSemVerificacoes, topDebunkingDoBriefing, topDebunkingDoEixo, type LinhaDebunking,
 } from "../_shared/factchecks.ts";
+import { ordenarPerguntas, perguntasDoEixo, perguntasPorEixo } from "../_shared/perguntas.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -48,56 +49,9 @@ function deslocaDias(iso: string, n: number) {
   return d.toISOString().split("T")[0];
 }
 
-/**
- * O tecto do script 6 (`min(growth, 9999)`) e o `breakout` do Google, que o
- * script 6 converte em 5000. Nenhum dos dois é medida: o primeiro lê-se "pelo
- * menos isto", o segundo não tem limiar publicado. Vão para o arquivo como
- * "fora de escala", sem número.
- *
- * Limitação: um crescimento medido de exactamente 5000% seria lido como
- * breakout. Nas recolhas de 14/09 a 28/09 não há nenhum 5000.
- */
-const TECTO = 9999;
-const BREAKOUT = 5000;
-
-function foraDeEscala(q: any) {
-  return q.growth_percent === TECTO || q.growth_percent === BREAKOUT;
-}
-
-function medidaDaPergunta(q: any) {
-  const fora = foraDeEscala(q);
-  return {
-    growth_percent: fora ? null : q.growth_percent,
-    fora_de_escala: fora,
-    posicao: q.posicao ?? null,
-  };
-}
-
-/**
- * Ordem das perguntas (decisão de 28/09/2026):
- *   1. as "fora de escala" primeiro — subiram pelo menos tanto como qualquer
- *      medida —, sem as ordenar pelo número, que não é medida;
- *   2. depois as medidas, pela subida;
- *   3. desempate pela posição em que o Google as devolveu (`posicao`).
- *
- * A `posicao` é a ordem DENTRO da lista de cada termo. Duas perguntas de
- * termos diferentes podem estar ambas na posição 1, e aí o Google não dá
- * ordem nenhuma entre elas: o último desempate é a ordem da recolha
- * (`updated_at`), que segue a ordem da lista de keywords. Não é critério — é
- * só para não voltar a ser o alfabeto.
- */
-function ordenarPerguntas(qs: any[]) {
-  const pos = (q: any) => q.posicao ?? Number.MAX_SAFE_INTEGER;
-  return [...qs].sort((a, b) => {
-    const fa = foraDeEscala(a), fb = foraDeEscala(b);
-    if (fa !== fb) return fa ? -1 : 1;
-    if (!fa && a.growth_percent !== b.growth_percent) {
-      return (b.growth_percent ?? 0) - (a.growth_percent ?? 0);
-    }
-    if (pos(a) !== pos(b)) return pos(a) - pos(b);
-    return String(a.updated_at).localeCompare(String(b.updated_at));
-  });
-}
+// As perguntas (o tecto e o breakout, que não são medida; a ordem de 28/09; e, desde 29/10/2026,
+// 5 por eixo, sem as perguntas pela palavra e com as quase iguais juntas) estão em
+// _shared/perguntas.ts: o site lê a mesma regra. Ver docs/sessoes/2026-10-29.md.
 
 // A "depressão" meteorológica (eDepressaoMeteorologica) está em
 // _shared/meteo.ts desde 23/10/2026: o site lê a mesma regra, para que o
@@ -384,13 +338,16 @@ Deno.serve(async (req) => {
           faltam,
         ].filter(Boolean).join("; ") || null);
 
-      const topQuestions = questions
-        .filter((q: any) => q.axis === axis)
-        .slice(0, 5)
-        .map((q: any) => ({
-          question: q.question,
-          ...medidaDaPergunta(q),
-        }));
+      // A mesma regra do briefing (29/10/2026): 5 lugares, empatadas no corte todas, sem as
+      // perguntas pela palavra, as quase iguais juntas (`variantes`). Ver _shared/perguntas.ts.
+      const topQuestions = perguntasDoEixo(questions, axis).map((q) => ({
+        question: q.question,
+        growth_percent: q.growth_percent,
+        fora_de_escala: q.fora_de_escala,
+        posicao: q.posicao,
+        lugar: q.lugar,
+        variantes: q.variantes,
+      }));
 
       // As verificações da semana do eixo, da tabela `debunking` (29/10/2026);
       // as da covid-19 não entram em eixo nenhum. Ver _shared/factchecks.ts.
@@ -543,12 +500,19 @@ Deno.serve(async (req) => {
               .join(" · ")),
       );
 
-      const topQuestions = questions.slice(0, 5).map((q: any) => ({
+      // 5 por eixo, em vez do top 5 geral (decisão da Marta, 29/10/2026): cada item leva
+      // `axis`, `lugar` (no eixo) e `variantes`. Os briefings de antes não têm `lugar`.
+      // NÃO se grava `relative_volume` aqui. Nunca foi um volume — era a posição na lista — e
+      // ficava no arquivo permanente debaixo de um nome que dizia o contrário. O que se mede é
+      // a subida.
+      const topQuestions = perguntasPorEixo(questions).map((q) => ({
         term: q.question,
-        // NÃO se grava `relative_volume` aqui. Nunca foi um volume — era a
-        // posição na lista — e ficava no arquivo permanente debaixo de um
-        // nome que dizia o contrário. O que se mede é a subida.
-        ...medidaDaPergunta(q),
+        axis: q.axis,
+        growth_percent: q.growth_percent,
+        fora_de_escala: q.fora_de_escala,
+        posicao: q.posicao,
+        lugar: q.lugar,
+        variantes: q.variantes,
       }));
       if (topQuestions.length === 0) {
         notas.perguntas =

@@ -8,6 +8,9 @@ import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
 import {
   dataDaVerificacao, partesDaSemana, partesDosFactChecks, type PartesFactChecks,
 } from "@/lib/factchecksBriefing";
+import {
+  fraseDaSubida, fraseDasVariantes, gruposDaRecolha, gruposDoArquivo, type GrupoPerguntas,
+} from "@/lib/perguntasBriefing";
 // Health questions are fetched from Supabase — no hardcoded fallback
 import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
@@ -127,6 +130,38 @@ const FactChecks = ({ titulo, partes }: { titulo: string; partes: PartesFactChec
   </div>
 );
 
+// As perguntas por eixo (decisões da Marta, 29/10/2026): 5 lugares em cada, as empatadas no
+// mesmo lugar, e as quase iguais juntas — a da frente e, por baixo, as variantes.
+const PerguntasPorEixo = ({ grupos }: { grupos: GrupoPerguntas[] }) => (
+  <div className="space-y-6 max-w-2xl">
+    {grupos.map((g) => (
+      <div key={g.axis}>
+        <span
+          className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm mb-2"
+          style={{ backgroundColor: getAxisColors(g.axis).bg, color: getAxisColors(g.axis).text }}
+        >
+          {axisLabels[g.axis] || g.axis}
+        </span>
+        {g.itens.length === 0 && <p className="text-xs opacity-60">Sem perguntas deste eixo na recolha.</p>}
+        {g.itens.map((q, i) => (
+          <div key={i} className="border-b border-foreground/10 pb-2 mb-2">
+            <div className="flex items-baseline justify-between gap-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xs font-bold tabular-nums opacity-40">{String(q.lugar).padStart(2, "0")}</span>
+                <span className="text-sm font-medium">{q.term}</span>
+              </div>
+              <span className="text-xs font-bold tabular-nums shrink-0">{fraseDaSubida(q)}</span>
+            </div>
+            {fraseDasVariantes(q.variantes) && (
+              <p className="text-[10px] opacity-60 mt-1 ml-6">{fraseDasVariantes(q.variantes)}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
 type DizQueDisse = {
   perguntas_voxpop: string[];
   especialista_sugerido: string;
@@ -177,7 +212,7 @@ const Briefing = () => {
   const [keywords, setKeywords] = useState<KeywordRow[]>([]);
   const [news, setNews] = useState<NewsRow[]>([]);
   const [debunking, setDebunking] = useState<DebunkingRow[]>([]);
-  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; growth_percent: number | null; relative_volume: number | null; axis: string}[]>([]);
+  const [healthQuestionsData, setHealthQuestionsData] = useState<{question: string; growth_percent: number | null; posicao: number | null; axis: string; updated_at: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [generatedAt] = useState(new Date());
   const [exporting, setExporting] = useState(false);
@@ -197,19 +232,15 @@ const Briefing = () => {
         supabase.from("news_items").select("*").order("date", { ascending: false }),
         supabase.from("debunking").select("*").order("data_publicacao", { ascending: false }),
         supabase.from("briefings_archive").select("*").order("week_start", { ascending: false }),
-        // `source=pytrends` e `nullsFirst: false` não são zelo a mais.
-        // Desde 16/09/2026 o script 7 grava `growth_percent = NULL` — não mede
-        // crescimento — e num `ORDER BY ... DESC` os NULL vêm primeiro. Sem o
-        // filtro e sem o modificador, esta secção passava a abrir com perguntas
-        // sem crescimento nenhum, debaixo do título "As principais dúvidas dos
-        // portugueses". Estas linhas vão também para o PDF e para o arquivo
-        // semanal, logo o erro ficaria gravado.
+        // As perguntas da semana corrente pela regra do arquivo (29/10/2026): só o pytrends mede
+        // a subida, só `is_question` separa a pergunta do ruído, e a recolha mais recente
+        // escolhe-se em gruposDaRecolha. Até aqui eram as 8 maiores subidas de sempre, sem eixo.
         supabase
           .from("health_questions")
-          .select("question, growth_percent, relative_volume, axis, axis_label")
+          .select("question, growth_percent, posicao, axis, updated_at")
           .eq("source", "pytrends")
-          .order("growth_percent", { ascending: false, nullsFirst: false })
-          .order("question", { ascending: true }),
+          .eq("is_question", true)
+          .order("updated_at", { ascending: false }),
         supabase.from("youtube_trends").select("*").order("views", { ascending: false }).limit(5),
       ]);
 
@@ -219,7 +250,7 @@ const Briefing = () => {
       if (newsRes.data) setNews(semMeteorologicas(newsRes.data as NewsRow[]));
       if (debunkRes.data) setDebunking(debunkRes.data as DebunkingRow[]);
       if (archiveRes.data) setArchives(archiveRes.data as ArchivedBriefing[]);
-      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number | null; relative_volume: number | null; axis: string}[]);
+      if (hqRes.data && hqRes.data.length > 0) setHealthQuestionsData(hqRes.data as {question: string; growth_percent: number | null; posicao: number | null; axis: string; updated_at: string}[]);
       if (ytRes.data) setYoutube(ytRes.data as any[]);
       setLoading(false);
     };
@@ -274,9 +305,7 @@ const Briefing = () => {
   // Fact-checks da semana corrente, pela regra do arquivo (_shared/factchecks.ts).
   const factChecksDaSemana = partesDaSemana(debunking, week.isoStart, week.isoEnd);
 
-  const topVolume = healthQuestionsData.length > 0
-    ? healthQuestionsData.slice(0, 8).map((q) => ({ term: q.question, current_volume: q.growth_percent, axis: q.axis }))
-    : [];
+  const perguntasDaSemana = gruposDaRecolha(healthQuestionsData);
 
   const topEmergent = emergent.length > 0
     ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
@@ -304,7 +333,8 @@ const Briefing = () => {
         generatedAt,
         topGrowing,
         emergent,
-        topVolume,
+        topVolume: [],
+        perguntas: perguntasDaSemana,
         news: displayNews,
         debunking: [],
         factChecks: factChecksDaSemana,
@@ -334,6 +364,7 @@ const Briefing = () => {
         emergent: [],
         sinais: partes,
         topVolume: archive.top_questions || [],
+        perguntas: gruposDoArquivo(archive.top_questions),
         news: (archive.top_news || []).map((n: any) => ({ ...n, url: "" })),
         debunking: (archive.top_debunking || []).map((d: any) => ({ ...d, url: "" })),
         factChecks: partesDosFactChecks(archive.top_debunking, archive.notas),
@@ -533,29 +564,7 @@ const Briefing = () => {
           Perguntas mais pesquisadas
         </h2>
         <p className="text-xs opacity-50 mb-6">As principais dúvidas dos portugueses</p>
-        <div className="space-y-3 max-w-2xl">
-          {topVolume.map((kw, i) => (
-            <div key={kw.term} className="flex items-baseline justify-between border-b border-foreground/10 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold tabular-nums opacity-40">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="text-sm font-medium">{kw.term}</span>
-                {(kw as any).axis && (
-                  <span
-                    className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
-                    style={{ backgroundColor: getAxisColors((kw as any).axis).bg, color: getAxisColors((kw as any).axis).text }}
-                  >
-                    {axisLabels[(kw as any).axis] || (kw as any).axis}
-                  </span>
-                )}
-              </div>
-              <span className="text-xs font-bold tabular-nums shrink-0 ml-2">
-                +{kw.current_volume}%
-              </span>
-            </div>
-          ))}
-        </div>
+        <PerguntasPorEixo grupos={perguntasDaSemana} />
       </section>
 
       <div className="section-divider" />
@@ -804,8 +813,16 @@ const Briefing = () => {
                         <SeccaoVazia titulo="Sinais emergentes" nota={archive.notas?.emergentes} />
                       )}
 
-                      {/* Questions */}
-                      {archive.top_questions?.length > 0 && (
+                      {/* Questions — por eixo desde 2/11/2026; os anteriores como estavam */}
+                      {gruposDoArquivo(archive.top_questions) && (
+                        <div className="mb-5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+                            Perguntas mais pesquisadas
+                          </p>
+                          <PerguntasPorEixo grupos={gruposDoArquivo(archive.top_questions)!} />
+                        </div>
+                      )}
+                      {!gruposDoArquivo(archive.top_questions) && archive.top_questions?.length > 0 && (
                         <div className="mb-5">
                           <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
                             Perguntas mais pesquisadas
@@ -829,7 +846,7 @@ const Briefing = () => {
                           ))}
                         </div>
                       )}
-                      {!(archive.top_questions?.length > 0) && (
+                      {!gruposDoArquivo(archive.top_questions) && !(archive.top_questions?.length > 0) && (
                         <SeccaoVazia titulo="Perguntas mais pesquisadas" nota={archive.notas?.perguntas} />
                       )}
 

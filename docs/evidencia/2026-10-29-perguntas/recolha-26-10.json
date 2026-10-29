@@ -1,0 +1,289 @@
+[
+ {
+  "question": "sintomas de ataque de pânico",
+  "axis": "saude-mental",
+  "growth_percent": 150,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:36:07.692915+00:00"
+ },
+ {
+  "question": "sintomas de alzheimer",
+  "axis": "saude-mental",
+  "growth_percent": 70,
+  "posicao": 9,
+  "updated_at": "2026-10-26T12:36:28.198179+00:00"
+ },
+ {
+  "question": "como se escreve alzheimer",
+  "axis": "saude-mental",
+  "growth_percent": 9999,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:36:28.198179+00:00"
+ },
+ {
+  "question": "como saber se sou bipolar",
+  "axis": "saude-mental",
+  "growth_percent": 4150,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:37:42.403641+00:00"
+ },
+ {
+  "question": "sintomas autismo",
+  "axis": "saude-mental",
+  "growth_percent": 40,
+  "posicao": 16,
+  "updated_at": "2026-10-26T12:38:04.857869+00:00"
+ },
+ {
+  "question": "causas do autismo",
+  "axis": "saude-mental",
+  "growth_percent": 1700,
+  "posicao": 8,
+  "updated_at": "2026-10-26T12:38:04.857869+00:00"
+ },
+ {
+  "question": "diferença entre psicólogo e psiquiatra",
+  "axis": "saude-mental",
+  "growth_percent": 90,
+  "posicao": 4,
+  "updated_at": "2026-10-26T12:38:27.334176+00:00"
+ },
+ {
+  "question": "qual a diferença entre psicólogo e psiquiatra",
+  "axis": "saude-mental",
+  "growth_percent": 2300,
+  "posicao": 3,
+  "updated_at": "2026-10-26T12:38:27.334176+00:00"
+ },
+ {
+  "question": "como tratar anemia",
+  "axis": "alimentacao",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:39:09.972104+00:00"
+ },
+ {
+  "question": "o que causa anemia",
+  "axis": "alimentacao",
+  "growth_percent": 90,
+  "posicao": 9,
+  "updated_at": "2026-10-26T12:39:09.972104+00:00"
+ },
+ {
+  "question": "sintomas da anemia",
+  "axis": "alimentacao",
+  "growth_percent": 50,
+  "posicao": 14,
+  "updated_at": "2026-10-26T12:39:09.972104+00:00"
+ },
+ {
+  "question": "o que é bom para anemia",
+  "axis": "alimentacao",
+  "growth_percent": 190,
+  "posicao": 7,
+  "updated_at": "2026-10-26T12:39:09.972104+00:00"
+ },
+ {
+  "question": "quais os alimentos ricos em ferro",
+  "axis": "alimentacao",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:39:20.713234+00:00"
+ },
+ {
+  "question": "sintomas de diabetes tipo 2",
+  "axis": "alimentacao",
+  "growth_percent": 100,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:39:42.082619+00:00"
+ },
+ {
+  "question": "como tomar creatina em pó",
+  "axis": "alimentacao",
+  "growth_percent": 60,
+  "posicao": 10,
+  "updated_at": "2026-10-26T12:40:26.01694+00:00"
+ },
+ {
+  "question": "o que tomar para emagrecer rápido",
+  "axis": "alimentacao",
+  "growth_percent": 170,
+  "posicao": 4,
+  "updated_at": "2026-10-26T12:41:09.003153+00:00"
+ },
+ {
+  "question": "quantos passos por dia para emagrecer",
+  "axis": "alimentacao",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:41:09.003153+00:00"
+ },
+ {
+  "question": "como fazer papas de aveia para emagrecer",
+  "axis": "alimentacao",
+  "growth_percent": 1850,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:41:09.003153+00:00"
+ },
+ {
+  "question": "como tratar o refluxo",
+  "axis": "alimentacao",
+  "growth_percent": 9999,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:42:22.788774+00:00"
+ },
+ {
+  "question": "o que é a doença celíaca",
+  "axis": "alimentacao",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:42:44.048163+00:00"
+ },
+ {
+  "question": "quanto tempo dura a menopausa",
+  "axis": "menopausa",
+  "growth_percent": 160,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:43:37.447221+00:00"
+ },
+ {
+  "question": "quais os sintomas da menopausa",
+  "axis": "menopausa",
+  "growth_percent": 300,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:43:37.447221+00:00"
+ },
+ {
+  "question": "sintomas da perimenopausa",
+  "axis": "menopausa",
+  "growth_percent": 50,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:43:58.184323+00:00"
+ },
+ {
+  "question": "o que é andropausa",
+  "axis": "menopausa",
+  "growth_percent": 90,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:44:39.817041+00:00"
+ },
+ {
+  "question": "o que é endometriose na mulher",
+  "axis": "menopausa",
+  "growth_percent": 8250,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:44:50.453403+00:00"
+ },
+ {
+  "question": "como saber se tenho endometriose",
+  "axis": "menopausa",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:44:50.453403+00:00"
+ },
+ {
+  "question": "sintomas da candidíase",
+  "axis": "menopausa",
+  "growth_percent": 100,
+  "posicao": 3,
+  "updated_at": "2026-10-26T12:45:22.118383+00:00"
+ },
+ {
+  "question": "sintomas de candidíase vaginal",
+  "axis": "menopausa",
+  "growth_percent": 9999,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:45:22.118383+00:00"
+ },
+ {
+  "question": "sintomas de osteoporose",
+  "axis": "menopausa",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:45:54.512869+00:00"
+ },
+ {
+  "question": "o que causa avc",
+  "axis": "emergentes",
+  "growth_percent": 9999,
+  "posicao": 2,
+  "updated_at": "2026-10-26T12:48:03.925697+00:00"
+ },
+ {
+  "question": "diferença entre avc isquemico e hemorrágico",
+  "axis": "emergentes",
+  "growth_percent": 2850,
+  "posicao": 10,
+  "updated_at": "2026-10-26T12:48:03.925697+00:00"
+ },
+ {
+  "question": "o que são doenças cardiovasculares",
+  "axis": "emergentes",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:48:25.277273+00:00"
+ },
+ {
+  "question": "sintomas lúpus fase terminal",
+  "axis": "emergentes",
+  "growth_percent": 9999,
+  "posicao": 1,
+  "updated_at": "2026-10-26T12:48:35.514919+00:00"
+ },
+ {
+  "question": "sintomas sarampo infantil",
+  "axis": "emergentes",
+  "growth_percent": 8300,
+  "posicao": 12,
+  "updated_at": "2026-10-26T12:49:17.291828+00:00"
+ },
+ {
+  "question": "sintomas sarampo adulto",
+  "axis": "emergentes",
+  "growth_percent": 9100,
+  "posicao": 11,
+  "updated_at": "2026-10-26T12:49:17.291828+00:00"
+ },
+ {
+  "question": "sintomas do dengue",
+  "axis": "emergentes",
+  "growth_percent": 250,
+  "posicao": 15,
+  "updated_at": "2026-10-26T12:49:28.158937+00:00"
+ },
+ {
+  "question": "sintomas da dengue",
+  "axis": "emergentes",
+  "growth_percent": 90,
+  "posicao": 20,
+  "updated_at": "2026-10-26T12:49:28.158937+00:00"
+ },
+ {
+  "question": "sintomas dengue adulto",
+  "axis": "emergentes",
+  "growth_percent": 9999,
+  "posicao": 8,
+  "updated_at": "2026-10-26T12:49:28.158937+00:00"
+ },
+ {
+  "question": "sintomas de dengue e zika",
+  "axis": "emergentes",
+  "growth_percent": 9999,
+  "posicao": 12,
+  "updated_at": "2026-10-26T12:49:28.158937+00:00"
+ },
+ {
+  "question": "o que e dengue",
+  "axis": "emergentes",
+  "growth_percent": 200,
+  "posicao": 17,
+  "updated_at": "2026-10-26T12:49:28.158937+00:00"
+ },
+ {
+  "question": "o que é o lipedema",
+  "axis": "emergentes",
+  "growth_percent": 60,
+  "posicao": 3,
+  "updated_at": "2026-10-26T12:52:04.479482+00:00"
+ }
+]

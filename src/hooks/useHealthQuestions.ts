@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
 import type { HealthQuestion } from '@/data/healthQuestions';
+import { ePerguntaSobreAPalavra } from '../../supabase/functions/_shared/perguntas';
+import { juntarQuaseIguais } from '@/lib/juntarPerguntas';
 
 type Linha = Tables<'health_questions'>;
 
@@ -110,8 +112,14 @@ const MARCAS_SAUDE_ANIMAL = [
 const eSaudeAnimal = (pergunta: string) =>
   MARCAS_SAUDE_ANIMAL.some(rx => rx.test(pergunta));
 
+/**
+ * Perguntas pela palavra e não pela saúde — escrita ("como se escreve…") e tradução ("X em
+ * inglês", "X tradução"). Terceira lista, terceiro critério (decisão da Marta, 29/10/2026): a
+ * regra é a do briefing e do arquivo, em supabase/functions/_shared/perguntas.ts, para o ecrã e
+ * o arquivo não divergirem. As linhas ficam na base.
+ */
 const naoMostrar = (pergunta: string) =>
-  daOutraNorma(pergunta) || eSaudeAnimal(pergunta);
+  daOutraNorma(pergunta) || eSaudeAnimal(pergunta) || ePerguntaSobreAPalavra(pergunta);
 
 /**
  * O TIPO DE DÚVIDA, lido do próprio texto da pergunta.
@@ -188,7 +196,7 @@ const POR_EIXO_PYTRENDS = 100;
  */
 const POR_EIXO_AUTOCOMPLETE = 400;
 
-const mapear = (row: Linha): HealthQuestion => ({
+const mapear = (row: Linha & { variantes?: Linha[] }): HealthQuestion => ({
   question: row.question,
   growthPercent: row.growth_percent,
   relativeVolume: row.relative_volume,
@@ -196,6 +204,7 @@ const mapear = (row: Linha): HealthQuestion => ({
   axisLabel: row.axis_label,
   cluster: row.cluster,
   relatedTerms: [],
+  variantes: (row.variantes ?? []).map(v => ({ question: v.question, growthPercent: v.growth_percent })),
 });
 
 async function ultimaRecolha(fonte: string): Promise<string | null> {
@@ -272,12 +281,14 @@ async function repartirEixo(eixo: string, desdeAutocomplete: string | null) {
 
   const nasDuasSet = new Set((cruzadas ?? []).map(l => l.question));
 
+  // As quase iguais juntam-se dentro de cada coluna (decisão da Marta, 29/10/2026), antes dos
+  // cortes: duas formas da mesma dúvida ocupam um lugar. Regra do briefing — src/lib/juntarPerguntas.ts.
   return {
-    nasDuas: linhasP.filter(l => nasDuasSet.has(l.question) && !naoMostrar(l.question)),
-    soASubir: linhasP.filter(l => !nasDuasSet.has(l.question) && !naoMostrar(l.question)),
-    soHabituais: linhasA.filter(
+    nasDuas: juntarQuaseIguais(linhasP.filter(l => nasDuasSet.has(l.question) && !naoMostrar(l.question))),
+    soASubir: juntarQuaseIguais(linhasP.filter(l => !nasDuasSet.has(l.question) && !naoMostrar(l.question))),
+    soHabituais: juntarQuaseIguais(linhasA.filter(
       l => !nasDuasSet.has(l.question) && !naoMostrar(l.question),
-    ),
+    )),
   };
 }
 

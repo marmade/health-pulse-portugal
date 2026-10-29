@@ -6,4 +6,6 @@ export type HealthQuestion = {
   axisLabel: string;
   cluster: string;
   relatedTerms: string[];
+  // as quase iguais juntas (29/10/2026): as outras formas da mesma dúvida, por baixo
+  variantes?: { question: string; growthPercent: number | null }[];
 };

@@ -3,6 +3,8 @@ import type { HealthQuestion } from "@/data/healthQuestions";
 import { getAxisColors } from "@/lib/axisColors";
 import { useHealthQuestions } from "@/hooks/useHealthQuestions";
 import { supabase } from "@/integrations/supabase/client";
+import { ePerguntaSobreAPalavra, formaDeComparar } from "../../supabase/functions/_shared/perguntas";
+import { fraseDasVariantesDoPainel, juntarQuaseIguais } from "@/lib/juntarPerguntas";
 
 const formatarData = (iso: string) =>
   new Date(iso).toLocaleDateString('pt-PT', {
@@ -41,11 +43,19 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
         .order('posicao', { ascending: true, nullsFirst: false })
         .order('relative_volume', { ascending: false, nullsFirst: false })
         .order('question', { ascending: true })
-        .limit(5);
-      if (data && data.length > 0) {
+        // pedem-se mais do que as 5 que se mostram: as quase iguais juntam-se e as perguntas
+        // pela palavra saem, e sem margem a lista ficava curta (29/10/2026)
+        .limit(20);
+      // sem as perguntas pela palavra (escrita e tradução), como no resto do site, sem as
+      // formas da própria pergunta, e com as quase iguais juntas (decisões de 29/10/2026)
+      const propria = formaDeComparar(question);
+      const relacionadas = juntarQuaseIguais(
+        (data || []).filter(row => !ePerguntaSobreAPalavra(row.question) && formaDeComparar(row.question) !== propria),
+      ).slice(0, 5);
+      if (relacionadas.length > 0) {
         setRelatedMap(prev => ({
           ...prev,
-          [question]: data.map(row => ({
+          [question]: relacionadas.map(row => ({
             question: row.question,
             growthPercent: row.growth_percent,
             relativeVolume: row.relative_volume,
@@ -53,6 +63,7 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
             axisLabel: row.axis_label,
             cluster: row.cluster,
             relatedTerms: [],
+            variantes: row.variantes.map(v => ({ question: v.question, growthPercent: v.growth_percent })),
           })),
         }));
       } else {
@@ -104,6 +115,11 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               <p className="text-xs font-bold leading-snug">
                 {q.question}?
               </p>
+              {fraseDasVariantesDoPainel(q.variantes, comSubida) && (
+                <p className="text-[10px] text-foreground/50 leading-snug mt-0.5">
+                  {fraseDasVariantesDoPainel(q.variantes, comSubida)}
+                </p>
+              )}
               <div className="flex items-center gap-2 mt-1">
                 <span
                   className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
@@ -134,12 +150,16 @@ const HealthQuestionsPanel = ({ axis, axisLabel }: Props) => {
               <div className="border border-foreground/10 p-4">
                 <p className="editorial-label mb-2">Pesquisas relacionadas</p>
                 {related.map((rq) => (
-                  <p
-                    key={rq.question}
-                    className="text-[10px] text-foreground/50 leading-relaxed mb-1"
-                  >
-                    {rq.question}?
-                  </p>
+                  <div key={rq.question} className="mb-1">
+                    <p className="text-[10px] text-foreground/50 leading-relaxed">
+                      {rq.question}?
+                    </p>
+                    {fraseDasVariantesDoPainel(rq.variantes, false) && (
+                      <p className="text-[9px] text-foreground/40 leading-snug pl-3">
+                        {fraseDasVariantesDoPainel(rq.variantes, false)}
+                      </p>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>

@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import { fraseDasVariantes } from "@/lib/perguntasBriefing";
 
 const BLUE = "#0000FF";
 const BLACK = "#0a0a0a";
@@ -137,7 +138,8 @@ export async function generateEixoPdf(entry: {
     sectionHeader("Perguntas em Crescimento");
     entry.top_questions.forEach((q: any, i: number) => {
       checkPage(7);
-      const num = String(i + 1).padStart(2, "0");
+      // desde 2/11/2026 o lugar no eixo (as empatadas partilham-no); antes, a ordem da lista
+      const num = String(q.lugar ?? i + 1).padStart(2, "0");
       // 9999 é o tecto do script 6, não "novo". Desde 28/09/2026 o arquivo marca-o
       // (e o breakout) com fora_de_escala e sem número; os arquivos antigos têm o 9999.
       const growth = q.fora_de_escala || q.growth_percent >= 9999 ? "FORA DE ESCALA" : q.growth_percent != null ? `+${Number(q.growth_percent).toFixed(0)}%` : "";
@@ -149,6 +151,14 @@ export async function generateEixoPdf(entry: {
       pdf.setTextColor(GREY);
       pdf.text(growth, pageWidth - MARGIN, y, { align: "right" });
       y += lines.length * LINE_H;
+      // Desde 2/11/2026 as quase iguais vêm juntas: as variantes por baixo.
+      const variantes = fraseDasVariantes(q.variantes);
+      if (variantes) {
+        pdf.setFontSize(7);
+        const vl = pdf.splitTextToSize(variantes, pageWidth - MARGIN * 2 - 20);
+        pdf.text(vl, MARGIN + 8, y);
+        y += vl.length * LINE_H;
+      }
     });
     y += 4;
   }

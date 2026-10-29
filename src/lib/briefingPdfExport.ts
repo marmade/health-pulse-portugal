@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import type { ParteSinais } from "@/lib/sinaisEmergentes";
 import { dataDaVerificacao, type PartesFactChecks } from "@/lib/factchecksBriefing";
+import { fraseDaSubida, fraseDasVariantes, type GrupoPerguntas } from "@/lib/perguntasBriefing";
 
 const BLUE = "#0000FF";
 const BLACK = "#000000";
@@ -15,6 +16,8 @@ type BriefingPdfData = {
   // Briefings arquivados desde 2/11/2026: os sinais em quatro partes, em vez de `emergent`.
   sinais?: ParteSinais[] | null;
   topVolume: { term: string; growth_percent?: number | null; fora_de_escala?: boolean; current_volume?: number | null }[];
+  // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): as perguntas por eixo, em vez de `topVolume`.
+  perguntas?: GrupoPerguntas[] | null;
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string | null; source: string }[];
   // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): os fact-checks em duas partes, em vez de `debunking`.
@@ -230,6 +233,43 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
 
   // SECTION 3 — Perguntas mais pesquisadas
   sectionTitle("Perguntas mais pesquisadas");
+  if (data.perguntas) {
+    data.perguntas.forEach((g) => {
+      checkPage(10);
+      setFont("bold", 8);
+      pdf.setTextColor(BLACK);
+      pdf.text((axisLabels[g.axis] || g.axis).toUpperCase(), MARGIN, y);
+      y += 5;
+      if (g.itens.length === 0) {
+        setFont("normal", 9);
+        pdf.setTextColor(GREY);
+        pdf.text("Sem perguntas deste eixo na recolha.", MARGIN, y);
+        y += 6;
+      }
+      g.itens.forEach((q) => {
+        checkPage(7);
+        setFont("normal", 8);
+        pdf.setTextColor(GREY);
+        pdf.text(String(q.lugar).padStart(2, "0"), MARGIN, y);
+        setFont("normal", 9);
+        pdf.setTextColor(BLACK);
+        const linhas = pdf.splitTextToSize(q.term, pageWidth - 2 * MARGIN - 40);
+        pdf.text(linhas, MARGIN + 10, y);
+        setFont("bold", 9);
+        pdf.text(fraseDaSubida(q), pageWidth - MARGIN, y, { align: "right" });
+        y += linhas.length * 4 + 2;
+        const variantes = fraseDasVariantes(q.variantes);
+        if (variantes) {
+          setFont("normal", 8);
+          pdf.setTextColor(GREY);
+          const vl = pdf.splitTextToSize(variantes, pageWidth - 2 * MARGIN - 10);
+          pdf.text(vl, MARGIN + 10, y);
+          y += vl.length * 4 + 1;
+        }
+      });
+      y += 3;
+    });
+  }
   data.topVolume.forEach((kw, i) => {
     checkPage(7);
     setFont("normal", 8);
