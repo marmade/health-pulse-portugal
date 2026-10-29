@@ -25,6 +25,8 @@ type BriefingPdfData = {
   // `sugestao` (29/10/2026): a frase na linguagem dos alertas (src/lib/fraseAlerta.ts); sem ela, a
   // frase antiga, para os briefings arquivados antes de 2/11
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean; sugestao?: string } | null;
+  // Sem alerta novo (29/10/2026): a frase que a secção da sugestão mostra em vez de desaparecer.
+  semSugestao?: string | null;
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
   youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
 };
@@ -432,6 +434,14 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
   }
 
   // SECTION 7 — Sugestão
+  if (!data.topEmergent && data.semSugestao) {
+    sectionTitle("Sugestão de conteúdo");
+    checkPage(10);
+    setFont("normal", 9);
+    pdf.setTextColor(GREY);
+    pdf.text(data.semSugestao, MARGIN, y);
+    y += 8;
+  }
   if (data.topEmergent) {
     sectionTitle("Sugestão de conteúdo");
     checkPage(15);

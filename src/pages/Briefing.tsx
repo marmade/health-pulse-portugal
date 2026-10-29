@@ -6,7 +6,7 @@ import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { semMeteorologicas } from "@/lib/noticias";
 import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
 import { useSinaisDaSemana } from "@/hooks/useSinaisDaSemana";
-import { fraseDaSugestao } from "@/lib/fraseAlerta";
+import { fraseDaSugestao, fraseSemAlertaNovo } from "@/lib/fraseAlerta";
 import { intervaloDaSemana } from "../../supabase/functions/_shared/emergentes";
 import {
   dataDaVerificacao, partesDaSemana, partesDosFactChecks, type PartesFactChecks,
@@ -352,6 +352,7 @@ const Briefing = () => {
         debunking: [],
         factChecks: factChecksDaSemana,
         topEmergent,
+        semSugestao: sinais.semana ? fraseSemAlertaNovo(sinais.semana) : null,
         dizQueDisse,
         youtube,
       });
@@ -384,6 +385,8 @@ const Briefing = () => {
         topEmergent: primeiroNovo
           ? { ...primeiroNovo, is_emergent: true, sugestao: fraseDaSugestao(primeiroNovo, primeiroNovo.semana_trends) }
           : null,
+        // a semana do Trends vem gravada em cada item; sem nenhum item não há semana a dizer
+        semSugestao: archive.top_emerging?.[0]?.semana_trends ? fraseSemAlertaNovo(archive.top_emerging[0].semana_trends) : null,
       });
       return;
     }
@@ -737,7 +740,10 @@ const Briefing = () => {
             ) : null}
           </div>
         ) : (
-          <p className="text-xs opacity-60">Sem sugestões esta semana.</p>
+          // sem alerta novo, a secção diz-o (decisão da Marta, 29/10/2026)
+          <p className="text-xs opacity-60">
+            {sinais.semana ? fraseSemAlertaNovo(sinais.semana) : sinais.carregado ? `Vazio: ${sinais.nota}.` : "A ler os alertas…"}
+          </p>
         )}
       </section>
 

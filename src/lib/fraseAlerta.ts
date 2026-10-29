@@ -16,6 +16,12 @@ export function fraseDoAlerta(a: { tipo?: string | null; razao: number; referenc
 }
 
 /**
+ * A sugestão de conteúdo quando a semana não tem alerta novo (decisão da Marta, 29/10/2026): a
+ * secção diz-o, no formato das frases das partes vazias, em vez de ficar em branco.
+ */
+export const fraseSemAlertaNovo = (semana: string) => `Nenhum alerta novo na semana de ${intervaloDaSemana(semana)}.`;
+
+/**
  * A sugestão de conteúdo (decisão da Marta, 29/10/2026): «obesidade — 206, 4,4 vezes acima do valor
  * normal (46), na semana de 18 a 24/10». A parte do meio é a linha do alerta no ecrã.
  */

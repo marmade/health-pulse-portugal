@@ -28,3 +28,21 @@ describe("a sugestão de conteúdo", () => {
     expect(pagina).toMatch(/sugestao: fraseDaSugestao\(novos\[0\], sinais\.semana\)/);
   });
 });
+
+describe("sem alerta novo (decisão da Marta, 29/10/2026)", async () => {
+  const { fraseSemAlertaNovo } = await import("@/lib/fraseAlerta");
+  it("a frase, no formato das partes vazias", () => {
+    expect(fraseSemAlertaNovo("2026-10-18")).toBe("Nenhum alerta novo na semana de 18 a 24/10.");
+    expect(fraseSemAlertaNovo("2026-10-25")).toBe("Nenhum alerta novo na semana de 25 a 31/10.");
+    expect(fraseSemAlertaNovo("2026-11-29")).toBe("Nenhum alerta novo na semana de 29/11 a 05/12.");
+  });
+  it("a página mostra-a em vez de ficar em branco, e o PDF também (semana corrente e arquivados desde 2/11)", () => {
+    const pagina = readFileSync("src/pages/Briefing.tsx", "utf8");
+    expect(pagina).toMatch(/sinais\.semana \? fraseSemAlertaNovo\(sinais\.semana\)/);
+    expect(pagina).toMatch(/semSugestao: sinais\.semana \? fraseSemAlertaNovo\(sinais\.semana\) : null/);
+    expect(pagina).toMatch(/semSugestao: archive\.top_emerging\?\.\[0\]\?\.semana_trends \? fraseSemAlertaNovo/);
+    expect(pagina).not.toMatch(/Sem sugestões esta semana/);
+    const pdf = readFileSync("src/lib/briefingPdfExport.ts", "utf8");
+    expect(pdf).toMatch(/if \(!data\.topEmergent && data\.semSugestao\)/);
+  });
+});
