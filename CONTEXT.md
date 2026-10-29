@@ -1,6 +1,23 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-28 (quarta) — **"Sinais emergentes" do briefing ligados aos
+> Última actualização: 2026-10-29 (quinta) — **fact-checks, perguntas, títulos e alertas.**
+> **Fact-checks do Observador** na `debunking`: 240 gravados depois da revisão da Marta (25
+> exclusões), 175 marcados `covid`. Mostram-se só "Errado" e "Enganador", um artigo por linha,
+> com o separador "Covid-19" na vista "Todos". O passo 6B no workflow grava os novos todas as
+> segundas, sem revisão. O briefing tem "Desta semana" e as 5 "Anteriores".
+> **Perguntas:** 5 por eixo. Ficam de fora as de escrita e de tradução, e as quase iguais
+> juntam-se, no briefing e no painel.
+> **Títulos das notícias:** 141 corrigidos na base (16 com entidades HTML e 125 com CDATA); a
+> origem foi corrigida na `fetch-rss-feeds` v6.
+> **Alertas:** um alerta em curso há mais de 26 semanas passa a "tendência" (a creatina, desde
+> 02/01/2022). O lote `2d0a7be3` foi gravado de novo.
+> **`/briefing` da semana corrente:** os sinais são calculados pela regra do arquivo, e a sugestão
+> de conteúdo usa a linguagem dos alertas.
+> `archive-weekly` **v15** publicada pelo Cowork, com `verify_jwt: true` e 6 ficheiros; último
+> commit antes deste fecho: `055b5c7`.
+> **Prova pelo efeito:** a recolha de domingo 1/11 e a corrida de segunda 2/11. Registo em
+> `docs/sessoes/2026-10-29.md` e `docs/sessoes/2026-10-29-cowork.md`.
+> Anterior: 2026-10-28 (quarta) — **"Sinais emergentes" do briefing ligados aos
 > `trends_alertas`**, em quatro partes (novos, em curso, a observar, "Previsíveis para <mês>"),
 > regra da Marta (`dea8314`). `archive-weekly` **v11** publicada às 18:20:05 UTC com
 > `verify_jwt: true` e lida de volta (0 diferenças); site publicado (`index-OsSBL-K2.js`), com o
