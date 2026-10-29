@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import type { ParteSinais } from "@/lib/sinaisEmergentes";
+import { dataDaVerificacao, type PartesFactChecks } from "@/lib/factchecksBriefing";
 
 const BLUE = "#0000FF";
 const BLACK = "#000000";
@@ -16,6 +17,8 @@ type BriefingPdfData = {
   topVolume: { term: string; growth_percent?: number | null; fora_de_escala?: boolean; current_volume?: number | null }[];
   news: { title: string; outlet: string; date: string; source_type: string }[];
   debunking: { term: string; title: string; classification: string | null; source: string }[];
+  // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): os fact-checks em duas partes, em vez de `debunking`.
+  factChecks?: PartesFactChecks | null;
   topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
   youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
@@ -283,7 +286,52 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
 
   // SECTION 5 — Debunking
   sectionTitle("Mito da semana");
-  if (data.debunking.length === 0) {
+  if (data.factChecks) {
+    ([["Desta semana", data.factChecks.destaSemana], ["Anteriores", data.factChecks.anteriores]] as const).forEach(([nome, parte]) => {
+      checkPage(8);
+      setFont("bold", 8);
+      pdf.setTextColor(BLACK);
+      pdf.text(nome.toUpperCase(), MARGIN, y);
+      y += 5;
+      if (parte.itens.length === 0) {
+        setFont("normal", 9);
+        pdf.setTextColor(GREY);
+        const linhas = pdf.splitTextToSize(parte.nota, pageWidth - 2 * MARGIN);
+        pdf.text(linhas, MARGIN, y);
+        y += linhas.length * 4 + 2;
+      }
+      parte.itens.forEach((d) => {
+        checkPage(20);
+        setFont("bold", 7);
+        pdf.setTextColor(BLUE);
+        pdf.setDrawColor(BLUE);
+        pdf.setLineWidth(0.3);
+        const veredicto = d.classification.toUpperCase();
+        const cw = pdf.getTextWidth(veredicto) + 3;
+        pdf.rect(MARGIN, y - 3, cw, 5);
+        pdf.text(veredicto, MARGIN + 1.5, y);
+        setFont("normal", 8);
+        pdf.setTextColor(GREY);
+        pdf.text(`${dataDaVerificacao(d.date)}  ·  ${d.source}`, MARGIN + cw + 3, y);
+        y += 5;
+        setFont("normal", 9);
+        pdf.setTextColor(BLACK);
+        const afirmacao = pdf.splitTextToSize(d.title, pageWidth - 2 * MARGIN);
+        pdf.text(afirmacao, MARGIN, y);
+        y += afirmacao.length * 4 + 1;
+        setFont("normal", 8);
+        pdf.setTextColor(GREY);
+        if (d.explicacao) {
+          const verif = pdf.splitTextToSize(`Verificação: ${d.explicacao}`, pageWidth - 2 * MARGIN);
+          pdf.text(verif, MARGIN, y);
+          y += verif.length * 4;
+        }
+        pdf.text(`Tema: ${d.term}`, MARGIN, y);
+        y += 7;
+      });
+      y += 2;
+    });
+  } else if (data.debunking.length === 0) {
     setFont("normal", 9);
     pdf.setTextColor(GREY);
     pdf.text("Sem verificações esta semana.", MARGIN, y);

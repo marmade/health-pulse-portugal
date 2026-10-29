@@ -167,7 +167,15 @@ export async function generateEixoPdf(entry: {
       pdf.setTextColor(BLACK);
       const lines = pdf.splitTextToSize(d.title, pageWidth - MARGIN * 2);
       pdf.text(lines, MARGIN, y);
-      y += lines.length * LINE_H + 2;
+      y += lines.length * LINE_H;
+      // Desde 2/11/2026 o arquivo guarda também o título da verificação.
+      if (d.explicacao) {
+        pdf.setTextColor(GREY);
+        const verif = pdf.splitTextToSize(`Verificação: ${d.explicacao}`, pageWidth - MARGIN * 2);
+        pdf.text(verif, MARGIN, y);
+        y += verif.length * LINE_H;
+      }
+      y += 2;
     });
     y += 2;
   }

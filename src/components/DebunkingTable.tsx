@@ -1,10 +1,16 @@
 import { useState, useMemo } from "react";
 import type { DebunkItem } from "@/data/mockData";
 import { getAxisFilterStyle } from "@/lib/axisColors";
+import { temVeredicto } from "../../supabase/functions/_shared/factchecks";
 
 type Props = {
   items: DebunkItem[];
+  // As verificações da covid-19, num separador próprio, fora dos eixos (decisão da Marta,
+  // 29/10/2026). Só se passa na vista "Todos"; sem ele não há separadores.
+  covid?: DebunkItem[];
 };
+
+type Grupo = "eixos" | "covid";
 
 // Os veredictos são os do editor, TAL COMO VÊM (Observador: Errado, Enganador, Esticado,
 // Certo, Praticamente certo…), sem tradução para uma escala nossa. O estilo é por família;
@@ -19,14 +25,16 @@ function estiloVeredicto(v: string): string {
 }
 
 // As 36 linhas semeadas a 25/03/2026 ficaram "a verificar", sem URL nem veredicto; não se
-// apagam (regra do projecto), mas não são fact-checks — não se mostram.
-const temVeredicto = (item: DebunkItem) =>
-  !!item.url && !!item.classification && item.classification.toLowerCase() !== "a verificar";
+// apagam (regra do projecto), mas não são fact-checks — não se mostram. A regra (temVeredicto)
+// é a do briefing, em _shared/factchecks.ts.
 
-const DebunkingTable = ({ items }: Props) => {
+const DebunkingTable = ({ items, covid }: Props) => {
   const [activeFilter, setActiveFilter] = useState("TODOS");
+  const [grupo, setGrupo] = useState<Grupo>("eixos");
 
-  const comVeredicto = useMemo(() => items.filter(temVeredicto), [items]);
+  const dosEixos = useMemo(() => items.filter(temVeredicto), [items]);
+  const daCovid = useMemo(() => (covid ?? []).filter(temVeredicto), [covid]);
+  const comVeredicto = covid && grupo === "covid" ? daCovid : dosEixos;
   // os separadores vêm dos dados, não de uma lista fixa que nunca lhes correspondeu
   const classifications = useMemo(
     () => ["TODOS", ...[...new Set(comVeredicto.map((i) => i.classification))].sort((a, b) => a.localeCompare(b, "pt"))],
@@ -38,14 +46,29 @@ const DebunkingTable = ({ items }: Props) => {
     return comVeredicto.filter((item) => item.classification === activeFilter);
   }, [comVeredicto, activeFilter]);
 
+  const separadores = covid ? (
+    <div className="flex gap-3 mb-1.5 flex-shrink-0">
+      {([["eixos", "Eixos", dosEixos.length], ["covid", "Covid-19", daCovid.length]] as const).map(([g, nome, n]) => (
+        <button
+          key={g}
+          onClick={() => { setGrupo(g); setActiveFilter("TODOS"); }}
+          className={`text-[8px] font-bold uppercase tracking-[0.15em] pb-0.5 border-b-2 transition-colors ${
+            grupo === g ? "border-foreground text-foreground" : "border-transparent text-foreground/40"
+          }`}
+        >
+          {nome} · {n}
+        </button>
+      ))}
+    </div>
+  ) : null;
+
   if (comVeredicto.length === 0) {
     return (
       <div className="flex flex-col h-full min-h-0">
         <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5">Fact-Check & Desinformação</p>
+        {separadores}
         <p className="text-[10px] leading-relaxed text-foreground/50">
-          Sem verificações com veredicto ainda. As 36 entradas que aqui estavam foram semeadas
-          a 25/03/2026 sem classificação nem fonte; a fonte passa a ser a Google Fact Check
-          Tools API, só editores portugueses, a partir de 22/09/2026.
+          Sem verificações com veredicto{covid ? (grupo === "covid" ? " sobre a covid-19" : " nos eixos") : " neste eixo"}.
         </p>
       </div>
     );
@@ -54,7 +77,8 @@ const DebunkingTable = ({ items }: Props) => {
   return (
     <div className="flex flex-col h-full min-h-0">
       <p className="text-[8px] font-medium uppercase tracking-[0.2em] text-foreground/50 mb-1.5 flex-shrink-0">Fact-Check & Desinformação</p>
-      
+      {separadores}
+
       {/* Classification filter */}
       <div className="flex flex-wrap gap-0.5 mb-2 flex-shrink-0">
         {classifications.map((c) => (
@@ -93,6 +117,13 @@ const DebunkingTable = ({ items }: Props) => {
                     >
                       {item.title}
                     </a>
+                    {/* o título da verificação: a afirmação sozinha às vezes não diz o que foi
+                        verificado (decisão da Marta, 29/10/2026) */}
+                    {(item as any).explicacao && (
+                      <p className="text-[9px] text-foreground/60 leading-tight mt-0.5">
+                        Verificação: {(item as any).explicacao}
+                      </p>
+                    )}
                     <div className="flex items-center gap-2 mt-0.5">
                       <p className="text-[8px] text-foreground/40">{item.source}</p>
                       {(item as any).dataPublicacao && (

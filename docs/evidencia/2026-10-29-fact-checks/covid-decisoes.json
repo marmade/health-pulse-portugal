@@ -1,0 +1,96 @@
+{
+ "desmarcar": [
+  {
+   "numero": 8,
+   "url": "https://observador.pt/factchecks/fact-check-homem-retido-em-cruzeiro-com-surto-de-hantavirus-e-o-mesmo-que-apareceu-na-bbc-durante-a-covid-19/",
+   "term": "hantavírus"
+  },
+  {
+   "numero": 14,
+   "url": "https://observador.pt/factchecks/fact-check-hantavirus-e-um-dos-efeitos-colaterais-da-vacina-da-pfizer-contra-a-covid-19/",
+   "term": "hantavírus"
+  },
+  {
+   "numero": 31,
+   "url": "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-da-astrazeneca-e-responsavel-pela-transmissao-da-mpox/",
+   "term": "mpox"
+  },
+  {
+   "numero": 34,
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-funeral-de-dezenas-de-vitimas-de-mpox-em-africa/",
+   "term": "mpox"
+  },
+  {
+   "numero": 57,
+   "url": "https://observador.pt/factchecks/fact-check-surto-de-dengue-no-brasil-esta-relacionado-com-vacina-contra-a-covid-da-pfizer/",
+   "term": "dengue"
+  },
+  {
+   "numero": 65,
+   "url": "https://observador.pt/factchecks/fact-check-testes-pcr-que-detetavam-o-covid-passaram-a-servir-para-detetar-a-gripe-a/",
+   "term": "gripe A"
+  },
+  {
+   "numero": 95,
+   "url": "https://observador.pt/factchecks/fact-check-vacinas-de-mrna-adicionadas-a-alimentos-e-bebidas/",
+   "term": "vacinas"
+  }
+ ],
+ "marcar": [
+  {
+   "numero": 2,
+   "url": "https://observador.pt/factchecks/fact-chek-anthony-fauci-pode-ser-condenado-a-cadeira-eletrica-como-se-alega-nas-redes-sociais/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 155,
+   "url": "https://observador.pt/factchecks/fact-check-criancas-entre-os-5-e-os-11-anos-tem-de-ter-telemovel-pessoal-para-agendar-vacina/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 158,
+   "url": "https://observador.pt/factchecks/fact-check-diretor-da-oms-disse-que-as-vacinas-matam-criancas/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 163,
+   "url": "https://observador.pt/factchecks/fact-check-governo-austriaco-promoveu-vacinacao-em-bordeis-com-direito-a-30-minutos-de-sexo-gratis/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 166,
+   "url": "https://observador.pt/factchecks/fact-check-medico-suicida-se-e-deixa-carta-de-despedida-com-criticas-a-vacinacao/",
+   "term": "suicídio"
+  },
+  {
+   "numero": 167,
+   "url": "https://observador.pt/factchecks/fact-check-medico-suicida-se-e-deixa-carta-de-despedida-com-criticas-a-vacinacao/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 196,
+   "url": "https://observador.pt/factchecks/fact-check-associacao-medica-dos-estados-unidos-revelou-5-500-mortes-por-toma-da-vacina/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 210,
+   "url": "https://observador.pt/factchecks/fact-check-mortes-relacionadas-com-efeitos-adversos-de-vacinas-dispararam-em-2021/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 213,
+   "url": "https://observador.pt/factchecks/fact-check-seringas-adulteradas-estao-a-ser-usadas-para-simular-vacinacao/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 219,
+   "url": "https://observador.pt/factchecks/fact-check-vacinas-nao-foram-aprovadas-e-fabricantes-nao-podem-ser-responsabilizados/",
+   "term": "vacinas"
+  },
+  {
+   "numero": 220,
+   "url": "https://observador.pt/factchecks/fact-check-medicos-alertam-contra-vacina-em-manchete-de-the-times/",
+   "term": "vacinas"
+  }
+ ]
+}

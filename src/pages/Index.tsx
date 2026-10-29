@@ -24,6 +24,7 @@ import Top5Table from "@/components/Top5Table";
 import AlertasEixo, { ComoLerAlertas } from "@/components/AlertasEixo";
 import { semanaIntervalo } from "@/lib/semana";
 import { NOTA_TOP5 } from "@/components/AxisColumn";
+import { temVeredicto } from "../../supabase/functions/_shared/factchecks";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -61,6 +62,8 @@ const Index = () => {
 
   // Use only real DB data — no mock fallback
   const debunkingData = dbDebunkingData;
+  // O PDF e o CSV exportam o que o ecrã mostra: sem as 36 semeadas "a verificar" (29/10/2026).
+  const debunkingExportavel = useMemo(() => debunkingData.filter(temVeredicto), [debunkingData]);
   const newsData = dbNewsData;
 
   // Filtrar debunking e notícias pelo eixo activo
@@ -72,10 +75,17 @@ const Index = () => {
     return new Set(kws);
   }, [filteredData, activeAxis]);
 
+  // As verificações da covid-19 ficam fora dos quatro eixos, num separador próprio que só
+  // existe em "Todos" (decisão da Marta, 29/10/2026 — docs/sessoes/2026-10-29.md).
   const filteredDebunkingData = useMemo(() => {
-    if (!axisTerms) return debunkingData;
-    return debunkingData.filter((d: any) => axisTerms.has((d.term || "").toLowerCase()));
+    const dosEixos = debunkingData.filter((d: any) => !d.covid);
+    if (!axisTerms) return dosEixos;
+    return dosEixos.filter((d: any) => axisTerms.has((d.term || "").toLowerCase()));
   }, [debunkingData, axisTerms]);
+  const debunkingCovid = useMemo(
+    () => (activeAxis === "all" ? debunkingData.filter((d: any) => d.covid) : undefined),
+    [debunkingData, activeAxis]
+  );
 
   const filteredNewsData = useMemo(() => {
     let result = newsData;
@@ -496,10 +506,9 @@ const Index = () => {
           <div className="section-divider mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[420px]">
             {/* Fact-check: o componente só mostra linhas COM veredicto e URL; as 36 semeadas a
-                25/03/2026 ("a verificar") ficam na tabela e fora do ecrã. A fonte passa a ser a
-                Google Fact Check Tools API, só editores portugueses (scripts/11), a partir de
-                terça 22/09 — até lá o componente di-lo em vez de mostrar uma lista vazia. */}
-            <DebunkingTable items={filteredDebunkingData} />
+                25/03/2026 ("a verificar") ficam na tabela e fora do ecrã. A fonte é a Google Fact
+                Check Tools API, só o Observador (scripts/11), desde 29/10/2026. */}
+            <DebunkingTable items={filteredDebunkingData} covid={debunkingCovid} />
             <MediaTable items={filteredNewsData} lastFetchTimestamp={lastFetchTimestamp} activeTheme={activeAxis !== "all" ? activeAxis : undefined} />
           </div>
         </div>
@@ -517,7 +526,7 @@ const Index = () => {
             <SearchAlerts
               alerts={alerts}
               period={filters.period}
-              debunkingData={debunkingData}
+              debunkingData={debunkingExportavel}
               newsData={newsData}
               historicalData={historicalData}
             />
@@ -539,7 +548,7 @@ const Index = () => {
       <DashboardFooter
         filters={filters}
         axes={filteredData}
-        debunkingData={debunkingData}
+        debunkingData={debunkingExportavel}
         newsData={newsData}
         historicalData={historicalData}
       />

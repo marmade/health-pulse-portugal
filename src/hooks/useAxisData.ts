@@ -194,10 +194,14 @@ export function useDebunkingData() {
         setData(debunking.map(d => ({
           term: d.term,
           title: d.title,
+          // o título da verificação, mostrado ao lado da afirmação (29/10/2026)
+          explicacao: d.explicacao || null,
           classification: d.classification,
           source: d.source,
           url: d.url,
           dataPublicacao: d.data_publicacao || null,
+          // as da covid-19 vão para o separador "Covid-19", fora dos eixos (29/10/2026)
+          covid: !!d.covid,
         })));
       }
       setIsLoading(false);

@@ -144,6 +144,20 @@ jobs:
         run: |
           python scripts/4_fetch_youtube_trends.py ${{ secrets.YOUTUBE_API_KEY }}
 
+      # ── PASSO 6B: Fact-checks do Observador (29/10/2026) ────────────────
+      # Antes do arquivo (7), que os lê da tabela debunking. Pesquisa e grava o
+      # que for novo, sem revisão (decisão da Marta: os dados entram
+      # automaticamente, as análises é que se revêem). A marca da covid-19 é a
+      # regra do script. Se falhar, o arquivo corre na mesma, com as
+      # verificações que já lá estão — por isso continue-on-error.
+      - name: 6B — Fact-checks (Observador)
+        continue-on-error: true
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GOOGLE_FACTCHECK_API_KEY: ${{ secrets.GOOGLE_FACTCHECK_API_KEY }}
+        run: |
+          python scripts/11_fetch_fact_checks.py --gravar
+
       # ── ORDEM DOS PASSOS 7 E 6 — trocada a 28/09/2026 ────────────────────
       # O arquivo (7) corre ANTES dos guiões (6). Os guiões passam a pedir à IA
       # o top 5 medido da semana, e esse top 5 é o que o passo 7 grava em

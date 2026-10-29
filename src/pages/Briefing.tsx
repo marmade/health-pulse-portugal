@@ -5,6 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { semMeteorologicas } from "@/lib/noticias";
 import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
+import {
+  dataDaVerificacao, partesDaSemana, partesDosFactChecks, type PartesFactChecks,
+} from "@/lib/factchecksBriefing";
 // Health questions are fetched from Supabase — no hardcoded fallback
 import { getAxisColors } from "@/lib/axisColors";
 import { toast } from "sonner";
@@ -29,9 +32,13 @@ type NewsRow = {
 type DebunkingRow = {
   term: string;
   title: string;
+  explicacao: string | null;
   classification: string;
   source: string;
   url: string;
+  data_publicacao: string | null;
+  eixo: string | null;
+  covid: boolean;
 };
 
 type ArchivedBriefing = {
@@ -82,6 +89,37 @@ const SinaisEmergentes = ({ partes }: { partes: ParteSinais[] }) => (
               {axisLabels[e.axis] || e.axis}
             </span>
             <span className="text-xs opacity-70">{e.frase}</span>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+// Os fact-checks em duas partes (decisão da Marta, 29/10/2026): "Desta semana" e as 5
+// "Anteriores", cada uma com data e veredicto. Ao lado da afirmação, o título da verificação:
+// a afirmação sozinha às vezes não diz o que foi verificado.
+const FactChecks = ({ titulo, partes }: { titulo: string; partes: PartesFactChecks }) => (
+  <div className="mb-5">
+    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+      {titulo}
+    </p>
+    {([["Desta semana", partes.destaSemana], ["Anteriores", partes.anteriores]] as const).map(([nome, parte]) => (
+      <div key={nome} className="mb-4">
+        <p className="text-[9px] font-bold uppercase tracking-wider mb-2 opacity-70">{nome}</p>
+        {parte.itens.length === 0 && <p className="text-xs opacity-60">{parte.nota}</p>}
+        {parte.itens.map((d, i) => (
+          <div key={i} className="mb-3 border-b border-foreground/10 pb-3">
+            <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-1">
+              <span className="tag-emergent">{d.classification}</span>
+              <span className="text-[10px] opacity-60">{dataDaVerificacao(d.date)}</span>
+              <span className="text-[10px] uppercase tracking-wider opacity-50">{d.source}</span>
+            </div>
+            <a href={d.url} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold hover:opacity-70 transition-opacity">
+              {d.title}
+            </a>
+            {d.explicacao && <p className="text-xs opacity-70 mt-1">Verificação: {d.explicacao}</p>}
+            <p className="text-[10px] opacity-50 mt-1">Tema: {d.term}</p>
           </div>
         ))}
       </div>
@@ -233,6 +271,9 @@ const Briefing = () => {
   });
   const displayNews = weekNews.length > 0 ? weekNews.slice(0, 5) : news.slice(0, 5);
 
+  // Fact-checks da semana corrente, pela regra do arquivo (_shared/factchecks.ts).
+  const factChecksDaSemana = partesDaSemana(debunking, week.isoStart, week.isoEnd);
+
   const topVolume = healthQuestionsData.length > 0
     ? healthQuestionsData.slice(0, 8).map((q) => ({ term: q.question, current_volume: q.growth_percent, axis: q.axis }))
     : [];
@@ -265,7 +306,8 @@ const Briefing = () => {
         emergent,
         topVolume,
         news: displayNews,
-        debunking: debunking.slice(0, 3),
+        debunking: [],
+        factChecks: factChecksDaSemana,
         topEmergent,
         dizQueDisse,
         youtube,
@@ -294,6 +336,7 @@ const Briefing = () => {
         topVolume: archive.top_questions || [],
         news: (archive.top_news || []).map((n: any) => ({ ...n, url: "" })),
         debunking: (archive.top_debunking || []).map((d: any) => ({ ...d, url: "" })),
+        factChecks: partesDosFactChecks(archive.top_debunking, archive.notas),
         topEmergent: primeiroNovo ? { ...primeiroNovo, is_emergent: true } : null,
       });
       return;
@@ -562,36 +605,12 @@ const Briefing = () => {
         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
           Mito da semana
         </h2>
-        {debunking.length > 0 ? (
-          <div className="space-y-6 max-w-2xl">
-            {debunking.slice(0, 3).map((d, i) => (
-              <div key={i} className={i > 0 ? "border-t border-foreground/10 pt-6" : ""}>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="tag-emergent">
-                    {d.classification}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-wider opacity-50">
-                    {d.source}
-                  </span>
-                </div>
-                <p className="text-sm font-semibold mb-2">{d.title}</p>
-                <p className="text-xs opacity-60 leading-relaxed">
-                  Tema relacionado: <span className="font-semibold">{d.term}</span>
-                </p>
-                <a
-                  href={d.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] uppercase tracking-wider font-bold mt-3 inline-block hover:opacity-70 transition-opacity"
-                >
-                  Ver verificação →
-                </a>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm opacity-60">Sem mito registado esta semana.</p>
-        )}
+        {/* Desde 29/10/2026 da tabela `debunking`, em duas partes — como o arquivo. Até aqui
+            mostrava as três primeiras linhas da tabela, sem filtro: com data nula à frente,
+            eram as semeadas "a verificar". */}
+        <div className="max-w-2xl">
+          <FactChecks titulo="Fact-checks" partes={factChecksDaSemana} />
+        </div>
       </section>
 
       <div className="section-divider" />
@@ -835,8 +854,11 @@ const Briefing = () => {
                         <SeccaoVazia titulo="Media" nota={archive.notas?.noticias} />
                       )}
 
-                      {/* Debunking */}
-                      {archive.top_debunking?.length > 0 && (
+                      {/* Debunking — duas partes desde 2/11/2026; os anteriores como estavam */}
+                      {partesDosFactChecks(archive.top_debunking, archive.notas) && (
+                        <FactChecks titulo="Debunking" partes={partesDosFactChecks(archive.top_debunking, archive.notas)!} />
+                      )}
+                      {!partesDosFactChecks(archive.top_debunking, archive.notas) && archive.top_debunking?.length > 0 && (
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
                             Debunking
@@ -856,7 +878,7 @@ const Briefing = () => {
                           ))}
                         </div>
                       )}
-                      {!(archive.top_debunking?.length > 0) && (
+                      {!partesDosFactChecks(archive.top_debunking, archive.notas) && !(archive.top_debunking?.length > 0) && (
                         <SeccaoVazia titulo="Debunking" nota={archive.notas?.desmentidos} />
                       )}
                     </div>

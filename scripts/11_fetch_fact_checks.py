@@ -17,17 +17,50 @@ FONTE  Google Fact Check Tools API (ClaimReview), gratuita, chave em
 
 COMO   python3 scripts/11_fetch_fact_checks.py --dry-run       # mostra, não grava
        SUPABASE_SERVICE_ROLE_KEY=... python3 scripts/11_fetch_fact_checks.py --gravar
+       No GitHub corre todas as segundas, antes do arquivo semanal (passo 6B): pesquisa e
+       grava o que for novo, sem revisão (princípio da Marta, 28/09: os dados entram
+       automaticamente, as análises é que se revêem).
+
+PRIMEIRA CARGA (29/10/2026) — grava a lista revista pela Marta, sem pesquisar outra vez
+       (a API não devolve o mesmo entre corridas):
+       python3 scripts/11_fetch_fact_checks.py --gravar \
+         --de-lista docs/evidencia/2026-10-29-fact-checks/lista-dry-run.json \
+         --excluir docs/evidencia/2026-10-29-fact-checks/exclusoes.json \
+         --covid-decisoes docs/evidencia/2026-10-29-fact-checks/covid-decisoes.json
+
+COVID-19 (29/10/2026) — coluna `covid`: true quando a covid é o assunto da afirmação
+       (critério da Marta). Marca-a a regra e_covid(), abaixo; na primeira carga, mais as
+       decisões da Marta sobre os casos duvidosos (--covid-decisoes).
 
 O QUE GRAVA em `debunking`: term (a keyword que casou), title (a afirmação verificada),
 classification (o veredicto do editor), source (editor), url (a verificação),
-data_publicacao, eixo, keyword_id, explicacao (o título da verificação). Uma linha por
-(url, keyword); não repete o que já lá está.
+data_publicacao, eixo, keyword_id, explicacao (o título da verificação), covid. Uma linha
+por (url, keyword); não repete o que já lá está. Grava tudo num só pedido: entra tudo ou
+não entra nada.
 """
-import argparse, json, os, sys, time, urllib.parse, urllib.request
+import argparse, json, os, re, sys, time, urllib.parse, urllib.request
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EDITORES_PT = ["observador.pt"]        # acrescentar quando outro editor português publicar ClaimReview
 PAUSA = 0.3
+
+# Regra da covid-19 (Claude Code, 29/10/2026 — docs/evidencia/2026-10-29-fact-checks/
+# covid-casos-duvidosos.md). Lê a afirmação, o título da verificação e o url, juntos.
+#  1. termo forte, em qualquer data;
+#  2. termo fraco, só entre 01/03/2020 e 31/12/2023 — fora dessa janela a Pfizer e o mRNA
+#     aparecem noutras doenças (o hantavírus, em 2026).
+COVID_FORTE = re.compile(r"covid|coronav|sars-?cov|[óo]micron|\bcorona\b|cov!d|\bc-?19\b|\bcv-?19\b", re.I)
+COVID_FRACO = re.compile(r"pfizer|moderna|astrazeneca|janssen|biontech|\bm-?rna\b|spike|prote[íi]na s\b|grafeno|"
+                         r"ivermectina|cloroquina|vacinad|refor[çc]o|\bdoses?\b", re.I)
+JANELA_COVID = ("2020-03-01", "2023-12-31")
+
+def e_covid(n):
+    t = " ".join((n.get("title") or "", n.get("explicacao") or "", n.get("url") or ""))
+    d = (n.get("data_publicacao") or "")[:10]
+    return bool(COVID_FORTE.search(t)) or (bool(COVID_FRACO.search(t)) and JANELA_COVID[0] <= d <= JANELA_COVID[1])
+
+def pares(lista):
+    return {(e["url"], e["term"]) for e in lista}
 
 def env_publico():
     """URL e chave pública (só leitura). Primeiro do ambiente — no GitHub Actions são
@@ -76,18 +109,33 @@ def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--dry-run", action="store_true"); g.add_argument("--gravar", action="store_true")
+    ap.add_argument("--excluir", help="JSON com os pares {url, term} que a revisão deixou de fora")
+    ap.add_argument("--lista", help="grava a lista final (depois das exclusões) neste JSON")
+    ap.add_argument("--de-lista", help="não pesquisa: lê a lista (JSON do --lista) revista à mão")
+    ap.add_argument("--covid-decisoes", help='JSON {"marcar": [{url, term}], "desmarcar": [...]} que corrige a regra')
     args = ap.parse_args()
-    api_key = chave("GOOGLE_FACTCHECK_API_KEY")
     url, anon = env_publico()
-    kws = rest(url, anon, "keywords?select=id,term,axis&is_active=eq.true&order=axis,term")
     # o par (url, keyword), como o dedup dentro da corrida — só por url, uma verificação
     # gravada para a keyword A nunca entrava para a B (achado da revisão de 18/09)
     existentes = {(r["url"], r.get("term")) for r in rest(url, anon, "debunking?select=url,term") if r.get("url")}
-    novos, vistos = [], set()
+    if args.de_lista:
+        lida = json.load(open(args.de_lista))
+        novos = [n for n in lida if (n["url"], n["term"]) not in existentes]
+        print("lista: %s — %d verificações, %d já na base" % (args.de_lista, len(lida), len(lida) - len(novos)))
+    else:
+        novos = pesquisar(url, anon, existentes)
+    finalizar(args, url, novos)
+
+def pesquisar(url, anon, existentes):
+    api_key = chave("GOOGLE_FACTCHECK_API_KEY")
+    kws = rest(url, anon, "keywords?select=id,term,axis&is_active=eq.true&order=axis,term")
+    novos, vistos, falhadas = [], set(), 0
     for kw in kws:
         for site in EDITORES_PT:
             try: cl = claims(api_key, kw["term"], site)
-            except Exception as e: print("  FALHOU %s @ %s: %s" % (kw["term"], site, str(e)[:120])); continue
+            except Exception as e:
+                falhadas += 1
+                print("  FALHOU %s @ %s: %s" % (kw["term"], site, str(e)[:120])); continue
             for c in cl:
                 r = c["claimReview"][0]
                 u = r.get("url", "")
@@ -98,19 +146,65 @@ def main():
                                   source=r["publisher"].get("name") or site, url=u,
                                   keyword_id=kw["id"], eixo=kw["axis"],
                                   explicacao=(r.get("title") or "")[:500],
-                                  data_publicacao=(r.get("reviewDate") or None)))
+                                  data_publicacao=(r.get("reviewDate") or "")[:10] or None))
             time.sleep(PAUSA)
-    print("keywords: %d | verificações novas: %d | já existentes (url): %d" % (len(kws), len(novos), len(existentes)))
+    # todas as pesquisas falhadas (chave errada, API em baixo) não é "semana sem verificações"
+    if kws and falhadas == len(kws) * len(EDITORES_PT):
+        sys.exit("ERRO: falharam todas as %d pesquisas; nada gravado." % falhadas)
+    print("keywords: %d | verificações novas: %d | já existentes (url): %d | pesquisas falhadas: %d"
+          % (len(kws), len(novos), len(existentes), falhadas))
+    return novos
+
+def finalizar(args, url, novos):
     from collections import Counter
     print("por veredicto:", Counter(n["classification"] for n in novos).most_common())
     print("por eixo:", Counter(n["eixo"] for n in novos).most_common())
     print("por keyword (top 10):", Counter(n["term"] for n in novos).most_common(10))
-    for n in novos[:12]:
-        print("  [%s] %s · %s · %s" % (n["classification"], (n["data_publicacao"] or "?")[:10], n["term"], n["title"][:80]))
+    # a lista toda, para a revisão da Marta antes de gravar (29/10); o que ela excluir vai
+    # para um ficheiro JSON [{"url": ..., "term": ...}] passado em --excluir
+    if args.excluir:
+        fora = {(e["url"], e["term"]) for e in json.load(open(args.excluir))}
+        antes = len(novos)
+        novos = [n for n in novos if (n["url"], n["term"]) not in fora]
+        print("excluídas pela revisão: %d (no ficheiro: %d)" % (antes - len(novos), len(fora)))
+    for n in novos:
+        if n.get("data_publicacao"): n["data_publicacao"] = n["data_publicacao"][:10]
+        n["covid"] = e_covid(n)
+    if args.covid_decisoes:
+        dec = json.load(open(args.covid_decisoes))
+        marcar, desmarcar = pares(dec.get("marcar", [])), pares(dec.get("desmarcar", []))
+        for n in novos:
+            if (n["url"], n["term"]) in marcar: n["covid"] = True
+            if (n["url"], n["term"]) in desmarcar: n["covid"] = False
+        print("decisões da covid: %d a marcar, %d a desmarcar" % (len(marcar), len(desmarcar)))
+    print("covid-19: %d de %d" % (sum(n["covid"] for n in novos), len(novos)))
+    novos.sort(key=lambda n: (n["data_publicacao"] or "", n["eixo"], n["term"]), reverse=True)
+    for i, n in enumerate(novos, 1):
+        print("%3d. %s · %s · %s%s · [%s] %s\n     %s" % (i, (n["data_publicacao"] or "?")[:10], n["term"], n["eixo"],
+              " · COVID" if n.get("covid") else "", n["classification"], n["title"], n["url"]))
+    if args.lista:
+        # .md: a lista legível, para a revisão, e ao lado o .json com os mesmos dados
+        # (é dele que sai o ficheiro do --excluir)
+        base, ext = os.path.splitext(args.lista)
+        json.dump(novos, open(base + ".json", "w"), ensure_ascii=False, indent=1)
+        if ext == ".md":
+            with open(args.lista, "w") as f:
+                for i, n in enumerate(novos, 1):
+                    f.write("%d. %s · **%s** · %s · %s\n   %s\n   <%s>\n\n" % (i, (n["data_publicacao"] or "?")[:10],
+                            n["term"], n["eixo"], n["classification"], " ".join(n["title"].split()), n["url"]))
     if args.gravar:
+        if not novos:
+            print("GRAVADO: nada novo."); return
         key = chave("SUPABASE_SERVICE_ROLE_KEY")
-        for i in range(0, len(novos), 200): rest(url, key, "debunking", "POST", novos[i:i + 200])
-        print("GRAVADO: %d linhas em debunking" % len(novos))
+        # um só pedido = uma só instrução INSERT: entra tudo ou não entra nada (29/10/2026;
+        # antes eram pedidos de 200, e uma falha a meio deixava metade gravada)
+        campos = ("term", "title", "classification", "source", "url", "keyword_id", "eixo",
+                  "explicacao", "data_publicacao", "covid")
+        corpo = [{k: n.get(k) for k in campos} for n in novos]
+        gravadas = rest(url, key, "debunking?select=id", "POST", corpo, prefer="return=representation")
+        if len(gravadas or []) != len(corpo):
+            sys.exit("ERRO: a base devolveu %d linhas de %d enviadas." % (len(gravadas or []), len(corpo)))
+        print("GRAVADO: %d linhas em debunking (%d covid-19)" % (len(corpo), sum(n["covid"] for n in corpo)))
     else:
         print("DRY-RUN: nada gravado.")
 

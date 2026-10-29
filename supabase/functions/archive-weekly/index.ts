@@ -4,6 +4,9 @@ import { eDepressaoMeteorologica } from "../_shared/meteo.ts";
 import {
   FATOR_MIN, notasDasPartes, previsiveisDoMes, sinaisDaSemana, type LinhaAlerta,
 } from "../_shared/emergentes.ts";
+import {
+  notaSemVerificacoes, topDebunkingDoBriefing, topDebunkingDoEixo, type LinhaDebunking,
+} from "../_shared/factchecks.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -100,28 +103,10 @@ function ordenarPerguntas(qs: any[]) {
 // _shared/meteo.ts desde 23/10/2026: o site lê a mesma regra, para que o
 // arquivo e o ecrã não divirjam. Ver docs/sessoes/2026-10-23.md.
 
-/**
- * Notícia de fact-check: categoria "Fact Check" no feed, ou vinda de um feed
- * de fact-check (source_type 'factcheck', ex. observador.pt/factchecks).
- */
-function eFactCheck(n: any) {
-  return (
-    n.source_type === "factcheck" ||
-    (n.categorias || []).some((c: string) => /fact[- ]?check/i.test(c))
-  );
-}
-
-function desmentidoDaNoticia(n: any) {
-  return {
-    term: n.related_term,
-    title: n.title,
-    // O feed não traz o veredicto. Fica nulo em vez de inventar um.
-    classification: null,
-    source: n.outlet,
-    url: n.url,
-    date: n.date,
-  };
-}
+// Os fact-checks (briefing e arquivo dos eixos) vêm da tabela `debunking` desde
+// 29/10/2026, pela regra de _shared/factchecks.ts. De 28/09 a 26/10 vinham das
+// notícias de fact-check (categoria "Fact Check" ou source_type 'factcheck'), e
+// desde Agosto só tinha entrado uma.
 
 /**
  * O papel do JWT do pedido (28/09/2026). Esta função só aceita a service_role:
@@ -170,7 +155,7 @@ Deno.serve(async (req) => {
 
     // ── 1. Fetch all data needed for archives ────────────────────────────
 
-    const [kwRes, questionsRes, newsRes, youtubeRes] =
+    const [kwRes, questionsRes, newsRes, youtubeRes, debunkRes] =
       await Promise.all([
         supabase
           .from("keywords")
@@ -213,26 +198,36 @@ Deno.serve(async (req) => {
           .from("youtube_trends")
           .select("*")
           .order("views", { ascending: false }),
+        // Só as datadas: as 36 semeadas a 25/03 não têm data nem veredicto. O
+        // filtro do veredicto e do url faz-se em _shared/factchecks.ts. A API
+        // corta em 1000 linhas sem erro: a contagem confirma, abaixo.
+        supabase
+          .from("debunking")
+          .select("term, title, explicacao, classification, source, url, data_publicacao, eixo, covid", { count: "exact" })
+          .not("data_publicacao", "is", null),
       ]);
-
-    // A tabela `debunking` deixou de ser lida a 28/09/2026. Os 36 desmentidos
-    // são da Marta, de fact-checks de jornalismo, mas estão sem link
-    // (`fonte_estado = 'sem fonte verificada'`), e até aqui entravam sempre os
-    // mesmos cinco — a consulta não tinha ordem e ficava a ordem física da
-    // tabela. Voltam quando tiverem link. Os desmentidos da semana vêm agora
-    // das notícias de fact-check (factChecks, abaixo).
 
     const keywords = kwRes.data || [];
     const questions = ordenarPerguntas(questionsRes.data || []);
     const newsDaSemana = newsRes.data || [];
     const news = newsDaSemana.filter((n: any) => !eDepressaoMeteorologica(n));
-    const factChecks = news.filter(eFactCheck);
     const youtube = youtubeRes.data || [];
+
+    // Uma leitura falhada ou cortada não pode passar por "semana sem
+    // verificações": a secção fica vazia com o erro na nota.
+    const factChecks = (debunkRes.data as LinhaDebunking[] | null) || [];
+    const erroFactChecks = debunkRes.error
+      ? `erro ao ler a tabela debunking: ${debunkRes.error.message}`
+      : (debunkRes.count ?? 0) !== factChecks.length
+      ? `leitura incompleta da tabela debunking: ${factChecks.length} de ${debunkRes.count}`
+      : null;
+    if (erroFactChecks) factChecks.length = 0;
 
     results.push(
       `perguntas: ${questions.length} da recolha de ${segundaQueFecha} · ` +
         `notícias: ${news.length} da semana (${newsDaSemana.length - news.length} ` +
-        `"depressão" meteorológica fora) · fact-checks: ${factChecks.length}`,
+        `"depressão" meteorológica fora) · fact-checks datados: ` +
+        (erroFactChecks ?? `${factChecks.length}`),
     );
 
     // ── 1b. A medição da semana ──────────────────────────────────────────
@@ -352,8 +347,9 @@ Deno.serve(async (req) => {
       }
 
       // A leitura da `keywords` que FICA: os nomes dos termos activos do eixo.
-      // São eles que escolhem as notícias e as verificações que lhe pertencem
-      // (topNews e topDebunking, abaixo). O que saiu daqui foram os números.
+      // São eles que escolhem as notícias que lhe pertencem (topNews, abaixo);
+      // as verificações vão pela coluna `eixo` da `debunking` (29/10/2026). O
+      // que saiu daqui foram os números.
       const axisKeywords = keywords.filter((k: any) => k.axis === axis);
 
       const axisTerms = new Set(
@@ -396,15 +392,9 @@ Deno.serve(async (req) => {
           ...medidaDaPergunta(q),
         }));
 
-      // Até 28/09/2026 vinha da tabela `debunking` casada por `term` — que lá
-      // é o título, logo nunca casava com os termos do eixo e ficava sempre
-      // vazio. Passa a ser o mesmo que o briefing: fact-checks da semana.
-      const topDebunking = factChecks
-        .filter((n: any) =>
-          axisTerms.has((n.related_term || "").toLowerCase())
-        )
-        .slice(0, 3)
-        .map(desmentidoDaNoticia);
+      // As verificações da semana do eixo, da tabela `debunking` (29/10/2026);
+      // as da covid-19 não entram em eixo nenhum. Ver _shared/factchecks.ts.
+      const topDebunking = topDebunkingDoEixo(factChecks, axis, prev.isoStart, prev.isoEnd);
 
       const topNews = news
         .filter((n: any) =>
@@ -565,12 +555,14 @@ Deno.serve(async (req) => {
           `sem perguntas do Google Trends na recolha de ${segundaQueFecha}`;
       }
 
-      const topDebunking = factChecks.slice(0, 5).map(desmentidoDaNoticia);
-      if (topDebunking.length === 0) {
-        notas.desmentidos =
-          `nenhuma notícia de fact-check com data entre ${prev.isoStart} e ` +
-          `${prev.isoEnd}; os desmentidos da tabela debunking não entram até ` +
-          `terem link verificado`;
+      // Duas partes (decisão da Marta, 29/10/2026): "Desta semana" (parte
+      // "semana") e as 5 "Anteriores" (parte "anterior"), cada item marcado.
+      // "Desta semana" vazia diz-o em `notas.desmentidos`.
+      const topDebunking = topDebunkingDoBriefing(factChecks, prev.isoStart, prev.isoEnd);
+      if (erroFactChecks) {
+        notas.desmentidos = erroFactChecks;
+      } else if (!topDebunking.some((d) => d.parte === "semana")) {
+        notas.desmentidos = notaSemVerificacoes(prev.isoStart, prev.isoEnd);
       }
 
       const topNews = news.slice(0, 5).map((n: any) => ({

@@ -123,6 +123,8 @@ CREATE TABLE IF NOT EXISTS public.debunking (
   data_publicacao DATE,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
+-- 29/10/2026: a marca da covid-19 (migração 20261029180000_debunking_covid.sql)
+ALTER TABLE public.debunking ADD COLUMN IF NOT EXISTS covid BOOLEAN NOT NULL DEFAULT false;
 
 
 -- ----------------------------------------------------------------------------
