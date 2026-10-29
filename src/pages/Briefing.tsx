@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { semMeteorologicas } from "@/lib/noticias";
 import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
+import { useSinaisDaSemana } from "@/hooks/useSinaisDaSemana";
+import { intervaloDaSemana } from "../../supabase/functions/_shared/emergentes";
 import {
   dataDaVerificacao, partesDaSemana, partesDosFactChecks, type PartesFactChecks,
 } from "@/lib/factchecksBriefing";
@@ -19,9 +21,7 @@ type KeywordRow = {
   term: string;
   axis: string;
   current_volume: number;
-  previous_volume: number;
   change_percent: number;
-  is_emergent: boolean;
 };
 
 type NewsRow = {
@@ -71,11 +71,13 @@ const SeccaoVazia = ({ titulo, nota }: { titulo: string; nota?: string }) =>
 
 // Os "Sinais emergentes" em quatro partes (decisão da Marta, 28/10/2026). Só os novos levam a
 // etiqueta "Emergente". Uma parte vazia diz-o na sua frase: a secção nunca sai em branco.
-const SinaisEmergentes = ({ partes }: { partes: ParteSinais[] }) => (
+const SinaisEmergentes = ({ partes, semTitulo }: { partes: ParteSinais[]; semTitulo?: boolean }) => (
   <div className="mb-5">
-    <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
-      Sinais emergentes
-    </p>
+    {!semTitulo && (
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-3" style={{ color: "#0000FF" }}>
+        Sinais emergentes
+      </p>
+    )}
     {partes.map((p) => (
       <div key={p.chave} className="mb-3">
         <p className="text-[9px] font-bold uppercase tracking-wider mb-1 opacity-70">{p.titulo}</p>
@@ -257,15 +259,19 @@ const Briefing = () => {
     fetchData();
   }, []);
 
+  // Os "Sinais emergentes" da semana corrente, pela regra do arquivo, sobre o lote mais recente
+  // (decisão da Marta, 29/10/2026). Substituem a leitura de `keywords.is_emergent`, parada desde 14/08.
+  const sinais = useSinaisDaSemana();
+  const novos = sinais.itens.filter((s) => s.parte === "novo") as { term: string; axis: string; change_percent: number }[];
+  const alertasDaSemana = sinais.itens.filter((s) => s.parte === "novo" || s.parte === "em_curso") as { axis: string }[];
+
   // Fetch Diz Que Disse when keywords are loaded
   useEffect(() => {
-    if (keywords.length === 0) return;
+    if (keywords.length === 0 || !sinais.carregado) return;
 
-    const emergent = keywords.filter((k) => k.is_emergent);
+    // o primeiro alerta novo da semana; sem nenhum, a maior variação (como antes)
     const topGrowing = [...keywords].sort((a, b) => b.change_percent - a.change_percent);
-    const topKeyword = emergent.length > 0
-      ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
-      : topGrowing[0];
+    const topKeyword = novos[0] ?? topGrowing[0];
 
     if (!topKeyword) return;
 
@@ -286,14 +292,13 @@ const Briefing = () => {
       setDizQueDisseLoading(false);
     };
     fetchDizQueDisse();
-  }, [keywords]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keywords, sinais.carregado]);
 
   // Derived data — consistent with dashboard
   const topGrowing = [...keywords]
     .sort((a, b) => b.change_percent - a.change_percent)
     .slice(0, 5);
-
-  const emergent = keywords.filter((k) => k.is_emergent);
 
   // Filter news to this week
   const weekNews = news.filter((n) => {
@@ -307,9 +312,10 @@ const Briefing = () => {
 
   const perguntasDaSemana = gruposDaRecolha(healthQuestionsData);
 
-  const topEmergent = emergent.length > 0
-    ? emergent.sort((a, b) => b.change_percent - a.change_percent)[0]
-    : topGrowing[0];
+  // a sugestão de conteúdo: o primeiro alerta novo da semana (como o PDF dos arquivos desde 2/11)
+  const topEmergent = novos[0]
+    ? { ...novos[0], is_emergent: true }
+    : topGrowing[0] ? { ...topGrowing[0], is_emergent: false } : undefined;
 
   // Urgency ranking — same logic as dashboard overview
   const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -318,7 +324,8 @@ const Briefing = () => {
     const avgChange = axisKw.length > 0
       ? axisKw.reduce((s, k) => s + k.change_percent, 0) / axisKw.length
       : 0;
-    const emergentCount = axisKw.filter((k) => k.is_emergent).length;
+    // os alertas da semana do eixo (novos e em curso), em vez de `is_emergent`
+    const emergentCount = alertasDaSemana.filter((s) => s.axis === axisId).length;
     const alertCount = axisKw.filter((k) => k.change_percent >= 30).length;
     const score = avgChange + (emergentCount * 30) + (alertCount * 20);
     return { axisId, label: axisLabels[axisId], avgChange, emergentCount, alertCount, score };
@@ -332,7 +339,8 @@ const Briefing = () => {
         weekLabel: week.label,
         generatedAt,
         topGrowing,
-        emergent,
+        emergent: [],
+        sinais: sinais.partes,
         topVolume: [],
         perguntas: perguntasDaSemana,
         news: displayNews,
@@ -517,43 +525,26 @@ const Briefing = () => {
 
       <div className="section-divider" />
 
-      {/* SECTION 2 — Sinais de alerta */}
+      {/* SECTION 2 — Sinais emergentes da semana corrente, pela regra do arquivo (29/10/2026):
+          Novos, Em curso, Tendências, A observar e Previsíveis, sobre o lote mais recente. */}
       <section className="px-6 py-10">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
-          Sinais de alerta
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2">
+          Sinais emergentes
         </h2>
-        {emergent.length === 0 ? (
-          <p className="text-sm opacity-60">Nenhum sinal de alerta esta semana.</p>
-        ) : (
-          <div className="space-y-3 max-w-2xl">
-            {emergent
-              .sort((a, b) => b.change_percent - a.change_percent)
-              .map((kw) => {
-              const c = getAxisColors(kw.axis);
-              // Emergent: volume was very low before (previous_volume < 5) → truly new signal
-              // Peak: existing term with strong growth
-              const isNewSignal = kw.previous_volume < 5;
-              const badgeLabel = isNewSignal ? "Emergente" : "Pico";
-              return (
-              <div key={kw.term} className="flex items-center gap-3">
-                <span className={isNewSignal ? "tag-emergent" : "text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 border border-foreground"}>
-                  {badgeLabel}
-                </span>
-                <span className="text-sm font-semibold">{kw.term}</span>
-                <span
-                  className="inline-block text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-sm"
-                  style={{ backgroundColor: c.bg, color: c.text }}
-                >
-                  {axisLabels[kw.axis] || kw.axis}
-                </span>
-                <span className="text-xs font-bold ml-auto">
-                  +{Number(kw.change_percent).toFixed(0)}%
-                </span>
-              </div>
-              );
-            })}
-          </div>
+        {sinais.semana && (
+          <p className="text-xs opacity-50 mb-6">
+            Semana do Google Trends de {intervaloDaSemana(sinais.semana)}, a última completa do lote mais recente
+          </p>
         )}
+        <div className="max-w-2xl">
+          {sinais.partes ? (
+            <SinaisEmergentes partes={sinais.partes} semTitulo />
+          ) : sinais.carregado ? (
+            <p className="text-sm opacity-60">Vazio: {sinais.nota}.</p>
+          ) : (
+            <p className="text-xs opacity-60">A ler os alertas…</p>
+          )}
+        </div>
       </section>
 
       <div className="section-divider" />

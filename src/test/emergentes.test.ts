@@ -227,3 +227,14 @@ describe("tendência (decisão da Marta, 29/10/2026)", async () => {
     expect(sem.map((p) => p.chave)).toEqual(["novo", "em_curso", "a_observar", "previsivel"]);
   });
 });
+
+describe("/briefing da semana corrente (decisão da Marta, 29/10/2026)", () => {
+  it("calcula os sinais pela regra do arquivo e já não lê keywords.is_emergent", async () => {
+    const { readFileSync } = await import("node:fs");
+    const pagina = readFileSync("src/pages/Briefing.tsx", "utf8");
+    expect(pagina).toMatch(/useSinaisDaSemana\(\)/);
+    expect(pagina).not.toMatch(/k\.is_emergent|is_emergent: boolean|Nenhum sinal de alerta esta semana/);
+    const hook = readFileSync("src/hooks/useSinaisDaSemana.ts", "utf8");
+    for (const f of ["sinaisDaSemana(", "previsiveisDoMes(", "notasDasPartes(", "partesDosSinais("]) expect(hook).toContain(f);
+  });
+});
