@@ -1463,6 +1463,9 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       `mosquito tigre` a rever
 - [ ] Repetir as 6 related queries que falharam com 429
 - [ ] Resposta da alfa da API do Trends
+      Pedido de acesso à Google Trends for Health API submetido a 29/10/2026 (formulário da API
+      do Trends, email da FCSH), sem prazo de resposta; não conta para a entrega
+      (2026-10-29-cowork.md §19).
 - [ ] **Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do
       Observador via Google Fact Check Tools API, só editores portugueses — decisão da Marta,
       18/09); passo no `youtube-trends.yml` com o secret `GOOGLE_FACTCHECK_API_KEY`. A chave
