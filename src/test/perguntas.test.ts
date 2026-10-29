@@ -135,6 +135,16 @@ describe("o painel de perguntas do site (29/10/2026)", async () => {
     expect(r[1].variantes.map((v) => v.question)).toEqual(["diferença entre psicólogo e psiquiatra"]);
   });
 
+  it("o mesmo texto vindo das duas fontes não aparece como variante de si próprio", () => {
+    const r = juntarQuaseIguais([
+      { question: "sintomas de ansiedade no corpo feminino", growth_percent: 0, posicao: 2 },
+      { question: "sintomas de ansiedade no corpo feminino", growth_percent: 300, posicao: 1 },
+    ]);
+    expect(r).toHaveLength(1);
+    expect(r[0].growth_percent).toBe(300);
+    expect(r[0].variantes).toEqual([]);
+  });
+
   it("no Trends a variante leva a subida; no Autocomplete e nas relacionadas, só a forma", () => {
     const v = [{ question: "diferença entre psicólogo e psiquiatra", growthPercent: 90 }];
     expect(fraseDasVariantesDoPainel(v, true)).toBe('também pesquisada como: "diferença entre psicólogo e psiquiatra" (+90%)');

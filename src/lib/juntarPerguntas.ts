@@ -18,7 +18,13 @@ export function juntarQuaseIguais<T extends Linha>(linhas: T[]): (T & { variante
     grupos.set(k, [...(grupos.get(k) ?? []), l]);
   }
   return [...grupos.values()].map((g) => {
-    const [frente, ...resto] = [...g].sort((a, b) => compararPerguntas(a as any, b as any));
+    // O mesmo texto pode vir duas vezes, uma de cada fonte: nas relacionadas, que leem o Trends e
+    // o Autocomplete juntos, há 54 perguntas assim. Uma variante igual à da frente não é variante.
+    const vistos = new Set<string>();
+    const unicas = [...g]
+      .sort((a, b) => compararPerguntas(a as any, b as any))
+      .filter((l) => !vistos.has(l.question) && !!vistos.add(l.question));
+    const [frente, ...resto] = unicas;
     return { ...frente, variantes: resto };
   });
 }
