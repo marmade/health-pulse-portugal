@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { limpar } from '../_shared/texto.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -122,14 +123,8 @@ async function fetchFeedWithFallback(feed: FeedSource): Promise<{ xml: string; u
 // Limpa o invólucro CDATA (em qualquer posição, com ou sem espaços à volta) e as
 // entidades HTML mais comuns. Até 18/09/2026 o CDATA só era tirado quando colava
 // exactamente à tag: 113 dos 310 títulos (Notícias ao Minuto) ficaram com "<![CDATA[".
-function limpar(texto: string): string {
-  return texto
-    .replace(/<!\[CDATA\[/g, '').replace(/\]\]>/g, '')
-    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;/g, "'")
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
-    .replace(/<[^>]+>/g, '')
-    .trim();
-}
+// limpar() está em _shared/texto.ts desde 29/10/2026: descodifica todas as entidades (também as
+// numéricas, &#038; &#8211;, e as codificadas duas vezes), e tem testes (src/test/texto.test.ts).
 
 type Item = { title: string; link: string; pubDate: string; description: string; categories: string[] };
 

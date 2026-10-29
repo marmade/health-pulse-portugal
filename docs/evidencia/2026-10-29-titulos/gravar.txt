@@ -1,0 +1,3 @@
+news_items: 353 linhas; a corrigir: 141 (16 entidades + 125 CDATA); todas com o título 'antes'
+a base devolveu 141 linhas
+relidas: 141 | títulos iguais ao 'depois': True | outras colunas iguais (md5 por linha): True | total da tabela: 353 → 353

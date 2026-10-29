@@ -1395,10 +1395,14 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       quantos, que lote, o texto quando não há nenhum) prepara-se na terça 27 e a ligação faz-se
       na quarta 28. Tem de estar publicada antes da corrida de segunda 2/11
       (`docs/sessoes/2026-10-26-cowork.md` §4, §7).
-- [ ] **Entidades HTML numéricas nos títulos das notícias** — "Projeto DiversITy &#038; Health…"
+- [x] ~~**Entidades HTML numéricas nos títulos das notícias** — "Projeto DiversITy &#038; Health…"
       (Nutrimento, 26/10). O `limpar()` do `fetch-rss-feeds` (l.125–132) não descodifica entidades
       numéricas `[inferência: a causa]`. Não se corrige agora (decisão da Marta, 26/10;
-      `docs/sessoes/2026-10-26-cowork.md` §5).
+      `docs/sessoes/2026-10-26-cowork.md` §5).~~ Feito a 29/10 (decisão da Marta, `2026-10-29-cowork.md`
+      §14–§15): `limpar()` em `_shared/texto.ts` (todas as entidades, até três camadas),
+      `fetch-rss-feeds` v6 publicada pelo Cowork; na base, os 16 títulos com entidades e os 125 com
+      CDATA corrigidos num só pedido, só o título — `docs/sessoes/2026-10-29.md` §11,
+      `docs/evidencia/2026-10-29-titulos/`.
 - [x] ~~**Leitura mensal com o comparativo** (vista do eixo, `2026-10-06-cowork.md` §7) — depois da vista do eixo; é a primeira a cair se faltar tempo (decisão da Marta, 21/10).~~ Feitos a 22/10, em separado: o comparativo no `b061f7c` (os gráficos de cada eixo a ler do lote); a leitura mensal no `e5a74b0` — "O mês", os 10 mais procurados de um mês completo face ao mesmo mês do ano anterior, com prova no site nos 4 eixos — `docs/sessoes/2026-10-22.md` §11.
 - [ ] **Guiões de 05/10 e 12/10 sem perguntas da IA** (403) — completá-los ou deixá-los com o erro registado. Decisão da Marta (`docs/sessoes/2026-10-13-cowork.md` §7).
 - [ ] Marcos depois de 28/09 e correcção ao marco de 28/09 — candidatos em rascunho, a escrever com a Marta depois do fecho da ferramenta (decisão de 13/10). O marco de 28/09 diz que os guiões “vieram vazios”; vieram só com perguntas do banco, sem as da IA. Correcção por decidir pela Marta — docs/evidencia/2026-09-18-sobre-linha-do-tempo/marcos/rascunhos/2026-10-13-candidatos.md.
@@ -1608,7 +1612,9 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
          actual.**
       **Diagnosticar o `400` é barato e pode ser feito já; religar é que não.**
 - [ ] **`<![CDATA[` nos títulos e a má rotulagem — uma só intervenção, decidida para
-      quinta 17/09/2026.** Os dois defeitos estão no mesmo ficheiro,
+      quinta 17/09/2026.** **Nota de 29/10:** os 125 títulos gravados com `<![CDATA[` (Notícias
+      ao Minuto, 10/04–21/09) foram corrigidos na base a 29/10, só o título
+      (`docs/sessoes/2026-10-29.md` §11); a origem já estava corrigida desde 18/09. Os dois defeitos estão no mesmo ficheiro,
       `supabase/functions/fetch-rss-feeds/index.ts`, e corrigem-se no mesmo redeploy. Estado
       a 15/09: **113 de 310 títulos (36,5%)** trazem `<![CDATA[` visível na página publicada;
       o mecanismo da rotulagem está identificado em `index.ts:138-144`, com o diagnóstico

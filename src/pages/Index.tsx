@@ -24,7 +24,8 @@ import Top5Table from "@/components/Top5Table";
 import AlertasEixo, { ComoLerAlertas } from "@/components/AlertasEixo";
 import { semanaIntervalo } from "@/lib/semana";
 import { NOTA_TOP5 } from "@/components/AxisColumn";
-import { temVeredicto } from "../../supabase/functions/_shared/factchecks";
+import { seMostra } from "../../supabase/functions/_shared/factchecks";
+import { umaPorArtigo } from "@/lib/factchecksSite";
 
 const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
 
@@ -62,8 +63,9 @@ const Index = () => {
 
   // Use only real DB data — no mock fallback
   const debunkingData = dbDebunkingData;
-  // O PDF e o CSV exportam o que o ecrã mostra: sem as 36 semeadas "a verificar" (29/10/2026).
-  const debunkingExportavel = useMemo(() => debunkingData.filter(temVeredicto), [debunkingData]);
+  // O PDF e o CSV exportam o que a vista "Todos" mostra (29/10/2026): só Errado e Enganador, e
+  // cada artigo uma vez, com todas as keywords.
+  const debunkingExportavel = useMemo(() => umaPorArtigo(debunkingData.filter(seMostra)), [debunkingData]);
   const newsData = dbNewsData;
 
   // Filtrar debunking e notícias pelo eixo activo

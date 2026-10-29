@@ -4,8 +4,8 @@
  * notícias de fact-check (`eFactCheck`), e desde Agosto só tinha entrado uma.
  *
  * A tabela é escrita pelo scripts/11_fetch_fact_checks.py (Observador, Google Fact Check
- * Tools API). Só contam as linhas com veredicto e url: as 36 semeadas a 25/03/2026 ficam
- * "a verificar" e ficam de fora.
+ * Tools API). Só contam as linhas com url e veredicto Errado ou Enganador (seMostra): as 36
+ * semeadas a 25/03/2026 ficam "a verificar" e ficam de fora.
  *
  * Usado pelo archive-weekly e pelo site (/briefing, PDF e painel de fact-check), para que
  * o arquivo e o ecrã não divirjam.
@@ -43,12 +43,18 @@ export const N_ANTERIORES = 5;
 /** Quantas por eixo no `eixos_archive` — as mesmas três de antes. */
 export const N_EIXO = 3;
 
-/** "a verificar" são as 36 semeadas; "sem veredicto" é o que o script 11 grava quando o editor não dá um. */
-const SEM_VEREDICTO = ["a verificar", "sem veredicto"];
+/**
+ * Só "Errado" e "Enganador" se mostram (decisão da Marta, 29/10/2026 — 2026-10-29-cowork.md §14):
+ * no site, no briefing, no arquivo dos eixos e nas exportações. Os outros veredictos do Observador
+ * (Esticado; Certo, Praticamente Certo, Inconclusivo, se vierem) ficam na base e saem do que se
+ * mostra. Os veredictos NÃO se renomeiam: o que aparece é sempre o que o Observador publicou.
+ * Ficam também de fora as 36 semeadas ("a verificar") e o "sem veredicto" do script 11.
+ */
+const VEREDICTOS_MOSTRADOS = ["errado", "enganador"];
 
-export function temVeredicto(l: Pick<LinhaDebunking, "url" | "classification">): boolean {
+export function seMostra(l: Pick<LinhaDebunking, "url" | "classification">): boolean {
   const c = (l.classification ?? "").trim().toLowerCase();
-  return !!(l.url ?? "").trim() && c !== "" && !SEM_VEREDICTO.includes(c);
+  return !!(l.url ?? "").trim() && VEREDICTOS_MOSTRADOS.includes(c);
 }
 
 /** A data da verificação (YYYY-MM-DD), ou null. */
@@ -62,7 +68,7 @@ const dataDe = (l: LinhaDebunking) => (l.data_publicacao ? l.data_publicacao.sli
  */
 export function verificacoesDatadas(linhas: LinhaDebunking[]): LinhaDebunking[] {
   const ordenadas = linhas
-    .filter((l) => temVeredicto(l) && dataDe(l))
+    .filter((l) => seMostra(l) && dataDe(l))
     .sort((a, b) =>
       dataDe(b)!.localeCompare(dataDe(a)!) ||
       a.url.localeCompare(b.url) ||

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import {
-  temVeredicto, partesDoBriefing, topDebunkingDoBriefing, topDebunkingDoEixo, notaSemVerificacoes,
+  seMostra, partesDoBriefing, topDebunkingDoBriefing, topDebunkingDoEixo, notaSemVerificacoes,
   N_ANTERIORES, type LinhaDebunking,
 } from "../../supabase/functions/_shared/factchecks";
 import { partesDosFactChecks, partesDaSemana } from "@/lib/factchecksBriefing";
@@ -15,17 +15,23 @@ const linha = (o: Partial<LinhaDebunking>): LinhaDebunking => ({
   eixo: "emergentes", covid: false, ...o,
 });
 
-describe("temVeredicto", () => {
+describe("seMostra", () => {
   it("as 36 semeadas ('a verificar') ficam de fora, com ou sem link", () => {
-    expect(temVeredicto({ url: "https://poligrafo.sapo.pt/x", classification: "a verificar" })).toBe(false);
-    expect(temVeredicto({ url: "", classification: "a verificar" })).toBe(false);
+    expect(seMostra({ url: "https://poligrafo.sapo.pt/x", classification: "a verificar" })).toBe(false);
+    expect(seMostra({ url: "", classification: "a verificar" })).toBe(false);
   });
   it("sem veredicto do editor ou sem url fica de fora", () => {
-    expect(temVeredicto({ url: "https://x", classification: "sem veredicto" })).toBe(false);
-    expect(temVeredicto({ url: "  ", classification: "Errado" })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "sem veredicto" })).toBe(false);
+    expect(seMostra({ url: "  ", classification: "Errado" })).toBe(false);
+  });
+  it("só Errado e Enganador se mostram; Esticado, Certo e os outros ficam de fora (29/10)", () => {
+    for (const c of ["Esticado", "Certo", "Praticamente Certo", "Inconclusivo"]) {
+      expect(seMostra({ url: "https://x", classification: c })).toBe(false);
+    }
+    expect(seMostra({ url: "https://x", classification: "Errado" })).toBe(true);
   });
   it("com veredicto e url entra", () => {
-    expect(temVeredicto({ url: "https://x", classification: "Enganador" })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Enganador" })).toBe(true);
   });
 });
 

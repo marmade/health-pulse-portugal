@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import type { DebunkItem } from "@/data/mockData";
 import { getAxisFilterStyle } from "@/lib/axisColors";
-import { temVeredicto } from "../../supabase/functions/_shared/factchecks";
+import { seMostra } from "../../supabase/functions/_shared/factchecks";
+import { umaPorArtigo } from "@/lib/factchecksSite";
 
 type Props = {
   items: DebunkItem[];
@@ -25,15 +26,16 @@ function estiloVeredicto(v: string): string {
 }
 
 // As 36 linhas semeadas a 25/03/2026 ficaram "a verificar", sem URL nem veredicto; não se
-// apagam (regra do projecto), mas não são fact-checks — não se mostram. A regra (temVeredicto)
+// apagam (regra do projecto), mas não são fact-checks — não se mostram. A regra (seMostra)
 // é a do briefing, em _shared/factchecks.ts.
 
 const DebunkingTable = ({ items, covid }: Props) => {
   const [activeFilter, setActiveFilter] = useState("TODOS");
   const [grupo, setGrupo] = useState<Grupo>("eixos");
 
-  const dosEixos = useMemo(() => items.filter(temVeredicto), [items]);
-  const daCovid = useMemo(() => (covid ?? []).filter(temVeredicto), [covid]);
+  // cada artigo uma vez, com todas as keywords da lista no rótulo (29/10/2026)
+  const dosEixos = useMemo(() => umaPorArtigo(items.filter(seMostra)), [items]);
+  const daCovid = useMemo(() => umaPorArtigo((covid ?? []).filter(seMostra)), [covid]);
   const comVeredicto = covid && grupo === "covid" ? daCovid : dosEixos;
   // os separadores vêm dos dados, não de uma lista fixa que nunca lhes correspondeu
   const classifications = useMemo(
@@ -48,7 +50,8 @@ const DebunkingTable = ({ items, covid }: Props) => {
 
   const separadores = covid ? (
     <div className="flex gap-3 mb-1.5 flex-shrink-0">
-      {([["eixos", "Eixos", dosEixos.length], ["covid", "Covid-19", daCovid.length]] as const).map(([g, nome, n]) => (
+      {/* sem números: contavam linhas e não respondiam a nada (decisão da Marta, 29/10/2026) */}
+      {([["eixos", "Eixos"], ["covid", "Covid-19"]] as const).map(([g, nome]) => (
         <button
           key={g}
           onClick={() => { setGrupo(g); setActiveFilter("TODOS"); }}
@@ -56,7 +59,7 @@ const DebunkingTable = ({ items, covid }: Props) => {
             grupo === g ? "border-foreground text-foreground" : "border-transparent text-foreground/40"
           }`}
         >
-          {nome} · {n}
+          {nome}
         </button>
       ))}
     </div>
