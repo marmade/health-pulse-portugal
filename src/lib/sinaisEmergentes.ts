@@ -11,6 +11,7 @@
  */
 
 import { fraseDaTendencia } from "../../supabase/functions/_shared/emergentes";
+import { fraseDoAlerta } from "@/lib/fraseAlerta";
 
 export type ParteSinais = {
   chave: "novo" | "em_curso" | "tendencia" | "a_observar" | "previsivel";
@@ -28,9 +29,6 @@ export type SinalArquivado = {
   anos?: number[]; anos_possiveis?: number;
 };
 
-const vezes = (r: number) => (r >= 10 ? r.toFixed(0) : r.toFixed(1).replace(".", ","));
-const n0 = (x: number) => Math.round(x).toString();
-
 /** A frase de cada item — a do ecrã (src/components/AlertasEixo.tsx) para os alertas. */
 export function fraseDoSinal(s: SinalArquivado, mes: string): string {
   if (s.parte === "tendencia") {
@@ -40,9 +38,7 @@ export function fraseDoSinal(s: SinalArquivado, mes: string): string {
     const anos = s.anos ?? [];
     return `subiu em ${mes} em ${anos.length} de ${s.anos_possiveis} anos (${anos.join(", ")})`;
   }
-  let f = s.tipo === "aparecimento"
-    ? `apareceu; normalmente sem procura (máx. anterior ${n0(s.max_anterior ?? 0)})`
-    : `${vezes(Number(s.razao))} vezes acima do valor normal (${n0(Number(s.referencia))})`;
+  let f = fraseDoAlerta({ tipo: s.tipo, razao: Number(s.razao), referencia: Number(s.referencia), maxAnterior: s.max_anterior });
   if (s.parte === "em_curso") f += ` — em curso, ${s.semana_n}.ª semana`;
   return f;
 }

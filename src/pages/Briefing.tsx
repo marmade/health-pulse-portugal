@@ -6,6 +6,7 @@ import { generateBriefingPdf } from "@/lib/briefingPdfExport";
 import { semMeteorologicas } from "@/lib/noticias";
 import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
 import { useSinaisDaSemana } from "@/hooks/useSinaisDaSemana";
+import { fraseDaSugestao } from "@/lib/fraseAlerta";
 import { intervaloDaSemana } from "../../supabase/functions/_shared/emergentes";
 import {
   dataDaVerificacao, partesDaSemana, partesDosFactChecks, type PartesFactChecks,
@@ -262,7 +263,9 @@ const Briefing = () => {
   // Os "Sinais emergentes" da semana corrente, pela regra do arquivo, sobre o lote mais recente
   // (decisão da Marta, 29/10/2026). Substituem a leitura de `keywords.is_emergent`, parada desde 14/08.
   const sinais = useSinaisDaSemana();
-  const novos = sinais.itens.filter((s) => s.parte === "novo") as { term: string; axis: string; change_percent: number }[];
+  const novos = sinais.itens.filter((s) => s.parte === "novo") as {
+    term: string; axis: string; change_percent: number; tipo: string; valor: number; razao: number; referencia: number; max_anterior: number | null;
+  }[];
   const alertasDaSemana = sinais.itens.filter((s) => s.parte === "novo" || s.parte === "em_curso") as { axis: string }[];
 
   // Fetch Diz Que Disse when keywords are loaded
@@ -312,10 +315,12 @@ const Briefing = () => {
 
   const perguntasDaSemana = gruposDaRecolha(healthQuestionsData);
 
-  // a sugestão de conteúdo: o primeiro alerta novo da semana (como o PDF dos arquivos desde 2/11)
-  const topEmergent = novos[0]
-    ? { ...novos[0], is_emergent: true }
-    : topGrowing[0] ? { ...topGrowing[0], is_emergent: false } : undefined;
+  // a sugestão de conteúdo: o primeiro alerta novo da semana, na linguagem dos alertas (decisão da
+  // Marta, 29/10/2026 — sem percentagens). Sem alerta novo, não há sugestão: a variação de
+  // `keywords` dava "+N%", que a decisão 5 de 18/09 exclui.
+  const topEmergent = novos[0] && sinais.semana
+    ? { ...novos[0], is_emergent: true, sugestao: fraseDaSugestao(novos[0], sinais.semana) }
+    : undefined;
 
   // Urgency ranking — same logic as dashboard overview
   const axisOrder = ["saude-mental", "alimentacao", "menopausa", "emergentes"];
@@ -376,7 +381,9 @@ const Briefing = () => {
         news: (archive.top_news || []).map((n: any) => ({ ...n, url: "" })),
         debunking: (archive.top_debunking || []).map((d: any) => ({ ...d, url: "" })),
         factChecks: partesDosFactChecks(archive.top_debunking, archive.notas),
-        topEmergent: primeiroNovo ? { ...primeiroNovo, is_emergent: true } : null,
+        topEmergent: primeiroNovo
+          ? { ...primeiroNovo, is_emergent: true, sugestao: fraseDaSugestao(primeiroNovo, primeiroNovo.semana_trends) }
+          : null,
       });
       return;
     }
@@ -671,11 +678,8 @@ const Briefing = () => {
             {/* Intro line */}
             <div className="border border-foreground/20 p-6">
               <p className="text-xs leading-relaxed">
-                Esta semana vale a pena falar sobre{" "}
-                <span className="font-bold">{topEmergent.term}</span> —{" "}
-                {topEmergent.is_emergent
-                  ? `sinal emergente com crescimento de +${Number(topEmergent.change_percent).toFixed(0)}%, sem histórico significativo no período anterior.`
-                  : `crescimento de +${Number(topEmergent.change_percent).toFixed(0)}% no volume de pesquisa esta semana, indicando interesse crescente dos portugueses neste tema.`}
+                <span className="font-bold">{topEmergent.term}</span>
+                {topEmergent.sugestao.slice(topEmergent.term.length)}.
               </p>
             </div>
 

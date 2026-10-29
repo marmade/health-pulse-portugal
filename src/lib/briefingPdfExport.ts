@@ -22,7 +22,9 @@ type BriefingPdfData = {
   debunking: { term: string; title: string; classification: string | null; source: string }[];
   // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): os fact-checks em duas partes, em vez de `debunking`.
   factChecks?: PartesFactChecks | null;
-  topEmergent?: { term: string; change_percent: number; is_emergent: boolean } | null;
+  // `sugestao` (29/10/2026): a frase na linguagem dos alertas (src/lib/fraseAlerta.ts); sem ela, a
+  // frase antiga, para os briefings arquivados antes de 2/11
+  topEmergent?: { term: string; change_percent: number; is_emergent: boolean; sugestao?: string } | null;
   dizQueDisse?: { perguntas_voxpop: string[]; especialista_sugerido: string; justificacao: string; fonte_cientifica: string; fonte_url: string } | null;
   youtube?: { titulo: string; canal: string; views: number; url: string; eixo: string }[];
 };
@@ -435,7 +437,8 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
     checkPage(15);
     setFont("normal", 9);
     pdf.setTextColor(BLACK);
-    const suggestion = data.topEmergent.is_emergent
+    const suggestion = data.topEmergent.sugestao ? `${data.topEmergent.sugestao}.`
+      : data.topEmergent.is_emergent
       ? `Esta semana vale a pena falar sobre ${data.topEmergent.term} — sinal emergente com crescimento de ${fmtPct(data.topEmergent.change_percent)}.`
       : `Esta semana vale a pena falar sobre ${data.topEmergent.term} — crescimento de ${fmtPct(data.topEmergent.change_percent)} no volume de pesquisa.`;
     const lines = pdf.splitTextToSize(suggestion, pageWidth - 2 * MARGIN);

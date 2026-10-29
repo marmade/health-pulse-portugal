@@ -1,6 +1,7 @@
 import type { AlertasEixo as Dados, AlertaItem } from "@/hooks/useTrendsLote";
 import { semanaIntervalo } from "@/lib/semana";
 import { fraseDaTendencia } from "../../supabase/functions/_shared/emergentes";
+import { fraseDoAlerta, n0, vezes } from "@/lib/fraseAlerta";
 
 /**
  * Os alertas de um eixo, na última semana completa do lote — fase 3, regra de 18/09/2026
@@ -25,13 +26,10 @@ const COR_SIMBOLO: Record<ComSimbolo, string> = {
 };
 const Simbolo = ({ tipo }: { tipo: ComSimbolo }) => <span className={COR_SIMBOLO[tipo]}>{SIMBOLO[tipo]}</span>;
 
-const vezes = (r: number) => (r >= 10 ? r.toFixed(0) : r.toFixed(1).replace(".", ","));
-const n0 = (x: number) => Math.round(x).toString();
-
+// a linha do alerta vem de src/lib/fraseAlerta.ts — a mesma do briefing e da sugestão de conteúdo
 function frase(a: AlertaItem): string {
-  if (a.tipo === "aparecimento")
-    return `apareceu; normalmente sem procura (máx. anterior ${n0(a.maxAnterior ?? 0)})`;
-  let s = `${vezes(a.razao)} vezes acima do valor normal (${n0(a.referencia)})`;
+  if (a.tipo === "aparecimento") return fraseDoAlerta(a);
+  let s = fraseDoAlerta(a);
   if (a.tipo === "sazonal" && a.fatorSazonal) s += ` — sazonal: nesta época é habitual (×${vezes(a.fatorSazonal)})`;
   return s;
 }
