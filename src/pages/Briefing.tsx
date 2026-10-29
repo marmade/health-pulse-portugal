@@ -480,7 +480,7 @@ const Briefing = () => {
               )}
               {axis.emergentCount > 0 && (
                 <span className="text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 bg-foreground text-background">
-                  {axis.emergentCount} sinal{axis.emergentCount > 1 ? "is" : ""}
+                  {axis.emergentCount} {axis.emergentCount > 1 ? "sinais" : "sinal"}
                 </span>
               )}
             </div>
