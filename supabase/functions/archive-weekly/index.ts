@@ -495,7 +495,7 @@ Deno.serve(async (req) => {
       results.push(
         `emergentes: ` +
           (notas.emergentes ??
-            ["novo", "em_curso", "a_observar", "previsivel"]
+            ["novo", "em_curso", "tendencia", "a_observar", "previsivel"]
               .map((p) => `${topEmerging.filter((s) => s.parte === p).length} ${p}`)
               .join(" · ")),
       );

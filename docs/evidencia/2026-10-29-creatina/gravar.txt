@@ -1,0 +1,12 @@
+lote 2d0a7be3 (completo, 33 pedidos): 100 termos, última semana completa 2026-10-18 · linhas: {'a_observar': 504, 'subida': 388, 'tendencia': 241, 'sazonal': 42, 'aparecimento': 20}
+
+2026-10-18:
+  alimentacao   [tendencia   ] creatina — tendência de subida desde 2022-01-02 · 190.6 (o valor normal antes era 40.8)
+  alimentacao   [subida      ] obesidade 206 — 4.4 vezes acima do valor normal (46)
+  alimentacao   [subida      ] diabetes tipo 2 66 — 3.1 vezes acima do valor normal (21)
+  emergentes    [subida      ] dengue 15 — 1.6 vezes acima do valor normal (9) — em curso, 2.ª semana
+  emergentes    [subida      ] sarampo 18 — 1.5 vezes acima do valor normal (12) — em curso, 3.ª semana
+  menopausa     [a_observar  ] cancro da mama 34 — 1.8 vezes acima do valor normal (19) (a observar)
+  menopausa     [a_observar  ] menopausa 77 — 1.3 vezes acima do valor normal (61) (a observar)
+
+GRAVADO: 1195 linhas em trends_alertas para o lote 2d0a7be3

@@ -15,12 +15,17 @@
  * Ordem nas partes 1–3: a do ecrã (src/hooks/useTrendsLote.ts) — tipo, depois razão a descer.
  * As linhas `sazonal` da semana não entram nas partes 1–3 (o ecrã também não lhes chama alerta).
  *
+ * TENDÊNCIA (decisão da Marta, 29/10/2026 — docs/metodo/2026-09-18-alertas-regra.md §7a): um
+ * alerta em curso há mais de 26 semanas passa a `tendencia` em trends_alertas. Sai de "em curso"
+ * e fica numa linha à parte (parte "tendencia"), sem bandeira e sem a palavra "alerta":
+ * «creatina — tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)».
+ *
  * Os previsíveis só vêem as semanas em que o termo mexeu (há linha em `trends_alertas` só com
  * z >= 2 ou em curso). Um termo que sobe devagar todos os anos não aparece. Fica para depois
  * de 2/11: calcular a sazonalidade sobre `trends_calibrados`.
  */
 
-export type TipoAlerta = "subida" | "aparecimento" | "sazonal" | "a_observar";
+export type TipoAlerta = "subida" | "aparecimento" | "sazonal" | "a_observar" | "tendencia";
 
 /** Uma linha de trends_alertas como vem da API (numéricos em texto). */
 export type LinhaAlerta = {
@@ -38,10 +43,10 @@ export type LinhaAlerta = {
   inicio: string;
 };
 
-export type Parte = "novo" | "em_curso" | "a_observar" | "previsivel";
+export type Parte = "novo" | "em_curso" | "tendencia" | "a_observar" | "previsivel";
 
 export type SinalDaSemana = {
-  parte: "novo" | "em_curso" | "a_observar";
+  parte: "novo" | "em_curso" | "tendencia" | "a_observar";
   term: string;
   axis: string;
   tipo: TipoAlerta;
@@ -67,7 +72,7 @@ export type Previsivel = {
   fator_max: number;
 };
 
-const ORDEM: Record<TipoAlerta, number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3 };
+const ORDEM: Record<TipoAlerta, number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3, tendencia: 4 };
 const COLLATOR = new Intl.Collator("pt");
 
 export const FATOR_MIN = 1.5;
@@ -92,6 +97,15 @@ export function mesDaSemana(semana: string): { mes: number; ano: number } {
   return { mes: q.getUTCMonth() + 1, ano: q.getUTCFullYear() };
 }
 
+const dataPt = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
+const umaCasa = (x: number) => x.toFixed(1).replace(".", ",");
+
+/** A linha da tendência, sem o termo (decisão da Marta, 29/10/2026). */
+export function fraseDaTendencia(t: { valor: number; referencia: number; inicio: string }) {
+  return `tendência de subida desde ${dataPt(t.inicio)} · ` +
+    `${umaCasa(t.valor)} (o valor normal antes era ${umaCasa(t.referencia)})`;
+}
+
 /** "18 a 24/10", a partir do domingo. */
 export function intervaloDaSemana(semana: string): string {
   const a = dia(semana, 0), b = dia(semana, 6);
@@ -102,13 +116,14 @@ export function intervaloDaSemana(semana: string): string {
     : `${dd(a)}/${mm(a)} a ${dd(b)}/${mm(b)}`;
 }
 
-/** Partes 1–3, das linhas da semana do briefing (`semana` = semana do Trends). */
+/** Partes 1–3 e a linha da tendência, das linhas da semana do briefing (`semana` = semana do Trends). */
 export function sinaisDaSemana(linhas: LinhaAlerta[], semana: string): SinalDaSemana[] {
   const parte = (l: LinhaAlerta): SinalDaSemana["parte"] | null =>
     l.tipo === "a_observar" ? "a_observar"
+      : l.tipo === "tendencia" ? "tendencia"
       : l.tipo === "subida" || l.tipo === "aparecimento" ? (l.semana_n === 1 ? "novo" : "em_curso")
       : null;
-  const ordemParte = { novo: 0, em_curso: 1, a_observar: 2 };
+  const ordemParte = { novo: 0, em_curso: 1, tendencia: 2, a_observar: 3 };
   return linhas
     .filter((l) => l.semana.slice(0, 10) === semana)
     .flatMap((l) => {

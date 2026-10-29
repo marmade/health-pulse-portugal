@@ -21,6 +21,8 @@ CASOS                                                                          E
   bruto 20, máximo anterior 10 (aparecimento exactamente nos dois limiares)   aparecimento
   bruto 19, máximo anterior 0                                                 nada
   aparecimento em curso com bruto 20                                          continua (2.ª semana)
+  tendência (29/10): 26.ª semana em curso; 27.ª tendência; subida nova acima
+    do patamar; a tendência volta; acaba abaixo de 1,5 × o valor de antes       subida 26, tendencia 27, …
   os números gravados vêm na régua do eixo (bruto × factor)                   valor, referência, ruído
   a série de um termo com dois pedido_id                                      SerieAmbigua (não SystemExit)
   a série de um termo com dois factores                                       SerieAmbigua
@@ -81,6 +83,21 @@ caso("em curso: 2 contra referência congelada 2 → fecha", [2] * 8 + [8, 2], 9
 caso("aparecimento: bruto 20, máximo anterior 10", [0] * 30 + [10] + [0] * 21 + [20], 52, "aparecimento")
 caso("bruto 19, máximo anterior 0 → nada", [0] * 52 + [19], 52, None)
 caso("aparecimento em curso com bruto 20 → continua", [0] * 52 + [25, 20], 53, "aparecimento", 2)
+
+if hasattr(TA, "N_TEND"):
+    # 29/10/2026 — tendência (docs/evidencia/2026-10-29-creatina/simulacao.md): 10 durante 8
+    # semanas, depois 40 (×4); na semana 40 uma subida nova para 100; da semana 45 em diante 12.
+    print("\nTENDÊNCIA — mais de %d semanas em curso" % TA.N_TEND)
+    T = [10] * 8 + [40] * 32 + [100] + [40] * 4 + [12] * 3
+    caso("26.ª semana do acontecimento ainda é alerta em curso", T, 8 + 25, "subida", 26)
+    caso("27.ª semana passa a tendência (idade contada desde o início)", T, 8 + 26, "tendencia", 27)
+    caso("subida acima do patamar novo (100 contra 40) → alerta novo, 1.ª semana", T, 40, "subida", 1)
+    caso("depois do alerta novo, a tendência volta", T, 41, "tendencia", 34)
+    caso("abaixo de 1,5 × o valor normal de antes (12 contra 10) → a tendência acaba", T, 45, None)
+    l = alertas(T, 0.5)[SEMANAS[8 + 26]]
+    verifica("a linha da tendência grava a referência de antes, a razão contra ela e z nulo",
+             (l["referencia"], l["razao"], l["z"], l["inicio"]) == (5.0, 4.0, None, SEMANAS[8]),
+             str((l["referencia"], l["razao"], l["z"], l["inicio"])))
 
 if not NOVO:
     print("\n%d falha(s) no código de 18/09." % len(falhas))

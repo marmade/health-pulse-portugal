@@ -1,5 +1,6 @@
 import type { AlertasEixo as Dados, AlertaItem } from "@/hooks/useTrendsLote";
 import { semanaIntervalo } from "@/lib/semana";
+import { fraseDaTendencia } from "../../supabase/functions/_shared/emergentes";
 
 /**
  * Os alertas de um eixo, na última semana completa do lote — fase 3, regra de 18/09/2026
@@ -11,15 +12,18 @@ import { semanaIntervalo } from "@/lib/semana";
  *   ● aparecimento  termo sem procura regular que surge acima do piscar do Google
  *   ~ sazonal       cumpre a subida, mas a época do ano explica-a — mostra-se, não é alerta
  *   ○ a observar    z ≥ 2 sem chegar a alerta — sem bandeira, nunca com a palavra "alerta"
+ *     tendência     alerta em curso há mais de 26 semanas (29/10/2026) — linha à parte, sem
+ *                   bandeira e sem a palavra "alerta" (docs/metodo/2026-09-18-alertas-regra.md §7a)
  */
-const SIMBOLO: Record<AlertaItem["tipo"], string> = { subida: "▲", aparecimento: "●", sazonal: "~", a_observar: "○" };
+type ComSimbolo = Exclude<AlertaItem["tipo"], "tendencia">;
+const SIMBOLO: Record<ComSimbolo, string> = { subida: "▲", aparecimento: "●", sazonal: "~", a_observar: "○" };
 /** A cor de cada símbolo — a mesma nas linhas dos alertas e na legenda do "Como ler os alertas"
     (decisão da Marta, 23/10/2026). Os alertas a vermelho; o sazonal e o "a observar" no cinzento
     da linha deles. */
-const COR_SIMBOLO: Record<AlertaItem["tipo"], string> = {
+const COR_SIMBOLO: Record<ComSimbolo, string> = {
   subida: "text-destructive", aparecimento: "text-destructive", sazonal: "text-foreground/60", a_observar: "text-foreground/60",
 };
-const Simbolo = ({ tipo }: { tipo: AlertaItem["tipo"] }) => <span className={COR_SIMBOLO[tipo]}>{SIMBOLO[tipo]}</span>;
+const Simbolo = ({ tipo }: { tipo: ComSimbolo }) => <span className={COR_SIMBOLO[tipo]}>{SIMBOLO[tipo]}</span>;
 
 const vezes = (r: number) => (r >= 10 ? r.toFixed(0) : r.toFixed(1).replace(".", ","));
 const n0 = (x: number) => Math.round(x).toString();
@@ -61,6 +65,10 @@ export const ComoLerAlertas = () => (
         valor normal fica o de antes de começar.
       </p>
       <p>
+        Um alerta que dura mais de meio ano passa a tendência: deixa de ter bandeira, e o valor normal
+        passa a ser o novo nível. Uma subida acima desse nível volta a dar alerta.
+      </p>
+      <p>
         <Simbolo tipo="aparecimento" /> <strong>Aparecimento.</strong> Um termo sem procura regular passa a ser procurado, muito acima
         do que tinha no último ano.
       </p>
@@ -85,6 +93,7 @@ export const ComoLerAlertas = () => (
 const AlertasEixo = ({ dados, rotulo, rotuloCor, compacto }: { dados: Dados; rotulo?: string; rotuloCor?: string; compacto?: boolean }) => {
   const alertas = dados.itens.filter(a => a.tipo === "subida" || a.tipo === "aparecimento");
   const resto = dados.itens.filter(a => a.tipo === "sazonal" || a.tipo === "a_observar");
+  const tendencias = dados.itens.filter(a => a.tipo === "tendencia");
   return (
     <div>
       <p className="editorial-label mb-3" style={rotuloCor ? { color: rotuloCor } : undefined}>
@@ -98,15 +107,28 @@ const AlertasEixo = ({ dados, rotulo, rotuloCor, compacto }: { dados: Dados; rot
       <div className="space-y-0">
         {alertas.map(a => <Linha key={a.termo} a={a} forte />)}
         {resto.map(a => <Linha key={a.termo} a={a} />)}
+        {tendencias.map(a => <LinhaTendencia key={a.termo} a={a} />)}
       </div>
       {!compacto && <div className="mt-2"><ComoLerAlertas /></div>}
     </div>
   );
 };
 
+/** A linha da tendência (decisão da Marta, 29/10/2026), sem bandeira: «creatina — tendência de
+    subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)». */
+const LinhaTendencia = ({ a }: { a: AlertaItem }) => (
+  <div className="flex items-start gap-2 py-2 border-b border-foreground/10 last:border-0 text-foreground/60">
+    <span className="w-3 shrink-0" />
+    <p className="text-[10px] leading-relaxed flex-1 min-w-0">
+      <span className="text-xs font-semibold">{a.termo}</span>{" — "}
+      {fraseDaTendencia({ valor: a.valor, referencia: a.referencia, inicio: a.inicio })}
+    </p>
+  </div>
+);
+
 const Linha = ({ a, forte }: { a: AlertaItem; forte?: boolean }) => (
   <div className={`flex items-start gap-2 py-2 border-b border-foreground/10 last:border-0 ${forte ? "" : "text-foreground/60"}`}>
-    <span className={`text-[11px] w-3 shrink-0 mt-0.5 ${COR_SIMBOLO[a.tipo]}`}>{SIMBOLO[a.tipo]}</span>
+    <span className={`text-[11px] w-3 shrink-0 mt-0.5 ${COR_SIMBOLO[a.tipo as ComSimbolo]}`}>{SIMBOLO[a.tipo as ComSimbolo]}</span>
     <div className="flex-1 min-w-0">
       <div className="flex items-baseline gap-2">
         <span className={`text-xs ${forte ? "font-bold" : "font-semibold"} truncate`}>{a.termo}</span>

@@ -17,6 +17,8 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 > semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do termo.
 > «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o valor
 > normal fica o de antes de começar.
+> Um alerta que dura mais de meio ano passa a tendência: deixa de ter bandeira, e o valor normal
+> passa a ser o novo nível. Uma subida acima desse nível volta a dar alerta.
 > ● **Aparecimento.** Um termo sem procura regular passa a ser procurado, muito acima do que tinha
 > no último ano.
 > ~ **Sazonal.** A subida é a que esta época do ano costuma trazer. Mostra-se, mas não é alerta.
@@ -25,6 +27,8 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 > A semana em curso não conta. O alerta diz que algo subiu, não porquê: isso é leitura de quem o
 > vê. «Nenhum alerta» quer dizer que nenhum termo cumpriu a regra nessa semana, não que nada
 > mudou no tema.
+
+Acrescentada a 29/10 a frase da tendência, texto da Marta (`docs/sessoes/2026-10-29-cowork.md` §17).
 
 Corrigido a 23/10 para o texto que a Marta aprovou: sai 'Alertas.' do início porque o bloco já se chama 'Como ler os alertas'; o 'de 0 a 100' saiu porque o ecrã mostra os valores na escala de cada eixo, que passa de 100 (verificação do Claude Code, docs/sessoes/2026-10-23.md §7). Aspas inglesas passadas a portuguesas (decisão minha, 23/10).
 
@@ -95,6 +99,14 @@ Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/s
   secção está vazia. O `scripts/11_fetch_fact_checks.py` (Google Fact Check Tools API, só o
   Observador, o único editor português com ClaimReview) existe desde 18/09 e nunca correu com
   `--gravar`; nenhum workflow o chama.
+- **Mudança do Google em Janeiro de 2022 (nota para as limitações, 29/10/2026).** Myburgh, P. H.
+  (2022), IJERPH 19(22), 15396, doi:10.3390/ijerph192215396, documenta uma mudança na Google
+  **Health** Trends API a partir de 1/1/2022. A tendência da creatina começa a 02/01/2022, a
+  semana seguinte, e a coincidência fica registada. No nosso lote (Trends público, não a Health
+  Trends API) não há um salto geral nessa data: a razão mediana Jan–Fev 2022 / Nov–Dez 2021 é
+  1,13 nos 41 termos com dados, e só 6 subiram 50 % ou mais (leitura do Cowork,
+  `docs/sessoes/2026-10-29-cowork.md` §16). Não está mostrado que a mudança explique a creatina.
+  Decisão da Marta, §17a: fica só como nota.
 
 ## 3. Briefing — "Sinais emergentes" e previsíveis
 

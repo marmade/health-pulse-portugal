@@ -199,6 +199,35 @@ lotes concordam.
    "score" nem percentagens; tudo na régua do eixo, dentro de cada coluna — os eixos não se
    misturam numa lista só.
 
+### 7a. Decisão 6 — tendência (29/10/2026)
+
+Acrescentada a 29/10/2026, sobre a decisão 3. A decisão 3 só abre e fecha acontecimentos, e não
+sabe dizer "isto é o novo normal". A creatina abriu um alerta a 02/01/2022 contra um valor normal
+de 40,8, mudou de patamar (medianas anuais de 130 a 268) e ficou "em curso" 251 semanas.
+
+- **Um acontecimento em curso há mais de 26 semanas deixa de ser alerta.** Passa a "tendência de
+  subida desde [data]": uma linha à parte, sem bandeira e sem a palavra "alerta". Decisão da
+  Marta; o limite das 26 semanas é parâmetro do Claude Code, aceite (`N_TEND` em
+  `scripts/trends_alertas.py`). Em 5 anos do lote `2d0a7be3`, 148 dos 151 acontecimentos duram
+  15 semanas ou menos; os outros 3 duram 31, 39 e 251.
+- **O valor normal passa a ser o patamar novo:** a mediana das 8 semanas anteriores, a de sempre.
+  Uma subida acima dele volta a dar alerta, "1.ª semana". Enquanto esse alerta dura, aparece ele;
+  depois volta a tendência.
+- **A tendência acaba quando o valor desce abaixo de 1,5 × o valor normal de antes**, ou seja,
+  quando o termo volta ao nível antigo.
+- **Uma linha por semana:** alerta primeiro, depois tendência, depois sazonal e a observar.
+- **A data é a do início do acontecimento.** Chegou a decidir-se "desde pelo menos [data]" para um
+  alerta aberto na primeira semana calculável do lote. Saiu no mesmo dia (decisão da Marta,
+  `2026-10-29-cowork.md` §17a), porque não se aplica a nenhum caso. Nem à creatina, que foi
+  avaliada a 19/12 e a 26/12/2021 sem disparar e só abriu a 02/01/2022.
+- **Efeito no lote `2d0a7be3`:**
+  - 241 linhas passam de "subida em curso" a "tendência" (creatina, jejum intermitente, dengue);
+  - nenhum alerta desaparece;
+  - aparece um alerta novo (dengue, 04/08/2024, 2,5 vezes acima do patamar de 14,7);
+  - o factor sazonal fica igual em todas as linhas.
+- Simulação: `docs/evidencia/2026-10-29-creatina/simulacao.md`. Tipo novo na base:
+  `20261029190000_trends_alertas_tendencia.sql`.
+
 ## 8. Reproduzir
 
 ```

@@ -26,7 +26,7 @@ export type Top5Item = { termo: string; valor: number; posicao: number };
 export type TopSemana = { weekStart: string; weekLabel: string; semanaTrends: string | null; nota: string | null };
 /** Uma linha de trends_alertas (regra de 18/09/2026, docs/metodo/2026-09-18-alertas-regra.md). */
 export type AlertaItem = {
-  termo: string; tipo: "subida" | "aparecimento" | "sazonal" | "a_observar";
+  termo: string; tipo: "subida" | "aparecimento" | "sazonal" | "a_observar" | "tendencia";
   valor: number; referencia: number; razao: number; z: number | null;
   fatorSazonal: number | null; maxAnterior: number | null; semanaN: number; inicio: string;
 };
@@ -61,7 +61,7 @@ export function incompletoDoEixo(termos: string[], men: Leitura<Men>, anu: Leitu
     : null;
   return { n: men.linhas.length + anu.linhas.length, m: men.contadas + anu.contadas, termos: emFalta };
 }
-const ORDEM: Record<AlertaItem["tipo"], number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3 };
+const ORDEM: Record<AlertaItem["tipo"], number> = { subida: 0, aparecimento: 1, sazonal: 2, a_observar: 3, tendencia: 4 };
 
 /** termosDoEixo: os termos activos de cada eixo. Desde 13/10/2026 o filtro dos activos faz-se
     no archive-weekly; aqui só marca quando a página tem os dados para pedir o lote. */

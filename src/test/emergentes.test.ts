@@ -202,3 +202,28 @@ describe("o briefing de 19–25/10 como a página e o PDF o mostram", () => {
     expect(partesDosSinais([], { emergentes: "vazio até os alertas…" })).toBeNull();
   });
 });
+
+describe("tendência (decisão da Marta, 29/10/2026)", async () => {
+  const { sinaisDaSemana, fraseDaTendencia } = await import("../../supabase/functions/_shared/emergentes");
+  const { partesDosSinais } = await import("@/lib/sinaisEmergentes");
+  const base = { eixo: "alimentacao", semana: "2026-10-18", z: null, fator_sazonal: null, max_anterior: null };
+  const creatina = { ...base, termo: "creatina", tipo: "tendencia" as const, valor: "190.583", referencia: "40.833", razao: "4.667", semana_n: 251, inicio: "2022-01-02" };
+  const dengue = { ...base, eixo: "emergentes", termo: "dengue", tipo: "subida" as const, valor: "20", referencia: "10", razao: "2", semana_n: 2, inicio: "2026-10-11" };
+
+  it("a tendência sai de 'em curso' e vai para a sua parte", () => {
+    const s = sinaisDaSemana([creatina, dengue], "2026-10-18");
+    expect(s.map((x) => [x.term, x.parte])).toEqual([["dengue", "em_curso"], ["creatina", "tendencia"]]);
+  });
+  it("a frase, o texto da Marta, sem a palavra alerta", () => {
+    expect(fraseDaTendencia({ valor: 190.583, referencia: 40.833, inicio: "2022-01-02" }))
+      .toBe("tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)");
+  });
+  it("no briefing, a linha à parte só aparece quando há tendência, e sem a etiqueta Emergente", () => {
+    const notas = { emergentes_mes: "Outubro" };
+    const com = partesDosSinais(sinaisDaSemana([creatina, dengue], "2026-10-18") as any, notas)!;
+    expect(com.map((p) => p.chave)).toEqual(["novo", "em_curso", "tendencia", "a_observar", "previsivel"]);
+    expect(com.find((p) => p.chave === "tendencia")!.itens[0].frase).toBe("tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)");
+    const sem = partesDosSinais(sinaisDaSemana([dengue], "2026-10-18") as any, notas)!;
+    expect(sem.map((p) => p.chave)).toEqual(["novo", "em_curso", "a_observar", "previsivel"]);
+  });
+});

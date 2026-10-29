@@ -7,9 +7,11 @@ import AlertasEixo, { ComoLerAlertas } from "@/components/AlertasEixo";
 // Critério de prova escrito antes do código: docs/sessoes/2026-10-23.md §7.5, pontos 1 a 4 e 6.
 // O texto aprovado pela Marta a 23/10/2026 (§7.1 e §7.4), escrito aqui à parte do componente.
 // O "A observar" mudou a 28/10/2026, para dizer o mesmo que o briefing (2026-10-28.md §16).
+// A frase da tendência entrou a 29/10/2026, texto da Marta (2026-10-29-cowork.md §17).
 const APROVADO = [
   "Um alerta diz que um termo foi mais procurado numa semana do que costuma ser. Os valores vêm do Google Trends e não são números de pesquisas: são relativos, numa escala própria de cada eixo, e só se comparam dentro do mesmo eixo.",
   "▲ Subida. O «valor normal» é a mediana das oito semanas anteriores. Há alerta quando a semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do termo. «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o valor normal fica o de antes de começar.",
+  "Um alerta que dura mais de meio ano passa a tendência: deixa de ter bandeira, e o valor normal passa a ser o novo nível. Uma subida acima desse nível volta a dar alerta.",
   "● Aparecimento. Um termo sem procura regular passa a ser procurado, muito acima do que tinha no último ano.",
   "~ Sazonal. A subida é a que esta época do ano costuma trazer. Mostra-se, mas não é alerta.",
   "○ A observar. Subiu sem chegar ao limite de alerta.",
@@ -78,5 +80,18 @@ describe("Como ler os alertas", () => {
     const citado = seccao.split("\n").filter((l) => l.startsWith(">")).map((l) => l.replace(/^>\s?/, "")).join(" ");
     const normaliza = (s: string) => s.replace(/\*\*/g, "").replace(/\s+/g, " ").trim();
     expect(normaliza(citado)).toBe(normaliza(APROVADO.join(" ")));
+  });
+});
+
+describe("a linha da tendência no ecrã (29/10/2026)", () => {
+  it("à parte, sem bandeira nem símbolo, com o texto da Marta", () => {
+    const dados = { semana: "2026-10-18", itens: [
+      { termo: "creatina", tipo: "tendencia" as const, valor: 190.583, referencia: 40.833, razao: 4.667, z: null,
+        fatorSazonal: null, maxAnterior: null, semanaN: 251, inicio: "2022-01-02" },
+    ] };
+    const { container } = render(<AlertasEixo dados={dados} compacto />);
+    expect(container.textContent).toContain("creatina — tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)");
+    expect(container.textContent).not.toMatch(/[▲●~○]|em curso/);
+    expect(container.textContent).toContain("Nenhum alerta esta semana.");
   });
 });

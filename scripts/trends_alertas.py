@@ -40,6 +40,11 @@ TOL_SAZONAL   = F(5, 4)
 RAW_MIN       = F(20)         # aparecimento: acima do piscar (10–19) na régua do pedido
 MULT_APAREC   = F(2)          # aparecimento: contra o máximo das 52 semanas anteriores
 K_MAD         = F('1.4826')
+# 29/10/2026 (decisão da Marta, docs/sessoes/2026-10-29-cowork.md §16–§17; simulação em
+# docs/evidencia/2026-10-29-creatina/simulacao.md): um acontecimento em curso há MAIS de
+# N_TEND semanas deixa de ser alerta e passa a "tendência". Em 5 anos do lote 2d0a7be3, 148
+# dos 151 acontecimentos duram ≤ 15 semanas; os outros 3 duram 31, 39 e 251.
+N_TEND        = 26
 # ----------------------------------------------------------------------------------------
 
 class SerieAmbigua(Exception):
@@ -88,18 +93,38 @@ def alertas_do_termo(vals, fac):
       procura regular (quando passa a ter, deixou de ser "normalmente sem procura" e é a
       regra de subida que o julga daí em diante).
     A referência E o ruído ficam congelados nos de antes do 1.º disparo, para `z` gravado ser
-    sempre (valor − referência) / ruído, como a coluna diz."""
+    sempre (valor − referência) / ruído, como a coluna diz.
+
+    TENDÊNCIA (29/10/2026): um acontecimento que continuaria para lá de N_TEND semanas passa a
+    `tendencia` — "tendência de subida desde <início>", sem bandeira. Nessa semana o termo volta
+    a ser avaliado pela regra normal, contra a mediana das 8 semanas anteriores, que já é o
+    patamar novo: uma subida acima dele abre um alerta novo ("1.ª semana"). Uma linha por semana:
+    o alerta (subida ou aparecimento) primeiro, depois a tendência, só depois sazonal e a
+    observar. A tendência acaba quando o valor desce abaixo de RAZAO_MIN × a referência de
+    antes (a congelada do acontecimento) — o termo voltou ao nível antigo. A linha da tendência
+    grava essa referência antiga, a razão contra ela, a idade desde o início e z nulo (não é
+    alerta)."""
     fe = F(fac)
     def eixo(v): return None if v is None else float(v * fe)      # régua do eixo, para gravar
     def num(v): return None if v is None else float(v)            # razão, z, factor sazonal
     linhas = []; curso = None   # curso = dict(tipo, inicio, ref, ruido, n)
+    tend = None                 # tend = dict(inicio, ref, ruido, n), desde 29/10/2026
     for i in range(N_REF, len(vals)):
         r = avalia(vals, i, vals); d = vals[i][0]; x = r['x']
+        if tend:
+            if (x >= RAZAO_MIN * tend['ref']) if tend['ref'] > 0 else (r['raw'] >= RAW_MIN):
+                tend['n'] += 1
+            else:
+                tend = None
         if curso:
             if curso['tipo'] == 'subida':
                 continua = x >= RAZAO_MIN * curso['ref']
             else:
                 continua = r['raw'] >= RAW_MIN and not r['elegivel']
+            if continua and curso['n'] + 1 > N_TEND:
+                # dura demais: deixa de ser alerta; esta semana avalia-se de novo, contra o patamar novo
+                tend = dict(inicio=curso['inicio'], ref=curso['ref'], ruido=curso['ruido'], n=curso['n'] + 1)
+                curso = None; continua = False
             if continua:
                 curso['n'] += 1
                 linhas.append(dict(semana=d, tipo=curso['tipo'], valor=eixo(x), referencia=eixo(curso['ref']),
@@ -118,6 +143,11 @@ def alertas_do_termo(vals, fac):
         elif r['aparecimento']:
             curso = dict(tipo='aparecimento', inicio=d, ref=r['ref'], ruido=r['ruido'], n=1)
             linhas.append(dict(base, tipo='aparecimento', z=None, fator_sazonal=None, max_anterior=eixo(r['max52'])))
+        elif tend:
+            linhas.append(dict(semana=d, tipo='tendencia', valor=eixo(x), referencia=eixo(tend['ref']),
+                               razao=num(x / tend['ref'] if tend['ref'] > 0 else F(0)), z=None,
+                               ruido=eixo(tend['ruido']), fator_sazonal=num(r['fator']), max_anterior=None,
+                               semana_n=tend['n'], inicio=tend['inicio']))
         elif r['subida'] and r['sazonal']:
             linhas.append(dict(base, tipo='sazonal', z=num(r['z']), fator_sazonal=num(r['fator']), max_anterior=None))
         elif r['elegivel'] and r['z'] >= Z_OBS:
@@ -239,6 +269,9 @@ def gravar(url, key, lote_id, linhas):
 
 def frase(l):
     """A linha do ecrã, na formulação da Marta (decisão 5)."""
+    if l['tipo'] == 'tendencia':
+        return (f"{l['termo']} — tendência de subida desde {l['inicio']} · {l['valor']:.1f} "
+                f"(o valor normal antes era {l['referencia']:.1f})")
     if l['tipo'] == 'aparecimento':
         s = f"{l['termo']} {l['valor']:.0f} — apareceu; normalmente sem procura (máx. anterior {l['max_anterior']:.0f})"
     else:
