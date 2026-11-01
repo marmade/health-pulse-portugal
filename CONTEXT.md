@@ -1315,13 +1315,15 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       iguais); `871c0d9`, publicado às 21:13:16 UTC e provado no site. Frase 4 corrigida para
       "fact-checks do Observador" (o script 11 só pesquisa esse editor): `4242ea6`, md5
       `f96222c4…` nos dois, publicado às 23:52:06 UTC e provado no site (`docs/sessoes/2026-10-27.md`).
-- [ ] **Metodologia e Fontes de dados do `/sobre` desactualizadas** — falam em crescimento
+- [x] ~~**Metodologia e Fontes de dados do `/sobre` desactualizadas** — falam em crescimento
       superior a 50 %, limites de 30/50/40 %, 48 canais, 42 fontes e variações calculadas a partir
       dos snapshots. Estão no `sobreContent.ts` E em `sobre_conteudo`, que é a que o site lê:
       corrigir os dois. A corrigir antes de 30/10, pela mesma razão das limitações (decisão da
-      Marta, 27/10; `docs/sessoes/2026-10-27.md` §6).
-- [ ] **Para os textos finais:** os homónimos ("depressão" sobe com as tempestades) e a herança
-      da categoria Saúde (regra de 18/09 §6) não estão no `/sobre` (decisão da Marta, 27/10).
+      Marta, 27/10; `docs/sessoes/2026-10-27.md` §6).~~ Feito a 01/11 (`49fe865`),
+      `docs/sessoes/2026-11-01.md` §6.
+- [x] ~~**Para os textos finais:** os homónimos ("depressão" sobe com as tempestades) e a herança
+      da categoria Saúde (regra de 18/09 §6) não estão no `/sobre` (decisão da Marta, 27/10).~~
+      Feito a 01/11 (`49fe865`), `docs/sessoes/2026-11-01.md` §6.
 - [ ] **Os fact-checks não se devem cingir a uma só fonte.** Hoje a única via é a Google Fact
       Check Tools API, e dos editores portugueses testados só o Observador tem volume: o
       Polígrafo deu 0 a 18/09 e 3 verificações, todas de Dezembro de 2024, a 28/09
@@ -1333,8 +1335,9 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       em que o termo mexeu (há linha em `trends_alertas`); um termo que sobe devagar todos os anos
       não aparece. Calcular o factor sazonal para todos os termos e semanas. Depois de 2/11 (decisão
       da Marta, 28/10; `docs/sessoes/2026-10-28.md` §12).
-- [ ] **Limitações do `/sobre`: a nota dos previsíveis** — só vêem as semanas em que o termo mexeu
-      (z ≥ 2). No ficheiro E em `sobre_conteudo`. Na semana de 2/11 (decisão da Marta, 28/10).
+- [x] ~~**Limitações do `/sobre`: a nota dos previsíveis** — só vêem as semanas em que o termo mexeu
+      (z ≥ 2). No ficheiro E em `sobre_conteudo`. Na semana de 2/11 (decisão da Marta, 28/10).~~
+      Feito a 01/11 (`49fe865`), `docs/sessoes/2026-11-01.md` §6.
 - [ ] **Painel das perguntas: "São 48" e "há três meses" escritos à mão**
       (`HealthQuestionsPanel.tsx` l.307 e l.315). Com o Autocomplete parado desde 07/09/2026,
       verificar se ainda batem certo. Varrimento de quinta 5/11 (decisão da Marta, 01/11).
@@ -1358,7 +1361,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [x] ~~**Regra de desempate do top 5** — a 04/10, em emergentes, gripe A e covid sintomas ficaram empatadas a 11,3 (4.º e 5.º). Planeamento de 06/10 (`docs/sessoes/2026-10-04.md` §1). E na semana de 27/09, vacinas = gripe A no 1.º lugar em emergentes (`docs/sessoes/2026-10-06.md` §4); quinta 08.~~ Fechado a 13/10: top 10 com empates na mesma posição (`6b732e0`); prova na segunda 19 — `docs/sessoes/2026-10-13.md` §1.
 - [x] ~~39 038 no RESUMO contra 26 200 no GRAVADO do lote fe58e0e5 (04/10) — razão não vista. Planeamento de 06/10.~~ É a deduplicação — `docs/sessoes/2026-10-06.md` §1.
 - [x] ~~**Corte de 1000 linhas nas leituras do site** (`useTrendsLote` l.131) — `docs/sessoes/2026-10-06.md` §3; quinta 08.~~ Fechado a 22/10 para o `useTrendsLote` (`6d68edc`): mensal e anual lidos por páginas, por eixo, com `count` exacto; com dados incompletos, o gráfico mostra-se com um aviso do que falta (decisão da Marta). O pedido único cortava em 1000 de 1220, e o gráfico de saúde mental era só a série de alzheimer (+8.4% no site contra −5.1%). Provado no site publicado a 22/10: gráficos, variações e leituras iguais ao recálculo nos 4 eixos, 1220 linhas mensais — `docs/sessoes/2026-10-21.md` §4–§6. As outras leituras acima do limite: linha seguinte.
-- [ ] **`historical_snapshots` lida com o corte das 1000 linhas** (3462 linhas, parada desde 10/08/2026): `useAxisData.ts:37` (página inicial, ascendente: só as 1000 mais antigas; o que chega ao ecrã por verificar) e `Mural.tsx:47` (`/mural`, descendente: a média e o "visto pela 1.ª vez" saem de 1000 de 3462). O `/mural` decide-se na terça 27, com os textos: corrigir ou o ecrã dizê-lo (decisão da Marta, 21/10). `[inferência]` `useHistoricalData.ts:36` pagina, mas ordena só por `snapshot_date`, que não é único: as páginas podem repetir ou saltar linhas — não verificado. `docs/sessoes/2026-10-21.md` §2–§3.
+- [ ] **`historical_snapshots` lida com o corte das 1000 linhas** (3462 linhas, parada desde 10/08/2026): `useAxisData.ts:37` (página inicial, ascendente: só as 1000 mais antigas; o que chega ao ecrã por verificar) e `Mural.tsx:47` (`/mural`, descendente: a média e o "visto pela 1.ª vez" saem de 1000 de 3462). O `/mural` decide-se na terça 27, com os textos: corrigir ou o ecrã dizê-lo (decisão da Marta, 21/10). `[inferência]` `useHistoricalData.ts:36` pagina, mas ordena só por `snapshot_date`, que não é único: as páginas podem repetir ou saltar linhas — não verificado. `docs/sessoes/2026-10-21.md` §2–§3. O /mural foi corrigido a 01/11 (`49fe865`); fica aberto pelo `useAxisData.ts`, que não se mexeu (decisão da Marta).
 - [ ] **Deduplicação guarda a série da âncora do 1.º pedido do passo 1**, não a do de referência — pendente de método (`docs/sessoes/2026-10-06.md` §2).
 - [ ] **Briefing semanal — corrigido e publicado; falta a prova pelo efeito a 05/10.**
       `[sessão 20][bd]` Diagnóstico e decisões em `docs/sessoes/2026-09-28.md` §3–6;
@@ -1418,7 +1421,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [x] ~~Texto da explicação dos alertas no ecrã — rascunho por rever pela Marta, para os textos finais de 27/10. Ver 2026-10-15-cowork.md §4.4 e §4.5 (o rascunho do §4.4 tem uma afirmação que caiu no §4.5 e não pode ir para o ecrã tal como está). O aviso no fundo da página inicial ainda diz que o erro dos alertas "está a ser corrigido"; a correcção foi provada a 18/10. Muda com estes textos (`2026-10-21-cowork.md` §4).~~ Feito a 23/10 (`5768ac8`): "Como ler os
       alertas" na página inicial, com o texto aprovado pela Marta, e o aviso do fundo novo; provado
       no site publicado — `docs/sessoes/2026-10-23.md` §7.
-- [ ] **Notícias, desmentidos e fact-checks** — diagnóstico só com leituras em `docs/sessoes/2026-10-16.md` §3. Passa para depois de 30/10; até lá, os textos de 27/10 explicam a secção vazia (decisão da Marta, 21/10, `2026-10-21-cowork.md` §5).
+- [ ] **Notícias, desmentidos e fact-checks** — diagnóstico só com leituras em `docs/sessoes/2026-10-16.md` §3. Passa para depois de 30/10; até lá, os textos de 27/10 explicam a secção vazia (decisão da Marta, 21/10, `2026-10-21-cowork.md` §5). A 01/11 gravou-se só o texto que explica a secção vazia (`49fe865`). O diagnóstico e a correcção continuam por fazer, com o arquivo das notícias depois de 2/11 e o "Público — Ciência".
 - [ ] **"Sinais emergentes" do briefing ligados aos `trends_alertas`** — vazios desde 03/08, com a
       nota de 28/09 ("até os alertas passarem o teste que falta", `archive-weekly` l.468–484); os
       alertas foram provados a 18/10. A regra do que entra é da Marta; a proposta (tipo, eixo,
