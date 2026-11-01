@@ -14,7 +14,7 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 > só se comparam dentro do mesmo eixo.
 >
 > ▲ **Subida.** O «valor normal» é a mediana das oito semanas anteriores. Há alerta quando a
-> semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do termo.
+> semana fica pelo menos 1,5 vezes esse valor e bem acima da oscilação habitual do termo.
 > «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o valor
 > normal fica o de antes de começar.
 > Um alerta que dura mais de meio ano passa a tendência: deixa de ter bandeira, e o valor normal
@@ -29,6 +29,8 @@ nao_confundir: os marcos da linha do tempo (Pensava-se / Descobriu-se / Mudou) v
 > mudou no tema.
 
 Acrescentada a 29/10 a frase da tendência, texto da Marta (`docs/sessoes/2026-10-29-cowork.md` §17).
+
+Corrigido a 01/11/2026: «pelo menos 1,5 vezes acima desse valor» passou a «pelo menos 1,5 vezes esse valor», porque "vezes acima" lê-se como somado (decisão da Marta, `docs/sessoes/2026-11-01-para-rever.md` R1). A linha de cada alerta («4,4 vezes acima do valor normal») muda depois da corrida de 2/11.
 
 Corrigido a 23/10 para o texto que a Marta aprovou: sai 'Alertas.' do início porque o bloco já se chama 'Como ler os alertas'; o 'de 0 a 100' saiu porque o ecrã mostra os valores na escala de cada eixo, que passa de 100 (verificação do Claude Code, docs/sessoes/2026-10-23.md §7). Aspas inglesas passadas a portuguesas (decisão minha, 23/10).
 
@@ -94,11 +96,20 @@ Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/s
   à vista de uma semana: muda-se com registo e data (`docs/metodo/2026-09-18-alertas-regra.md` §6).
 - **Feeds RSS sem resposta.** A 16/10, 19 dos 41 feeds não respondiam (`docs/sessoes/2026-10-16.md`
   §3). Número datado: refazer a contagem antes de o publicar.
-- **Desinformação.** As 36 linhas de `debunking` (25/03/2026) estão todas "a verificar" (32 sem
-  link, 4 com link; lido na base a 27/10) e o ecrã só mostra as que têm veredicto, por isso a
-  secção está vazia. O `scripts/11_fetch_fact_checks.py` (Google Fact Check Tools API, só o
-  Observador, o único editor português com ClaimReview) existe desde 18/09 e nunca correu com
-  `--gravar`; nenhum workflow o chama.
+  **01/11/2026:** a contagem não foi refeita (esta máquina não tem o `gh` para ler o log de 26/10).
+  O /sobre publica a da corrida de 12/10/2026, com a data, e diz «a recolha não encontrou um feed
+  válido em 19» (`docs/sessoes/2026-10-16.md` §3.3). A contagem é de 12/10, e não de 16/10 como
+  este ponto dizia.
+- **Desinformação (actualizado a 01/11/2026).** Desde 29/10/2026 a secção lê a `debunking`, com
+  os fact-checks do Observador recolhidos pela Google Fact Check Tools API
+  (`scripts/11_fetch_fact_checks.py`, passo 6B do workflow, às segundas). A primeira carga (240
+  verificações, 175 da covid-19) foi revista à mão; as seguintes entram sem revisão. Mostram-se
+  só «Errado» e «Enganador». As 36 linhas de 25/03/2026 continuam «a verificar» e não aparecem.
+  Até 29/10 a secção estava vazia: o script existia desde 18/09 e nunca tinha corrido com
+  `--gravar` (`docs/sessoes/2026-10-29.md` §2–§5 e §11).
+  A versão de 27/10 deste ponto dizia que o Observador era "o único editor português com
+  ClaimReview". Testaram-se dois editores, e o Polígrafo deu 3 verificações a 28/09
+  (`docs/sessoes/2026-09-28-c.md`). A afirmação saiu (decisão da Marta, 01/11/2026).
 - **Mudança do Google em Janeiro de 2022 (nota para as limitações, 29/10/2026).** Myburgh, P. H.
   (2022), IJERPH 19(22), 15396, doi:10.3390/ijerph192215396, documenta uma mudança na Google
   **Health** Trends API a partir de 1/1/2022. A tendência da creatina começa a 02/01/2022, a
@@ -107,6 +118,25 @@ Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/s
   1,13 nos 41 termos com dados, e só 6 subiram 50 % ou mais (leitura do Cowork,
   `docs/sessoes/2026-10-29-cowork.md` §16). Não está mostrado que a mudança explique a creatina.
   Decisão da Marta, §17a: fica só como nota.
+  **01/11/2026: escrita no /sobre** (texto da Marta, `docs/sessoes/2026-11-01-para-rever.md`,
+  secção "Revisto" R3 e decisões finais). Correcções a este ponto:
+  - a mudança da Health Trends API foi aplicada em Julho de 2022, com efeito nos dados a partir de
+    1/1/2022, e a creatina começa nessa data, e não "na semana seguinte";
+  - o próprio Google Trends assinala no gráfico «Aplicámos uma melhoria ao nosso sistema de recolha
+    de dados desde 01/01/22» (vista pela Marta a 01/11/2026);
+  - a conta foi refeita no lote `82716ee6`: 39 termos, razão mediana 1,12, 6 com 50 % ou mais
+    (`docs/evidencia/2026-11-01-sobre/razao-2021-2022.md`);
+  - a partir da recolha de 3/1/2027, a janela deixa de incluir 2021.
+  Frase do /sobre: «A tendência de subida da «creatina» começa a 02/01/2022, a primeira semana
+  inteira de 2022. O Google Trends, que é o que esta recolha usa, assinala no gráfico uma nota
+  nessa data: «Aplicámos uma melhoria ao nosso sistema de recolha de dados desde 01/01/22» (vista
+  a 01/11/2026). Na Google Health Trends API, uma mudança aplicada em Julho de 2022, com efeito nos
+  dados a partir de 1 de Janeiro de 2022, tornou incomparáveis os dados de antes e de depois dessa
+  data (Myburgh, 2022). Nos nossos dados não há um salto geral nessa data: de Novembro–Dezembro de
+  2021 para Janeiro–Fevereiro de 2022, a razão mediana nos 39 termos com dados é de 1,12, e só 6
+  subiram 50 % ou mais. Isso não prova que a creatina não tenha sido afectada. A partir da recolha
+  de 3/1/2027, a janela de cinco anos deixa de incluir 2021: cada lote novo fica todo medido depois
+  da mudança, e os lotes anteriores continuam a atravessá-la.»
 
 ## 3. Briefing — "Sinais emergentes" e previsíveis
 
@@ -124,3 +154,7 @@ Acrescentado a 28/10/2026 no Cowork (`docs/sessoes/2026-10-28-cowork.md` §2 e �
   primeira semana com alertas é 19/12/2021; `docs/sessoes/2026-10-28.md` §15).
 - **"A observar" está abaixo do limite de alerta** e aparece com essa ressalva; não é um alerta.
 - `[por escrever com a Marta]` a frase final para as limitações do /sobre (semana de 2/11).
+  **Escrita a 01/11/2026**, versão aprovada pela Marta: «Os previsíveis do briefing só contam as
+  semanas em que o termo já se mexeu: aquelas em que a diferença para o valor normal chegou a pelo
+  menos o dobro da sua oscilação habitual. Um termo que sobe pouco, mas todos os anos no mesmo mês,
+  não aparece.» (`docs/sessoes/2026-11-01-para-rever.md` R2).

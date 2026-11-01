@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/DashboardHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { generateBriefingPdf } from "@/lib/briefingPdfExport";
-import { semMeteorologicas } from "@/lib/noticias";
+import { SEM_NOTICIAS_NA_SEMANA, semMeteorologicas } from "@/lib/noticias";
 import { partesDosSinais, type ParteSinais } from "@/lib/sinaisEmergentes";
 import { useSinaisDaSemana } from "@/hooks/useSinaisDaSemana";
 import { fraseDaSugestao, fraseSemAlertaNovo } from "@/lib/fraseAlerta";
@@ -31,6 +31,7 @@ type NewsRow = {
   date: string;
   url: string;
   source_type: string;
+  related_term: string | null;
 };
 
 type DebunkingRow = {
@@ -303,12 +304,14 @@ const Briefing = () => {
     .sort((a, b) => b.change_percent - a.change_percent)
     .slice(0, 5);
 
-  // Filter news to this week
+  // Só as notícias desta semana e com termo, como o arquivo (decisão da Marta, 01/11/2026). Até aqui,
+  // sem nenhuma na semana, mostravam-se as 5 mais recentes de qualquer data, sem o dizer, e também
+  // as que a reclassificação de 22/10 deixou sem termo.
   const weekNews = news.filter((n) => {
     const d = new Date(n.date);
-    return d >= week.start && d <= week.end;
+    return n.related_term != null && d >= week.start && d <= week.end;
   });
-  const displayNews = weekNews.length > 0 ? weekNews.slice(0, 5) : news.slice(0, 5);
+  const displayNews = weekNews.slice(0, 5);
 
   // Fact-checks da semana corrente, pela regra do arquivo (_shared/factchecks.ts).
   const factChecksDaSemana = partesDaSemana(debunking, week.isoStart, week.isoEnd);
@@ -349,6 +352,7 @@ const Briefing = () => {
         topVolume: [],
         perguntas: perguntasDaSemana,
         news: displayNews,
+        semNoticias: SEM_NOTICIAS_NA_SEMANA,
         debunking: [],
         factChecks: factChecksDaSemana,
         topEmergent,
@@ -603,7 +607,7 @@ const Briefing = () => {
             </div>
           ))}
           {displayNews.length === 0 && (
-            <p className="text-sm opacity-60">Sem notícias esta semana.</p>
+            <p className="text-sm opacity-60">{SEM_NOTICIAS_NA_SEMANA}</p>
           )}
         </div>
       </section>

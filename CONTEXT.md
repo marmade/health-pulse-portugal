@@ -1323,7 +1323,9 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Para os textos finais:** os homónimos ("depressão" sobe com as tempestades) e a herança
       da categoria Saúde (regra de 18/09 §6) não estão no `/sobre` (decisão da Marta, 27/10).
 - [ ] **Os fact-checks não se devem cingir a uma só fonte.** Hoje a única via é a Google Fact
-      Check Tools API, e o único editor português com ClaimReview é o Observador. O Polígrafo
+      Check Tools API, e dos editores portugueses testados só o Observador tem volume: o
+      Polígrafo deu 0 a 18/09 e 3 verificações, todas de Dezembro de 2024, a 28/09
+      (`docs/sessoes/2026-09-28-c.md`). O Polígrafo
       ficou por decidir a 28/09 (`docs/sessoes/2026-09-28-c.md`, pendente 5). Depois de 30/10:
       procurar outras fontes de fact-check em português, incluindo o Polígrafo por outra via. Por
       agora é só nota; o script 11 não se mexe (decisão da Marta, 27/10).
@@ -1333,6 +1335,17 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       da Marta, 28/10; `docs/sessoes/2026-10-28.md` §12).
 - [ ] **Limitações do `/sobre`: a nota dos previsíveis** — só vêem as semanas em que o termo mexeu
       (z ≥ 2). No ficheiro E em `sobre_conteudo`. Na semana de 2/11 (decisão da Marta, 28/10).
+- [ ] **Painel das perguntas: "São 48" e "há três meses" escritos à mão**
+      (`HealthQuestionsPanel.tsx` l.307 e l.315). Com o Autocomplete parado desde 07/09/2026,
+      verificar se ainda batem certo. Varrimento de quinta 5/11 (decisão da Marta, 01/11).
+- [ ] **"Público — Ciência" duplicado** (`fetch-rss-feeds/index.ts:33`): o mesmo endereço do
+      Público geral (l.25), sem `geral: true`, por isso sem o filtro de categoria. `[inferência]` As
+      notícias do Público que o filtro tira à primeira entrada podem entrar pela segunda, com o nome
+      "Público — Ciência". Depois do fecho, com as notícias (decisão da Marta, 01/11).
+- [ ] **"Vezes acima" na linha de cada alerta** («4,4 vezes acima do valor normal»,
+      `src/lib/fraseAlerta.ts`, `fraseDoAlerta`) lê-se como somado: tirar o "acima" da linha do
+      alerta e do briefing. Depois da corrida de 2/11 (decisão da Marta, 01/11). O "Como ler os
+      alertas" já foi corrigido a 01/11 («pelo menos 1,5 vezes esse valor»).
 - [ ] **A "semana corrente" do `Briefing.tsx` ainda lê `keywords.is_emergent`**, que não é
       escrita desde 14/08/2026. Só o briefing arquivado foi ligado aos alertas (28/10).
 - [ ] **No telemóvel, o cabeçalho do site transborda 20 px**: a página tem 410 px num ecrã de 390,
@@ -1486,7 +1499,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [ ] **Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do
       Observador via Google Fact Check Tools API, só editores portugueses — decisão da Marta,
       18/09); passo no `youtube-trends.yml` com o secret `GOOGLE_FACTCHECK_API_KEY`. A chave
-      está em `~/.config/health-pulse/env`. O Polígrafo não publica ClaimReview
+      está em `~/.config/health-pulse/env`. O Polígrafo: 0 verificações a 18/09 e 3, todas de
+      Dezembro de 2024, a 28/09 (`docs/sessoes/2026-09-28-c.md`)
 - [ ] As 36 linhas semeadas em `debunking` (25/03, "a verificar"): ficam, fora do ecrã
 
 - [ ] **Termos ambíguos na lista — quatro medidos, e o `depressão` já com prova.**

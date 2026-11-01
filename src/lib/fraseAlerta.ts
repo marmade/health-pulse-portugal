@@ -16,6 +16,19 @@ export function fraseDoAlerta(a: { tipo?: string | null; razao: number; referenc
 }
 
 /**
+ * A nota da linha de uma tendência que começa com a melhoria do Google de 01/01/2022 (decisão da
+ * Marta, 01/11/2026; nota vista no gráfico do Google Trends nesse dia): hoje só a creatina. Fica no
+ * site e não no _shared/emergentes.ts, que é da archive-weekly. Janela: a primeira semana do lote
+ * que contém 01/01/2022 (26/12/2021) e a seguinte; parâmetro do Claude Code.
+ */
+export const NOTA_MELHORIA_GOOGLE =
+  "A data coincide com uma melhoria que o Google aplicou à recolha dos dados a 1/1/2022 (ver Limitações, no /sobre).";
+export function notaDaMelhoriaDoGoogle(inicio: string | null | undefined): string | null {
+  const d = (inicio ?? "").slice(0, 10);
+  return d >= "2021-12-26" && d <= "2022-01-08" ? NOTA_MELHORIA_GOOGLE : null;
+}
+
+/**
  * A sugestão de conteúdo quando a semana não tem alerta novo (decisão da Marta, 29/10/2026): a
  * secção diz-o, no formato das frases das partes vazias, em vez de ficar em branco.
  */

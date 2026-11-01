@@ -19,6 +19,8 @@ type BriefingPdfData = {
   // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): as perguntas por eixo, em vez de `topVolume`.
   perguntas?: GrupoPerguntas[] | null;
   news: { title: string; outlet: string; date: string; source_type: string }[];
+  // Semana corrente (01/11/2026): a frase de quando não há notícias com data na semana; sem ela, a antiga.
+  semNoticias?: string | null;
   debunking: { term: string; title: string; classification: string | null; source: string }[];
   // Desde 29/10/2026 (semana corrente) e 2/11/2026 (arquivo): os fact-checks em duas partes, em vez de `debunking`.
   factChecks?: PartesFactChecks | null;
@@ -302,8 +304,14 @@ export async function generateBriefingPdf(data: BriefingPdfData): Promise<void> 
   if (data.news.length === 0) {
     setFont("normal", 9);
     pdf.setTextColor(GREY);
-    pdf.text("Sem notícias esta semana.", MARGIN, y);
-    y += 6;
+    if (data.semNoticias) {
+      const linhas = pdf.splitTextToSize(data.semNoticias, pageWidth - 2 * MARGIN);
+      pdf.text(linhas, MARGIN, y);
+      y += linhas.length * 4 + 2;
+    } else {
+      pdf.text("Sem notícias esta semana.", MARGIN, y);
+      y += 6;
+    }
   } else {
     data.news.forEach((item) => {
       checkPage(12);

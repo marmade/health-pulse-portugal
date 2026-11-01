@@ -1,7 +1,7 @@
 import type { AlertasEixo as Dados, AlertaItem } from "@/hooks/useTrendsLote";
 import { semanaIntervalo } from "@/lib/semana";
 import { fraseDaTendencia } from "../../supabase/functions/_shared/emergentes";
-import { fraseDoAlerta, n0, vezes } from "@/lib/fraseAlerta";
+import { fraseDoAlerta, n0, notaDaMelhoriaDoGoogle, vezes } from "@/lib/fraseAlerta";
 
 /**
  * Os alertas de um eixo, na última semana completa do lote — fase 3, regra de 18/09/2026
@@ -58,7 +58,7 @@ export const ComoLerAlertas = () => (
       </p>
       <p>
         <Simbolo tipo="subida" /> <strong>Subida.</strong> O «valor normal» é a mediana das oito semanas anteriores. Há alerta
-        quando a semana fica pelo menos 1,5 vezes acima desse valor e bem acima da oscilação habitual do
+        quando a semana fica pelo menos 1,5 vezes esse valor e bem acima da oscilação habitual do
         termo. «Em curso, 3.ª semana» quer dizer que a subida dura há três semanas. Enquanto dura, o
         valor normal fica o de antes de começar.
       </p>
@@ -120,6 +120,9 @@ const LinhaTendencia = ({ a }: { a: AlertaItem }) => (
     <p className="text-[10px] leading-relaxed flex-1 min-w-0">
       <span className="text-xs font-semibold">{a.termo}</span>{" — "}
       {fraseDaTendencia({ valor: a.valor, referencia: a.referencia, inicio: a.inicio })}
+      {notaDaMelhoriaDoGoogle(a.inicio) && (
+        <span className="block text-[9px] text-foreground/50 mt-0.5">{notaDaMelhoriaDoGoogle(a.inicio)}</span>
+      )}
     </p>
   </div>
 );

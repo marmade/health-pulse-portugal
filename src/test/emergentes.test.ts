@@ -4,6 +4,7 @@ import {
   type LinhaAlerta,
 } from "../../supabase/functions/_shared/emergentes";
 import { partesDosSinais } from "@/lib/sinaisEmergentes";
+import { NOTA_MELHORIA_GOOGLE, notaDaMelhoriaDoGoogle } from "@/lib/fraseAlerta";
 
 // Dados reais: lote 2d0a7be3 (completo, 25/10/2026), como estão na base. Lidos a 28/10/2026 —
 // docs/sessoes/2026-10-28.md §2 e §12. A série do lote começa a 24/10/2021.
@@ -222,7 +223,8 @@ describe("tendência (decisão da Marta, 29/10/2026)", async () => {
     const notas = { emergentes_mes: "Outubro" };
     const com = partesDosSinais(sinaisDaSemana([creatina, dengue], "2026-10-18") as any, notas)!;
     expect(com.map((p) => p.chave)).toEqual(["novo", "em_curso", "tendencia", "a_observar", "previsivel"]);
-    expect(com.find((p) => p.chave === "tendencia")!.itens[0].frase).toBe("tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8)");
+    // 01/11/2026: no site, a linha leva a nota da melhoria do Google de 01/01/2022 (src/lib/fraseAlerta.ts)
+    expect(com.find((p) => p.chave === "tendencia")!.itens[0].frase).toBe("tendência de subida desde 02/01/2022 · 190,6 (o valor normal antes era 40,8). " + NOTA_MELHORIA_GOOGLE);
     const sem = partesDosSinais(sinaisDaSemana([dengue], "2026-10-18") as any, notas)!;
     expect(sem.map((p) => p.chave)).toEqual(["novo", "em_curso", "a_observar", "previsivel"]);
   });
@@ -236,5 +238,15 @@ describe("/briefing da semana corrente (decisão da Marta, 29/10/2026)", () => {
     expect(pagina).not.toMatch(/k\.is_emergent|is_emergent: boolean|Nenhum sinal de alerta esta semana/);
     const hook = readFileSync("src/hooks/useSinaisDaSemana.ts", "utf8");
     for (const f of ["sinaisDaSemana(", "previsiveisDoMes(", "notasDasPartes(", "partesDosSinais("]) expect(hook).toContain(f);
+  });
+});
+
+describe("nota da melhoria do Google de 01/01/2022 (decisão da Marta, 01/11/2026)", () => {
+  it("só numa tendência que começa na semana de 26/12/2021 ou na seguinte", () => {
+    expect(notaDaMelhoriaDoGoogle("2022-01-02")).toBe(NOTA_MELHORIA_GOOGLE);
+    expect(notaDaMelhoriaDoGoogle("2021-12-26")).toBe(NOTA_MELHORIA_GOOGLE);
+    expect(notaDaMelhoriaDoGoogle("2021-12-19")).toBeNull();
+    expect(notaDaMelhoriaDoGoogle("2022-01-09")).toBeNull();
+    expect(notaDaMelhoriaDoGoogle(null)).toBeNull();
   });
 });

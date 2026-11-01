@@ -11,7 +11,7 @@
  */
 
 import { fraseDaTendencia } from "../../supabase/functions/_shared/emergentes";
-import { fraseDoAlerta } from "@/lib/fraseAlerta";
+import { fraseDoAlerta, notaDaMelhoriaDoGoogle } from "@/lib/fraseAlerta";
 
 export type ParteSinais = {
   chave: "novo" | "em_curso" | "tendencia" | "a_observar" | "previsivel";
@@ -32,7 +32,10 @@ export type SinalArquivado = {
 /** A frase de cada item — a do ecrã (src/components/AlertasEixo.tsx) para os alertas. */
 export function fraseDoSinal(s: SinalArquivado, mes: string): string {
   if (s.parte === "tendencia") {
-    return fraseDaTendencia({ valor: Number(s.valor), referencia: Number(s.referencia), inicio: s.inicio ?? "" });
+    const f = fraseDaTendencia({ valor: Number(s.valor), referencia: Number(s.referencia), inicio: s.inicio ?? "" });
+    // a nota da melhoria do Google de 01/01/2022 (01/11/2026), só no site
+    const nota = notaDaMelhoriaDoGoogle(s.inicio);
+    return nota ? `${f}. ${nota}` : f;
   }
   if (s.parte === "previsivel") {
     const anos = s.anos ?? [];

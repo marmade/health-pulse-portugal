@@ -9,9 +9,10 @@ A Marta: "era suposto ter as novidades de desinformação".
 FONTE  Google Fact Check Tools API (ClaimReview), gratuita, chave em
        ~/.config/health-pulse/env (GOOGLE_FACTCHECK_API_KEY) ou no ambiente.
        SÓ EDITORES PORTUGUESES (decisão da Marta, 18/09): reviewPublisherSiteFilter.
-       No índice, o único editor português com ClaimReview é o Observador
-       (observador.pt); o Polígrafo não publica ClaimReview (testado: 0 em
-       poligrafo.sapo.pt, sapo.pt, poligrafo.pt). Veredictos do Observador: Errado,
+       Dos editores portugueses testados, só o Observador (observador.pt) tem volume
+       no índice. O Polígrafo deu 0 a 18/09 (poligrafo.sapo.pt, sapo.pt, poligrafo.pt)
+       e 3 verificações, todas de Dezembro de 2024, a 28/09 (docs/sessoes/2026-09-28-c.md).
+       Veredictos do Observador: Errado,
        Enganador, Esticado, Certo — guardam-se TAL COMO VÊM, sem traduzir para uma
        escala nossa.
 
@@ -41,7 +42,7 @@ não entra nada.
 import argparse, json, os, re, sys, time, urllib.parse, urllib.request
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EDITORES_PT = ["observador.pt"]        # acrescentar quando outro editor português publicar ClaimReview
+EDITORES_PT = ["observador.pt"]        # acrescentar quando outro editor português tiver volume no índice
 PAUSA = 0.3
 
 # Regra da covid-19 (Claude Code, 29/10/2026 — docs/evidencia/2026-10-29-fact-checks/

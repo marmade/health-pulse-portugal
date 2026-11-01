@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import type { NewsItem } from "@/data/mockData";
 import { getAxisFilterStyle } from "@/lib/axisColors";
 import { supabase } from "@/integrations/supabase/client";
+import { NOTA_POUCAS_NOTICIAS } from "@/lib/noticias";
 
 type Props = {
   items: NewsItem[];
@@ -133,6 +134,10 @@ const MediaTable = ({ items, lastFetchTimestamp, activeTheme: externalTheme }: P
         As notícias recolhidas até 21/09/2026 foram rotuladas de novo a 22/10/2026, pelo título e por
         palavra inteira: até então bastava um pedaço de palavra («candidato» dava candidíase, «época»
         dava toc). As 216 das 327 que não correspondem a nenhum termo saíram desta lista e ficam guardadas.
+      </p>
+      {/* Decisão da Marta, 01/11/2026 (docs/sessoes/2026-11-01-para-rever.md R10): porque entram poucas. */}
+      <p className="text-[8px] leading-relaxed text-foreground/50 mb-1.5 flex-shrink-0">
+        {NOTA_POUCAS_NOTICIAS}
       </p>
 
       <div className="overflow-y-auto flex-1 min-h-0 scrollbar-yellow space-y-0">

@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getAxisColors, getAxisFilterStyle } from "@/lib/axisColors";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardFooter from "@/components/DashboardFooter";
+import { lerTudo } from "@/lib/lerTudo";
 
 const AXIS_LABELS: Record<string, string> = {
   "saude-mental": "SAÚDE MENTAL",
@@ -39,17 +40,21 @@ const Mural = () => {
     },
   });
 
-  // Historical snapshots — all keywords that ever appeared
-  const { data: snapshots } = useQuery({
+  // Historical snapshots — all keywords that ever appeared. Lidas por páginas, com ordem única
+  // (data e id): um pedido só cortava em 1000 de 3462 e o «desde» de todos os termos ficava em
+  // Abril de 2026 (decisão da Marta, 01/11/2026; docs/sessoes/2026-11-01.md §2).
+  const { data: leituraSnapshots } = useQuery({
     queryKey: ["mural-snapshots"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("historical_snapshots")
-        .select("keyword, axis, search_index, snapshot_date")
-        .order("snapshot_date", { ascending: false });
-      return data ?? [];
-    },
+    queryFn: () =>
+      lerTudo<{ keyword: string; axis: string; search_index: number; snapshot_date: string }>((de, ate) =>
+        supabase
+          .from("historical_snapshots")
+          .select("keyword, axis, search_index, snapshot_date", { count: "exact" })
+          .order("snapshot_date", { ascending: false })
+          .order("id", { ascending: false })
+          .range(de, ate)),
   });
+  const snapshots = leituraSnapshots?.linhas;
 
   // YouTube scores by axis
   const { data: ytScores } = useQuery({
@@ -162,6 +167,13 @@ const Mural = () => {
         <p className="text-xs opacity-50 mt-2">
           {totalKeywords} palavras monitorizadas · {activeCount} activas · {historicalCount} históricas
         </p>
+        {/* Decisão da Marta, 01/11/2026: a tabela historical_snapshots não recebe linhas desde 10/08/2026. */}
+        <p className="text-xs opacity-50 mt-1">
+          O histórico desta página parou a 10/08/2026: as datas «desde» contam até aí.
+          {leituraSnapshots && !leituraSnapshots.completa && (
+            <> Histórico lido incompleto: {leituraSnapshots.linhas.length} de {leituraSnapshots.contadas} linhas.</>
+          )}
+        </p>
 
         {/* Filters */}
         <nav className="mt-6 flex items-center gap-1.5 flex-wrap">
@@ -247,9 +259,12 @@ const Mural = () => {
                       {item.changePercent > 0 ? "↑" : "↓"} {Math.abs(item.changePercent).toFixed(1)}%
                     </span>
                   )}
-                  <span className="text-[7px] opacity-50">
-                    desde {new Date(item.firstSeen).toLocaleDateString("pt-PT", { month: "short", year: "2-digit" })}
-                  </span>
+                  {/* sem linhas no histórico não há «desde»: a data de hoje dizia que o termo apareceu agora */}
+                  {item.snapshotCount > 0 && (
+                    <span className="text-[7px] opacity-50">
+                      desde {new Date(item.firstSeen).toLocaleDateString("pt-PT", { month: "short", year: "2-digit" })}
+                    </span>
+                  )}
                 </div>
               </div>
             );

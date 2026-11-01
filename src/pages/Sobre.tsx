@@ -42,7 +42,7 @@ const Sobre = () => {
     let headerCount = 0;
     return blocks.map((block, i) => {
       const trimmed = block.trim();
-      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
+      if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ -]+$/.test(trimmed)) {
         headerCount++;
         return (
           <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-2 ${headerCount === 1 ? "mt-0" : "mt-5 pt-5 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
@@ -159,7 +159,7 @@ const Sobre = () => {
                 let headerCount = 0;
                 return blocks.map((block, i) => {
                   const trimmed = block.trim();
-                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ ]+$/.test(trimmed)) {
+                  if (/^[A-ZÀÁÂÃÇÉÊÍÓÔÕÚÎ -]+$/.test(trimmed)) {
                     headerCount++;
                     return (
                       <p key={i} className={`text-[9px] font-bold uppercase tracking-wider mb-2 ${headerCount === 1 ? "mt-0" : "mt-5 pt-5 border-t border-foreground/10"}`} style={{ color: "#0000FF" }}>
@@ -192,28 +192,28 @@ const Sobre = () => {
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Google Trends</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal · pytrends</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">pesquisas e perguntas semanais (pytrends)</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↘</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
-                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Autocomplete</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal · perguntas</p>
+                    <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">Fact-checks</h3>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">semanal · Observador</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↘</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">RSS Feeds</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">42 fontes</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">41 feeds</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">→</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="border border-primary px-3 py-2 w-[130px] flex-shrink-0">
                     <h3 className="text-[9px] font-bold uppercase tracking-[0.12em] text-primary leading-tight">YouTube</h3>
-                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">55 canais</p>
+                    <p className="text-[9px] text-muted-foreground mt-0.5 lowercase leading-tight">56 canais</p>
                   </div>
                   <span className="text-primary text-[10px] font-bold select-none">↗</span>
                 </div>
@@ -244,7 +244,7 @@ const Sobre = () => {
             <div className="flex items-center gap-2">
               {[
                 { title: "Dashboard", subtitle: "keywords + alertas", human: false },
-                { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false },
+                { title: "Perplexity Sonar", subtitle: "17 domínios aprovados", human: false },
                 { title: "Guião", subtitle: "5 banco + 5 IA", human: false },
                 { title: "Curadoria Editorial", subtitle: "criação de conteúdo", human: false },
                 { title: "Briefing", subtitle: "prioridades da semana", human: false },
@@ -286,10 +286,10 @@ const Sobre = () => {
         <div className="flex md:hidden flex-col gap-4">
           <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 1 — Recolha Automática</p>
           {[
-            { title: "Google Trends", subtitle: "semanal · pytrends" },
-            { title: "Google Autocomplete", subtitle: "semanal · perguntas" },
-            { title: "RSS Feeds", subtitle: "42 fontes" },
-            { title: "YouTube", subtitle: "55 canais" },
+            { title: "Google Trends", subtitle: "pesquisas e perguntas semanais (pytrends)" },
+            { title: "Fact-checks", subtitle: "semanal · Observador" },
+            { title: "RSS Feeds", subtitle: "41 feeds" },
+            { title: "YouTube", subtitle: "56 canais" },
             { title: "Supabase", subtitle: "base de dados" },
             { title: "Edge Functions", subtitle: "automação" },
             { title: "Dashboard", subtitle: "visualização" },
@@ -309,7 +309,7 @@ const Sobre = () => {
           <p className="text-[8px] font-medium uppercase tracking-[0.15em] text-muted-foreground">Nível 2 — Produção Editorial</p>
           {[
             { title: "Dashboard", subtitle: "keywords + alertas", human: false, terminal: false },
-            { title: "Perplexity Sonar", subtitle: "fontes peer-reviewed", human: false, terminal: false },
+            { title: "Perplexity Sonar", subtitle: "17 domínios aprovados", human: false, terminal: false },
             { title: "Guião", subtitle: "5 banco + 5 IA", human: false, terminal: false },
             { title: "Curadoria Editorial", subtitle: "criação de conteúdo", human: false, terminal: false },
             { title: "Briefing", subtitle: "prioridades da semana", human: false, terminal: false },
