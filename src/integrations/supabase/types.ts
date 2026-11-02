@@ -152,6 +152,7 @@ export type Database = {
       debunking: {
         Row: {
           classification: string
+          contexto: boolean
           covid: boolean
           created_at: string
           data_publicacao: string | null
@@ -166,6 +167,7 @@ export type Database = {
         }
         Insert: {
           classification: string
+          contexto?: boolean
           covid?: boolean
           created_at?: string
           data_publicacao?: string | null
@@ -180,6 +182,7 @@ export type Database = {
         }
         Update: {
           classification?: string
+          contexto?: boolean
           covid?: boolean
           created_at?: string
           data_publicacao?: string | null

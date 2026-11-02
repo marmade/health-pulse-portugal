@@ -18,7 +18,8 @@ FONTE  Google Fact Check Tools API (ClaimReview), gratuita, chave em
 
 COMO   python3 scripts/11_fetch_fact_checks.py --dry-run       # mostra, não grava
        SUPABASE_SERVICE_ROLE_KEY=... python3 scripts/11_fetch_fact_checks.py --gravar
-       No GitHub corre todas as segundas, antes do arquivo semanal (passo 6B): pesquisa e
+       No GitHub corre todas as segundas, antes do arquivo semanal (passo 6B, com --contexto
+       docs/evidencia/2026-10-29-fact-checks/exclusoes.json desde 2/11/2026): pesquisa e
        grava o que for novo, sem revisão (princípio da Marta, 28/09: os dados entram
        automaticamente, as análises é que se revêem).
 
@@ -29,13 +30,20 @@ PRIMEIRA CARGA (29/10/2026) — grava a lista revista pela Marta, sem pesquisar 
          --excluir docs/evidencia/2026-10-29-fact-checks/exclusoes.json \
          --covid-decisoes docs/evidencia/2026-10-29-fact-checks/covid-decisoes.json
 
+CONTEXTO (2/11/2026) — coluna `contexto`: true nas verificações laterais à saúde (decisão
+       da Marta: não se apagam, ficam como indícios, fora do ecrã e do briefing). Marca-a o
+       --contexto FICHEIRO, por url (o assunto do artigo, não a keyword com que casou). No
+       passo 6B o ficheiro é docs/evidencia/2026-10-29-fact-checks/exclusoes.json: a 2/11 o
+       6B corria sem --excluir e as 21 exclusões de 29/10 que a API voltou a devolver
+       entraram sem marca (docs/sessoes/2026-11-02.md).
+
 COVID-19 (29/10/2026) — coluna `covid`: true quando a covid é o assunto da afirmação
        (critério da Marta). Marca-a a regra e_covid(), abaixo; na primeira carga, mais as
        decisões da Marta sobre os casos duvidosos (--covid-decisoes).
 
 O QUE GRAVA em `debunking`: term (a keyword que casou), title (a afirmação verificada),
 classification (o veredicto do editor), source (editor), url (a verificação),
-data_publicacao, eixo, keyword_id, explicacao (o título da verificação), covid. Uma linha
+data_publicacao, eixo, keyword_id, explicacao (o título da verificação), covid, contexto. Uma linha
 por (url, keyword); não repete o que já lá está. Grava tudo num só pedido: entra tudo ou
 não entra nada.
 """
@@ -62,6 +70,15 @@ def e_covid(n):
 
 def pares(lista):
     return {(e["url"], e["term"]) for e in lista}
+
+def urls_contexto(caminho):
+    """Os urls do ficheiro do --contexto. Falta o ficheiro, vem vazio ou sem url: pára."""
+    if not os.path.exists(caminho):
+        sys.exit("ERRO: não existe o ficheiro do --contexto: %s; nada gravado." % caminho)
+    urls = {e["url"] for e in json.load(open(caminho)) if e.get("url")}
+    if not urls:
+        sys.exit("ERRO: o ficheiro do --contexto não tem urls: %s; nada gravado." % caminho)
+    return urls
 
 def env_publico():
     """URL e chave pública (só leitura). Primeiro do ambiente — no GitHub Actions são
@@ -114,7 +131,11 @@ def main():
     ap.add_argument("--lista", help="grava a lista final (depois das exclusões) neste JSON")
     ap.add_argument("--de-lista", help="não pesquisa: lê a lista (JSON do --lista) revista à mão")
     ap.add_argument("--covid-decisoes", help='JSON {"marcar": [{url, term}], "desmarcar": [...]} que corrige a regra')
+    ap.add_argument("--contexto", help="JSON [{url, ...}]: as verificações destes urls gravam-se com contexto = true")
     args = ap.parse_args()
+    # lido antes de pesquisar: se o ficheiro faltar, pára sem gravar nada, em vez de gravar
+    # sem a marca (2/11/2026)
+    args.urls_contexto = urls_contexto(args.contexto) if args.contexto else set()
     url, anon = env_publico()
     # o par (url, keyword), como o dedup dentro da corrida — só por url, uma verificação
     # gravada para a keyword A nunca entrava para a B (achado da revisão de 18/09)
@@ -179,10 +200,16 @@ def finalizar(args, url, novos):
             if (n["url"], n["term"]) in desmarcar: n["covid"] = False
         print("decisões da covid: %d a marcar, %d a desmarcar" % (len(marcar), len(desmarcar)))
     print("covid-19: %d de %d" % (sum(n["covid"] for n in novos), len(novos)))
+    for n in novos:
+        n["contexto"] = n["url"] in args.urls_contexto
+    if args.contexto:
+        print("contexto: %d de %d (ficheiro: %d urls)" % (sum(n["contexto"] for n in novos), len(novos),
+                                                          len(args.urls_contexto)))
     novos.sort(key=lambda n: (n["data_publicacao"] or "", n["eixo"], n["term"]), reverse=True)
     for i, n in enumerate(novos, 1):
-        print("%3d. %s · %s · %s%s · [%s] %s\n     %s" % (i, (n["data_publicacao"] or "?")[:10], n["term"], n["eixo"],
-              " · COVID" if n.get("covid") else "", n["classification"], n["title"], n["url"]))
+        print("%3d. %s · %s · %s%s%s · [%s] %s\n     %s" % (i, (n["data_publicacao"] or "?")[:10], n["term"], n["eixo"],
+              " · COVID" if n.get("covid") else "", " · CONTEXTO" if n.get("contexto") else "",
+              n["classification"], n["title"], n["url"]))
     if args.lista:
         # .md: a lista legível, para a revisão, e ao lado o .json com os mesmos dados
         # (é dele que sai o ficheiro do --excluir)
@@ -200,12 +227,13 @@ def finalizar(args, url, novos):
         # um só pedido = uma só instrução INSERT: entra tudo ou não entra nada (29/10/2026;
         # antes eram pedidos de 200, e uma falha a meio deixava metade gravada)
         campos = ("term", "title", "classification", "source", "url", "keyword_id", "eixo",
-                  "explicacao", "data_publicacao", "covid")
+                  "explicacao", "data_publicacao", "covid", "contexto")
         corpo = [{k: n.get(k) for k in campos} for n in novos]
         gravadas = rest(url, key, "debunking?select=id", "POST", corpo, prefer="return=representation")
         if len(gravadas or []) != len(corpo):
             sys.exit("ERRO: a base devolveu %d linhas de %d enviadas." % (len(gravadas or []), len(corpo)))
-        print("GRAVADO: %d linhas em debunking (%d covid-19)" % (len(corpo), sum(n["covid"] for n in corpo)))
+        print("GRAVADO: %d linhas em debunking (%d covid-19, %d contexto)"
+              % (len(corpo), sum(n["covid"] for n in corpo), sum(n["contexto"] for n in corpo)))
     else:
         print("DRY-RUN: nada gravado.")
 

@@ -22,6 +22,8 @@ export type LinhaDebunking = {
   data_publicacao?: string | null;
   eixo?: string | null;
   covid?: boolean | null;
+  /** Lateral à saúde, guardada como indício (2/11/2026): fica fora de tudo o que se mostra. */
+  contexto?: boolean | null;
 };
 
 /** Um fact-check como fica gravado em `briefings_archive.top_debunking` e `eixos_archive`. */
@@ -49,12 +51,16 @@ export const N_EIXO = 3;
  * (Esticado; Certo, Praticamente Certo, Inconclusivo, se vierem) ficam na base e saem do que se
  * mostra. Os veredictos NÃO se renomeiam: o que aparece é sempre o que o Observador publicou.
  * Ficam também de fora as 36 semeadas ("a verificar") e o "sem veredicto" do script 11.
+ *
+ * E as marcadas `contexto` (decisão da Marta, 2/11/2026 — docs/sessoes/2026-11-02.md): as
+ * verificações laterais à saúde ficam na base como indícios, fora do ecrã e do briefing até
+ * ao fecho de 6/11. O separador próprio fica para depois.
  */
 const VEREDICTOS_MOSTRADOS = ["errado", "enganador"];
 
-export function seMostra(l: Pick<LinhaDebunking, "url" | "classification">): boolean {
+export function seMostra(l: Pick<LinhaDebunking, "url" | "classification" | "contexto">): boolean {
   const c = (l.classification ?? "").trim().toLowerCase();
-  return !!(l.url ?? "").trim() && VEREDICTOS_MOSTRADOS.includes(c);
+  return !!(l.url ?? "").trim() && VEREDICTOS_MOSTRADOS.includes(c) && !l.contexto;
 }
 
 /** A data da verificação (YYYY-MM-DD), ou null. */

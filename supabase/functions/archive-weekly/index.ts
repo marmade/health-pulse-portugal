@@ -157,7 +157,8 @@ Deno.serve(async (req) => {
         // corta em 1000 linhas sem erro: a contagem confirma, abaixo.
         supabase
           .from("debunking")
-          .select("term, title, explicacao, classification, source, url, data_publicacao, eixo, covid", { count: "exact" })
+          // contexto (2/11/2026): as laterais à saúde ficam de fora, em seMostra
+          .select("term, title, explicacao, classification, source, url, data_publicacao, eixo, covid, contexto", { count: "exact" })
           .not("data_publicacao", "is", null),
       ]);
 

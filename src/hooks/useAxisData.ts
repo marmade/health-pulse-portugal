@@ -202,6 +202,8 @@ export function useDebunkingData() {
           dataPublicacao: d.data_publicacao || null,
           // as da covid-19 vão para o separador "Covid-19", fora dos eixos (29/10/2026)
           covid: !!d.covid,
+          // as laterais à saúde ficam fora do ecrã: seMostra (2/11/2026)
+          contexto: !!d.contexto,
         })));
       }
       setIsLoading(false);

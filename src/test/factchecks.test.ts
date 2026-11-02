@@ -33,6 +33,30 @@ describe("seMostra", () => {
   it("com veredicto e url entra", () => {
     expect(seMostra({ url: "https://x", classification: "Enganador" })).toBe(true);
   });
+  it("as marcadas contexto ficam de fora, mesmo Errado e com url (2/11)", () => {
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: true })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: false })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: null })).toBe(true);
+  });
+});
+
+describe("contexto no briefing e no arquivo dos eixos (2/11)", () => {
+  const ini = "2026-10-26", fim = "2026-11-01";
+  it("uma lateral não entra nas Anteriores e a seguinte sobe — o caso do semáforo de Verona", () => {
+    const ls = [
+      linha({ data_publicacao: "2026-09-28", url: "xi" }),
+      linha({ data_publicacao: "2026-08-18", url: "verona", term: "onda de calor", contexto: true }),
+      linha({ data_publicacao: "2026-06-24", url: "simpsons" }),
+      linha({ data_publicacao: "2026-06-24", url: "video" }),
+    ];
+    const { anteriores } = partesDoBriefing(ls, ini, fim);
+    expect(anteriores.map((l) => l.url)).toEqual(["xi", "simpsons", "video"]);
+  });
+  it("uma lateral da semana não entra em Desta semana nem no eixo", () => {
+    const ls = [linha({ data_publicacao: "2026-10-28", url: "lat", contexto: true })];
+    expect(partesDoBriefing(ls, ini, fim).destaSemana).toEqual([]);
+    expect(topDebunkingDoEixo(ls, "emergentes", ini, fim)).toEqual([]);
+  });
 });
 
 describe("partesDoBriefing", () => {

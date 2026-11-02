@@ -125,6 +125,9 @@ CREATE TABLE IF NOT EXISTS public.debunking (
 );
 -- 29/10/2026: a marca da covid-19 (migração 20261029180000_debunking_covid.sql)
 ALTER TABLE public.debunking ADD COLUMN IF NOT EXISTS covid BOOLEAN NOT NULL DEFAULT false;
+-- 2/11/2026: a marca "contexto" (migração 20261102161229_debunking_contexto.sql; só a
+-- coluna — as marcas das linhas existentes estão nessa migração)
+ALTER TABLE public.debunking ADD COLUMN IF NOT EXISTS contexto BOOLEAN NOT NULL DEFAULT false;
 
 
 -- ----------------------------------------------------------------------------

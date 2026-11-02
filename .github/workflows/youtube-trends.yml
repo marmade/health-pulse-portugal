@@ -150,13 +150,17 @@ jobs:
       # automaticamente, as análises é que se revêem). A marca da covid-19 é a
       # regra do script. Se falhar, o arquivo corre na mesma, com as
       # verificações que já lá estão — por isso continue-on-error.
+      # --contexto (2/11/2026): as verificações laterais à saúde que a revisão de
+      # 29/10 deixou de fora gravam-se com contexto = true — ficam na base, fora do
+      # site e do briefing (decisão da Marta; docs/sessoes/2026-11-02.md). Sem o
+      # ficheiro, o script pára sem gravar.
       - name: 6B — Fact-checks (Observador)
         continue-on-error: true
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           GOOGLE_FACTCHECK_API_KEY: ${{ secrets.GOOGLE_FACTCHECK_API_KEY }}
         run: |
-          python scripts/11_fetch_fact_checks.py --gravar
+          python scripts/11_fetch_fact_checks.py --gravar --contexto docs/evidencia/2026-10-29-fact-checks/exclusoes.json
 
       # ── ORDEM DOS PASSOS 7 E 6 — trocada a 28/09/2026 ────────────────────
       # O arquivo (7) corre ANTES dos guiões (6). Os guiões passam a pedir à IA

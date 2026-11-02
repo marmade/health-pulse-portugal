@@ -1,0 +1,24 @@
+keywords: 100 | verificações novas: 9 | já existentes (url): 288 | pesquisas falhadas: 0
+por veredicto: [('Errado', 9)]
+por eixo: [('emergentes', 9)]
+por keyword (top 10): [('vacinas', 9)]
+covid-19: 6 de 9
+  1. 2024-09-23 · vacinas · emergentes · COVID · [Errado] Kamala vai exigir que todos os democratas tomem a vacina atualizada contra a Covid para poderem votar em novembro.
+     https://observador.pt/factchecks/fact-check-kamala-disse-que-iria-obrigar-democratas-a-serem-vacinados-para-poderem-votar-nas-presidenciais/
+  2. 2024-08-27 · vacinas · emergentes · [Errado] "A vacina ativando a doença do macaco."
+     https://observador.pt/factchecks/fact-check-vacina-ativa-o-aparecimento-da-mpox/
+  3. 2022-05-24 · vacinas · emergentes · [Errado] "Se fizer desporto, não se vacine."
+     https://observador.pt/factchecks/fact-check-vacinas-prejudicam-a-saude-de-quem-faz-desporto/
+  4. 2021-12-14 · vacinas · emergentes · COVID · [Errado] "MAIS VALE 1 PÁSSARO NA MÃO DO QUE 2 A VOAR!!! O JORNALIXO DEIXOU ESCAPAR 1 DIAMANTE DO POVO!!!"
+     https://observador.pt/factchecks/fact-check-noticia-refere-que-sistema-imunitario-produz-de-forma-natural-mais-anticorpos-contra-a-covid-19-que-as-vacinas/
+  5. 2021-12-03 · vacinas · emergentes · [Errado] "Para Pedro Simas, Consultor da CML e candidato à CML pelo PSD, e Ricardo Mexia, Presidente de Junta do PSD, é preciso aumentar a vacinação. Contas feitas: 2 centros com capacidade para 7.500 vacinas é melhor que 8 centros de proximidade com capacidade para 12 mil vacinas. É isto."
+     https://observador.pt/factchecks/fact-check-lisboa-perdeu-capacidade-de-vacinacao-com-opcao-por-dois-mega-centros/
+  6. 2021-11-08 · vacinas · emergentes · COVID · [Errado] Após 40 anos de pesquisa, não há vacina contra sida. Após 76 anos, não há vacina contra influenza. Após 100 anos, não há vacina contra cancro. Mas depois de apenas 6 meses existe uma vacina contra um "vírus" que apareceu "de repente" e aqueles que questionam esta vacina são conspiradores sem cérebro
+     https://observador.pt/factchecks/fact-check-vacina-contra-covid-19-apareceu-em-seis-meses-apesar-de-nao-haver-vacina-contra-sida-influenza-ou-cancro/
+  7. 2021-07-31 · vacinas · emergentes · COVID · [Errado] Xeque-mate. SARS-CoV-2 registado em 73 patentes antes de 2008
+     https://observador.pt/factchecks/fact-check-ja-tinham-sido-registadas-73-patentes-da-vacina-contra-a-sars-cov-2-antes-de-2008/
+  8. 2021-06-13 · vacinas · emergentes · COVID · [Errado] "Alguém sabe de 1 cidadão que esteja registado como tendo efeitos adversos à pica na DGS?"
+     https://observador.pt/factchecks/fact-check-nao-ha-registos-de-efeitos-adversos-das-vacinas-contra-a-covid-19-na-dgs/
+  9. 2021-05-21 · vacinas · emergentes · COVID · [Errado] "Se (as vacinas) não são seguras e testadas para jovens, que se lixem os velhos? É isso? É o que estão claramente a dizer os que SUPOSTAMENTE estão a querer 'salvar vidas' dos velhos!"
+     https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-administradas-na-populacao-mais-idosa-nao-foram-testadas/
+DRY-RUN: nada gravado.
