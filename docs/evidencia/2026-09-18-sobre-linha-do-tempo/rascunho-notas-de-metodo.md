@@ -110,6 +110,14 @@ Acrescentado a 27/10/2026, com a correcção das limitações do /sobre (`docs/s
   A versão de 27/10 deste ponto dizia que o Observador era "o único editor português com
   ClaimReview". Testaram-se dois editores, e o Polígrafo deu 3 verificações a 28/09
   (`docs/sessoes/2026-09-28-c.md`). A afirmação saiu (decisão da Marta, 01/11/2026).
+  **02/11/2026 — a base não é o conjunto completo.** A Google Fact Check Tools API devolve a cada
+  corrida um subconjunto diferente das verificações do Observador. Com as mesmas 100 keywords, a
+  corrida de 2/11 trouxe 19 artigos (20 linhas) que a de 29/10 não tinha devolvido, de 2020 a 2024.
+  Um `--dry-run` às 16:04 UTC trouxe mais 9, todos da keyword «vacinas». A `debunking` não é, por
+  isso, o conjunto completo dos fact-checks do Observador sobre as keywords. O que entra numa
+  segunda pode ser uma verificação de há anos, e não da semana (`docs/sessoes/2026-11-02.md` §1).
+  Também desde 2/11: as verificações laterais à saúde (as 25 que a revisão de 29/10 deixou de
+  fora) ficam na base com a marca «contexto» e não se mostram.
 - **Mudança do Google em Janeiro de 2022 (nota para as limitações, 29/10/2026).** Myburgh, P. H.
   (2022), IJERPH 19(22), 15396, doi:10.3390/ijerph192215396, documenta uma mudança na Google
   **Health** Trends API a partir de 1/1/2022. A tendência da creatina começa a 02/01/2022, a

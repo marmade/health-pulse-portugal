@@ -1331,6 +1331,14 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       ficou por decidir a 28/09 (`docs/sessoes/2026-09-28-c.md`, pendente 5). Depois de 30/10:
       procurar outras fontes de fact-check em português, incluindo o Polígrafo por outra via. Por
       agora é só nota; o script 11 não se mexe (decisão da Marta, 27/10).
+- [ ] **Revisão única dos fact-checks que entram sem revisão.** Desde 2/11, o passo 6B grava o
+      que a API devolve pela primeira vez, mesmo que seja antigo. A 2/11 entraram 23, de 2020 a
+      2026. As laterais já conhecidas (as 25 de 29/10) entram com `contexto = true`; as outras
+      entram visíveis (princípio de 28/09). Depois do fecho de sex 6/11: rever de uma vez as que
+      entraram desde 2/11, com os 23 de 2/11 incluídos (também os 5 que o Claude Code apontou:
+      Biden/FEM, Decathlon, certificado sem telemóvel, recordes de mortalidade, testes de 2018).
+      Decidir quais passam a contexto. Depois disso, o separador próprio e o cruzamento com a
+      curva do Trends (decisões da Marta, 2/11; `docs/sessoes/2026-11-02.md` §1, §4).
 - [ ] **Sazonalidade sobre os `trends_calibrados`.** Os previsíveis do briefing só vêem as semanas
       em que o termo mexeu (há linha em `trends_alertas`); um termo que sobe devagar todos os anos
       não aparece. Calcular o factor sazonal para todos os termos e semanas. Depois de 2/11 (decisão
