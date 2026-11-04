@@ -442,6 +442,36 @@ pedidos, e é o que o Google entende por saúde, por regras que não publica. N�
 homónimos e esconde termos classificados noutro sítio (`psicologa`). Vai para a secção de
 limitações da tese. Ver `docs/metodo/2026-09-18-reguas-e-ancoras.md` 5b.
 
+### Google Trends for Health API — acesso concedido a 04/11/2026
+
+São duas candidaturas, a duas APIs diferentes:
+
+- **Alpha da Google Trends API** (API nova, generalista): candidatura de 09/09/2026, sem
+  resposta. Não se sabe por onde foi feita (`docs/sessoes/2026-10-29-cowork.md` §19).
+- **Google Trends for Health API** (API de investigação): candidatura de 29/10/2026 pelo
+  formulário support.google.com/trends/contact/trends_api, caso 8-1093000041661 (Gmail,
+  conversa com sc-tools-support@google.com). Acesso concedido por email a 04/11/2026.
+  - Projecto Google Cloud: `diz-que-disse-trends` (Project ID igual ao nome), na conta
+    madeira.marta.s@gmail.com. Confirmado na consola ("Manage resources") a 04/11/2026.
+  - Project ID enviado ao Google. Segundo o email, a API pode levar até 24 h a ficar
+    disponível na consola. **Por fazer depois disso:** activar a API no projecto e criar a
+    chave (guardada em `~/.config/health-pulse/env`, nunca no repositório).
+  - Guia do Google: quota de 2 pedidos/s e 5000 pedidos/dia por projecto; até 30 termos por
+    pedido; máximo de 2000 pontos por pedido. Os valores são a probabilidade de uma sessão de
+    pesquisa curta satisfazer o termo, × 10 milhões, sobre uma amostra aleatória — não são o
+    índice 0–100 do Trends público. As duas séries não se comparam directamente.
+  - É a API onde Myburgh (2022, doi:10.3390/ijerph192215396) documenta a mudança de amostra
+    com efeito a 1/1/2022.
+  - Estado a 04/11/2026, 16:50 (visto pelo Cowork na consola): a Google Trends Research API
+    (trends.googleapis.com) aparece na biblioteca do projecto diz-que-disse-trends, ainda por
+    activar. Activação, chave e pedido de teste marcados para 05/11, 09:15 (calendário
+    Mestrado).
+
+**Decisão da Marta, 04/11/2026:** a Health Trends API passa a ser a fonte do dashboard
+principal. A recolha de domingo (`recolher_domingo.sh`, pytrends) continua em paralelo. A
+comparação entre as duas fontes fica na página de método, com escalas separadas e
+explicação — não em duas vistas do dashboard.
+
 ### Hipótese do vocabulário — 09/09/2026
 
 > **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
@@ -1288,7 +1318,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
   Prova em `docs/evidencia/2026-09-30-via-b-corrida-1/` e
   `docs/evidencia/2026-10-01-via-b-corrida-3/`. O passo 1 do workflow principal continua
   desligado. **Alpha da Google Trends API:** candidatura submetida a 09/09/2026, ainda sem
-  resposta.
+  resposta. (Actualizado a 04/11/2026: a Google Trends for Health API, candidatura
+  diferente, foi aprovada — ver "Fontes de Dados".)
   Confirmado a 14/10: nenhuma corrida pelo cron depois da #4 (05/10); 4 corridas no total, 2 pelo cron e 2 à mão (docs/sessoes/2026-10-14.md §1).
 
 ### Restantes
@@ -1353,10 +1384,13 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       Público geral (l.25), sem `geral: true`, por isso sem o filtro de categoria. `[inferência]` As
       notícias do Público que o filtro tira à primeira entrada podem entrar pela segunda, com o nome
       "Público — Ciência". Depois do fecho, com as notícias (decisão da Marta, 01/11).
-- [ ] **"Vezes acima" na linha de cada alerta** («4,4 vezes acima do valor normal»,
-      `src/lib/fraseAlerta.ts`, `fraseDoAlerta`) lê-se como somado: tirar o "acima" da linha do
-      alerta e do briefing. Depois da corrida de 2/11 (decisão da Marta, 01/11). O "Como ler os
-      alertas" já foi corrigido a 01/11 («pelo menos 1,5 vezes esse valor»).
+- [x] **~~"Vezes acima" na linha de cada alerta~~ — FEITO a 04/11/2026 (`69a4c05`).** «4,4 vezes
+      acima do valor normal» lia-se como somado; passa a «4,4 vezes o valor normal (46)» na
+      `fraseDoAlerta` (ecrã, Sinais emergentes do briefing, sugestão de conteúdo) e na saída de
+      `scripts/trends_alertas.py`. Feito depois da corrida de 2/11 (confirmada na base) e sem
+      texto gravado na base com a forma antiga. No site, bundle `index-CI8_pxog.js` sem "vezes
+      acima". A forma nova ainda não está à vista, porque a semana de 25–31/10 só tem a
+      tendência da creatina (`docs/sessoes/2026-11-04.md` §4).
 - [ ] **A "semana corrente" do `Briefing.tsx` ainda lê `keywords.is_emergent`**, que não é
       escrita desde 14/08/2026. Só o briefing arquivado foi ligado aos alertas (28/10).
 - [ ] **No telemóvel, o cabeçalho do site transborda 20 px**: a página tem 410 px num ecrã de 390,
