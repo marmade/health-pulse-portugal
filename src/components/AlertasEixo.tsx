@@ -6,7 +6,7 @@ import { fraseDoAlerta, n0, notaDaMelhoriaDoGoogle, vezes } from "@/lib/fraseAle
 /**
  * Os alertas de um eixo, na última semana completa do lote — fase 3, regra de 18/09/2026
  * (docs/metodo/2026-09-18-alertas-regra.md, secção 7). Uma linha por termo, na formulação
- * da Marta: "N vezes acima do valor normal (ref)". Tudo na régua do eixo; os eixos não se
+ * da Marta: "N vezes o valor normal (ref)". Tudo na régua do eixo; os eixos não se
  * misturam numa lista só — por isso isto vive dentro de cada coluna.
  *
  *   ▲ subida        z ≥ 3 e ×1,5 contra a mediana das 8 semanas anteriores

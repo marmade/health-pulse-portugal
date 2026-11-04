@@ -9,7 +9,7 @@ import { fraseDoSinal } from "@/lib/sinaisEmergentes";
 describe("a sugestão de conteúdo", () => {
   it("subida: a frase da Marta, letra a letra", () => {
     expect(fraseDaSugestao({ term: "obesidade", tipo: "subida", valor: 206.25, razao: 4.408, referencia: 46.25 }, "2026-10-18"))
-      .toBe("obesidade — 206, 4,4 vezes acima do valor normal (46), na semana de 18 a 24/10");
+      .toBe("obesidade — 206, 4,4 vezes o valor normal (46), na semana de 18 a 24/10");
   });
   it("aparecimento: a linha do ecrã", () => {
     expect(fraseDaSugestao({ term: "candida auris", tipo: "aparecimento", valor: 100, razao: 0, referencia: 0, max_anterior: 6 }, "2026-10-18"))
@@ -20,7 +20,13 @@ describe("a sugestão de conteúdo", () => {
     expect(fraseDoSinal({ parte: "novo", term: "obesidade", axis: "alimentacao", ...a }, "Outubro")).toBe(fraseDoAlerta(a));
     const ecra = readFileSync("src/components/AlertasEixo.tsx", "utf8");
     expect(ecra).toMatch(/fraseDoAlerta\(a\)/);
-    expect(ecra).not.toMatch(/vezes acima do valor normal \(\$\{/);
+    // A guarda contra a frase escrita à mão no ecrã apanha a forma de 04/11/2026 e a antiga.
+    expect(ecra).not.toMatch(/vezes (acima do|o) valor normal \(\$\{/);
+  });
+  it("sem 'acima' (decisão da Marta, 01/11/2026): «4,4 vezes acima» lia-se como somado", () => {
+    expect(fraseDoAlerta({ tipo: "subida", razao: 4.408, referencia: 46.25 })).toBe("4,4 vezes o valor normal (46)");
+    expect(fraseDoAlerta({ tipo: "sazonal", razao: 12.4, referencia: 3 })).toBe("12 vezes o valor normal (3)");
+    expect(readFileSync("src/lib/fraseAlerta.ts", "utf8")).not.toMatch(/vezes acima/);
   });
   it("a página e o PDF já não têm percentagens nem 'sem histórico significativo' na sugestão nova", () => {
     const pagina = readFileSync("src/pages/Briefing.tsx", "utf8");

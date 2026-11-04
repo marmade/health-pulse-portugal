@@ -181,17 +181,17 @@ describe("o briefing de 19–25/10 como a página e o PDF o mostram", () => {
     const partes = partesDosSinais(arquivado, notas)!;
     expect(partes.map((p) => [p.titulo, p.ressalva, p.itens.map((i) => `${i.term}: ${i.frase}`), p.nota])).toEqual([
       ["Novos", null, [
-        "obesidade: 4,4 vezes acima do valor normal (46)",
-        "diabetes tipo 2: 3,1 vezes acima do valor normal (21)",
+        "obesidade: 4,4 vezes o valor normal (46)",
+        "diabetes tipo 2: 3,1 vezes o valor normal (21)",
       ], null],
       ["Em curso", null, [
-        "creatina: 4,7 vezes acima do valor normal (41) — em curso, 251.ª semana",
-        "dengue: 1,6 vezes acima do valor normal (9) — em curso, 2.ª semana",
-        "sarampo: 1,5 vezes acima do valor normal (12) — em curso, 3.ª semana",
+        "creatina: 4,7 vezes o valor normal (41) — em curso, 251.ª semana",
+        "dengue: 1,6 vezes o valor normal (9) — em curso, 2.ª semana",
+        "sarampo: 1,5 vezes o valor normal (12) — em curso, 3.ª semana",
       ], null],
       ["A observar", "Subiram sem chegar ao limite de alerta.", [
-        "cancro da mama: 1,8 vezes acima do valor normal (19)",
-        "menopausa: 1,3 vezes acima do valor normal (61)",
+        "cancro da mama: 1,8 vezes o valor normal (19)",
+        "menopausa: 1,3 vezes o valor normal (61)",
       ], null],
       ["Previsíveis para Outubro", null, [
         "cancro da mama: subiu em Outubro em 3 de 3 anos (2023, 2024, 2025)",

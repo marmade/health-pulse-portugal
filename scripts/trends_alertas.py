@@ -275,7 +275,7 @@ def frase(l):
     if l['tipo'] == 'aparecimento':
         s = f"{l['termo']} {l['valor']:.0f} — apareceu; normalmente sem procura (máx. anterior {l['max_anterior']:.0f})"
     else:
-        s = f"{l['termo']} {l['valor']:.0f} — {l['razao']:.1f} vezes acima do valor normal ({l['referencia']:.0f})"
+        s = f"{l['termo']} {l['valor']:.0f} — {l['razao']:.1f} vezes o valor normal ({l['referencia']:.0f})"
         if l['tipo'] == 'sazonal': s += f" — sazonal: nesta época é habitual (×{l['fator_sazonal']:.1f})"
         if l['tipo'] == 'a_observar': s += " (a observar)"
     if l['semana_n'] > 1: s += f" — em curso, {l['semana_n']}.ª semana"
