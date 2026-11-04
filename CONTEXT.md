@@ -452,7 +452,7 @@ São duas candidaturas, a duas APIs diferentes:
   formulário support.google.com/trends/contact/trends_api, caso 8-1093000041661 (Gmail,
   conversa com sc-tools-support@google.com). Acesso concedido por email a 04/11/2026.
   - Projecto Google Cloud: `diz-que-disse-trends` (Project ID igual ao nome), na conta
-    madeira.marta.s@gmail.com. Confirmado na consola ("Manage resources") a 04/11/2026.
+    da Marta. Confirmado na consola ("Manage resources") a 04/11/2026.
   - Project ID enviado ao Google. Segundo o email, a API pode levar até 24 h a ficar
     disponível na consola. **Por fazer depois disso:** activar a API no projecto e criar a
     chave (guardada em `~/.config/health-pulse/env`, nunca no repositório).
