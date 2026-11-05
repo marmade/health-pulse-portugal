@@ -1,0 +1,29 @@
+Pedido: GET https://www.googleapis.com/trends/v1beta/timelinesForHealth?terms=ansiedade&geoRestriction.country=PT&timelineResolution=week&time.startDate=2025-11-05&time.endDate=2026-11-05
+        (chave no cabeçalho X-Goog-Api-Key, não no URL)
+
+HTTP 200
+Resposta crua guardada em /private/tmp/claude-501/-Users-marmade-Documents-health-pulse-portugal/f02377ff-6438-4fea-b876-561e739c7887/scratchpad/resposta_health_api.json
+Linhas (termos) na resposta: 1
+Termo devolvido: 'ansiedade'
+Pontos: 53
+
+Primeiras 5:
+  Nov 02 2025    1381.4136854858073
+  Nov 09 2025    1472.1963446832006
+  Nov 16 2025    1096.9966495827405
+  Nov 23 2025    1439.986700043859
+  Nov 30 2025    1343.6541399794755
+Últimas 5:
+  Oct 04 2026    1085.9628697717358
+  Oct 11 2026    1318.7235769074457
+  Oct 18 2026    1246.121401684701
+  Oct 25 2026    1176.2313445848229
+  Nov 01 2026    1226.1529246585585
+
+Pontos sem o campo value: 0 []
+  (no JSON das APIs do Google um valor 0 pode vir omitido: estes podem ser zeros)
+Pontos com value = 0 explícito: 0 []
+Intervalo: 2025-11-02 a 2026-11-01
+Buracos (passo diferente de 7 dias): 0
+
+Mín / máx: 1046.7153079083935 / 1626.2384314902472   (probabilidade × 10 milhões — não é o índice 0–100 do Trends público)

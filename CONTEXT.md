@@ -466,6 +466,58 @@ São duas candidaturas, a duas APIs diferentes:
     (trends.googleapis.com) aparece na biblioteca do projecto diz-que-disse-trends, ainda por
     activar. Activação, chave e pedido de teste marcados para 05/11, 09:15 (calendário
     Mestrado).
+  - Estado a 05/11/2026 (Claude Code): API activada pela Marta no projecto
+    diz-que-disse-trends e chave `dashboard-diz-que-disse` criada, restrita à Trends API.
+    Guardada pela Marta em `~/.config/health-pulse/env` como `GOOGLE_HEALTH_TRENDS_API_KEY`
+    (39 caracteres, `chmod 600`, fora do repositório); nunca passou pela conversa. Endpoint e
+    parâmetros confirmados no documento de descoberta (`trends.googleapis.com/$discovery/rest
+    ?version=v1beta`, revision 20260804): `GET www.googleapis.com/trends/v1beta/
+    timelinesForHealth`, com `terms`, `geoRestriction.country`, `timelineResolution`,
+    `time.startDate`, `time.endDate`. **Dois pedidos de teste iguais**, corridos pela Marta
+    (o 2.º às 10:15): `ansiedade`, PT, semanal, 05/11/2025–05/11/2026 → HTTP 200, 53 pontos
+    (domingos, 02/11/2025 a 01/11/2026), sem zeros nem buracos, valores entre 1047 e 1626
+    (× 10 milhões). Entre os dois pedidos, a semana de 01/11 (incompleta) subiu 0,8 % e a de
+    18/10 mudou 0,003 %; os outros 8 pontos comparáveis vieram iguais. Por ver: se a última
+    semana vem sempre parcial sem aviso, e o teste de reprodução nos 53 pontos (dois pedidos
+    iguais, cada um no seu ficheiro) — os 10 pontos comparados não chegam para dizer que a
+    série é reprodutível. Resposta do 2.º pedido em
+    `docs/evidencia/2026-11-05-teste-health-api/`. Nada da API entra ainda no Supabase nem no
+    dashboard. Registo: `docs/sessoes/2026-11-05.md`.
+  - Teste 2 a 05/11/2026 (Claude Code; corrido pela Marta às 10:52): 5 pedidos, PT, semanal,
+    2025-11-02 a 2026-10-31 (52 semanas completas), todos HTTP 200, sem buracos. Script,
+    respostas cruas (uma por pedido) e `saida.txt` em
+    `docs/evidencia/2026-11-05-teste-2-health-api/`.
+    - **Resultados `[verificado]`:**
+      - Termo sozinho vs acompanhado de 10 outros no mesmo pedido: `ansiedade` igual nas 52
+        semanas (|dif| máxima 0,0001 %); `menopausa precoce` só com 1 semana comparável (as
+        outras 51 são zero nos dois).
+      - Tópico `/m/0k_9` (Ansiedade — Transtorno) acima da palavra `ansiedade` em 52 de 52
+        semanas; rácio das medianas 1,77 (2241,9 / 1266,1).
+      - Tópico `/m/03x69g` (Saúde mental — Assunto) abaixo do tópico Ansiedade em 51 de 52
+        semanas (acima só a 04/10); rácio das medianas 0,65 (1456,9 / 2241,9).
+      - Termos pequenos, zeros em 52 semanas: `menopausa precoce` 51, `insónia` 42, `lúpus`
+        26, `sepsis` 1. `psicólogo` e `psicologa` com sinal (medianas 305,7 e 689,2). O
+        método não tem parâmetro de categoria (confirmado no documento de descoberta).
+      - Revisão dos dados: as semanas de 18/10 e 25/10 de `ansiedade` vieram com valores
+        diferentes de manhã e no teste 2 (18/10: 1246,16 e 1246,12 de manhã, 1247,31 no
+        teste 2; 25/10: 1176,23 de manhã, 1166,26 no teste 2). Causa desconhecida.
+    - **Leituras `[inferência]`:**
+      - Na Health API não há régua: as âncoras e os grupos de 5 deixam de ser precisos nesta
+        fonte (continuam no pytrends). Generalização a partir de um só termo comparável
+        (ansiedade); menopausa precoce só teve 1 semana.
+      - O tópico Saúde mental não agrega a ansiedade (uma área não pode ser menor do que
+        uma das suas partes).
+      - O tópico junta formas de pesquisa que a palavra não apanha; quais, o Google não
+        publica.
+      - Os zeros dos termos pequenos vêm do volume em Portugal e da formulação, não da régua.
+    - **Decisões da Marta, 05/11/2026:** faz-se o registo. A lista passa a organizar-se por
+      áreas. Cada área é construída pela Marta a partir de tópicos e termos que ela escolhe
+      (somados com o operador `+` da API, se for essa a forma). A composição de cada área é
+      decisão editorial dela, a tomar eixo a eixo.
+    - **Consequência para a recolha:** cada recolha da Health API grava-se com data e hora e
+      nunca substitui a anterior, porque o Google revê valores já publicados.
+    - **Por ver:** o que o tópico inclui; se o `+` soma sessões sem contar duas vezes a
+      mesma; o teste de reprodução nos 53 pontos e a semana parcial (item anterior).
 
 **Decisão da Marta, 04/11/2026:** a Health Trends API passa a ser a fonte do dashboard
 principal. A recolha de domingo (`recolher_domingo.sh`, pytrends) continua em paralelo. A
