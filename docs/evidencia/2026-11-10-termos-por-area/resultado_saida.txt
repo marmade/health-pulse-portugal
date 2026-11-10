@@ -1,0 +1,46 @@
+== Observador (12 meses): 507 verificações; leitura: {'fora': 472, 'contexto': 18, 'emergentes': 12, 'alimentacao': 3, 'saude-sem-area': 2}
+  entra_areas        15   (só pela lista nova: 4)
+     2026-02-16 [emergentes] Fact Check. Vírus Nipah, que causa preocupação na Índia, já chegou ao Brasil? ← vírus nipah
+     2026-02-16 [emergentes] OMS alerta para risco de vírus Nipah depois do Carnaval? ← oms, vírus nipah
+     2026-05-12 [emergentes] Fact Check. Hantavírus é um dos efeitos colaterais da vacina da Pfizer contra a  ← covid, covid-19, hantavírus, vacina
+     2026-05-18 [emergentes] Fact Check. China proíbe entrada de estrangeiros devido ao hantavírus? ← hantavírus, surto
+     2026-05-18 [emergentes] Fact Check. Macron anunciou fecho de escolas francesas para combater o hantavíru ← hantavírus
+     2026-05-20 [emergentes] Fact Check. Pfizer está a desenvolver vacina contra o hantavírus? ← hantavírus, vacina
+     2026-05-25 [emergentes] Fact Check. Vacina contra o hantavírus já existe e foi patenteada em 2025? ← hantavírus, vacina
+     2026-05-28 [emergentes] Fact Check. Homem retido em cruzeiro com surto de hantavírus é o mesmo que apare ← covid, covid-19, hantavírus, surto
+     2026-06-24 [emergentes] Fact Check. Simpsons previram o surto de hantavírus a bordo de um cruzeiro em 20 ← hantavírus, surto
+     2026-06-24 [emergentes] Fact Check. Vídeo mostra encenação do hantavírus com homem a entrar "acidentalme ← hantavírus
+     2026-06-30 [emergentes] Fact Check. Diretor-geral da OMS admite que surto de hantavírus está a ser usado ← hantavírus, oms, surto, vacinação
+     2026-07-15 [alimentacao] Fact Check. Ministério da Saúde divulgou guia sobre como beber água? ← beber água
+     2026-08-27 [alimentacao] Fact Check. Bolachas Oreo têm petróleo na sua composição? ← bolachas
+     2026-08-28 [alimentacao] Fact Check. Bill Gates lançou manteiga produzida com derivados do petróleo? ← manteiga
+     2026-08-30 [emergentes] Fact Check. Novas informações provam que ivermectina tem 70% de eficácia contra  ← covid, covid-19, ivermectina
+  entra_sem_area      0   (só pela lista nova: 0)
+  entra_contexto      9   (só pela lista nova: 4)
+     2025-12-29 [contexto] Fact Check. Defesa de Jair Bolsonaro alegou que o ex-presidente tem Alzheimer? ← alzheimer
+     2026-02-26 [contexto] Fact Check. Ficheiros do caso Epstein mostram discussão para a simulação de uma  ← covid, covid-19, pandemia
+     2026-05-25 [contexto] Fact Check. Trump disse que a “extrema-esquerda” quer retirar a liberdade à popu ← hantavírus
+     2026-06-24 [contexto] Fact Check. Capas do Público e Jerusalem Post referem adicção de Zelensky a drog ← adicção
+     2026-08-18 [contexto] Fact Check. Calor extremo em Itália faz semáforo derreter? ← onda de calor
+     2026-08-26 [contexto] Fact Chek. Anthony Fauci pode ser "condenado à cadeira elétrica", como se alega  ← vacinas
+     2026-08-31 [contexto] Fact Check. Bolsonaro foi considerado inocente após comissão de inquérito à Covi ← covid, covid-19
+     2026-09-28 [contexto] Fact Check. Presidente chinês sofreu um "grave AVC" na cimeira dos BRICS na Índi ← avc
+     2026-10-26 [contexto] Fact Check. Juiz Alexandre de Moraes morre depois de sofrer enfarte? ← enfarte, infarto
+  falsos_positivos    1   (só pela lista nova: 1)
+     2026-02-18 [fora] Fact Check. Von der Leyen disse que "a liberdade de expressão é um vírus e a cen ← vacina
+  escapa              2   (só pela lista nova: 0)
+     2026-09-14 [saude-sem-area] Fact Check. Japão aprovou cama que trata doenças graves com recurso a frequência ← 
+     2026-09-28 [saude-sem-area] Fact Check. Carros à sombra produzem níveis excessivos de toxinas que causam can ← 
+  eixo diferente da leitura: 0 []
+== Polígrafo (18/08 a 10/11): 312 verificações; leitura: {'fora': 297, 'emergentes': 1, 'alimentacao': 2, 'contexto': 11, 'saude-mental': 1}
+  entra_areas         4   (só pela lista nova: 3)
+     2026-08-22 [emergentes] mensagens provam que fauci encobriu taxa de 82 de abortos entre vacinadas contra ← covid, vacinadas
+     2026-08-25 [alimentacao] bebidas com adicao de acucar e adocantes tem imposto extra ao contrario de alime ← adoçantes, alimentos, açúcar, bolachas, bolos
+     2026-10-11 [saude-mental] Portugal é o terceiro país da Europa com maior prevalência de demência? ← alzheimer, demência, saúde mental
+     2026-10-26 [alimentacao] Indicações da DGS proíbem os bolos de aniversário nas escolas a partir deste ano ← bolos
+  entra_sem_area      0   (só pela lista nova: 0)
+  entra_contexto      1   (só pela lista nova: 1)
+     2026-09-05 [contexto] traicao aos portugueses camara oculta expoe conspiracao de marcelo rebelo de sou ← covid
+  falsos_positivos    0   (só pela lista nova: 0)
+  escapa              0   (só pela lista nova: 0)
+  eixo diferente da leitura: 0 []

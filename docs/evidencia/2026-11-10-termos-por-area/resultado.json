@@ -1,0 +1,458 @@
+{
+ "sem_area_incluida": false,
+ "observador": {
+  "entra_areas": [
+   {
+    "data": "2026-02-16",
+    "area_leitura": "emergentes",
+    "termos": [
+     "vírus nipah"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Vírus Nipah, que causa preocupação na Índia, já chegou ao Brasil?",
+    "url": "https://observador.pt/factchecks/fact-check-virus-nipah-que-causa-preocupacao-na-india-ja-chegou-ao-brasil/"
+   },
+   {
+    "data": "2026-02-16",
+    "area_leitura": "emergentes",
+    "termos": [
+     "oms",
+     "vírus nipah"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "OMS alerta para risco de vírus Nipah depois do Carnaval?",
+    "url": "https://observador.pt/factchecks/oms-alerta-para-risco-de-virus-nipah-depois-do-carnaval/"
+   },
+   {
+    "data": "2026-05-12",
+    "area_leitura": "emergentes",
+    "termos": [
+     "covid",
+     "covid-19",
+     "hantavírus",
+     "vacina"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Hantavírus é um dos efeitos colaterais da vacina da Pfizer contra a Covid-19?",
+    "url": "https://observador.pt/factchecks/fact-check-hantavirus-e-um-dos-efeitos-colaterais-da-vacina-da-pfizer-contra-a-covid-19/"
+   },
+   {
+    "data": "2026-05-18",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus",
+     "surto"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. China proíbe entrada de estrangeiros devido ao hantavírus?",
+    "url": "https://observador.pt/factchecks/fact-check-china-proibe-entrada-de-estrangeiros-devido-ao-hantavirus/"
+   },
+   {
+    "data": "2026-05-18",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Macron anunciou fecho de escolas francesas para combater o hantavírus?",
+    "url": "https://observador.pt/factchecks/fact-check-macron-anunciou-fecho-de-escolas-francesas-para-combater-o-hantavirus/"
+   },
+   {
+    "data": "2026-05-20",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus",
+     "vacina"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Pfizer está a desenvolver vacina contra o hantavírus?",
+    "url": "https://observador.pt/factchecks/fact-check-pfizer-esta-a-desenvolver-vacina-contra-o-hantavirus/"
+   },
+   {
+    "data": "2026-05-25",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus",
+     "vacina"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Vacina contra o hantavírus já existe e foi patenteada em 2025?",
+    "url": "https://observador.pt/factchecks/fact-check-vacina-contra-o-hantavirus-ja-existe-e-foi-patenteada-em-2025/"
+   },
+   {
+    "data": "2026-05-28",
+    "area_leitura": "emergentes",
+    "termos": [
+     "covid",
+     "covid-19",
+     "hantavírus",
+     "surto"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Homem retido em cruzeiro com surto de hantavírus é o mesmo que apareceu na BBC durante a Covid-19?",
+    "url": "https://observador.pt/factchecks/fact-check-homem-retido-em-cruzeiro-com-surto-de-hantavirus-e-o-mesmo-que-apareceu-na-bbc-durante-a-covid-19/"
+   },
+   {
+    "data": "2026-06-24",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus",
+     "surto"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Simpsons previram o surto de hantavírus a bordo de um cruzeiro em 2012?",
+    "url": "https://observador.pt/factchecks/fact-check-simpsons-previram-o-surto-de-hantavirus-a-bordo-de-um-cruzeiro-em-2012/"
+   },
+   {
+    "data": "2026-06-24",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Vídeo mostra encenação do hantavírus com homem a entrar \"acidentalmente em cena\"?",
+    "url": "https://observador.pt/factchecks/fact-check-video-mostra-encenacao-do-hantavirus-com-homem-a-entrar-acidentalmente-em-cena/"
+   },
+   {
+    "data": "2026-06-30",
+    "area_leitura": "emergentes",
+    "termos": [
+     "hantavírus",
+     "oms",
+     "surto",
+     "vacinação"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Diretor-geral da OMS admite que surto de hantavírus está a ser usado para promover \"agenda massiva",
+    "url": "https://observador.pt/factchecks/fact-check-diretor-geral-da-oms-admite-que-surto-de-hantavirus-esta-a-ser-usado-para-promover-agenda-massiva-de-vacinacao-para-criancas/"
+   },
+   {
+    "data": "2026-07-15",
+    "area_leitura": "alimentacao",
+    "termos": [
+     "beber água"
+    ],
+    "eixos": [
+     "alimentacao"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Ministério da Saúde divulgou guia sobre como beber água?",
+    "url": "https://observador.pt/factchecks/fact-check-ministerio-da-saude-divulgou-guia-sobre-como-beber-agua/"
+   },
+   {
+    "data": "2026-08-27",
+    "area_leitura": "alimentacao",
+    "termos": [
+     "bolachas"
+    ],
+    "eixos": [
+     "alimentacao"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Bolachas Oreo têm petróleo na sua composição?",
+    "url": "https://observador.pt/factchecks/fact-check-bolachas-oreo-tem-petroleo-na-sua-composicao/"
+   },
+   {
+    "data": "2026-08-28",
+    "area_leitura": "alimentacao",
+    "termos": [
+     "manteiga"
+    ],
+    "eixos": [
+     "alimentacao"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Bill Gates lançou manteiga produzida com derivados do petróleo?",
+    "url": "https://observador.pt/factchecks/fact-check-bill-gates-lancou-manteiga-produzida-com-derivados-do-petroleo/"
+   },
+   {
+    "data": "2026-08-30",
+    "area_leitura": "emergentes",
+    "termos": [
+     "covid",
+     "covid-19",
+     "ivermectina"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Novas informações provam que ivermectina tem 70% de eficácia contra a Covid-19?",
+    "url": "https://observador.pt/factchecks/fact-check-novas-informacoes-provam-que-ivermectina-tem-70-de-eficacia-contra-a-covid-19/"
+   }
+  ],
+  "entra_sem_area": [],
+  "entra_contexto": [
+   {
+    "data": "2025-12-29",
+    "area_leitura": "contexto",
+    "termos": [
+     "alzheimer"
+    ],
+    "eixos": [
+     "saude-mental"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Defesa de Jair Bolsonaro alegou que o ex-presidente tem Alzheimer?",
+    "url": "https://observador.pt/factchecks/fact-check-defesa-de-jair-bolsonaro-alegou-que-o-ex-presidente-tem-alzheimer/"
+   },
+   {
+    "data": "2026-02-26",
+    "area_leitura": "contexto",
+    "termos": [
+     "covid",
+     "covid-19",
+     "pandemia"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Ficheiros do caso Epstein mostram discussão para a simulação de uma pandemia com Bill Gates antes ",
+    "url": "https://observador.pt/factchecks/fact-check-ficheiros-do-caso-epstein-mostram-discussao-para-a-simulacao-de-uma-pandemia-com-bill-gates-antes-da-covid-19/"
+   },
+   {
+    "data": "2026-05-25",
+    "area_leitura": "contexto",
+    "termos": [
+     "hantavírus"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Trump disse que a “extrema-esquerda” quer retirar a liberdade à população global através do hantav",
+    "url": "https://observador.pt/factchecks/fact-check-trump-disse-que-a-extrema-esquerda-quer-retirar-a-liberdade-a-populacao-global-atraves-do-hantavirus/"
+   },
+   {
+    "data": "2026-06-24",
+    "area_leitura": "contexto",
+    "termos": [
+     "adicção"
+    ],
+    "eixos": [
+     "saude-mental"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Capas do Público e Jerusalem Post referem adicção de Zelensky a drogas?",
+    "url": "https://observador.pt/factchecks/fact-check-capas-do-publico-e-jerusalem-post-referem-adiccao-de-zelensky-a-drogas/"
+   },
+   {
+    "data": "2026-08-18",
+    "area_leitura": "contexto",
+    "termos": [
+     "onda de calor"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Calor extremo em Itália faz semáforo derreter?",
+    "url": "https://observador.pt/factchecks/fact-check-calor-extremo-em-italia-faz-semaforo-derreter/"
+   },
+   {
+    "data": "2026-08-26",
+    "area_leitura": "contexto",
+    "termos": [
+     "vacinas"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Chek. Anthony Fauci pode ser \"condenado à cadeira elétrica\", como se alega nas redes sociais?",
+    "url": "https://observador.pt/factchecks/fact-chek-anthony-fauci-pode-ser-condenado-a-cadeira-eletrica-como-se-alega-nas-redes-sociais/"
+   },
+   {
+    "data": "2026-08-31",
+    "area_leitura": "contexto",
+    "termos": [
+     "covid",
+     "covid-19"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Bolsonaro foi considerado inocente após comissão de inquérito à Covid-19?",
+    "url": "https://observador.pt/factchecks/fact-check-bolsonaro-foi-considerado-inocente-apos-comissao-de-inquerito-a-covid-19/"
+   },
+   {
+    "data": "2026-09-28",
+    "area_leitura": "contexto",
+    "termos": [
+     "avc"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Presidente chinês sofreu um \"grave AVC\" na cimeira dos BRICS na Índia?",
+    "url": "https://observador.pt/factchecks/fact-check-presidente-chines-sofreu-um-grave-avc-na-cimeira-dos-brics-na-india/"
+   },
+   {
+    "data": "2026-10-26",
+    "area_leitura": "contexto",
+    "termos": [
+     "enfarte",
+     "infarto"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Juiz Alexandre de Moraes morre depois de sofrer enfarte?",
+    "url": "https://observador.pt/factchecks/fact-check-juiz-alexandre-de-moraes-morre-depois-de-sofrer-enfarte/"
+   }
+  ],
+  "falsos_positivos": [
+   {
+    "data": "2026-02-18",
+    "area_leitura": "fora",
+    "termos": [
+     "vacina"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Fact Check. Von der Leyen disse que \"a liberdade de expressão é um vírus e a censura é a vacina\"?",
+    "url": "https://observador.pt/factchecks/fact-check-von-der-leyen-disse-que-a-liberdade-de-expressao-e-um-virus-e-a-censura-e-a-vacina/"
+   }
+  ],
+  "escapa": [
+   {
+    "data": "2026-09-14",
+    "area_leitura": "saude-sem-area",
+    "termos": [],
+    "eixos": [],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Japão aprovou cama que trata doenças graves com recurso a frequências magnéticas?",
+    "url": "https://observador.pt/factchecks/fact-check-japao-aprovou-cama-que-trata-doencas-graves-com-recurso-a-frequencias-magneticas/"
+   },
+   {
+    "data": "2026-09-28",
+    "area_leitura": "saude-sem-area",
+    "termos": [],
+    "eixos": [],
+    "so_pela_lista": false,
+    "titulo": "Fact Check. Carros à sombra produzem níveis excessivos de toxinas que causam cancro?",
+    "url": "https://observador.pt/factchecks/fact-check-carros-a-sombra-produzem-niveis-excessivos-de-toxinas-que-causam-cancro/"
+   }
+  ]
+ },
+ "poligrafo": {
+  "entra_areas": [
+   {
+    "data": "2026-08-22",
+    "area_leitura": "emergentes",
+    "termos": [
+     "covid",
+     "vacinadas"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "mensagens provam que fauci encobriu taxa de 82 de abortos entre vacinadas contra a covid 19",
+    "url": "https://poligrafo.iol.pt/fact-check/mensagens-provam-que-fauci-encobriu-taxa-de-82-de-abortos-entre-vacinadas-contra-a-covid-19"
+   },
+   {
+    "data": "2026-08-25",
+    "area_leitura": "alimentacao",
+    "termos": [
+     "adoçantes",
+     "alimentos",
+     "açúcar",
+     "bolachas",
+     "bolos"
+    ],
+    "eixos": [
+     "alimentacao"
+    ],
+    "so_pela_lista": true,
+    "titulo": "bebidas com adicao de acucar e adocantes tem imposto extra ao contrario de alimentos como bolos bolachas e cer",
+    "url": "https://poligrafo.iol.pt/fact-check/bebidas-com-adicao-de-acucar-e-adocantes-tem-imposto-extra-ao-contrario-de-alimentos-como-bolos-bolachas-e-cereais"
+   },
+   {
+    "data": "2026-10-11",
+    "area_leitura": "saude-mental",
+    "termos": [
+     "alzheimer",
+     "demência",
+     "saúde mental"
+    ],
+    "eixos": [
+     "saude-mental"
+    ],
+    "so_pela_lista": false,
+    "titulo": "Portugal é o terceiro país da Europa com maior prevalência de demência?",
+    "url": "https://poligrafo.iol.pt/fact-check/portugal-e-o-terceiro-pais-da-europa-com-mais-casos-de-demencia"
+   },
+   {
+    "data": "2026-10-26",
+    "area_leitura": "alimentacao",
+    "termos": [
+     "bolos"
+    ],
+    "eixos": [
+     "alimentacao"
+    ],
+    "so_pela_lista": true,
+    "titulo": "Indicações da DGS proíbem os bolos de aniversário nas escolas a partir deste ano letivo?",
+    "url": "https://poligrafo.iol.pt/fact-check/indicacoes-da-dgs-proibem-os-bolos-de-aniversario-em-escolas-no-inicio-deste-ano-letivo"
+   }
+  ],
+  "entra_sem_area": [],
+  "entra_contexto": [
+   {
+    "data": "2026-09-05",
+    "area_leitura": "contexto",
+    "termos": [
+     "covid"
+    ],
+    "eixos": [
+     "emergentes"
+    ],
+    "so_pela_lista": true,
+    "titulo": "traicao aos portugueses camara oculta expoe conspiracao de marcelo rebelo de sousa relativa a covid 19",
+    "url": "https://poligrafo.iol.pt/fact-check/traicao-aos-portugueses-camara-oculta-expoe-conspiracao-de-marcelo-rebelo-de-sousa-relativa-a-covid-19"
+   }
+  ],
+  "falsos_positivos": [],
+  "escapa": []
+ }
+}

@@ -1,0 +1,29 @@
+== Observador (12 meses): 507 verificações; leitura: {'fora': 472, 'contexto': 18, 'emergentes': 12, 'alimentacao': 3, 'saude-sem-area': 2}
+  entra_areas        15   (só pela lista nova: 4)
+--
+  entra_sem_area      1   (só pela lista nova: 1)
+     2026-09-28 [saude-sem-area] Fact Check. Carros à sombra produzem níveis excessivos de toxinas que causam can ← cancro, toxinas
+  entra_contexto      9   (só pela lista nova: 4)
+     2025-12-29 [contexto] Fact Check. Defesa de Jair Bolsonaro alegou que o ex-presidente tem Alzheimer? ← alzheimer
+     2026-02-26 [contexto] Fact Check. Ficheiros do caso Epstein mostram discussão para a simulação de uma  ← covid, covid-19, pandemia
+     2026-05-25 [contexto] Fact Check. Trump disse que a “extrema-esquerda” quer retirar a liberdade à popu ← hantavírus
+     2026-06-24 [contexto] Fact Check. Capas do Público e Jerusalem Post referem adicção de Zelensky a drog ← adicção
+     2026-08-18 [contexto] Fact Check. Calor extremo em Itália faz semáforo derreter? ← onda de calor
+     2026-08-26 [contexto] Fact Chek. Anthony Fauci pode ser "condenado à cadeira elétrica", como se alega  ← vacinas
+     2026-08-31 [contexto] Fact Check. Bolsonaro foi considerado inocente após comissão de inquérito à Covi ← covid, covid-19
+     2026-09-28 [contexto] Fact Check. Presidente chinês sofreu um "grave AVC" na cimeira dos BRICS na Índi ← avc, tratamento
+     2026-10-26 [contexto] Fact Check. Juiz Alexandre de Moraes morre depois de sofrer enfarte? ← enfarte, infarto
+  falsos_positivos    2   (só pela lista nova: 2)
+     2026-02-18 [fora] Fact Check. Von der Leyen disse que "a liberdade de expressão é um vírus e a cen ← vacina
+     2026-10-27 [fora] Fact Check. Flávio Bolsonaro disse que queria cortar "chaga" dos programas socia ← cancro
+  escapa              1   (só pela lista nova: 0)
+     2026-09-14 [saude-sem-area] Fact Check. Japão aprovou cama que trata doenças graves com recurso a frequência ← 
+  eixo diferente da leitura: 0 []
+== Polígrafo (18/08 a 10/11): 312 verificações; leitura: {'fora': 297, 'emergentes': 1, 'alimentacao': 2, 'contexto': 11, 'saude-mental': 1}
+  entra_areas         4   (só pela lista nova: 3)
+  entra_sem_area      0   (só pela lista nova: 0)
+  entra_contexto      1   (só pela lista nova: 1)
+     2026-09-05 [contexto] traicao aos portugueses camara oculta expoe conspiracao de marcelo rebelo de sou ← covid
+  falsos_positivos    0   (só pela lista nova: 0)
+  escapa              0   (só pela lista nova: 0)
+  eixo diferente da leitura: 0 []

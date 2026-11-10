@@ -1,0 +1,36 @@
+{
+ "_nota": "Lista v1 de termos por área, proposta pelo Claude Code a 10/11/2026, escrita ANTES do teste. Para aprovar ou cortar pela Marta. 'origem' diz de onde vem cada termo. Comparação sem acentos nem maiúsculas, palavra inteira; as formas no plural estão escritas à parte.",
+ "emergentes": [
+  {"termos": ["covid", "covid-19", "coronavirus"], "origem": "caso ivermectina/covid (Observador 30/08); 'covid sintomas' e 'long covid' só casam com a frase inteira"},
+  {"termos": ["vacina", "vacinação", "vacinado", "vacinada", "vacinados", "vacinadas"], "origem": "a keyword é só 'vacinas' (plural); caso Fauci e abortos entre vacinadas (Polígrafo 22/08)"},
+  {"termos": ["ivermectina"], "origem": "caso ivermectina (Observador 30/08)"},
+  {"termos": ["pandemia", "epidemia", "surto"], "origem": "vocabulário das ameaças emergentes; casos hantavírus e Nipah"},
+  {"termos": ["oms"], "origem": "casos Nipah e hantavírus (OMS citada nas afirmações)"},
+  {"termos": ["gripe"], "origem": "as keywords são 'gripe A' e 'gripe das aves'"},
+  {"termos": ["infeção", "infecção", "bactéria", "bactérias"], "origem": "vocabulário do eixo (candida auris, sépsis, norovírus)"},
+  {"termos": ["enfarte", "infarto", "ataque cardíaco"], "origem": "a keyword é 'doenças cardiovasculares'; caso Moraes (Observador 26/10, contexto)"}
+ ],
+ "saude-mental": [
+  {"termos": ["saúde mental"], "origem": "nome do eixo; etiqueta do Polígrafo ('Saúde Mental')"},
+  {"termos": ["depressão"], "origem": "as keywords são 'depressão sintomas' e 'depressão pós-parto'. ATENÇÃO: 'depressão' meteorológica — aplica-se a regra eDepressaoMeteorologica de _shared/meteo.ts"},
+  {"termos": ["psicólogo", "psicóloga", "psicólogos", "psicologia", "psiquiatria", "psiquiátrico", "psiquiátrica"], "origem": "as keywords são 'psicologa' (sem acento) e 'psiquiatra'"},
+  {"termos": ["antidepressivo", "ansiolítico", "ansiolíticos"], "origem": "a keyword é 'antidepressivos' (plural)"},
+  {"termos": ["adicção", "vício"], "origem": "a keyword é 'dependências' (plural). Não se propõe 'dependência' nem 'adição': casam com 'dependência de apoios sociais' e 'adição de açúcar'"}
+ ],
+ "alimentacao": [
+  {"termos": ["alimentação", "alimento", "alimentos", "nutrição", "nutricionista", "nutriente", "nutrientes"], "origem": "nome do eixo e vocabulário da nutrição"},
+  {"termos": ["açúcar", "adoçante", "adoçantes"], "origem": "caso imposto sobre bebidas com açúcar (Polígrafo 25/08)"},
+  {"termos": ["bolos", "bolachas", "manteiga"], "origem": "casos bolos da DGS (Polígrafo 01/11), Oreo (Observador 27/08), manteiga de Bill Gates (Observador 28/08)"},
+  {"termos": ["beber água", "hidratação"], "origem": "caso guia do Ministério da Saúde sobre beber água (Observador 15/07)"},
+  {"termos": ["vitamina", "vitaminas", "suplemento"], "origem": "a keyword é 'suplementos' (plural)"},
+  {"termos": ["aditivo", "aditivos", "corante", "corantes", "conservante", "conservantes", "aspartame", "glifosato", "transgénico", "transgénicos", "ultraprocessado", "calorias"], "origem": "temas frequentes de desinformação alimentar; a keyword é 'ultraprocessados' (plural)"}
+ ],
+ "menopausa": [
+  {"termos": ["hormona", "hormonas", "hormonal"], "origem": "vocabulário do eixo (reposição hormonal, estradiol)"},
+  {"termos": ["mamografia", "ginecologia", "útero", "ovário", "ovários", "fertilidade"], "origem": "vocabulário clínico vizinho das keywords do eixo (cancro da mama, mioma, endometriose, ginecologista)"},
+  {"termos": ["contraceção", "contracetivo", "contracetivos", "pílula"], "origem": "saúde reprodutiva, vizinha do eixo"}
+ ],
+ "_sem_area_decide_a_Marta": [
+  {"termos": ["cancro", "cancerígeno", "cancerígenos", "tóxico", "tóxicos", "toxinas", "cura", "curar", "tratamento"], "origem": "casos cama japonesa (Observador 14/09) e toxinas nos carros (Observador 28/09). Não cabem nas quatro áreas: ou ficam de fora, ou entram num eixo que a Marta escolha"}
+ ]
+}

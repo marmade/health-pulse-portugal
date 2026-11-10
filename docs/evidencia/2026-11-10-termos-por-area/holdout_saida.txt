@@ -1,0 +1,62 @@
+apanhadas 12 | só pela lista nova 6
+A0 2024-11-28 ['emergentes'] ['covid', 'covid-19', 'oms', 'pandemia'] LISTA Fact Check. Diretor-geral da OMS fez intervenção sobre gestão da pandemia "após vitória de Donald Trump"?
+A1 2024-11-28 ['saude-mental'] ['suicídio']  Fact Check. Organização Mundial de Saúde anunciou subida exponencial de casos de suicídio após a eleição 
+A2 2024-11-28 ['emergentes'] ['covid', 'covid-19', 'vacina', 'vacinadas', 'vacinados'] LISTA Fact Check. Pfizer e autoridades de saúde esconderam estudo que mostrou que apenas crianças vacinadas tiv
+A3 2024-12-26 ['emergentes'] ['covid', 'covid-19', 'vacina'] LISTA Fact Check. CEO da Pfizer enfrenta prisão perpétua por mentir sobre a vacina contra a Covid-19?
+A4 2024-12-26 ['emergentes'] ['vacinas']  Fact Check. Tratamento com lenacapavir é a "nova cura" para a sida?
+A5 2024-12-27 ['emergentes'] ['covid', 'covid-19', 'vacinada', 'vacinação'] LISTA Fact Check. Comentadora da Fox News morreu de "cancro turbo" por causa da vacinação contra a Covid-19?
+A6 2024-12-30 ['saude-mental'] ['demência']  Fact Check. Uso prolongado de medicamento para o colesterol é a maior causa de demência nos EUA?
+A7 2025-01-28 ['emergentes'] ['covid', 'vacina'] LISTA Fact Check. Japão classifica vacina Covid como "a mais mortal da história da humanidade"?
+A8 2025-03-24 ['emergentes'] ['covid', 'covid-19', 'vacinas']  Fact Check. Donald Trump baniu as vacinas de mRNA contra a Covid-19 dos EUA?
+A9 2025-06-23 ['emergentes'] ['covid', 'covid-19', 'vacina', 'vacinados', 'vacinas']  Fact Check. Tumores cerebrais detetados em grupo de enfermeiros nos EUA estão relacionados com vacina con
+A10 2025-08-07 ['emergentes'] ['dengue']  Fact Check. Biofábrica de wolbachia destina-se a criar "modificar o ambiente" e representa perigo para a 
+A11 2025-08-11 ['menopausa'] ['hormonal'] LISTA Fact Check. Presidente da Namíbia rejeitou Bill Gates e diz que EUA deviam "conter o seu crescimento demo
+candidatas não apanhadas (filtro largo): 48
+E0 2024-11-28 Fact Check. Benjamin Netanyahu foi internado após sofrer "graves problemas de saúde"?
+E1 2024-11-29 Fact Check. Água de ananás aquecida cura o cancro?
+E2 2024-12-27 Fact Check. Bolsonaro fotografado com Lula durante visita a hospital?
+E3 2024-12-30 Fact Check. Morte de Lula da Silva antes de 1 de janeiro forçaria eleições presidenciais no Brasil?
+E4 2024-12-30 Fact Check. New York Times publicou opinião que classifica apoio a Mangione como comportamento "anti-isra
+E5 2024-12-30 Fact Check. Experiente médico norte-americano sugere spray nasal que cura a perda de memória num mês?
+E6 2025-01-20 Fact Check. Peru classifica membros da comunidade trans como pessoas com "doenças mentais"?
+E7 2025-01-20 Fact Check. Título de artigo do Guardian diz que pessoas brancas devem ir para o fim da fila no acesso ao
+E8 2025-01-29 Fact Check. 5G é prejudicial para humanos, animais e plantas?
+E9 2025-01-30 Fact Check. Metapneumovirus é um "novo vírus" com origem na China?
+E10 2025-02-25 Fact Check. Fotos mostram que filha de William e Kate Middleton foi hospitalizada?
+E11 2025-03-11 Fact Check. Ucrânia mobilizou soldado com síndrome de Down para a linha a frente?
+E12 2025-03-11 Fact Check. Os Simpsons previram que a morte do Papa Francisco ia acontecer em 2025?
+E13 2025-03-11 Fact-Check. Imagem de Trump, Netanyahu e Musk juntos na mesma sala é real?
+E14 2025-03-24 Fact Check. Fotografia do Papa Francisco numa cama de hospital é real?
+E15 2025-03-25 Fact Check. Vídeo mostra autoridades chinesas a destruir uma mesquita?
+E16 2025-04-10 Fact Check. Decathlon faz campanha com mochilas a dois euros?
+E17 2025-04-10 Fact Check. Papa Francisco assinou carta de renúncia devido a agravamento do estado de saúde?
+E18 2025-04-22 Fact Check. Imagens mostram cruzeiro a despejar toneladas de material poluente para o mar?
+E19 2025-04-23 Fact Check. Donald Trump promete que, depois da Gronelândia, vai anexar o Alasca?
+E20 2025-05-21 Fact Check. Macron e Merz apanhados a esconder drogas durante viagem de comboio a Kiev?
+E21 2025-05-26 Fact Check. Mulher registou bebé recém-nascido com o nome de "MAGA Trump Jr."?
+E22 2025-05-26 Fact Check. Donald Trump fez visita secreta a Jair Bolsonaro no hospital?
+E23 2025-05-27 Fact Check. Capa da Time mostra primeiro-ministro do Canadá a fazer o dedo do meio a Trump?
+E24 2025-05-27 Fact Check. Imagem mostra nova "estátua gigante" de Cristiano Ronaldo em Lisboa?
+E25 2025-05-27 Fact Check. Musk gasta 50 milhões de dólares para construir casas para famílias com baixos rendimentos?
+E26 2025-05-28 Fact Check. Foi inaugurada uma estátua de Cristiano Ronaldo e Lionel Messi no Uruguai a simbolizar o fair
+E27 2025-05-29 Fact Check. Papa Leão XIV disse que "transsexualidade é uma doença" e que deve ser "tratada"?
+E28 2025-06-23 Fact Check. Governo quer criar "salas de oração nos hospitais para os novos portugueses?"
+E29 2025-06-24 Fact Check. O Papa Francisco escreveu um texto sobre a definição católica do que é um “hospital”?
+E30 2025-06-24 Fact Check. Notícia da CNN sobre agressões a profissionais de saúde no Curry Cabral fazia referência a oi
+E31 2025-06-24 Fact Check. Deputado do Chega disse que "ponderaria o aborto" se o feto tivesse uma deformação ou fosse n
+E32 2025-06-25 Fact Check. Ator Ruy de Carvalho hospitalizado em Lisboa "após apresentar sinais de exaustão"?
+E33 2025-06-26 Fact Check. Maior aeroporto na Ucrânia foi bombardeado pela Rússia?
+E34 2025-07-21 Fact Check. Javalis nadam com banhistas nas praias da Arrábida, em Setúbal?
+E35 2025-07-22 Fact Check. Vídeo mostra leão a devorar carne num supermercado sul-africano?
+E36 2025-07-25 Fact Check. Foi encontrado um boneco de "carne humana" na Califórnia?
+E37 2025-07-29 Fact Check. Presidente Lula da Silva foi hospitalizado numa altura de elevada tensão com os EUA?
+E38 2025-08-07 Fact Check. Paul McCartney faz visita surpresa e toca para Phil Collins no hospital?
+E39 2025-08-07 Fact Check. 85% dos refugiados do mundo são muçulmanos e só procuram refúgio em países não-muçulmanos?
+E40 2025-08-07 Fact Check. Imigrante guineense foi decapitado por um "cidadão português" no centro de Lisboa?
+E41 2025-08-13 Fact Check. Fotografia mostra rapariga yazidi a fugir do ISIS no Iraque e não a pedir comida em Gaza?
+E42 2025-08-19 Fact Check. Gordon Ramsay expulsou nadadora transgénero Lia Thomas de um dos seus restaurantes?
+E43 2025-09-16 Fact Check. Vídeo mostra forças norte-americanas a caminho da América Latina para combater cartéis de dro
+E44 2025-10-24 Fact Check. 20 pessoas deram entrada em hospital de São Paulo com um quadro de intoxicação por metanol?
+E45 2025-10-27 Fact Check. Nadadora Mollie O'Callaghan diz que não participa nos Jogos Olímpicos de 2028 se atleta trans
+E46 2025-10-27 Fact Check. Ajuda humanitária na flotilha que tentou chegar a Gaza era composta sobretudo por droga, álco
+E47 2025-10-28 Fact Check. Ex-jogador do Barcelona Eric Abidal morre depois de vencer cancro duas vezes?
