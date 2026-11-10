@@ -1,0 +1,43 @@
+{
+ "_nota": "Lista v3 = decisões da Marta de 10/11/2026 sobre a v1 (§9.7): Emergentes sem enfarte/infarto/ataque cardíaco, mais vírus e intoxicação; Saúde mental mais perda de memória; Alimentação como na v1; Menopausa sem hormonal; a lista 'sem área' fica de fora. O grupo '_menopausa_novos_propostos_depois_do_teste' NÃO está aprovado: foi proposto pelo Claude Code depois do teste, a pedido da Marta, e só se testa à parte.",
+ "emergentes": [
+  {"termos": ["covid", "covid-19", "coronavirus"], "origem": "v1"},
+  {"termos": ["vacina", "vacinação", "vacinado", "vacinada", "vacinados", "vacinadas"], "origem": "v1"},
+  {"termos": ["ivermectina"], "origem": "v1"},
+  {"termos": ["pandemia", "epidemia", "surto"], "origem": "v1"},
+  {"termos": ["oms"], "origem": "v1"},
+  {"termos": ["gripe"], "origem": "v1"},
+  {"termos": ["infeção", "infecção", "bactéria", "bactérias"], "origem": "v1"},
+  {"termos": ["vírus", "intoxicação"], "origem": "v2, aprovados pela Marta (Metapneumovírus e metanol, controlo 2024-25)"}
+ ],
+ "saude-mental": [
+  {"termos": ["saúde mental"], "origem": "v1"},
+  {"termos": ["depressão"], "origem": "v1 (menos a meteorológica)"},
+  {"termos": ["psicólogo", "psicóloga", "psicólogos", "psicologia", "psiquiatria", "psiquiátrico", "psiquiátrica"], "origem": "v1"},
+  {"termos": ["antidepressivo", "ansiolítico", "ansiolíticos"], "origem": "v1"},
+  {"termos": ["adicção", "vício"], "origem": "v1"},
+  {"termos": ["perda de memória"], "origem": "v2, aprovado pela Marta (spray nasal, controlo 2024-25)"}
+ ],
+ "alimentacao": [
+  {"termos": ["alimentação", "alimento", "alimentos", "nutrição", "nutricionista", "nutriente", "nutrientes"], "origem": "v1"},
+  {"termos": ["açúcar", "adoçante", "adoçantes"], "origem": "v1"},
+  {"termos": ["bolos", "bolachas", "manteiga"], "origem": "v1"},
+  {"termos": ["beber água", "hidratação"], "origem": "v1"},
+  {"termos": ["vitamina", "vitaminas", "suplemento"], "origem": "v1"},
+  {"termos": ["aditivo", "aditivos", "corante", "corantes", "conservante", "conservantes", "aspartame", "glifosato", "transgénico", "transgénicos", "ultraprocessado", "calorias"], "origem": "v1"}
+ ],
+ "menopausa": [
+  {"termos": ["hormona", "hormonas"], "origem": "v1 ('hormonal' saiu: 0 acertos, 1 engano)"},
+  {"termos": ["mamografia", "ginecologia", "útero", "ovário", "ovários", "fertilidade"], "origem": "v1"},
+  {"termos": ["contraceção", "contracetivo", "contracetivos", "pílula"], "origem": "v1"}
+ ],
+ "_menopausa_novos_propostos_depois_do_teste": [
+  {"termos": ["climatério", "pós-menopausa", "menopáusica", "menopáusicas"], "origem": "nomes clínicos da fase que não estão nas keywords (as keywords têm menopausa, perimenopausa, pré-menopausa, menopausa precoce, idade menopausa, sintomas menopausa)"},
+  {"termos": ["estrogénio", "estrogénios", "progesterona", "testosterona"], "origem": "hormonas da fase, nomeadas (a keyword é só estradiol)"},
+  {"termos": ["libido", "sexualidade", "desejo sexual", "disfunção sexual", "secura vaginal", "atrofia vaginal", "dispareunia", "lubrificante"], "origem": "sexualidade nesta fase, pedido da Marta; vocabulário clínico corrente"},
+  {"termos": ["menstrual", "ciclo menstrual"], "origem": "a keyword é 'menstruação'"},
+  {"termos": ["densidade óssea"], "origem": "vizinho de osteopenia e osteoporose (keywords)"},
+  {"termos": ["diu", "citologia", "hpv"], "origem": "contraceção e rastreio ginecológico; 'hpv' também toca nas infeções sexualmente transmissíveis (Emergentes)"},
+  {"termos": ["calores"], "origem": "forma corrente de 'afrontamentos' (keyword); não casa com 'calor' no singular"}
+ ]
+}

@@ -1,0 +1,21 @@
+
+== Observador 12 meses 507
+  v1        apanha  25  → nas áreas 15, contexto 9, sem área 0, FORA (engano) 1
+  v3        apanha  24  → nas áreas 15, contexto 8, sem área 0, FORA (engano) 1
+  v3+novos  apanha  24  → nas áreas 15, contexto 8, sem área 0, FORA (engano) 1
+    sai em v3        2026-10-26 [contexto] Fact Check. Juiz Alexandre de Moraes morre depois de sofrer enfarte? ← enfarte, infarto
+
+== Polígrafo 18/08-10/11 312
+  v1        apanha   5  → nas áreas 4, contexto 1, sem área 0, FORA (engano) 0
+  v3        apanha   5  → nas áreas 4, contexto 1, sem área 0, FORA (engano) 0
+  v3+novos  apanha   5  → nas áreas 4, contexto 1, sem área 0, FORA (engano) 0
+
+== Observador 2024-25 (controlo) 565
+  v1        apanha  12
+  v3        apanha  14
+  v3+novos  apanha  15
+    sai em v3        2025-08-11 [?] Fact Check. Presidente da Namíbia rejeitou Bill Gates e diz que EUA deviam "conter o  ← hormonal
+    entra em v3      2024-12-30 [?] Fact Check. Experiente médico norte-americano sugere spray nasal que cura a perda de  ← perda de memória
+    entra em v3      2025-01-30 [?] Fact Check. Metapneumovirus é um "novo vírus" com origem na China? ← vírus
+    entra em v3      2025-10-24 [?] Fact Check. 20 pessoas deram entrada em hospital de São Paulo com um quadro de intoxi ← intoxicação
+    entra em v3+novos 2025-08-11 [?] Fact Check. Presidente da Namíbia rejeitou Bill Gates e diz que EUA deviam "conter o  ← diu
