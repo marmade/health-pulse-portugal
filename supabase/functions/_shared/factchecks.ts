@@ -68,8 +68,11 @@ export const VEREDICTOS_MOSTRADOS: Record<string, string[]> = {
   poligrafo: ["falso", "pimenta na lingua", "manipulado", "descontextualizado"],
 };
 
+// O intervalo U+0300–U+036F (acentos combinantes) está escrito com os caracteres literais, como em
+// _shared/perguntas.ts: a publicação pela MCP converte a forma escrita com barra e "u" nos
+// próprios caracteres, e o ficheiro publicado deixava de ser igual ao do repositório (10/11/2026).
 const semAcentos = (s: string | null | undefined) =>
-  (s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+  (s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
 
 export function seMostra(l: Pick<LinhaDebunking, "url" | "classification" | "contexto" | "source">): boolean {
   const mostrados = VEREDICTOS_MOSTRADOS[semAcentos(l.source)] ?? [];
