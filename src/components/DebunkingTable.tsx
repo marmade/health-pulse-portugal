@@ -14,12 +14,14 @@ type Props = {
 type Grupo = "eixos" | "covid";
 
 // Os veredictos são os do editor, TAL COMO VÊM (Observador: Errado, Enganador, Esticado,
-// Certo, Praticamente certo…), sem tradução para uma escala nossa. O estilo é por família;
-// o texto no ecrã é sempre o original. Desde 18/09/2026 a fonte é a Google Fact Check Tools
-// API (ClaimReview), só editores portugueses — scripts/11_fetch_fact_checks.py.
+// Certo, Praticamente certo…; Polígrafo: Falso, Pimenta na Língua, Manipulado,
+// Descontextualizado…), sem tradução para uma escala nossa, e com o nome do jornal ao lado
+// (decisão da Marta, 10/11/2026 — docs/sessoes/2026-11-10.md §8.8). O estilo é por família;
+// o texto no ecrã é sempre o original. Fontes: scripts/11_fetch_fact_checks.py (Observador)
+// e, quando entrar, scripts/12_fetch_poligrafo.py (Polígrafo).
 function estiloVeredicto(v: string): string {
   const l = v.toLowerCase();
-  if (/errad|fals/.test(l)) return "border-foreground bg-foreground text-background";
+  if (/errad|fals|manipul|pimenta/.test(l)) return "border-foreground bg-foreground text-background";
   if (/engan|estic|imprec|descontext/.test(l)) return "border-foreground";
   if (/certo|verdad/.test(l)) return "border-foreground/50 text-foreground/60";
   return "border-foreground/30 text-foreground/50";
@@ -128,7 +130,6 @@ const DebunkingTable = ({ items, covid }: Props) => {
                       </p>
                     )}
                     <div className="flex items-center gap-2 mt-0.5">
-                      <p className="text-[8px] text-foreground/40">{item.source}</p>
                       {(item as any).dataPublicacao && (
                         <p className="text-[8px] text-foreground/30">
                           {new Date((item as any).dataPublicacao).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", year: "numeric" })}
@@ -136,11 +137,16 @@ const DebunkingTable = ({ items, covid }: Props) => {
                       )}
                     </div>
                   </div>
-                  <span
-                    className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 shrink-0 mt-0.5 ${estiloVeredicto(item.classification)}`}
-                  >
-                    {item.classification}
-                  </span>
+                  {/* o veredicto com o nome do jornal ao lado: cada um na escala do seu jornal
+                      (decisão da Marta, 10/11/2026) */}
+                  <div className="flex flex-col items-end shrink-0 mt-0.5 gap-0.5">
+                    <span
+                      className={`text-[7px] font-bold uppercase tracking-wider border px-1 py-0.5 ${estiloVeredicto(item.classification)}`}
+                    >
+                      {item.classification}
+                    </span>
+                    <span className="text-[7px] text-foreground/50 whitespace-nowrap">{item.source}</span>
+                  </div>
                 </div>
               </div>
               {i < filteredItems.length - 1 && (

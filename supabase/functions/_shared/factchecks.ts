@@ -4,8 +4,9 @@
  * notícias de fact-check (`eFactCheck`), e desde Agosto só tinha entrado uma.
  *
  * A tabela é escrita pelo scripts/11_fetch_fact_checks.py (Observador, Google Fact Check
- * Tools API). Só contam as linhas com url e veredicto Errado ou Enganador (seMostra): as 36
- * semeadas a 25/03/2026 ficam "a verificar" e ficam de fora.
+ * Tools API) e, quando entrar, pelo scripts/12_fetch_poligrafo.py (Polígrafo). Só contam as
+ * linhas com url e com um veredicto que o seu jornal mostra (seMostra, abaixo): as semeadas a
+ * 25/03/2026 ficam "a verificar" e ficam de fora.
  *
  * Usado pelo archive-weekly e pelo site (/briefing, PDF e painel de fact-check), para que
  * o arquivo e o ecrã não divirjam.
@@ -46,21 +47,33 @@ export const N_ANTERIORES = 5;
 export const N_EIXO = 3;
 
 /**
- * Só "Errado" e "Enganador" se mostram (decisão da Marta, 29/10/2026 — 2026-10-29-cowork.md §14):
- * no site, no briefing, no arquivo dos eixos e nas exportações. Os outros veredictos do Observador
- * (Esticado; Certo, Praticamente Certo, Inconclusivo, se vierem) ficam na base e saem do que se
- * mostra. Os veredictos NÃO se renomeiam: o que aparece é sempre o que o Observador publicou.
- * Ficam também de fora as 36 semeadas ("a verificar") e o "sem veredicto" do script 11.
+ * Os veredictos que se mostram, POR JORNAL (decisão da Marta, 10/11/2026 —
+ * docs/sessoes/2026-11-10.md §8.8): cada verificação aparece com o veredicto do próprio jornal,
+ * sem traduzir nem juntar escalas, e com o nome do jornal ao lado. Mostram-se só os que dizem
+ * que a informação é falsa ou distorcida:
+ *   Observador — Errado, Enganador (como desde 29/10/2026, 2026-10-29-cowork.md §14);
+ *   Polígrafo  — Falso, Pimenta na Língua, Manipulado, Descontextualizado.
+ * Os outros (Esticado, Certo, Praticamente Certo, Inconclusivo; Verdadeiro, Verdadeiro mas...,
+ * Impreciso) ficam na base e saem do que se mostra: no site, no briefing, no arquivo dos eixos e
+ * nas exportações. Os veredictos NÃO se renomeiam. Um jornal que não esteja aqui não se mostra.
+ * O jornal é a coluna `source`, comparada sem acentos nem maiúsculas.
+ * Ficam também de fora as semeadas a 25/03 ("a verificar") e o "sem veredicto" dos scripts.
  *
  * E as marcadas `contexto` (decisão da Marta, 2/11/2026 — docs/sessoes/2026-11-02.md): as
- * verificações laterais à saúde ficam na base como indícios, fora do ecrã e do briefing até
- * ao fecho de 6/11. O separador próprio fica para depois.
+ * verificações laterais à saúde ficam na base como indícios, fora do ecrã e do briefing. Vale
+ * para os dois jornais.
  */
-const VEREDICTOS_MOSTRADOS = ["errado", "enganador"];
+export const VEREDICTOS_MOSTRADOS: Record<string, string[]> = {
+  observador: ["errado", "enganador"],
+  poligrafo: ["falso", "pimenta na lingua", "manipulado", "descontextualizado"],
+};
 
-export function seMostra(l: Pick<LinhaDebunking, "url" | "classification" | "contexto">): boolean {
-  const c = (l.classification ?? "").trim().toLowerCase();
-  return !!(l.url ?? "").trim() && VEREDICTOS_MOSTRADOS.includes(c) && !l.contexto;
+const semAcentos = (s: string | null | undefined) =>
+  (s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+
+export function seMostra(l: Pick<LinhaDebunking, "url" | "classification" | "contexto" | "source">): boolean {
+  const mostrados = VEREDICTOS_MOSTRADOS[semAcentos(l.source)] ?? [];
+  return !!(l.url ?? "").trim() && mostrados.includes(semAcentos(l.classification)) && !l.contexto;
 }
 
 /** A data da verificação (YYYY-MM-DD), ou null. */

@@ -16,27 +16,44 @@ const linha = (o: Partial<LinhaDebunking>): LinhaDebunking => ({
 });
 
 describe("seMostra", () => {
-  it("as 36 semeadas ('a verificar') ficam de fora, com ou sem link", () => {
-    expect(seMostra({ url: "https://poligrafo.sapo.pt/x", classification: "a verificar" })).toBe(false);
-    expect(seMostra({ url: "", classification: "a verificar" })).toBe(false);
+  const O = "Observador", P = "Polígrafo";
+  it("as semeadas ('a verificar') ficam de fora, com ou sem link", () => {
+    expect(seMostra({ url: "https://poligrafo.sapo.pt/x", classification: "a verificar", source: P })).toBe(false);
+    expect(seMostra({ url: "", classification: "a verificar", source: O })).toBe(false);
   });
   it("sem veredicto do editor ou sem url fica de fora", () => {
-    expect(seMostra({ url: "https://x", classification: "sem veredicto" })).toBe(false);
-    expect(seMostra({ url: "  ", classification: "Errado" })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "sem veredicto", source: O })).toBe(false);
+    expect(seMostra({ url: "  ", classification: "Errado", source: O })).toBe(false);
   });
-  it("só Errado e Enganador se mostram; Esticado, Certo e os outros ficam de fora (29/10)", () => {
+  it("Observador: só Errado e Enganador; Esticado, Certo e os outros ficam de fora (29/10)", () => {
     for (const c of ["Esticado", "Certo", "Praticamente Certo", "Inconclusivo"]) {
-      expect(seMostra({ url: "https://x", classification: c })).toBe(false);
+      expect(seMostra({ url: "https://x", classification: c, source: O })).toBe(false);
     }
-    expect(seMostra({ url: "https://x", classification: "Errado" })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Errado", source: O })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Enganador", source: O })).toBe(true);
   });
-  it("com veredicto e url entra", () => {
-    expect(seMostra({ url: "https://x", classification: "Enganador" })).toBe(true);
+  it("Polígrafo: Falso, Pimenta na Língua, Manipulado e Descontextualizado; os outros ficam de fora (10/11)", () => {
+    for (const c of ["Falso", "Pimenta na Língua", "Manipulado", "Descontextualizado"]) {
+      expect(seMostra({ url: "https://x", classification: c, source: P })).toBe(true);
+    }
+    for (const c of ["Verdadeiro", "Verdadeiro, mas...", "Impreciso"]) {
+      expect(seMostra({ url: "https://x", classification: c, source: P })).toBe(false);
+    }
   });
-  it("as marcadas contexto ficam de fora, mesmo Errado e com url (2/11)", () => {
-    expect(seMostra({ url: "https://x", classification: "Errado", contexto: true })).toBe(false);
-    expect(seMostra({ url: "https://x", classification: "Errado", contexto: false })).toBe(true);
-    expect(seMostra({ url: "https://x", classification: "Errado", contexto: null })).toBe(true);
+  it("cada jornal com a sua escala: o veredicto de um não vale no outro (10/11)", () => {
+    expect(seMostra({ url: "https://x", classification: "Falso", source: O })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "Errado", source: P })).toBe(false);
+  });
+  it("o jornal compara-se sem acentos nem maiúsculas; um jornal desconhecido não se mostra", () => {
+    expect(seMostra({ url: "https://x", classification: "falso", source: "POLIGRAFO" })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Errado", source: "Observador Fact Check" })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "Errado", source: "" })).toBe(false);
+  });
+  it("as marcadas contexto ficam de fora, mesmo Errado e com url (2/11) — nos dois jornais", () => {
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: true, source: O })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "Falso", contexto: true, source: P })).toBe(false);
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: false, source: O })).toBe(true);
+    expect(seMostra({ url: "https://x", classification: "Errado", contexto: null, source: O })).toBe(true);
   });
 });
 
