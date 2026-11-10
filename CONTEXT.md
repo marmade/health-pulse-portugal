@@ -1,6 +1,34 @@
 # CONTEXT.md — Reportagem Viva / Diz que Disse
 > Fonte de verdade do estado actual do projecto. Actualizado a cada sessão.
-> Última actualização: 2026-10-29 (quinta) — **fact-checks, perguntas, títulos e alertas.**
+> Última actualização: 2026-11-10 (terça) — **verificação dos dados; fact-checks pela regra das áreas; Polígrafo à espera de autorização.**
+> **Dados** (ponto 1 de "Antes de escrever", Asana): nada a corrigir. O 37 990 contra 26 200 da
+> recolha de 8/11 é a deduplicação; o `top_debunking` vazio nos eixos é por desenho (o Observador
+> não publicou verificações de saúde desde 28/09); o atraso da corrida de segunda é o cron do
+> GitHub e fica como está (decisão da Marta).
+> **Fontes de fact-check:** na Google Fact Check Tools API só o Observador tem verificações
+> recentes (40 por mês, que é o que publica). O Polígrafo publica cerca de três vezes mais, mas as
+> páginas não têm ClaimReview; o Público proíbe agentes de IA no `robots.txt`. **Decisão da
+> Marta:** os dois entram só com autorização, pedida por email; até lá não se fazem pedidos aos
+> sites. `scripts/12_fetch_poligrafo.py` está no repositório, fora do workflow (sem passo 6C).
+> **Regra das áreas** (opção B, decisão da Marta, para os dois jornais): keywords activas mais
+> `scripts/termos_por_area.json` (v4), aplicadas localmente; o script 11 pede a lista do
+> Observador dos últimos 60 dias; uma linha por (url, eixo). Regras comuns em
+> `scripts/factchecks_comum.py`; teste sem rede `scripts/testar_factchecks_regra.py`.
+> **Veredictos** (decisão da Marta): cada um na escala do seu jornal, com o nome do jornal ao
+> lado. Observador — Errado, Enganador; Polígrafo — Falso, Pimenta na Língua, Manipulado,
+> Descontextualizado (`_shared/factchecks.ts`).
+> **Publicado:** `archive-weekly` **v18** com `verify_jwt: true`, igual ao commit `303e4cd`; guarda
+> com a chave pública dá 403; site com o jornal ao lado do veredicto; `/sobre` (Fontes e
+> Limitações) no ficheiro e em `sobre_conteudo`. Último commit antes deste fecho: `41ae9a7`.
+> **Prova pelo efeito: corrida de segunda 16/11**, critério escrito antes
+> (`docs/sessoes/2026-11-10.md` §9.12). Sem verificação nova, prova que a regra corre, não que
+> apanha.
+> **Decisões do Cowork:** o fecho da ferramenta deixa de ter data; lista "Antes de escrever 1–8"
+> no Asana; Dashboard I com a Health API e Dashboard II com a recolha de domingo, num separador
+> próprio.
+> Registo em `docs/sessoes/2026-11-10.md` e `docs/sessoes/2026-11-10-cowork.md`. O cabeçalho não
+> foi actualizado entre 29/10 e hoje: o estado de 2/11, 4/11 e 5/11 está nos registos dessas datas.
+> Anterior: 2026-10-29 (quinta) — **fact-checks, perguntas, títulos e alertas.**
 > **Fact-checks do Observador** na `debunking`: 240 gravados depois da revisão da Marta (25
 > exclusões), 175 marcados `covid`. Mostram-se só "Errado" e "Enganador", um artigo por linha,
 > com o separador "Covid-19" na vista "Todos". O passo 6B no workflow grava os novos todas as
@@ -639,6 +667,11 @@ principal. A recolha de domingo (`recolher_domingo.sh`, pytrends) continua em pa
 comparação entre as duas fontes fica na página de método, com escalas separadas e
 explicação — não em duas vistas do dashboard.
 
+**Revista a 10/11/2026** (Cowork, decisão da Marta): Dashboard I com a Health API como fonte
+principal; Dashboard II, num separador próprio, com a recolha de domingo. Não se comparam entre
+si; a comparação das duas fontes fica na página de método. Substitui o "não em duas vistas do
+dashboard".
+
 ### Hipótese do vocabulário — 09/09/2026
 
 > **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
@@ -846,6 +879,7 @@ um achado sobre o método, obtido empiricamente com dados do próprio protótipo
 4B. Limpeza notícias antigas por eixo (`scripts/9_cleanup_old_news.py`) — sessão 5
 5. YouTube (`scripts/4_fetch_youtube_trends.py`) → `youtube_trends`
 6. Guiões semanais (Edge Function `generate-guioes-weekly`) → `guioes_semanais`
+6B. Fact-checks do Observador (`scripts/11_fetch_fact_checks.py`, regra das áreas v4 desde 10/11/2026) → `debunking`. Não há 6C: o Polígrafo fica fora até haver autorização.
 7. Arquivo semanal (Edge Function `archive-weekly`) → `eixos_archive` + `briefings_archive`
 
 **Comentados a 14/08/2026** — não removidos; o bloco de comentário no próprio ficheiro
@@ -858,7 +892,7 @@ explica o motivo e a condição para religar:
 |---|---|
 | `refresh-trends` | Cria snapshots históricos (sem alterar volumes) |
 | `fetch-rss-feeds` | Recolhe notícias de 44 RSS feeds (com keyword_id desde sessão 5) |
-| `archive-weekly` | Arquiva 4 eixos + briefing |
+| `archive-weekly` | Arquiva 4 eixos + briefing (v18, `verify_jwt: true`, 10/11/2026) |
 | `generate-guioes-weekly` | Gera guiões dos 4 eixos (5 banco + 5 IA) |
 | `generate-guiao-questions` | Gera perguntas IA via Perplexity Sonar |
 | `generate-diz-que-disse` | Gera conteúdo Diz que Disse para briefing |
@@ -1544,13 +1578,15 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 - [x] ~~**Para os textos finais:** os homónimos ("depressão" sobe com as tempestades) e a herança
       da categoria Saúde (regra de 18/09 §6) não estão no `/sobre` (decisão da Marta, 27/10).~~
       Feito a 01/11 (`49fe865`), `docs/sessoes/2026-11-01.md` §6.
-- [ ] **Os fact-checks não se devem cingir a uma só fonte.** Hoje a única via é a Google Fact
-      Check Tools API, e dos editores portugueses testados só o Observador tem volume: o
-      Polígrafo deu 0 a 18/09 e 3 verificações, todas de Dezembro de 2024, a 28/09
-      (`docs/sessoes/2026-09-28-c.md`). O Polígrafo
-      ficou por decidir a 28/09 (`docs/sessoes/2026-09-28-c.md`, pendente 5). Depois de 30/10:
-      procurar outras fontes de fact-check em português, incluindo o Polígrafo por outra via. Por
-      agora é só nota; o script 11 não se mexe (decisão da Marta, 27/10).
+- [ ] **Polígrafo e Público — à espera de autorização** (decisão da Marta, 10/11). Com a
+      autorização do Polígrafo: passo 6C com o script 12, a frase da semana vazia com os dois
+      jornais, e o ensaio que ficou por fazer (`docs/sessoes/2026-11-10.md` §9.9–§9.10).
+      Público: depois da resposta. (Substitui "Os fact-checks não se devem cingir a uma só
+      fonte", de 27/10.)
+- [ ] **Rodapé do painel de fact-checks e comentários com "laterais" — à decisão da Marta.** O
+      rodapé diz «casadas com as keywords» (`DebunkingTable.tsx` l.160) e a regra é agora
+      keywords mais a lista; "laterais", no sentido da marca `contexto`, só em comentários de
+      código, no comentário da coluna e no nome de dois testes (`docs/sessoes/2026-11-10.md` §9.11).
 - [ ] **Revisão única dos fact-checks que entram sem revisão.** Desde 2/11, o passo 6B grava o
       que a API devolve pela primeira vez, mesmo que seja antigo. A 2/11 entraram 23, de 2020 a
       2026. As laterais já conhecidas (as 25 de 29/10) entram com `contexto = true`; as outras
@@ -1558,7 +1594,8 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       entraram desde 2/11, com os 23 de 2/11 incluídos (também os 5 que o Claude Code apontou:
       Biden/FEM, Decathlon, certificado sem telemóvel, recordes de mortalidade, testes de 2018).
       Decidir quais passam a contexto. Depois disso, o separador próprio e o cruzamento com a
-      curva do Trends (decisões da Marta, 2/11; `docs/sessoes/2026-11-02.md` §1, §4).
+      curva do Trends (decisões da Marta, 2/11; `docs/sessoes/2026-11-02.md` §1, §4). Com a regra
+      v4 (10/11) entra mais contexto, que fica visível até ser marcado.
 - [ ] **Sazonalidade sobre os `trends_calibrados`.** Os previsíveis do briefing só vêem as semanas
       em que o termo mexeu (há linha em `trends_alertas`); um termo que sobe devagar todos os anos
       não aparece. Calcular o factor sazonal para todos os termos e semanas. Depois de 2/11 (decisão
@@ -1730,11 +1767,11 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
       Pedido de acesso à Google Trends for Health API submetido a 29/10/2026 (formulário da API
       do Trends, email da FCSH), sem prazo de resposta; não conta para a entrega
       (2026-10-29-cowork.md §19).
-- [ ] **Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do
+- [x] ~~**Fact-check (terça):** `scripts/11_fetch_fact_checks.py --gravar` (32 verificações do
       Observador via Google Fact Check Tools API, só editores portugueses — decisão da Marta,
       18/09); passo no `youtube-trends.yml` com o secret `GOOGLE_FACTCHECK_API_KEY`. A chave
       está em `~/.config/health-pulse/env`. O Polígrafo: 0 verificações a 18/09 e 3, todas de
-      Dezembro de 2024, a 28/09 (`docs/sessoes/2026-09-28-c.md`)
+      Dezembro de 2024, a 28/09 (`docs/sessoes/2026-09-28-c.md`)~~ Feito: passo 6B desde 29/10; regra das áreas v4 desde 10/11 (`docs/sessoes/2026-11-10.md` §9).
 - [ ] As 36 linhas semeadas em `debunking` (25/03, "a verificar"): ficam, fora do ecrã
 
 - [ ] **Termos ambíguos na lista — quatro medidos, e o `depressão` já com prova.**
