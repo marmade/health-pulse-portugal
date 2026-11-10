@@ -1,0 +1,1490 @@
+{
+ "pedidos": [
+  {
+   "offset": "20261011",
+   "itens": 40,
+   "seguinte": "20260913"
+  },
+  {
+   "offset": "20260913",
+   "itens": 40,
+   "seguinte": "20260817"
+  },
+  {
+   "offset": "20260817",
+   "itens": 41,
+   "seguinte": "20260713"
+  },
+  {
+   "offset": "20260713",
+   "itens": 40,
+   "seguinte": "20260621"
+  },
+  {
+   "offset": "20260621",
+   "itens": 40,
+   "seguinte": "20260511"
+  },
+  {
+   "offset": "20260511",
+   "itens": 40,
+   "seguinte": "20260408"
+  },
+  {
+   "offset": "20260408",
+   "itens": 40,
+   "seguinte": "20260303"
+  },
+  {
+   "offset": "20260303",
+   "itens": 40,
+   "seguinte": "20260216"
+  }
+ ],
+ "itens": [
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-maria-corina-machado-com-jeffrey-epstein",
+   "datetime": "2026-02-17T17:23:05+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-agentes-do-ice-a-invadir-universidades-e-escolas-para-prender-latinos",
+   "datetime": "2026-02-17T17:42:29+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-epstein-abracado-a-zelensky",
+   "datetime": "2026-02-17T18:12:41+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-a-policia-de-nova-iorque-deteve-agentes-do-ice",
+   "datetime": "2026-02-17T23:22:33+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-primeira-ministra-da-dinamarca-riu-se-da-proposta-de-trump-para-comprar-a-gronelandia-em-pleno-parlamento",
+   "datetime": "2026-02-17T23:33:03+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-seguro-defendeu-que-portugal-receba-toda-a-imigracao-que-nos-procura-e-que-nao-ha-mesquitas-a-mais",
+   "datetime": "2026-02-18T13:17:51+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-paulo-nuncio-anuncia-desfiliacao-do-cds-pp",
+   "datetime": "2026-02-18T13:29:39+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-primeiro-ministro-da-noruega-responde-a-carta-de-trump-a-corrigir-os-erros-do-presidente-norte-americano",
+   "datetime": "2026-02-18T15:11:21+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/zuckerberg-jantou-agarrado-a-jovem-mulher-em-festa-de-epstein",
+   "datetime": "2026-02-18T15:31:21+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-von-der-leyen-disse-que-a-liberdade-de-expressao-e-um-virus-e-a-censura-e-a-vacina",
+   "datetime": "2026-02-18T15:41:27+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-email-dos-ficheiros-epstein-refere-que-trump-nao-gosta-de-raparigas-negras",
+   "datetime": "2026-02-18T16:02:11+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bad-bunny-queimou-bandeira-dos-eua-durante-ensaio-para-atuacao-no-super-bowl",
+   "datetime": "2026-02-18T16:14:55+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-foto-atual-mostra-jeffrey-epstein-em-telavive",
+   "datetime": "2026-02-18T16:26:35+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-donald-trump-reconheceu-maria-corina-machado-como-presidente-da-venezuela",
+   "datetime": "2026-02-18T16:45:37+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ficheiros-de-epstein-ligam-zelensky-a-trafico-humano",
+   "datetime": "2026-02-18T17:27:53+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-de-bill-clinton-jeffrey-epstein-e-zohran-mamdani-e-verdadeira",
+   "datetime": "2026-02-20T17:24:27+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-foto-mostra-o-momento-em-que-alex-pretti-e-morto-por-agentes-do-ice",
+   "datetime": "2026-02-20T18:09:49+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mayor-de-nova-iorque-foi-fotografado-ainda-menor-junto-a-epstein",
+   "datetime": "2026-02-20T18:32:59+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-dos-ficheiros-epstein-mostra-perna-de-bebe-entre-pedacos-de-frango",
+   "datetime": "2026-02-20T18:40:12+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/discussao-de-investidores-para-dar-inicio-a-terceira-guerra-mundial-e-referida-nos-ficheiros-epstein",
+   "datetime": "2026-02-23T13:24:45+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-de-nevao-apocaliptico-na-russia-sao-reais",
+   "datetime": "2026-02-23T15:38:27+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-governante-dos-eua-disse-que-jesus-escreveu-a-biblia-em-ingles",
+   "datetime": "2026-02-23T15:50:48+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ficheiros-do-caso-epstein-provam-que-lady-gaga-e-madonna-jantaram-com-o-milionario-em-2016",
+   "datetime": "2026-02-23T17:17:49+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-da-silva-discursou-embriagado-no-panama-e-acabou-a-ser-interrompido",
+   "datetime": "2026-02-23T18:03:37+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-que-mostra-epstein-bill-gates-bill-e-hillary-clinton-jay-z-diddy-e-stephen-hawking-juntos-e-real",
+   "datetime": "2026-02-23T18:10:29+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-manifestantes-a-incendiar-carros-no-irao",
+   "datetime": "2026-02-25T13:13:33+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-macron-disse-nao-ter-medo-de-putin-ou-trump-e-que-esta-pronto-para-a-guerra",
+   "datetime": "2026-02-25T14:55:50+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cardeal-foi-filmado-a-enfrentar-agentes-do-ice",
+   "datetime": "2026-02-25T15:05:12+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ginastas-brasileiras-foram-expulsas-de-competicao-na-dinamarca-por-se-apresentarem-com-musica-de-protesto-woke",
+   "datetime": "2026-02-25T15:29:13+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-nicolas-maduro-a-tomar-banhos-de-sol-na-prisao",
+   "datetime": "2026-02-25T15:33:01+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-tmz-noticiou-que-zelensky-comprou-mansao-de-p-diddy",
+   "datetime": "2026-02-25T15:41:22+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jornal-globo-ocultou-fotografia-de-autora-de-ataque-armado-em-escola-no-canada-que-esta-a-circular-nas-redes-sociais",
+   "datetime": "2026-02-25T15:46:29+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-profissionais-de-saude-prestam-homenagem-ao-enfermeiro-que-foi-morto-por-agentes-do-ice",
+   "datetime": "2026-02-25T16:17:38+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-arquivos-de-epstein-expoem-ellen-degeneres-como-canibal",
+   "datetime": "2026-02-26T12:48:32+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-obama-e-clooney-num-barco-com-uma-crianca-que-abusaram-sexualmente",
+   "datetime": "2026-02-26T12:57:10+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ficheiros-do-caso-epstein-mostram-discussao-para-a-simulacao-de-uma-pandemia-com-bill-gates-antes-da-covid-19",
+   "datetime": "2026-02-26T13:11:10+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-oraculo-da-sic-dizia-que-voluntarios-de-esquerda-distribuiram-telhas-depois-da-tempestade",
+   "datetime": "2026-02-26T13:14:19+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-publico-gritou-lula-ladrao-seu-lugar-e-na-prisao-durante-desfile-de-carnaval-no-rio-de-janeiro",
+   "datetime": "2026-02-27T11:27:37+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-vitima-de-epstein-denuncia-que-vocalista-dos-u2-abusou-de-dezenas-de-criancas-em-africa",
+   "datetime": "2026-02-27T13:09:05+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-eclipse-de-17-de-fevereiro-na-antartida",
+   "datetime": "2026-02-27T14:41:58+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-robert-de-niro-queimou-bandeira-dos-eua-em-protesto-contra-as-politicas-de-donald-trump",
+   "datetime": "2026-03-04T14:25:36+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cristiano-ronaldo-criticou-vinicius-jr-e-prestianni-num-post-no-x",
+   "datetime": "2026-03-04T14:34:43+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bad-bunny-disse-que-se-cristiano-ronaldo-vencesse-o-mundial-abandonaria-a-musica",
+   "datetime": "2026-03-04T14:40:29+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-que-mostra-ghislaine-maxwell-a-andar-numa-rua-no-canada-e-real",
+   "datetime": "2026-03-09T18:21:21+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-iraniano-com-misseis-balisticos-a-central-nuclear-em-israel",
+   "datetime": "2026-03-09T18:34:24+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-embaixadas-dos-eua-no-mexico-explodiram-durante-protestos-pela-morte-de-el-mencho",
+   "datetime": "2026-03-09T18:59:07+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-de-ataques-israelitas-ao-irao-sao-reais",
+   "datetime": "2026-03-11T17:44:05+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-grecia-vai-encerrar-60-mesquitas-e-deportar-responsaveis-por-espacos-de-culto-ilegais",
+   "datetime": "2026-03-12T17:35:46+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-caca-norte-americano-a-escapar-a-missil-iraniano",
+   "datetime": "2026-03-12T18:12:09+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-irao-confirma-ter-bombardeado-por-engano-uma-escola-em-minab-onde-morreram-centenas-de-alunas",
+   "datetime": "2026-03-13T18:07:02+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-embaixada-dos-eua-na-arabia-saudita-a-arder",
+   "datetime": "2026-03-13T18:25:53+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-um-porta-avioes-norte-americano-destruido-depois-de-ataque-do-irao",
+   "datetime": "2026-03-17T12:55:17+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-cristiano-ronaldo-a-deixar-a-arabia-saudita-a-3-de-marco-apos-ataques-com-drones-em-riade",
+   "datetime": "2026-03-18T15:27:04+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-a-sede-da-cia-no-dubai-depois-de-ser-atacada-pelo-irao",
+   "datetime": "2026-03-18T15:52:45+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-a-telavive-durante-a-atual-guerra-entre-israel-e-irao",
+   "datetime": "2026-03-18T16:23:23+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-iraniano-ao-aeroporto-de-ben-gurion-em-israel",
+   "datetime": "2026-03-18T16:35:14+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-netanyahu-morto-em-ataque-que-tambem-matou-lider-da-mossad",
+   "datetime": "2026-03-18T16:42:59+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ali-khamenei-declarou-que-ainda-estava-vivo",
+   "datetime": "2026-03-25T10:59:36+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-funeral-de-alunas-iranianas-mortas-em-bombardeamento",
+   "datetime": "2026-03-25T12:03:02+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lider-supremo-do-irao-disse-que-as-mulheres-sao-como-animais-e-para-uso-dos-homens",
+   "datetime": "2026-03-25T12:22:48+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-do-irao-a-sede-da-mossad-em-israel",
+   "datetime": "2026-03-25T12:38:40+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-iranianos-armados-a-ir-na-direcao-de-israel",
+   "datetime": "2026-03-25T15:31:13+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ex-jogador-do-porto-taremi-anuncia-que-se-vai-juntar-ao-exercito-do-irao",
+   "datetime": "2026-03-25T16:13:43+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-presidente-lula-da-silva-aconselha-brasileiros-a-andar-a-pe-perante-subida-do-preco-dos-combustiveis",
+   "datetime": "2026-03-25T16:27:07+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-kim-jong-un-disse-que-israel-cometeu-um-grande-erro-ao-atacar-a-sua-embaixada-em-teerao",
+   "datetime": "2026-03-25T17:00:45+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-diz-que-guerra-no-irao-foi-criada-por-obama-e-biden-e-anuncia-conselho-de-paz-de-ormuz",
+   "datetime": "2026-03-25T17:37:57+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/video-mostra-cenario-de-destruicao-no-mexico-apos-a-morte-de-el-mencho-um-lider-de-um-cartel-mexicano",
+   "datetime": "2026-03-25T18:15:35+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jose-malhoa-morreu-num-acidente-de-viacao",
+   "datetime": "2026-03-26T15:38:18+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-troca-de-disparos-entre-um-porta-avioes-dos-eua-e-aeronaves-iranianas",
+   "datetime": "2026-03-26T16:00:05+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ao-cruzarem-se-em-cimeira-trump-manda-sanchez-sentar-se-depois-de-espanha-recusar-que-eua-usem-bases-militares",
+   "datetime": "2026-03-26T16:10:12+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-que-mostra-realizador-quentin-tarantino-em-abrigo-antibombas-em-israel-e-real",
+   "datetime": "2026-03-29T23:22:07+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografias-de-casamento-de-zendaya-e-tom-holland-sao-verdadeiras",
+   "datetime": "2026-03-29T23:25:06+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-multidao-a-acompanhar-funeral-de-antigo-lider-supremo-do-irao",
+   "datetime": "2026-03-29T23:37:27+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-irao-lancou-um-missil-com-as-palavras-em-memoria-das-vitimas-da-ilha-de-epstein",
+   "datetime": "2026-03-29T23:44:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/presidente-do-mexico-retirada-do-pais-por-motivos-de-seguranca-apos-morte-de-el-mencho",
+   "datetime": "2026-03-29T23:56:00+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-danos-apos-ataque-iraniano-a-maior-central-de-dessalinizacao-em-israel",
+   "datetime": "2026-03-30T16:02:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-japao-introduziu-novas-leis-anti-islao",
+   "datetime": "2026-03-30T16:14:09+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-soldados-norte-americanos-foram-capturados-pela-guarda-revolucionaria-do-irao",
+   "datetime": "2026-03-31T11:34:03+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-israel-esta-a-remover-as-camaras-de-seguranca-nas-ruas-para-esconder-ataques-iranianos",
+   "datetime": "2026-03-31T12:21:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-as-militares-israelitas-que-mataram-o-lider-supremo-do-irao-ali-khamenei",
+   "datetime": "2026-03-31T15:37:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ataque-iraniano-destruiu-edificio-da-microsoft-em-israel",
+   "datetime": "2026-04-09T11:04:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-funeral-coletivo-de-soldados-israelitas-mortos-na-guerra-do-medio-oriente",
+   "datetime": "2026-04-09T11:22:25+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-a-aeroporto-do-dubai-que-ficou-em-chamas",
+   "datetime": "2026-04-09T11:39:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/audio-revela-que-trump-ameaca-comecar-uma-guerra-para-evitar-que-sejam-revelados-os-ficheiros-epstein",
+   "datetime": "2026-04-09T12:26:05+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-irao-a-preparar-cinco-mil-sepulturas-para-soldados-norte-americanos",
+   "datetime": "2026-04-09T12:47:16+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-nuno-melo-a-beijar-a-mao-ao-embaixador-de-israel-em-lisboa",
+   "datetime": "2026-04-09T15:15:44+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-francisco-rodrigues-dos-santos-morreu-aos-37-anos",
+   "datetime": "2026-04-13T14:10:15+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-casa-de-benjamin-netanyahu-foi-alvo-de-ataque-do-irao-e-o-irmao-do-primeiro-ministro-israelita-morreu",
+   "datetime": "2026-04-13T14:45:06+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/macaulay-culkin-disse-que-michael-jackson-o-salvou-de-entrar-num-aviao-rumo-a-ilha-de-jeffrey-epstein",
+   "datetime": "2026-04-21T17:18:09+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jornalista-iraniana-diz-que-com-ala-nenhuma-bomba-nos-pode-atingir-antes-de-emissao-ser-interrompida-por-ataque",
+   "datetime": "2026-04-21T18:35:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ministro-ultranacionalista-itamar-ben-gvir-ferido-com-gravidade-apos-ataque-iraniano",
+   "datetime": "2026-04-21T18:47:41+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-que-forcas-iranianas-apanharam-piloto-norte-americano-no-irao",
+   "datetime": "2026-04-22T16:40:56+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jair-bolsonaro-foi-envenenado-com-chumbo-dentro-da-prisao",
+   "datetime": "2026-04-22T16:58:34+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-igreja-batista-do-alabama-anunciou-a-construcao-de-uma-estatua-gigante-de-donald-trump",
+   "datetime": "2026-04-22T17:55:43+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-eua-divulgam-video-da-operacao-para-resgatar-o-piloto-de-caca-que-se-despenhou-no-irao",
+   "datetime": "2026-04-22T18:44:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-nicolas-maduro-visivelmente-mais-magro-na-prisao-em-nova-iorque",
+   "datetime": "2026-04-22T19:00:58+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-piloto-responsavel-pelo-ataque-a-escola-feminina-iraniana-foi-abatido-pelo-irao",
+   "datetime": "2026-04-23T12:06:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-corpo-de-khamenei-a-ser-retirado-dos-escombros-de-um-edificio",
+   "datetime": "2026-04-25T22:02:09+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-piloto-norte-americano-resgatado-do-irao",
+   "datetime": "2026-04-25T22:40:27+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-e-imagens-mostram-irao-a-abater-caca-f-15-dos-eua-perto-da-ilha-de-qeshm",
+   "datetime": "2026-04-25T22:48:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-sanchez-anuncia-que-quem-insultar-maome-ou-o-islamismo-sera-condenado-a-cinco-anos-de-prisao",
+   "datetime": "2026-04-25T23:16:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-captada-pela-artemis-ii-mostra-lado-oculto-da-lua",
+   "datetime": "2026-04-25T23:24:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-homem-islamico-e-apoiante-do-irao-foi-responsavel-pela-explosao-de-bomba-no-rio-de-janeiro",
+   "datetime": "2026-04-25T23:31:37+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-macron-divulga-imagem-que-mostra-epstein-agarrado-a-melania-trump",
+   "datetime": "2026-04-25T23:37:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-confrontos-em-aeroporto-israelita",
+   "datetime": "2026-04-25T23:50:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ministro-da-administracao-interna-anuncia-pena-de-prisao-de-tres-anos-para-quem-ofender-maome",
+   "datetime": "2026-04-27T14:07:15+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-comite-esta-a-ponderar-retirar-o-premio-nobel-da-paz-a-maria-corina-machado",
+   "datetime": "2026-04-27T15:28:23+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-meloni-acusa-eua-de-ser-unico-pais-que-ja-usou-armas-nucleares-e-avisa-trump-para-medir-as-suas-palavras",
+   "datetime": "2026-04-27T16:11:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cidadaos-de-los-angeles-revoltam-se-contra-o-ice",
+   "datetime": "2026-04-27T16:24:38+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-da-silva-disse-que-brasil-esta-disposto-a-defender-soberania-de-cuba",
+   "datetime": "2026-04-27T17:03:59+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-peter-magyar-foi-acusado-pela-ex-mulher-de-matar-o-cao-de-familia-no-microondas",
+   "datetime": "2026-04-28T13:47:44+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-governo-israelita-publica-video-de-ia-de-netanyahu-com-seis-dedos-para-provar-que-esta-vivo",
+   "datetime": "2026-04-30T11:51:17+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-reino-unido-acaba-de-legalizar-o-aborto-ate-ao-nascimento",
+   "datetime": "2026-04-30T12:41:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-angela-merkel-admitiu-num-video-que-inundou-a-alemanha-com-imigrantes-para-impedir-a-extrema-direita",
+   "datetime": "2026-04-30T12:52:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-presidente-de-municipio-do-reino-unido-diz-que-pais-so-pode-ser-grande-com-implementacao-da-sharia",
+   "datetime": "2026-04-30T12:59:33+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-piloto-norte-americano-em-paraquedas-a-ser-capturado-por-soldados-iranianos",
+   "datetime": "2026-04-30T13:10:58+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-espanha-anuncia-boicote-ao-mundial-e-eurovisao-de-2026-se-israel-participar",
+   "datetime": "2026-04-30T14:40:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-quadro-de-cezanne-desaparecido-surge-no-escritorio-de-zelensky",
+   "datetime": "2026-04-30T14:51:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/astronauta-converteu-se-ao-cristianismo-depois-da-missao-artemis-ii",
+   "datetime": "2026-04-30T14:57:49+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-rei-da-suecia-recusa-aperto-de-mao-de-zelensky",
+   "datetime": "2026-04-30T16:08:32+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-comitiva-da-lula-da-silva-foi-atacada-com-ovos-durante-ultima-visita-do-presidente-do-brasil-a-lisboa",
+   "datetime": "2026-05-12T15:36:25+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-hantavirus-e-um-dos-efeitos-colaterais-da-vacina-da-pfizer-contra-a-covid-19",
+   "datetime": "2026-05-12T15:45:57+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-submarino-russo-chega-a-cuba-durante-periodo-de-escalada-de-tensao-entre-havana-e-washington",
+   "datetime": "2026-05-15T18:14:10+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-um-grupo-de-bandidos-a-abalroar-um-carro-de-policia-em-cruz-de-pau",
+   "datetime": "2026-05-18T14:49:00+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-novo-manual-publico-quer-proibir-expressoes-como-dia-negro-ou-paciencia-de-chines",
+   "datetime": "2026-05-18T14:54:33+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-de-beyonce-e-rihanna-abracadas-na-met-gala-2026-e-verdadeira",
+   "datetime": "2026-05-18T15:06:20+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-policia-britanica-a-prender-manequim-por-ferir-sentimentos-dos-muculmanos",
+   "datetime": "2026-05-18T15:12:07+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-macron-anunciou-fecho-de-escolas-francesas-para-combater-o-hantavirus",
+   "datetime": "2026-05-18T15:19:05+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-giorgia-meloni-anunciou-visita-ao-irao-para-abrir-estreito-de-ormuz-aos-navios-italianos",
+   "datetime": "2026-05-18T15:27:35+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-israel-apreendeu-armamento-na-ulitma-flotilha-rumo-a-gaza",
+   "datetime": "2026-05-18T15:47:57+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jornalista-da-fox-news-e-censurada-por-ter-sugerido-que-ataque-a-trump-foi-uma-falsa-bandeira",
+   "datetime": "2026-05-18T15:55:43+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-crianca-iraniana-pediu-para-bombardear-telavive-com-missil-cor-de-rosa-e-guarda-revolucionaria-cumpriu-o-seu-desejo",
+   "datetime": "2026-05-18T16:31:37+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-presidente-iraniano-andou-de-bicicleta-nas-ruas-de-isfahan-apos-cessar-fogo-com-os-eua",
+   "datetime": "2026-05-18T16:52:16+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-doentes-expulsos-de-hospitais-durante-administracao-trump",
+   "datetime": "2026-05-18T17:06:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-existe-um-partido-islamico-portugues-com-cartazes-espalhados-pelas-ruas",
+   "datetime": "2026-05-18T17:14:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-donald-trump-expulsou-lula-da-silva-da-casa-branca",
+   "datetime": "2026-05-18T17:30:49+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-china-proibe-entrada-de-estrangeiros-devido-ao-hantavirus",
+   "datetime": "2026-05-18T17:56:30+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-obama-ao-lado-do-homem-que-tentou-assassinar-trump-no-jantar-dos-correspondentes",
+   "datetime": "2026-05-18T18:16:22+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-embaixadora-da-ucrania-leva-bebidas-alcoolicas-apos-atentado-em-jantar-com-trump",
+   "datetime": "2026-05-19T16:52:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-macron-anuncia-arabe-como-lingua-oficial-em-franca",
+   "datetime": "2026-05-19T17:15:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-pfizer-esta-a-desenvolver-vacina-contra-o-hantavirus",
+   "datetime": "2026-05-20T14:25:34+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-interprete-de-zelensky-chama-mentiroso-ao-presidente-da-ucrania",
+   "datetime": "2026-05-20T14:33:10+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-shakira-declara-apoio-a-bolsonaro-em-concerto-em-copacabana",
+   "datetime": "2026-05-20T14:46:05+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-disse-que-a-extrema-esquerda-quer-retirar-a-liberdade-a-populacao-global-atraves-do-hantavirus",
+   "datetime": "2026-05-25T18:13:50+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-vacina-contra-o-hantavirus-ja-existe-e-foi-patenteada-em-2025",
+   "datetime": "2026-05-25T19:12:24+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-da-silva-foi-capa-da-time-em-maio-de-2026",
+   "datetime": "2026-05-27T19:27:53+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cavalo-de-ouro-vendido-em-leilao-por-14-milhoes-de-dolares",
+   "datetime": "2026-05-28T19:19:42+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/navio-norte-americano-foi-atacado-por-misseis-iranianos-durante-o-cessar-fogo",
+   "datetime": "2026-05-28T19:30:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-homem-retido-em-cruzeiro-com-surto-de-hantavirus-e-o-mesmo-que-apareceu-na-bbc-durante-a-covid-19",
+   "datetime": "2026-05-28T19:42:28+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-expresso-publicou-artigo-de-opiniao-de-autora-que-diz-que-as-mulheres-de-direita-tem-inveja-das-mulheres-trans",
+   "datetime": "2026-05-28T19:46:23+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-shakira-declara-apoio-a-lula-num-concerto-em-copacabana",
+   "datetime": "2026-05-29T15:05:10+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-atriz-gal-gadot-recusou-voltar-a-met-gala-apos-episodio-com-cantora-dua-lipa",
+   "datetime": "2026-05-29T15:17:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-anunciado-tunel-subterraneo-para-ligar-portugal-a-marrocos",
+   "datetime": "2026-05-29T15:21:50+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mulher-de-jd-vance-aparece-num-video-de-2017-ao-lado-do-homem-que-tentou-assassinar-trump-no-jantar-dos-correspondentes",
+   "datetime": "2026-05-29T15:31:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-citar-a-biblia-pode-tornar-se-crime-no-canada",
+   "datetime": "2026-05-29T15:47:53+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bad-bunny-posou-com-sobrevivente-de-jeffrey-epstein-na-met-gala",
+   "datetime": "2026-05-29T15:58:42+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-estatua-de-jesus-decapitada-por-soldados-israelitas",
+   "datetime": "2026-05-29T16:10:44+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-atirador-do-jantar-dos-correspondentes-com-t-shirt-das-forcas-de-defesa-de-israel",
+   "datetime": "2026-05-29T16:30:29+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-donald-trump-expulsa-lula-da-silva-de-fotografia-oficial-na-casa-branca",
+   "datetime": "2026-05-29T17:04:29+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-navio-norte-americano-a-afundar-no-estreito-de-ormuz-depois-de-ser-atingido-pelo-irao",
+   "datetime": "2026-05-29T17:24:59+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-meloni-ao-lado-de-netanyahu-com-bandeira-da-palestina-e-contra-o-assassinio-de-criancas",
+   "datetime": "2026-06-22T11:45:02+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-donald-trump-desmentiu-visita-do-senador-flavio-bolsonaro-a-casa-branca",
+   "datetime": "2026-06-22T12:14:12+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-disturbios-em-paris-depois-da-vitoria-do-psg-na-liga-dos-campeoes",
+   "datetime": "2026-06-22T15:26:59+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-simpsons-previram-o-surto-de-hantavirus-a-bordo-de-um-cruzeiro-em-2012",
+   "datetime": "2026-06-24T11:46:27+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-filha-do-ex-presidente-dos-eua-barack-obama-vista-a-usar-bone-do-movimento-maga",
+   "datetime": "2026-06-24T12:03:10+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ex-futebolista-paulo-futre-morre-aos-60-anos",
+   "datetime": "2026-06-24T12:14:28+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-existe-uma-fila-de-espera-de-funcionarios-do-governo-ucraniano-para-comprar-superiates-com-dinheiro-do-ocidente",
+   "datetime": "2026-06-24T12:32:59+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-membros-do-poder-judiciario-de-el-salvador-presos-por-ordem-de-bukele",
+   "datetime": "2026-06-24T12:42:32+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-tsunami-nas-filipinas-apos-terramoto-de-78-na-escala-de-richter",
+   "datetime": "2026-06-24T12:50:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-homem-igual-a-michael-jackson-filmado-em-autocarro-no-brasil",
+   "datetime": "2026-06-24T13:01:24+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jornal-israelita-escreveu-que-ucrania-pediu-ajuda-a-israel-para-recuperar-ouro-que-parceiro-de-zelensky-contrabandeou",
+   "datetime": "2026-06-24T13:10:49+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-papa-leao-xiv-foi-filmado-a-dancar-em-concerto-de-bad-bunny",
+   "datetime": "2026-06-24T14:20:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-foi-filmado-a-ler-as-notas-de-xi-jinping-durante-visita-a-pequim",
+   "datetime": "2026-06-24T15:01:12+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-capas-do-publico-e-jerusalem-post-referem-adiccao-de-zelensky-a-drogas",
+   "datetime": "2026-06-24T15:15:18+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-do-irao-a-israel-durante-a-ultima-ofensiva-contra-telavive-em-junho",
+   "datetime": "2026-06-24T16:33:42+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-shakira-usou-sosia-na-cerimonia-de-abertura-do-mundial",
+   "datetime": "2026-06-24T16:49:01+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-encenacao-do-hantavirus-com-homem-a-entrar-acidentalmente-em-cena",
+   "datetime": "2026-06-24T17:28:43+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-sosia-de-hitler-visto-a-apoiar-a-alemanha-no-mundial",
+   "datetime": "2026-06-24T17:48:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-donald-trump-fez-venia-a-xi-jinping-durante-visita-a-china",
+   "datetime": "2026-06-24T18:07:35+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-colisao-de-helicopteros-no-rio-de-janeiro",
+   "datetime": "2026-06-24T18:44:00+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-nova-iorque-retira-palavras-mae-e-pai-do-vocabulario-para-promover-a-inclusividade",
+   "datetime": "2026-06-25T13:47:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-adepto-brasileiro-agredido-por-seguranca-em-estadio-de-futebol-nos-eua-apos-acender-cigarro",
+   "datetime": "2026-06-25T13:58:37+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-policia-americana-imobiliza-jogador-guatemalteco-em-campo-durante-mundial-de-futebol",
+   "datetime": "2026-06-25T15:06:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-crianca-a-atirar-bandeira-lgbtqia-para-o-lixo",
+   "datetime": "2026-06-25T15:23:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jogador-do-irao-exibe-durante-jogo-do-mundial-uma-mochila-em-homenagem-as-criancas-mortas-numa-escola",
+   "datetime": "2026-06-29T11:54:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-eua-deportam-jogador-iraniano-depois-de-comemorar-golo-no-mundial-de-2026",
+   "datetime": "2026-06-29T12:22:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-katy-perry-cantou-com-crianca-refugiada-iraniana-na-cerimonia-de-abertura-do-mundial",
+   "datetime": "2026-06-29T13:41:46+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-criancas-do-ensino-primario-obrigadas-a-aprender-como-rezar-numa-mesquita-nos-paises-baixos",
+   "datetime": "2026-06-29T14:02:18+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-diz-que-neymar-e-um-jogador-home-office-e-jogador-recusa-se-a-responder-a-ex-recluso",
+   "datetime": "2026-06-29T14:24:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-capa-da-revista-time-com-messi-cristiano-e-neymar-e-verdadeira",
+   "datetime": "2026-06-29T14:31:01+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-diz-que-papa-e-insulto-a-jesus-e-leao-xiv-responde-com-caso-epstein",
+   "datetime": "2026-06-29T15:15:11+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-noruega-ganha-jogo-contra-israel-no-mundial-e-doa-lucros-a-palestina",
+   "datetime": "2026-06-29T16:19:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-aviao-em-que-seguia-selecao-do-japao-sofreu-acidente-e-sete-pessoas-morreram",
+   "datetime": "2026-06-29T17:36:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-bad-bunny-e-atriz-alexa-demie-apanhados-em-encontro-romantico",
+   "datetime": "2026-06-29T18:32:28+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-procissao-do-corpo-de-deus-nao-passou-pelo-martim-moniz-devido-a-cristofobia",
+   "datetime": "2026-06-29T18:57:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-brasil-vai-dar-luz-de-graca-a-membros-da-comunidade-lgbt",
+   "datetime": "2026-06-29T19:04:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-policias-tailandeses-disfarcam-se-de-dancarinos-para-apanhar-suspeito-de-trafico-de-droga",
+   "datetime": "2026-06-30T11:10:04+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografias-de-shakira-no-casamento-de-dua-lipa-sao-verdadeiras",
+   "datetime": "2026-06-30T11:19:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-roberto-martinez-comemorou-golo-de-ronaldo-com-salto-mortal",
+   "datetime": "2026-06-30T11:42:20+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-diretor-geral-da-oms-admite-que-surto-de-hantavirus-esta-a-ser-usado-para-promover-agenda-massiva-de-vacinacao-para-criancas",
+   "datetime": "2026-06-30T13:03:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fenda-abre-se-na-fronteira-entre-o-brasil-e-a-venezuela-apos-sismos",
+   "datetime": "2026-07-14T17:38:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-estudo-atmosferico-haarp-causou-terramotos-na-venezuela",
+   "datetime": "2026-07-14T17:47:58+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cabo-verde-criou-pintura-gigante-nas-ruas-para-homenagear-vozinha",
+   "datetime": "2026-07-14T17:52:59+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-de-trabalhadores-a-retirar-o-nome-de-trump-da-parede-do-kennedy-center-e-verdadeiro",
+   "datetime": "2026-07-14T18:06:42+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-soldados-israelitas-gravaram-se-a-destruir-uma-igreja-catolica-no-libano",
+   "datetime": "2026-07-14T18:19:01+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-montenegro-diz-que-trabalhadores-queixam-se-muito-mas-so-pensam-em-ferias",
+   "datetime": "2026-07-14T18:35:10+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-adeptos-da-coreia-do-sul-levam-bandeiras-da-palestina-para-o-mundial-2026",
+   "datetime": "2026-07-14T18:51:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cristiano-ronaldo-chora-nos-bracos-de-georgina-rodriguez-apos-a-eliminacao-de-portugal-no-mundial",
+   "datetime": "2026-07-15T11:02:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ministerio-da-saude-divulgou-guia-sobre-como-beber-agua",
+   "datetime": "2026-07-15T11:10:20+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-imigrantes-em-viagem-a-bordo-de-comboio-entre-amesterdao-e-paris",
+   "datetime": "2026-07-15T11:15:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-taylor-swift-dwayne-johnson-e-cristiano-ronaldo-juntaram-se-para-pagar-visto-da-mae-de-vozinha",
+   "datetime": "2026-07-15T11:19:41+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-cao-a-proteger-bebe-apos-sismos-na-venezuela",
+   "datetime": "2026-07-21T12:05:32+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jogador-brasileiro-gabriel-martinelli-declara-apoio-a-lula-da-silva-durante-o-mundial-de-futebol",
+   "datetime": "2026-07-21T12:25:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-edificio-colapsa-em-zona-costeira-apos-sismos-na-venezuela",
+   "datetime": "2026-07-21T12:38:09+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-erling-haaland-a-assustar-se-com-o-proprio-reflexo",
+   "datetime": "2026-07-21T13:01:15+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cristiano-ronaldo-e-georgina-rodriguez-voltaram-a-ser-pais",
+   "datetime": "2026-07-21T13:18:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fbi-investiga-federacao-argentina-por-fraude-durante-o-mundial-de-futebol",
+   "datetime": "2026-07-21T13:24:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-que-usaid-foi-usada-para-financiar-grupos-terroristas",
+   "datetime": "2026-07-21T15:05:07+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-cargueiro-iraniano-a-arder-apos-ser-atingido-pela-marinha-dos-eua",
+   "datetime": "2026-07-22T13:38:06+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lamine-yamal-festejou-conquista-do-mundial-de-futebol-exibindo-a-bandeira-da-palestina",
+   "datetime": "2026-07-22T14:44:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jovem-resgatado-depois-de-passar-22-dias-soterrado-apos-sismo-na-venezuela",
+   "datetime": "2026-07-22T15:04:11+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-manifestantes-em-confronto-com-a-policia-em-protestos-na-malasia",
+   "datetime": "2026-07-23T10:36:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-irao-a-atacar-a-base-naval-da-quinta-frota-dos-eua-no-bahrein-com-misseis",
+   "datetime": "2026-07-24T16:22:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-onu-mandou-os-tribunais-do-brasil-libertar-ex-presidente-jair-bolsonaro",
+   "datetime": "2026-07-27T14:47:30+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-camara-de-odemira-substituiu-bandeira-nacional",
+   "datetime": "2026-07-27T14:54:57+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-sagres-ameaca-processar-a-federacao-portuguesa-de-futebol",
+   "datetime": "2026-07-27T15:03:06+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-gianni-infantino-foi-fotografado-em-dois-jogos-simultaneos-do-mundial-em-cidades-diferentes",
+   "datetime": "2026-07-27T15:12:40+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-arbitro-que-apitou-jogo-entre-egito-e-argentina-foi-suspenso-e-paga-multa-de-dois-milhoes-de-euros",
+   "datetime": "2026-07-27T15:18:33+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-aprovou-a-execucao-por-fuzilamento-para-violacoes-e-outros-crimes-hediondos",
+   "datetime": "2026-07-27T15:29:33+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-tumultos-em-paris-depois-de-franca-perder-contra-espanha-no-mundial",
+   "datetime": "2026-07-27T16:15:25+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jogador-da-selecao-brasileira-doou-premio-do-mundial-as-vitimas-dos-sismos-na-venezuela",
+   "datetime": "2026-07-27T16:29:27+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-camila-cabello-e-taylor-swift-foram-fotografadas-a-torcer-pelo-brasil-no-mundial-de-futebol",
+   "datetime": "2026-07-27T17:08:40+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lamine-yamal-usou-lenco-palestiniano-durante-festejos-no-mundial",
+   "datetime": "2026-07-27T17:42:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-brasil-vai-ser-atingido-por-terramoto-de-8-9-em-setembro",
+   "datetime": "2026-07-27T17:51:07+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lamine-yamal-recusou-se-a-apertar-a-mao-de-donald-trump-apos-vitoria-no-mundial-de-futebol",
+   "datetime": "2026-07-27T18:05:34+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-mulher-gravida-a-proteger-filho-durante-sismo-na-venezuela",
+   "datetime": "2026-07-28T14:36:30+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cantor-carlao-foi-fotografado-a-vestir-camisola-com-simbolo-terrorista",
+   "datetime": "2026-07-29T18:27:07+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cristiano-ronaldo-enviou-avioes-de-ajuda-humanitaria-para-a-venezuela",
+   "datetime": "2026-07-29T18:38:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-camara-de-ermesinde-prometeu-ecra-gigante-mas-disponibilizou-apenas-uma-mini-televisao-para-ver-a-selecao",
+   "datetime": "2026-07-29T18:52:02+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-da-cnn-com-anuncio-de-seguro-e-cristiano-ronaldo-e-verdadeiro",
+   "datetime": "2026-07-29T18:59:04+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-policia-de-londres-a-fugir-ao-ser-perseguida-por-muculmanos",
+   "datetime": "2026-08-10T17:35:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-chegada-de-milhares-de-migrantes-a-ceuta-em-espanha",
+   "datetime": "2026-08-18T15:36:41+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-efeitos-de-ventos-muito-fortes-no-rio-de-janeiro",
+   "datetime": "2026-08-18T15:54:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-destruicao-no-mexico-depois-de-sismo-de-73-que-abalou-o-pais-em-julho",
+   "datetime": "2026-08-18T16:28:30+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-foram-encontrados-11-milhoes-de-dolares-na-casa-dos-pais-de-volodymyr-zelensky",
+   "datetime": "2026-08-18T16:41:22+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-orcas-a-partilharem-ondas-com-surfistas-na-nova-zelandia",
+   "datetime": "2026-08-18T16:51:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-donald-trump-a-cair-ao-entrar-numa-limousine",
+   "datetime": "2026-08-18T17:43:11+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-primeira-dama-ucraniana-e-vista-a-usar-um-colar-roubado-em-paris",
+   "datetime": "2026-08-18T17:48:24+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-calor-extremo-em-italia-faz-semaforo-derreter",
+   "datetime": "2026-08-18T18:14:22+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-reacao-de-desagrado-do-presidente-da-fifa-a-seguir-ao-golo-de-espanha-na-final-do-mundial",
+   "datetime": "2026-08-18T18:23:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-efeitos-de-sismo-que-abalou-o-mexico-em-julho-de-2026",
+   "datetime": "2026-08-18T18:32:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-messi-a-pisar-spence-antes-do-golo-da-argentina-contra-a-inglaterra",
+   "datetime": "2026-08-18T19:17:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografias-do-casamento-de-ronaldo-e-georgina-sao-reais",
+   "datetime": "2026-08-21T17:01:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cruz-da-ordem-de-cristo-foi-eliminada-de-caravelas-na-capa-do-manual-de-historia-e-geografia-de-portugal",
+   "datetime": "2026-08-26T17:41:38+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-chek-anthony-fauci-pode-ser-condenado-a-cadeira-eletrica-como-se-alega-nas-redes-sociais",
+   "datetime": "2026-08-26T18:21:49+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-efeitos-do-sismo-que-atingiu-o-mexico-em-julho",
+   "datetime": "2026-08-26T18:34:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-colisao-de-foguetao-da-space-x-com-a-lua",
+   "datetime": "2026-08-26T18:45:36+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jovem-filmou-se-a-nadar-ate-ceuta-durante-ultimo-episodio-de-crise-migratoria",
+   "datetime": "2026-08-26T18:59:22+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-migrantes-a-sairem-de-camiao-no-algarve",
+   "datetime": "2026-08-27T11:19:11+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-presidente-da-colombia-diverte-se-numa-festa-depois-de-pais-ser-atingido-por-violento-terramoto",
+   "datetime": "2026-08-27T11:28:20+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-gatos-e-pombos-estao-a-ser-massacrados-por-migrantes-em-ceuta",
+   "datetime": "2026-08-27T11:37:03+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-disse-que-so-venceu-eleicoes-porque-nordestinos-sao-analfabetos",
+   "datetime": "2026-08-27T11:44:06+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-um-milhao-e-meio-de-cristaos-marcharam-em-belgrado",
+   "datetime": "2026-08-27T12:18:58+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-migrante-come-rato-em-banco-de-jardim-em-ceuta",
+   "datetime": "2026-08-27T13:04:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-brasil-envia-exercito-para-foz-do-iguacu-devido-a-operacoes-dos-eua-na-america-do-sul",
+   "datetime": "2026-08-27T13:10:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lamine-yamal-disse-que-se-fosse-brasileiro-votava-em-lula-da-silva",
+   "datetime": "2026-08-27T14:37:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-centenas-de-bailarinos-criam-coreografia-que-simula-elefante-gigante",
+   "datetime": "2026-08-27T14:52:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-descobertos-no-egito-restos-de-uma-civilizacao-extraterrestre",
+   "datetime": "2026-08-27T16:02:40+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-neymar-ignorou-presidente-da-fifa-quando-infantino-o-tentava-cumprimentar",
+   "datetime": "2026-08-27T16:10:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-idosa-filmada-a-executar-o-moonwalk-de-michael-jackson",
+   "datetime": "2026-08-27T16:21:14+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bolachas-oreo-tem-petroleo-na-sua-composicao",
+   "datetime": "2026-08-27T16:26:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagem-mostra-cao-salvo-dos-escombros-apos-terramoto-na-colombia",
+   "datetime": "2026-08-28T14:32:57+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jovens-atacam-carrinha-da-policia-em-ceuta-durante-a-ultima-crise-migratoria",
+   "datetime": "2026-08-28T14:44:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bill-gates-lancou-manteiga-produzida-com-derivados-do-petroleo",
+   "datetime": "2026-08-28T16:33:55+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-autor-do-atropelamento-de-16-pessoas-em-albufeira",
+   "datetime": "2026-08-30T16:03:46+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-novas-informacoes-provam-que-ivermectina-tem-70-de-eficacia-contra-a-covid-19",
+   "datetime": "2026-08-30T16:24:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-bolsonaro-foi-considerado-inocente-apos-comissao-de-inquerito-a-covid-19",
+   "datetime": "2026-08-31T13:09:22+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cao-expulsa-migrante-que-tentou-invadir-casa-em-ceuta",
+   "datetime": "2026-08-31T13:18:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-cheias-no-nepal-que-ja-provocaram-centenas-de-mortos",
+   "datetime": "2026-08-31T14:16:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-igreja-no-canada-incendiada-por-imigrante-muculmano",
+   "datetime": "2026-08-31T14:33:09+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-rui-rocha-saiu-da-il-devido-ao-caso-de-luis-neves",
+   "datetime": "2026-09-09T22:38:05+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cavalo-protege-tutora-durante-terramoto-na-venezuela",
+   "datetime": "2026-09-14T11:55:24+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cristiano-ronaldo-foi-homenageado-com-espetaculo-de-drones-depois-do-mundial",
+   "datetime": "2026-09-14T12:06:16+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-vaga-deenezuelanos-a-fugir-para-o-brasil-apos-terramoto-no-pais",
+   "datetime": "2026-09-14T12:18:00+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fosseis-gigantes-com-milhoes-de-anos-encontrados-apos-enxurrada-no-nepal",
+   "datetime": "2026-09-14T12:23:53+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mercedes-lancou-um-autocarro-que-se-transforma-numa-mansao-de-tres-andares-apenas-com-um-clique",
+   "datetime": "2026-09-14T13:03:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-tempestade-de-granizo-atinge-india-e-provoca-danos-em-carros-e-comercio",
+   "datetime": "2026-09-14T14:48:53+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-japao-aprovou-cama-que-trata-doencas-graves-com-recurso-a-frequencias-magneticas",
+   "datetime": "2026-09-14T15:09:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-da-silva-prepara-se-para-decretar-o-estado-de-sitio-em-cima-das-eleicoes-presidenciais",
+   "datetime": "2026-09-14T15:53:35+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-morreu-o-ator-tony-ramos",
+   "datetime": "2026-09-18T16:37:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-papa-leao-xiv-sentiu-se-mal-subitamente-na-praca-de-sao-pedro",
+   "datetime": "2026-09-18T16:59:19+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-japones-pagou-24-milhoes-de-euros-em-cirurgias-plasticas-para-se-assemelhar-a-um-cao",
+   "datetime": "2026-09-18T17:55:39+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-governador-do-banco-de-portugal-abandonou-em-direto-um-programa-da-sic",
+   "datetime": "2026-09-22T12:50:44+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-confrontos-entre-pessoas-trans-e-muculmanos-no-reino-unido",
+   "datetime": "2026-09-22T16:07:15+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-multidao-de-migrantes-nas-ruas-de-ceuta-semanas-depois-da-entrada-massiva-em-territorio-espanhol",
+   "datetime": "2026-09-22T16:13:58+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-carro-do-presidente-do-brasil-foi-atingido-com-ovos-durante-a-campanha",
+   "datetime": "2026-09-22T16:27:51+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-apoio-a-lula-da-silva-durante-rock-in-rio-2026-no-brasil",
+   "datetime": "2026-09-22T16:41:25+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-papa-leao-xiv-disse-que-bolsonaro-foi-fiel-e-que-a-sua-vida-se-assemelhou-aos-homens-das-escrituras",
+   "datetime": "2026-09-23T12:38:45+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-dirigente-do-santander-abandona-estudio-de-televisao-furioso-apos-debate-sobre-creditos-e-inflacao",
+   "datetime": "2026-09-23T12:48:41+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-ataque-iraniano-contra-posto-fronteirico-no-kuwait",
+   "datetime": "2026-09-24T19:14:48+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-donald-trump-a-beijar-a-assistente-natalie-harp",
+   "datetime": "2026-09-24T19:33:13+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-marinha-brasileira-emitiu-alerta-de-invasao-do-espaco-maritimo-pelos-eua",
+   "datetime": "2026-09-28T11:34:26+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-evacuacao-no-aeroporto-rei-khalid-na-arabia-saudita-apos-ataque-dos-houthis",
+   "datetime": "2026-09-28T11:49:57+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-casa-de-familia-crista-no-nepal-e-a-unica-que-resiste-a-cheias-que-mataram-centenas-de-pessoas",
+   "datetime": "2026-09-28T12:31:42+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-presidente-chines-sofreu-um-grave-avc-na-cimeira-dos-brics-na-india",
+   "datetime": "2026-09-28T12:54:38+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mulher-que-esfaqueou-duas-pessoas-em-nova-iorque-surge-em-video-a-dancar-com-facas",
+   "datetime": "2026-09-28T14:53:40+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-carneiro-defendeu-acolhimento-de-metade-dos-imigrantes-de-ceuta-em-vila-real-de-santo-antonio",
+   "datetime": "2026-09-28T15:17:31+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ceo-do-millennium-bcp-abandonou-estudio-da-sic-furioso-com-jornalista-sandra-felgueiras",
+   "datetime": "2026-09-28T15:32:44+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-carros-a-sombra-produzem-niveis-excessivos-de-toxinas-que-causam-cancro",
+   "datetime": "2026-09-28T15:44:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-carros-a-gasoleo-com-mais-de-15-anos-podem-pagar-mais-portagens-junto-a-lisboa-e-porto",
+   "datetime": "2026-09-28T15:55:47+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-homem-israelita-incendiou-igreja-no-canada",
+   "datetime": "2026-09-28T16:18:33+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cientistas-desenvolvem-guelras-artificiais-que-permitem-a-mergulhadores-respirar-debaixo-de-agua",
+   "datetime": "2026-09-29T14:42:21+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-trump-diz-que-fara-com-lula-o-que-fez-com-maduro",
+   "datetime": "2026-09-29T14:50:32+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-serpente-domestica-a-engolir-crianca-no-vietname",
+   "datetime": "2026-09-29T15:20:56+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-estado-quer-usar-casas-de-emigrantes-durante-o-inverno",
+   "datetime": "2026-09-29T16:07:30+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-clint-eastwood-tirou-uma-fotografia-a-celebrar-o-96-o-aniversario-com-outras-lendas-de-hollywood",
+   "datetime": "2026-09-29T16:23:46+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-ministro-das-financas-foge-do-estudio-da-sic-jornalista-e-algemado-e-programa-e-apagado",
+   "datetime": "2026-09-29T16:37:28+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imigrantes-tem-mais-direitos-para-aceder-a-garantias-e-isencoes-na-compra-de-casa",
+   "datetime": "2026-09-29T17:51:08+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-milhoes-de-pessoas-a-manifestar-se-nas-ruas-dos-eua-recentemente",
+   "datetime": "2026-09-29T18:06:00+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-globo-publicou-noticia-com-o-titulo-brasileiros-fazem-disparar-criminalidade-em-portugal",
+   "datetime": "2026-09-30T12:48:24+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-puma-retirou-patrocinio-a-selecao-nacional-de-futebol-depois-da-polemica-com-ronaldo",
+   "datetime": "2026-10-09T16:33:54+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mourinho-critica-jorge-jesus-e-sai-em-defesa-de-cristiano-ronaldo",
+   "datetime": "2026-10-12T16:52:48+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-conta-de-instagram-da-selecao-de-portugal-perdeu-oito-milhoes-de-seguidores-depois-de-ronaldo-abandonar-estagio",
+   "datetime": "2026-10-12T17:04:49+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-filho-mais-velho-de-cristiano-ronaldo-decidiu-representar-as-camadas-jovens-de-espanha",
+   "datetime": "2026-10-12T17:28:15+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-militares-e-aeronaves-dos-estados-unidos-foram-vistos-no-brasil-na-vespera-da-primeira-volta-das-eleicoes-presidenciais",
+   "datetime": "2026-10-12T17:45:43+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-flavio-bolsonaro-exibiu-imagem-de-donald-trump-vestido-de-santo-durante-comicio",
+   "datetime": "2026-10-12T17:55:46+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-jornal-universitario-a-cabra-publicou-capa-de-rita-matias-apos-polemica-com-radio-universitaria",
+   "datetime": "2026-10-21T14:59:53+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-quaresma-diz-em-entrevista-que-ronaldo-nao-e-maior-que-portugal",
+   "datetime": "2026-10-21T15:12:02+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-portugal-comecou-as-reparacoes-com-o-pagamento-de-indemnizacoes-as-antigas-colonias",
+   "datetime": "2026-10-21T15:26:04+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-destruicao-durante-vaga-recente-dos-protestos-estudantis-em-franca",
+   "datetime": "2026-10-21T15:40:52+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-recrutamento-forcado-de-mulheres-da-ucrania-para-a-guerra",
+   "datetime": "2026-10-21T16:00:32+01:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-juiza-do-tribunal-constitucional-considerou-o-chega-um-partido-fascista",
+   "datetime": "2026-10-26T13:25:13+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-revelada-fotografia-do-encontro-entre-os-filhos-de-harry-e-meghan-e-o-rei-carlos-iii",
+   "datetime": "2026-10-26T14:37:45+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-harry-anuncia-pausa-na-relacao-com-meghan-depois-de-terem-vindo-a-publico-documentos-de-um-fundo-privado",
+   "datetime": "2026-10-26T14:47:59+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-centenas-de-golfinhos-e-peixes-aparecem-mortos-na-costa-de-israel",
+   "datetime": "2026-10-26T15:33:02+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-juiz-alexandre-de-moraes-morre-depois-de-sofrer-enfarte",
+   "datetime": "2026-10-26T16:57:34+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-uma-vala-comum-na-ucrania-com-corpos-de-soldados",
+   "datetime": "2026-10-26T17:44:17+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-policias-em-franca-renunciam-as-funcoes-e-juntam-se-aos-estudantes-em-protesto",
+   "datetime": "2026-10-26T18:01:30+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-uefa-retira-titulo-da-liga-dos-campeoes-ao-manchester-city-e-entrega-o-ao-inter-de-milao",
+   "datetime": "2026-10-26T18:19:23+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-principe-george-foi-expulso-do-colegio-de-eton",
+   "datetime": "2026-10-27T11:54:29+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-soldado-tentou-tirar-selfie-com-mulher-de-kim-jong-un",
+   "datetime": "2026-10-27T12:31:41+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-encontrados-140-milhoes-de-dolares-na-agencia-ucraniana-de-defesa",
+   "datetime": "2026-10-27T14:05:05+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mel-gibson-afirmou-que-eliminar-toda-a-cultura-muculmana-nos-eua-e-sobrevivencia",
+   "datetime": "2026-10-27T14:16:00+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-fotografia-mostra-protestos-estudantis-em-frente-a-torre-eiffel",
+   "datetime": "2026-10-27T14:52:50+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-manifestantes-colocam-bandeira-da-palestina-na-torre-eiffel-em-paris",
+   "datetime": "2026-10-27T15:09:47+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-flavio-bolsonaro-disse-que-queria-cortar-chaga-dos-programas-sociais-no-brasil",
+   "datetime": "2026-10-27T15:27:55+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-video-mostra-protesto-estudantil-recente-em-franca-sem-uma-unica-bandeira-francesa",
+   "datetime": "2026-10-27T15:56:55+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-kylian-mbappe-fez-apelo-ao-voto-em-lula-da-silva",
+   "datetime": "2026-10-28T15:00:57+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-manifestantes-atiram-ovos-contra-carro-onde-seguia-a-primeira-dama-do-brasil",
+   "datetime": "2026-10-28T15:19:16+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-lula-da-silva-atirou-bandeira-do-brasil-ao-chao-depois-de-votar-na-primeira-volta-das-eleicoes",
+   "datetime": "2026-10-28T17:32:27+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-japao-proibiu-a-entrada-de-todos-os-turistas-israelitas-no-pais",
+   "datetime": "2026-10-28T17:40:54+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-eurodeputada-marta-temido-votou-contra-classificacao-da-irmandade-muculmana-como-grupo-terrorista",
+   "datetime": "2026-10-28T17:50:53+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-cidadaos-portugueses-expulsos-do-luxemburgo-tem-origem-indiana-e-nepalesa",
+   "datetime": "2026-10-29T00:33:47+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mais-de-sete-milhoes-de-pessoas-marcharam-em-nova-iorque-contra-donald-trump",
+   "datetime": "2026-10-29T00:50:06+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-coluna-militar-passou-no-porto-devido-a-protestos-pela-habitacao",
+   "datetime": "2026-10-29T00:55:43+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-mulher-foi-gravada-a-cheirar-po-durante-manifestacao-pro-lula-da-silva",
+   "datetime": "2026-10-29T00:58:44+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-papa-leao-xiv-mandou-recado-a-flavio-bolsonaro-com-frase-sobre-invocar-o-nome-de-deus-para-legitimar-a-violencia",
+   "datetime": "2026-10-29T01:03:52+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-apoiante-de-bolsonaro-destruiu-igreja-catolica",
+   "datetime": "2026-10-29T01:06:38+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-imagens-mostram-interior-do-aviao-durante-ataque-a-piloto-da-flydubai",
+   "datetime": "2026-10-29T14:44:12+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-claques-dos-dois-maiores-clubes-brasileiros-protestam-contra-lula-e-pt-apos-proibicao-de-apostas",
+   "datetime": "2026-10-29T15:03:56+00:00"
+  },
+  {
+   "url": "https://observador.pt/factchecks/fact-check-flavio-bolsonaro-chorou-apos-resultados-das-eleicoes-no-brasil",
+   "datetime": "2026-11-04T16:26:04+00:00"
+  }
+ ]
+}

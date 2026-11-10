@@ -1,0 +1,4 @@
+poligrafo.iol.pt: erro=None claims=0 urls=0 datas - a -
+iol.pt: erro=None claims=0 urls=0 datas - a -
+publico.pt: erro=None claims=0 urls=0 datas - a -
+www.publico.pt: erro=None claims=0 urls=0 datas - a -

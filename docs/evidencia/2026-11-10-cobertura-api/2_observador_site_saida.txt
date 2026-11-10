@@ -1,0 +1,9 @@
+offset 20261011: 40 itens, seguinte 20260913
+offset 20260913: 40 itens, seguinte 20260817
+offset 20260817: 41 itens, seguinte 20260713
+offset 20260713: 40 itens, seguinte 20260621
+offset 20260621: 40 itens, seguinte 20260511
+offset 20260511: 40 itens, seguinte 20260408
+offset 20260408: 40 itens, seguinte 20260303
+offset 20260303: 40 itens, seguinte 20260216
+total distintos: 361

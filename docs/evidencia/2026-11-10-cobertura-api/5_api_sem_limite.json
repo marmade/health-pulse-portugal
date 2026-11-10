@@ -1,0 +1,35 @@
+{
+ "poligrafo.iol.pt": {
+  "erro": null,
+  "claims": 0,
+  "verificacoes": []
+ },
+ "iol.pt": {
+  "erro": null,
+  "claims": 0,
+  "verificacoes": []
+ },
+ "poligrafo.sapo.pt": {
+  "erro": null,
+  "claims": 2,
+  "verificacoes": [
+   {
+    "url": "https://poligrafo.sapo.pt/fact-check/motas-tem-que-ir-a-inspecao-a-partir-de-2025/",
+    "editor": "Polígrafo - SAPO",
+    "site": "poligrafo.sapo.pt",
+    "reviewDate": "2024-12-12"
+   },
+   {
+    "url": "https://poligrafo.sapo.pt/fact-check/video-de-estafetas-a-alimentar-se-com-comida-de-sacos-de-pedidos-foi-gravado-em-portugal/",
+    "editor": "Polígrafo - SAPO",
+    "site": "poligrafo.sapo.pt",
+    "reviewDate": "2024-12-20"
+   }
+  ]
+ },
+ "publico.pt": {
+  "erro": null,
+  "claims": 0,
+  "verificacoes": []
+ }
+}

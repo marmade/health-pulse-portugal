@@ -1,0 +1,134 @@
+[
+ {
+  "url": "https://poligrafo.iol.pt/fact-check/sempre-que-uma-equipa-ganhou-os-primeiros-10-jogos-do-campeonato-conquistou-o-titulo",
+  "data": "2026-11-01",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-check/sempre-que-uma-equipa-ganhou-os-primeiros-10-jogos-do-campeonato-conquistou-o-titulo",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ },
+ {
+  "url": "https://poligrafo.iol.pt/fact-check/portugal-aceitou-negociar-o-pagamento-de-indemnizacoes-as-antigas-colonias-governo-desmente-chega",
+  "data": "2026-09-29",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-check/portugal-aceitou-negociar-o-pagamento-de-indemnizacoes-as-antigas-colonias-governo-desmente-chega",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ },
+ {
+  "url": "https://poligrafo.iol.pt/fact-check/este-video-mostra-um-imigrante-marroquino-a-ser-expulso-de-uma-habitacao-em-ceuta-por-um-cao-de-guarda",
+  "data": "2026-08-18",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-check/este-video-mostra-um-imigrante-marroquino-a-ser-expulso-de-uma-habitacao-em-ceuta-por-um-cao-de-guarda",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ },
+ {
+  "url": "https://poligrafo.iol.pt/fact-checks/politica/em-cinco-anos-sairam-780-mil-portugueses-do-pais-e-entraram-dois-milhoes-de-imigrantes-como-afirma-deputado-do-chega",
+  "data": "2026-11-10",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-checks/politica/em-cinco-anos-sairam-780-mil-portugueses-do-pais-e-entraram-dois-milhoes-de-imigrantes-como-afirma-deputado-do-chega",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ },
+ {
+  "url": "https://poligrafo.iol.pt/fact-checks/sociedade/carros-pequenos-podem-estacionar-perpendicularmente-a-estrada-quando-nao-ha-espaco-para-o-fazerem-em-paralelo",
+  "data": "2026-11-06",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-checks/sociedade/carros-pequenos-podem-estacionar-perpendicularmente-a-estrada-quando-nao-ha-espaco-para-o-fazerem-em-paralelo",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ },
+ {
+  "url": "https://poligrafo.iol.pt/fact-checks/politica/teste-agendamenti",
+  "data": "2026-10-29",
+  "http": 200,
+  "final": "https://poligrafo.iol.pt/fact-checks/politica/teste-agendamenti",
+  "canonical": [],
+  "jsonld_blocos": 4,
+  "tipos": [
+   "BreadcrumbList",
+   "ImageObject",
+   "ListItem",
+   "NewsArticle",
+   "Organization",
+   "Person",
+   "PostalAddress",
+   "WebPage",
+   "WebSite"
+  ],
+  "claimreview_jsonld": [],
+  "claimreview_microdata": false,
+  "claimreview_texto": false
+ }
+]

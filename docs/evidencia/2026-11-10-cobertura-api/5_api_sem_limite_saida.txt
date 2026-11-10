@@ -1,0 +1,4 @@
+poligrafo.iol.pt: erro=None claims=0 datas - a -
+iol.pt: erro=None claims=0 datas - a -
+poligrafo.sapo.pt: erro=None claims=2 datas 2024-12-12 a 2024-12-20
+publico.pt: erro=None claims=0 datas - a -
