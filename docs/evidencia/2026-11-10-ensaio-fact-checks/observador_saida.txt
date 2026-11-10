@@ -1,0 +1,7 @@
+regra v4 | observador.pt: 81 verificações em 60 dias | casaram com a regra: 1 | novas (url, eixo): 0 | já na base: 292
+por veredicto: []
+por eixo: []
+por termo (top 10): []
+covid-19: 0 de 0
+contexto: 0 de 0 (ficheiro: 25 urls)
+DRY-RUN: nada gravado.

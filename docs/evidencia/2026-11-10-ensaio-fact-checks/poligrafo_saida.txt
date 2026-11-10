@@ -1,0 +1,1 @@
+ERRO: o sitemap do Polígrafo falhou (HTTP Error 403: Forbidden); nada gravado.
