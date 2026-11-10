@@ -1,0 +1,22 @@
+termos: 120 | erros: 0 | editores: 16
+   386 urls   49 termos  Observador | observador.pt
+   319 urls   34 termos  Aos Fatos | aosfatos.org
+   281 urls   35 termos  UOL Notícias | noticias.uol.com.br
+   276 urls   51 termos  Estadão | estadao.com.br
+   248 urls   29 termos  AFP Checamos | checamos.afp.com
+   173 urls   27 termos  Projeto Comprova | projetocomprova.com.br
+    18 urls   13 termos  Folha - UOL | www1.folha.uol.com.br
+    16 urls   11 termos  BOL - UOL | bol.uol.com.br
+    15 urls    6 termos  Agência Pública | eleicoes.apublica.org
+    14 urls    9 termos  Checamos AFP | checamos.afp.com
+     7 urls    7 termos  Agência Tatu | agenciatatu.com.br
+     7 urls    7 termos  O GLOBO | oglobo.globo.com
+     3 urls    2 termos  Agência Pública | apublica.org
+     1 urls    2 termos  Voto por Ideias | votoporideias.com.br
+     1 urls    1 termos  Agência Publica | eleicoes.apublica.org
+     1 urls    1 termos  AletheiaFact.org | aletheiafact.org
+  site publico.pt: {'erro': None, 'claims': 0, 'urls': 0, 'datas': [None, None], 'editores': []}
+  site poligrafo.sapo.pt: {'erro': None, 'claims': 2, 'urls': 2, 'datas': ['2024-12-12', '2024-12-20'], 'editores': ['Polígrafo - SAPO | poligrafo.sapo.pt']}
+  site poligrafo.pt: {'erro': None, 'claims': 0, 'urls': 0, 'datas': [None, None], 'editores': []}
+  site sapo.pt: {'erro': None, 'claims': 0, 'urls': 0, 'datas': [None, None], 'editores': []}
+  site observador.pt: {'erro': None, 'claims': 2000, 'urls': 2000, 'datas': ['2015-09-09', '2026-11-04'], 'editores': ['Observador | observador.pt']}

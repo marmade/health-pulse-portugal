@@ -1,0 +1,158 @@
+{
+ "termos": 120,
+ "erros": [],
+ "testes_por_site": {
+  "publico.pt": {
+   "erro": null,
+   "claims": 0,
+   "urls": 0,
+   "editores": [],
+   "datas": [
+    null,
+    null
+   ]
+  },
+  "poligrafo.sapo.pt": {
+   "erro": null,
+   "claims": 2,
+   "urls": 2,
+   "editores": [
+    "Polígrafo - SAPO | poligrafo.sapo.pt"
+   ],
+   "datas": [
+    "2024-12-12",
+    "2024-12-20"
+   ]
+  },
+  "poligrafo.pt": {
+   "erro": null,
+   "claims": 0,
+   "urls": 0,
+   "editores": [],
+   "datas": [
+    null,
+    null
+   ]
+  },
+  "sapo.pt": {
+   "erro": null,
+   "claims": 0,
+   "urls": 0,
+   "editores": [],
+   "datas": [
+    null,
+    null
+   ]
+  },
+  "observador.pt": {
+   "erro": null,
+   "claims": 2000,
+   "urls": 2000,
+   "editores": [
+    "Observador | observador.pt"
+   ],
+   "datas": [
+    "2015-09-09",
+    "2026-11-04"
+   ]
+  }
+ },
+ "editores": [
+  {
+   "editor": "Observador",
+   "site": "observador.pt",
+   "urls": 386,
+   "termos": 49
+  },
+  {
+   "editor": "Aos Fatos",
+   "site": "aosfatos.org",
+   "urls": 319,
+   "termos": 34
+  },
+  {
+   "editor": "UOL Notícias",
+   "site": "noticias.uol.com.br",
+   "urls": 281,
+   "termos": 35
+  },
+  {
+   "editor": "Estadão",
+   "site": "estadao.com.br",
+   "urls": 276,
+   "termos": 51
+  },
+  {
+   "editor": "AFP Checamos",
+   "site": "checamos.afp.com",
+   "urls": 248,
+   "termos": 29
+  },
+  {
+   "editor": "Projeto Comprova",
+   "site": "projetocomprova.com.br",
+   "urls": 173,
+   "termos": 27
+  },
+  {
+   "editor": "Folha - UOL",
+   "site": "www1.folha.uol.com.br",
+   "urls": 18,
+   "termos": 13
+  },
+  {
+   "editor": "BOL - UOL",
+   "site": "bol.uol.com.br",
+   "urls": 16,
+   "termos": 11
+  },
+  {
+   "editor": "Agência Pública",
+   "site": "eleicoes.apublica.org",
+   "urls": 15,
+   "termos": 6
+  },
+  {
+   "editor": "Checamos AFP",
+   "site": "checamos.afp.com",
+   "urls": 14,
+   "termos": 9
+  },
+  {
+   "editor": "Agência Tatu",
+   "site": "agenciatatu.com.br",
+   "urls": 7,
+   "termos": 7
+  },
+  {
+   "editor": "O GLOBO",
+   "site": "oglobo.globo.com",
+   "urls": 7,
+   "termos": 7
+  },
+  {
+   "editor": "Agência Pública",
+   "site": "apublica.org",
+   "urls": 3,
+   "termos": 2
+  },
+  {
+   "editor": "Voto por Ideias",
+   "site": "votoporideias.com.br",
+   "urls": 1,
+   "termos": 2
+  },
+  {
+   "editor": "Agência Publica",
+   "site": "eleicoes.apublica.org",
+   "urls": 1,
+   "termos": 1
+  },
+  {
+   "editor": "AletheiaFact.org",
+   "site": "aletheiafact.org",
+   "urls": 1,
+   "termos": 1
+  }
+ ]
+}

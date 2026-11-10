@@ -1,0 +1,826 @@
+{
+ "observador.pt": {
+  "erros": [],
+  "urls": {
+   "https://observador.pt/factchecks/fact-check-a-pitaia-cura-a-anemia/": [
+    "anemia"
+   ],
+   "https://observador.pt/factchecks/fact-check-jejum-e-alimentacao-rica-em-gordura-e-hidratos-de-carbono-ajudam-a-acabar-com-a-diabetes-tipo-2/": [
+    "diabetes tipo 2",
+    "jejum intermitente"
+   ],
+   "https://observador.pt/factchecks/fact-check-charlie-chaplin-disse-que-o-sol-o-descanso-e-a-dieta-estao-entre-os-seis-melhores-remedios-do-mundo/": [
+    "dieta"
+   ],
+   "https://observador.pt/factchecks/fact-check-decathlon-em-portugal-recomendou-que-profissionais-de-saude-nao-entrassem-nas-lojas/": [
+    "hipertensão",
+    "obesidade"
+   ],
+   "https://observador.pt/factchecks/fact-check-presidente-chines-sofreu-um-grave-avc-na-cimeira-dos-brics-na-india/": [
+    "avc"
+   ],
+   "https://observador.pt/factchecks/fact-check-ex-bastonario-dos-medicos-promoveu-metodo-com-limao-que-limpa-os-vasos-sanguineos/": [
+    "avc"
+   ],
+   "https://observador.pt/factchecks/fact-check-levantar-de-repente-para-ir-a-casa-de-banho-aumenta-risco-de-avc/": [
+    "avc"
+   ],
+   "https://observador.pt/factchecks/fact-check-pessoas-vacinadas-contra-a-covid-19-estao-a-morrer-com-enfartes-avc-e-cancros/": [
+    "avc",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-olhos-inchados-nariz-entupido-e-tosse-com-sangue-sao-principais-sintomas-da-covid-19/": [
+    "covid sintomas"
+   ],
+   "https://observador.pt/factchecks/fact-check-assintomaticos-da-covid-19-nao-transmitem-o-virus-a-outros/": [
+    "covid sintomas"
+   ],
+   "https://observador.pt/factchecks/fact-check-doentes-com-covid-19-assintomaticos-sao-falsos-positivos/": [
+    "covid sintomas"
+   ],
+   "https://observador.pt/factchecks/fact-check-biofabrica-de-wolbachia-destina-se-a-criar-modificar-o-ambiente-e-representa-perigo-para-a-populacao/": [
+    "dengue"
+   ],
+   "https://observador.pt/factchecks/fact-check-ivermectina-eficaz-na-reducao-da-carga-viral-da-dengue/": [
+    "dengue"
+   ],
+   "https://observador.pt/factchecks/fact-check-solucao-caseira-de-vinagre-de-alcool-vai-resolver-surto-de-dengue-no-brasil/": [
+    "dengue"
+   ],
+   "https://observador.pt/factchecks/fact-check-surto-de-dengue-no-brasil-esta-relacionado-com-vacina-contra-a-covid-da-pfizer/": [
+    "dengue"
+   ],
+   "https://observador.pt/factchecks/fact-check-rogerio-samora-morreu-na-sequencia-de-uma-paragem-cardiorrespiratoria/": [
+    "doenças cardiovasculares"
+   ],
+   "https://observador.pt/factchecks/fact-check-30-das-constipacoes-sao-causadas-por-coronavirus-e-influenza-e-tuberculose-sao-mais-letais-que-sars-cov-2/": [
+    "doenças cardiovasculares"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-pagou-10-milhoes-de-euros-para-tornar-a-gripe-das-aves-transmissivel-a-humanos/": [
+    "gripe A",
+    "gripe das aves"
+   ],
+   "https://observador.pt/factchecks/fact-check-testes-pcr-que-detetavam-o-covid-passaram-a-servir-para-detetar-a-gripe-a/": [
+    "gripe A"
+   ],
+   "https://observador.pt/factchecks/fact-check-o-nome-covid-19-significa-doenca-originaria-da-china/": [
+    "gripe A"
+   ],
+   "https://observador.pt/factchecks/fact-check-investigacao-concluiu-que-gripe-a-provocada-pelo-virus-h1n1-nunca-existiu/": [
+    "gripe A"
+   ],
+   "https://observador.pt/factchecks/fact-check-oms-obriga-governos-a-cancelarem-eleicoes-devido-a-surto-de-gripe-das-aves/": [
+    "gripe das aves"
+   ],
+   "https://observador.pt/factchecks/fact-check-brasil-vai-enfrentar-um-novo-confinamento-geral-devido-a-surto-de-gripe-das-aves/": [
+    "gripe das aves"
+   ],
+   "https://observador.pt/factchecks/fact-check-paises-da-oms-chegam-a-acordo-sobre-detencao-de-pessoas-que-recusem-vacina-contra-a-gripe-das-aves/": [
+    "gripe das aves"
+   ],
+   "https://observador.pt/factchecks/fact-check-diretor-geral-da-oms-admite-que-surto-de-hantavirus-esta-a-ser-usado-para-promover-agenda-massiva-de-vacinacao-para-criancas/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-video-mostra-encenacao-do-hantavirus-com-homem-a-entrar-acidentalmente-em-cena/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-simpsons-previram-o-surto-de-hantavirus-a-bordo-de-um-cruzeiro-em-2012/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-homem-retido-em-cruzeiro-com-surto-de-hantavirus-e-o-mesmo-que-apareceu-na-bbc-durante-a-covid-19/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-o-hantavirus-ja-existe-e-foi-patenteada-em-2025/": [
+    "hantavírus",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-trump-disse-que-a-extrema-esquerda-quer-retirar-a-liberdade-a-populacao-global-atraves-do-hantavirus/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-esta-a-desenvolver-vacina-contra-o-hantavirus/": [
+    "hantavírus",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-china-proibe-entrada-de-estrangeiros-devido-ao-hantavirus/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-macron-anunciou-fecho-de-escolas-francesas-para-combater-o-hantavirus/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-hantavirus-e-um-dos-efeitos-colaterais-da-vacina-da-pfizer-contra-a-covid-19/": [
+    "hantavírus"
+   ],
+   "https://observador.pt/factchecks/fact-check-mpox-so-se-transmite-atraves-de-contacto-sexual/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-da-astrazeneca-e-responsavel-pela-transmissao-da-mpox/": [
+    "mpox",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mpox-e-uma-doenca-nova-e-vacina-foi-criada-agora/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-diretor-da-oms-faz-marcha-atras-e-retira-declaracao-de-emergencia-sanitaria-global-da-mpox/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-video-mostra-funeral-de-dezenas-de-vitimas-de-mpox-em-africa/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-oms-ordena-que-governos-se-preparem-para-novos-confinamentos-por-causa-da-mpox/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-esta-a-introduzir-o-virus-da-sida-na-vacina-contra-a-mpox/": [
+    "mpox",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-ativa-o-aparecimento-da-mpox/": [
+    "mpox",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-paraquedista-morreu-por-causa-da-variola-dos-macacos/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-testes-pcr-so-agora-comecaram-a-ser-usados-para-detetar-virus-monkeypox/": [
+    "mpox"
+   ],
+   "https://observador.pt/factchecks/fact-check-calor-extremo-em-italia-faz-semaforo-derreter/": [
+    "onda de calor"
+   ],
+   "https://observador.pt/factchecks/fact-check-em-agosto-de-1944-foi-registada-onda-de-calor-semelhante-a-de-meados-de-julho-deste-ano/": [
+    "onda de calor"
+   ],
+   "https://observador.pt/factchecks/fact-check-fotografia-de-rio-mondego-com-caudal-reduzido-prova-que-alteracoes-climaticas-sao-ciclicas/": [
+    "onda de calor"
+   ],
+   "https://observador.pt/factchecks/fact-check-boletins-meteorologicos-provam-que-temperaturas-nao-mudaram-desde-1986/": [
+    "onda de calor"
+   ],
+   "https://observador.pt/factchecks/fact-check-onda-de-calor-em-portugal-de-1930-prova-que-aquecimento-global-nao-existe/": [
+    "onda de calor"
+   ],
+   "https://observador.pt/factchecks/fact-chek-anthony-fauci-pode-ser-condenado-a-cadeira-eletrica-como-se-alega-nas-redes-sociais/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-donald-trump-baniu-as-vacinas-de-mrna-contra-a-covid-19-dos-eua/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-japao-classifica-vacina-covid-como-a-mais-mortal-da-historia-da-humanidade/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ceo-da-pfizer-enfrenta-prisao-perpetua-por-mentir-sobre-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-comentadora-da-fox-news-morreu-de-cancro-turbo-por-causa-da-vacinacao-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-e-autoridades-de-saude-esconderam-estudo-que-mostrou-que-apenas-criancas-vacinadas-tiveram-miopericardites/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-agencia-europeia-do-medicamento-revela-que-nunca-deu-luz-verde-para-que-vacinas-contra-a-covid-19-fossem-administradas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-japao-ameaca-bill-gates-depois-de-serem-encontradas-substancias-que-provocam-aborto-nas-vacinas-anti-covid/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-cientistas-holandeses-dizem-que-vacinas-contra-a-covid-19-provocaram-35-milhoes-de-mortes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-existem-riscos-na-transfusao-de-sangue-de-pessoas-que-receberam-vacinas-covid-como-alerta-um-estudo-japones/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-diminuem-em-25-anos-a-esperanca-de-vida/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-confinamentos-e-vacinas-covid-19-causaram-tres-milhoes-de-mortes-em-excesso/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-lider-japones-pediu-desculpa-a-quem-recusou-vacinacao-contra-a-covid-19-e-disse-que-estavam-certos/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-governo-britanico-alertou-para-mortes-em-numero-sem-precedentes-de-jovens-vacinados-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-explosao-de-casos-de-cancro-relacionados-com-vacina-contra-a-covid-levam-japao-a-declarar-emergencia-nacional/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-da-astrazeneca-contra-a-covid-19-foi-retirada-do-mercado-por-causa-de-reacoes-adversas-graves/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-o-japao-baniu-as-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-foi-divulgado-um-contrato-secreto-que-prova-eficacia-desconhecida-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-navalny-morreu-de-efeitos-provocados-pela-vacina-da-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-cruz-vermelha-recusa-doacoes-de-sangue-de-doadores-vacinados-contra-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-peca-da-cnn-portugal-estabelece-relacao-entre-pico-de-mortes-em-portugal-e-vacinacao/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-portugal-esta-a-bater-todos-os-recordes-de-mortalidade/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-agencia-europeia-do-medicamento-nao-deu-indicacao-para-vacinar-pessoas-com-menos-de-60-anos-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-supremo-tribunal-dos-eua-determina-que-as-vacinas-da-covid-nao-sao-vacinas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ministro-da-saude-de-italia-acusado-de-assassinato-por-incentivar-vacinacao-contra-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-islandia-decidiu-banir-vacinas-contra-a-covid-19-depois-de-subida-do-numero-de-mortes-subitas-no-pais/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-para-covid-19-contem-acucar-e-nao-e-recomendada-para-quem-diabetes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medico-deixou-alerta-sobre-perigos-da-vacinacao-contra-a-covid-19-em-evento-do-parlamento-europeu/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-da-pfizer-originou-feridas-graves-nos-pes-em-voluntaria-dos-testes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-disse-que-as-vacinas-contra-a-covid-19-vao-servir-para-controlar-a-humanidade/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudos-dizem-que-vacinados-com-dose-de-reforco-estao-a-desenvolver-sida/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-farmaceuticas-governos-e-lideres-religiosos-foram-condenados-por-genocidio/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-putin-ordenou-a-destruicao-de-todos-os-stocks-de-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudo-japones-detetou-nanoparticulas-de-mrna-espalhadas-em-humanos-e-comprovou-infertilidade/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-pode-provocar-aneurisma/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-japao-declarou-estado-de-emergencia-em-julho-devido-as-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-uniao-europeia-vai-substituir-vacinas-contra-a-covid-19-por-ivermectina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bbc-news-admitiu-que-vacinas-contra-covid-provocou-excesso-de-mortes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mulher-de-ceo-da-pfizer-morreu-apos-tomar-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-protocolo-pos-vacina-contra-a-covid-19-inclui-a-toma-de-ivermectina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-nao-foram-aprovadas-e-fabricantes-nao-podem-ser-responsabilizados/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudo-cientifico-concluiu-que-74-das-autopsias-realizadas-a-pessoas-vacinadas-contra-a-covid-19-atribui-causa-da-morte-a-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-certificado-digital-ainda-nao-permite-voar-de-regresso-a-portugal/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-covid-19-e-muito-menos-letal-que-a-gripe/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-foi-criada-uma-vacina-que-anula-a-predisposicao-para-o-fundamentalismo-religioso/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-kamala-harris-simulou-momento-em-que-foi-vacinada-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-chefe-de-pesquisa-da-pfizer-disse-que-vacina-contra-a-covid-19-leva-a-esterilizacao-feminina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudo-cientifico-revela-que-maioria-das-pessoas-vacinada-contra-a-covid-19-vai-estar-morta-em-2025/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-mataram-mais-pessoas-nos-eua-que-as-armas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-dgs-aprovou-administracao-de-seis-doses-da-vacina-da-pfizer-a-cada-pessoa/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mais-mortalidade-associada-a-vacina-da-covid-19-do-que-o-somatorio-de-todas-as-vacinas-nos-31-anos-anteriores/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-parlamento-europeu-votou-indemnizacao-a-vitimas-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-governo-britanico-anunciou-indemnizacoes-para-vitimas-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinacao-contra-a-covid-19-esta-a-ser-feita-de-forma-experimental/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-primeira-ministra-da-provincia-canadiana-de-alberta-pedi-desculpa-aos-nao-vacinados-pela-forma-como-foram-tratados/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-alemanha-admitiu-que-a-vacina-contra-a-covid-19-e-40-vezes-mais-mortal-que-o-previsto/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-sem-telemovel-nao-e-possivel-obter-um-certificado-digital/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-teste-do-iman-prova-que-vacinas-contra-a-covid-19-servem-para-implantar-um-microchip/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-responsavel-da-farmaceutica-janssen-condenado-a-morte-pela-justica-da-marinha-norte-americana/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-seis-voluntarios-mortos-depois-de-receberem-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-no-peru-da-prisao-recusar-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-confirmou-que-chips-foram-implantados-nas-vacinas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-diretor-da-oms-disse-que-as-vacinas-matam-criancas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-provocou-crise-de-escassez-de-leite-em-po-nos-eua-porque-lancou-leite-materno-artificial/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-relatorio-do-governo-britanico-prova-fracasso-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-militar-da-gnr-desenvolve-surdez-depois-de-ser-vacinado-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-homem-morre-de-ataque-cardiaco-apos-receber-vacina-da-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-associacao-medica-dos-estados-unidos-revelou-5-500-mortes-por-toma-da-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-seringas-adulteradas-estao-a-ser-usadas-para-simular-vacinacao/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-presidente-croata-interrompeu-a-campanha-de-vacinacao-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-comprou-acoes-da-coca-cola-e-vai-incluir-vacina-covid-19-na-bebida/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-de-mrna-adicionadas-a-alimentos-e-bebidas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-da-pfizer-obriga-a-um-mes-de-abstinencia-sexual/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-omicron-nao-e-uma-variante-do-coronavirus-mas-uma-reacao-do-corpo-humano-a-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-barack-obama-avisou-africanos-para-nao-aceitarem-vacinas-europeias-ou-americanas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-comandante-dos-fuzileiros-norte-americanos-travou-vacinacao-dos-militares/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-oms-aprovou-vacina-chinesa-e-recusou-solucoes-americanas-e-brasileiras/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-virus-que-da-origem-a-cancro-foi-descoberto-na-vacina-da-pfizer-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ator-jamie-foxx-hospitalizado-depois-de-sofrer-avc-devido-a-toma-da-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-responsavel-da-autoridade-de-saude-norte-americana-assume-que-vacina-contra-covid-provoca-doencas-debilitantes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-governo-austriaco-promoveu-vacinacao-em-bordeis-com-direito-a-30-minutos-de-sexo-gratis/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bebe-morreu-apos-desenvolver-coagulos-por-ter-recebido-sangue-de-um-dador-vacinado-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-a-pfizer-assumiu-que-as-suas-vacinas-foram-um-projeto-militar-de-bioterrorismo/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medicos-alertam-contra-vacina-em-manchete-de-the-times/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-funcionarios-da-pfizer-revelam-ter-recebido-lote-especial-da-vacina-contra-a-covid/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mortes-apos-vacina-contra-a-covid-19-nao-sao-investigadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-proteina-spike-com-elementos-presentes-em-vacinas-contra-a-covid-19-e-toxica/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-admitu-que-mentiu-sobre-testes-a-capacidade-de-a-vacina-contra-a-covid-19-travar-a-transmissao-do-virus/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-causam-problemas-de-visao-reacoes-cutaneas-e-episodios-psiquiatricos/": [
+    "psiquiatra",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-publicou-lista-de-quase-1-300-efeitos-secundarios-graves-da-vacina-contra-a-covid/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-e-o-responsavel-pela-pandemia-de-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-enfermeira-assume-encenacao-de-vacinacao-de-lula-da-silva-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-mrna-provocaram-coagulos-sanguineos-em-62-das-pessoas-que-as-tomaram/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-forum-economico-mundial-exigiu-que-pilotos-que-levaram-lideres-mundiais-a-davos-nao-estivessem-vacinados/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-informou-que-vacina-traz-risco-de-ma-formacao-nos-bebes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/supremo-tribunal-dos-eua-anulou-vacina-universal-contra-a-covid-19-porque-viola-tratado-de-nuremberga/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-contem-oxido-de-grafeno-substancia-que-e-detetada-por-telemoveis/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pilotos-da-tap-foram-proibidos-de-tomar-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-milhoes-de-pessoas-vacinadas-com-nanotecnologia-de-rastreamento-5g/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pilotos-estao-a-morrer-durante-o-voo-depois-de-serem-vacinados-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-e-mais-perigosa-do-que-o-proprio-virus/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-defendeu-a-reducao-da-populacao-mundial-atraves-de-vacinas-forcadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-cubana-curou-1-500-infetados-pelo-novo-coronavirus/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-filha-de-bill-clinton-disse-que-criancas-devem-ser-vacinadas-com-ou-sem-consentimento-dos-pais/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-canada-admitiu-que-nao-vacinados-estavam-certos-sobre-riscos-de-vacinas-mrna/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-as-vacinas-contra-a-hepatite-b-contem-oxido-de-grafeno/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-suecia-descarta-85-milhoes-de-doses-de-vacinas-contra-a-covid-19-depois-de-ficarem-provados-os-maleficios-da-vacinacao/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudo-da-universidade-de-almeria-confirma-a-presenca-de-grafeno-nas-vacinas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-farmaceuticas-omitiram-dados-sobre-a-eficacia-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-covid-19-desaparece-com-o-tempo-quente-e-reaparece-quando-as-temperaturas-baixam/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estados-unidos-impedem-vacinados-contra-a-covid-19-de-darem-sangue/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/tribunal-internacional-condenou-farmaceuticas-china-e-vaticano-por-crimes-contra-a-humanidade/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-so-admitiu-risco-de-inflamacoes-cardiacas-decorrentes-da-vacina-contra-a-covid-19-em-2023/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinados-contra-a-covid-19-emitem-sinal-de-bluetooth/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-eliminam-os-anticorpos-naturais/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/medicos-que-descobriram-enzimas-do-cancro-em-vacinas-foram-encontrados-mortos/": [
+    "suicídio",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-movimentos-de-pessoas-vacinadas-sao-controlados-numa-base-de-dados-secreta/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-autoridade-do-medicamento-dos-eua-confirma-a-existencia-de-grafeno-nas-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medico-descobriu-que-macron-mentiu-e-nao-recebeu-qualquer-dose-da-vacina-contra-o-novo-coronavirus/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-ja-fizeram-20-525-mortos-na-uniao-europeia/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-fda-admite-que-vacina-da-pfizer-causa-coagulos-sanguineos/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-coronavac-pode-matar-mais-que-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-reacoes-adversas-registadas-obrigariam-a-suspender-a-vacinacao-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-estudos-comprovam-associacao-entre-vacina-contra-a-covid-19-e-a-paralisia-de-bell/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-joe-biden-esta-a-trabalhar-com-o-forum-economico-mundial-para-garantir-que-as-pessoas-sobrevivem-a-escassez-de-alimentos/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-filho-de-rita-lee-disse-que-cancro-de-que-a-cantora-sofria-foi-reacao-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ceo-da-pfizer-recusou-tomar-a-propria-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-usou-vacinas-falsas-para-espalhar-poliomielite-no-sudao/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-video-mostra-primeira-ministra-da-australia-a-tomar-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-professores-ja-tem-calendario-oficial-para-serem-vacinados/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-australia-vai-vacinar-populacao-a-forca-com-gases-libertados-por-avioes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/as-vacinas-sao-uma-arma-biologica-para-reduzir-a-populacao-mundial/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-suramina-e-um-antidoto-usado-contra-o-efeito-magnetico-e-o-veneno-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-adolescente-canadiana-sofreu-paragem-cardiaca-depois-de-ser-vacinada-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/morreram-46-criancas-em-portugal-com-hepatite-b/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medico-suicida-se-e-deixa-carta-de-despedida-com-criticas-a-vacinacao/": [
+    "suicídio",
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-checks-vacina-para-a-covid-vai-permitir-gravar-dados-biometricos/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ex-primeiro-ministro-do-japao-foi-assassinado-porque-nao-impos-vacinacao-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-gripe-espanhola-nao-era-uma-gripe-e-foi-causada-pela-administracao-de-vacina-contra-a-meningite/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-policias-franceses-lancam-algemas-para-o-chao-e-juntam-se-a-manifestantes-contra-vacinas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-podem-dar-origem-a-uma-epidemia-do-virus-marburg/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-criou-a-pandemia-de-coronavirus-para-vender-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-so-os-vacinados-contra-a-covid-19-tem-acesso-a-bens-essenciais-durante-a-guerra-na-ucrania/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-aplicacao-movel-permite-identificar-vacinados-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-subida-de-mortalidade-na-australia-relacionada-com-a-vacinacao-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-covid-19-e-um-certificado-de-identificacao-da-vacinacao-com-inteligencia-artificial/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-um-homem-desmaiou-em-frente-ao-principe-carlos-depois-de-ser-vacinado-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-as-vacinas-contra-a-covid-19-sao-inseguras-e-nao-foram-devidamente-testadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-esta-a-matar-pessoas-e-a-aumentar-contagios/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-imagens-mostram-vasculite-provocada-pela-vacina-da-janssen/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-morreu-a-enfermeira-que-desmaiou-apos-receber-a-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ministerio-da-saude-irlandes-alertou-para-risco-de-morte-subita-com-toma-de-vacina-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-morrem-mais-pessoas-vacinadas-que-pessoas-sem-a-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-florida-declarou-que-vacinas-mrna-sao-uma-arma-biologica/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-variola-dos-macacos-e-uma-reacao-adversa-as-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-a-covid-19-deixa-97-dos-homens-estereis/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-novo-estudo-da-associacao-americana-do-coracao-relaciona-vacina-com-aumento-de-risco-de-doencas-cardiacas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-sky-news-anunciou-que-vacinas-contra-a-covid-19-podem-combater-as-alteracoes-climaticas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-governo-britanico-admitiu-que-as-vacinas-contra-a-covid-19-danificam-o-sistema-imunologico/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-da-moderna-contem-luciferina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-antonio-costa-nunca-foi-vacinado-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinados-contra-a-covid-19-correm-maior-risco-de-trombose-durante-um-voo/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/parlamento-europeu-e-contra-obrigatoriedade-da-vacina-e-certificados-covid/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-mrna-para-a-covid-19-altera-adn-humano/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-terceira-dose-da-vacina-contra-a-covid-19-introduzida-porque-as-duas-primeiras-nao-funcionaram/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-formula-da-vacina-contra-a-covid-19-e-confidencial/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-criancas-entre-os-5-e-os-11-anos-tem-de-ter-telemovel-pessoal-para-agendar-vacina/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-contem-sangue-carcaca-animal-e-sao-toxicas-para-organismo/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-uniao-europeia-reconheceu-que-as-vacinas-contra-a-covid-19-provocam-infertilidade-nas-mulheres/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-nao-protegem-contra-a-infeccao-transmissao-e-mortes-por-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-nao-ha-registos-de-efeitos-adversos-das-vacinas-contra-a-covid-19-na-dgs/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacina-contra-covid-19-apareceu-em-seis-meses-apesar-de-nao-haver-vacina-contra-sida-influenza-ou-cancro/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-sao-plano-alternativo-para-matar-pessoas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-noticia-refere-que-sistema-imunitario-produz-de-forma-natural-mais-anticorpos-contra-a-covid-19-que-as-vacinas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-estao-a-provocar-novos-casos-de-cancro/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-contra-a-covid-19-administradas-na-populacao-mais-idosa-nao-foram-testadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-nao-criam-imunidade-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinas-prejudicam-a-saude-de-quem-faz-desporto/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-foram-desviados-8-milhoes-de-euros-destinados-a-compra-da-vacina-da-pfizer/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medicos-apagaram-dados-sobre-abortos-em-mulheres-vacinadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ceo-da-moderna-disse-que-antes-da-pandemia-ja-estava-a-produzir-100-mil-doses-contra-a-covid/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-morte-de-12-bebes-esta-relacionada-com-ensaio-clinico-de-vacina-em-que-participavam/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-janssen-alterou-rotulo-da-vacina-com-informacoes-sobre-sindrome-de-guillain-barre-depois-de-surto-no-peru/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-ja-tinham-sido-registadas-73-patentes-da-vacina-contra-a-sars-cov-2-antes-de-2008/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-pfizer-recomendou-sexta-dose-de-reforco-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-medico-alemao-identificou-a-vacina-como-causa-de-morte-em-metade-das-autopsias-feitas-a-vacinados/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-relatorio-do-cdc-comprova-que-as-variantes-do-coronavirus-tem-origem-em-pessoas-vacinadas/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-testes-das-vacinas-contra-a-covid-19-em-animais-foram-interrompidos-porque-eles-estavam-a-morrer/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-oms-administrou-50-milhoes-de-vacinas-contra-a-variola-misturadas-com-sida-a-africanos/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mortes-relacionadas-com-efeitos-adversos-de-vacinas-dispararam-em-2021/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-as-tomas-experimentais-da-vacina-contra-a-covid-19-causaram-501-mortes-nos-eua/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-bill-gates-disse-que-as-vacinas-contra-a-covid-19-sao-ineficazes/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-mulher-de-anthony-fauci-foi-responsavel-pelas-autorizacoes-de-uso-das-vacinas-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/%E2%80%8B%E2%80%8Bfact-check-enfermeira-de-centro-de-gestao-de-vacinas-revela-que-politicos-eslovenos-receberam-dose-de-placebo-contra-a-covid-19/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-alemaes-anti-vacinas-beijaram-se-em-publico-para-protestar/": [
+    "vacinas"
+   ],
+   "https://observador.pt/factchecks/fact-check-virus-nipah-que-causa-preocupacao-na-india-ja-chegou-ao-brasil/": [
+    "vírus nipah"
+   ],
+   "https://observador.pt/factchecks/oms-alerta-para-risco-de-virus-nipah-depois-do-carnaval/": [
+    "vírus nipah"
+   ],
+   "https://observador.pt/factchecks/fact-check-beber-leite-esta-associado-a-um-risco-acrescido-de-desenvolver-cancro/": [
+    "cancro da mama"
+   ],
+   "https://observador.pt/factchecks/fact-check-mamografias-tem-taxa-de-falsos-positivos-de-50-a-60-e-estimulam-os-tumores/": [
+    "cancro da mama"
+   ],
+   "https://observador.pt/factchecks/fact-check-capsulas-de-cafe-em-aluminio-podem-provocar-cancro/": [
+    "alzheimer",
+    "endometriose"
+   ],
+   "https://observador.pt/factchecks/fact-check-ginecologista-detido-no-brasil-por-recusar-tratamento-a-uma-pessoa-travesti/": [
+    "ginecologista"
+   ],
+   "https://observador.pt/factchecks/fact-check-o-leite-rouba-calcio-aos-ossos-e-causa-osteoropose/": [
+    "osteopenia",
+    "osteoporose"
+   ],
+   "https://observador.pt/factchecks/fact-check-defesa-de-jair-bolsonaro-alegou-que-o-ex-presidente-tem-alzheimer/": [
+    "alzheimer"
+   ],
+   "https://observador.pt/factchecks/fact-check-uso-prolongado-de-medicamento-para-o-colesterol-e-a-maior-causa-de-demencia-nos-eua/": [
+    "alzheimer",
+    "demência"
+   ],
+   "https://observador.pt/factchecks/fact-check-experiente-medico-norte-americano-sugere-spray-nasal-que-cura-a-perda-de-memoria-num-mes/": [
+    "alzheimer"
+   ],
+   "https://observador.pt/factchecks/fact-check-ricardo-salgado-escreveu-livro-de-memorias-ja-depois-de-defesa-apresentar-um-diagnostico-de-alzheimer/": [
+    "alzheimer"
+   ],
+   "https://observador.pt/factchecks/fact-check-revista-especializada-em-alzheimer-fez-capa-com-joe-biden-a-segurar-banana-como-se-fosse-um-telefone/": [
+    "alzheimer"
+   ],
+   "https://observador.pt/factchecks/fact-check-semana-de-4-dias-diminuiu-pressao-sobre-o-sns-e-melhorou-a-produtividade-como-diz-rui-tavares/": [
+    "ansiedade",
+    "ataque de pânico",
+    "crise de ansiedade"
+   ],
+   "https://observador.pt/factchecks/fact-check-aumento-de-numero-de-criancas-com-autismo-esta-relacionado-com-vacinacao-infantil/": [
+    "autismo"
+   ],
+   "https://observador.pt/factchecks/fact-check-lionel-messi-foi-diagnosticado-com-autismo-aos-oito-anos/": [
+    "autismo"
+   ],
+   "https://observador.pt/factchecks/fact-check-papa-francisco-disse-que-alcoolicos-autistas-e-pessoas-com-deficiencia-devem-ser-sacrificados-no-combate-as-alteracoes-climaticas/": [
+    "autismo"
+   ],
+   "https://observador.pt/factchecks/fact-check-chef-lubjomir-defendeu-ha-dias-fecho-de-restaurantes/": [
+    "bipolar"
+   ],
+   "https://observador.pt/factchecks/fact-check-omeprazol-nao-e-seguro-e-deve-ser-substituido-por-um-oleo/": [
+    "demência"
+   ],
+   "https://observador.pt/factchecks/fact-check-organizacao-mundial-de-saude-anunciou-subida-exponencial-de-casos-de-suicidio-apos-a-eleicao-de-trump/": [
+    "suicídio"
+   ],
+   "https://observador.pt/factchecks/fact-check-vacinados-contra-a-covid-19-sao-consideradas-suicidas-pela-justica-francesa/": [
+    "suicídio"
+   ],
+   "https://observador.pt/factchecks/fact-check-portugal-comprou-testes-para-a-covid-19-em-2018/": [
+    "suicídio"
+   ],
+   "https://observador.pt/factchecks/fact-check-teste-online-permite-fazer-diagnostico-de-perturbacao-de-hiperatividade-com-defice-de-atencao/": [
+    "tdah"
+   ]
+  }
+ },
+ "poligrafo.sapo.pt": {
+  "erros": [],
+  "urls": {}
+ }
+}

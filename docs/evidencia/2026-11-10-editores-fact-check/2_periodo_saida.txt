@@ -1,0 +1,2 @@
+observador.pt: erro=None claims=509 urls=509 datas 2020-08-20 a 2026-11-04
+poligrafo.sapo.pt: erro=None claims=0 urls=0 datas - a -
