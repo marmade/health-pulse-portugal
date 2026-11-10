@@ -246,7 +246,7 @@
 | O que só existe na instância antiga é o período congelado | 09/09/2026 | `[sessão 12]` Contagem por mês nas duas instâncias | A nova tem 03/2026 (2032 linhas, 22 dias — **iguais** à antiga), 04/2026 **só até ao dia 12** (1066 linhas, 12 dias), e 2 dias de 08/2026. Só existe na antiga o período de **13/04 em diante**: 1558 linhas em 13–30/04, onde 42 keywords têm exactamente **dois** valores distintos — o de antes e o congelado, ou seja a própria transição — e 54,7% dos valores estão a 0 ou 1. **Apagar a instância antiga não perde nenhuma série que varie** |
 | Google Autocomplete não segmenta por país | 07/09/2026 | `[nesta sessão]` `md5` e `diff` sobre as 4 respostas guardadas (pedidos manuais feitos pela Marta) | Respostas **byte a byte idênticas** entre `gl=pt` e `gl=br` (`fa5766d4…`, `ea7a0f17…`). O parâmetro `gl` não altera o resultado. Evidência em `docs/evidencia/2026-09-07-autocomplete-gl/` |
 | `keywords` é curadoria manual, não recolha automática | 07/09/2026 | `[claude.ai, transcrito]` Consulta SQL: procura de linhas com assinatura de inserção automática (`previous_volume = 0` E `trend = 'up'`) | **Zero linhas** com essa assinatura. 83 linhas, 82 activas. Distribuição: 33 saúde mental, 18 alimentação, 16 emergentes, 16 menopausa. 43 com `current_volume = 0`, média 11,1, ~~zero emergentes com valor~~ — *este último ponto foi corrigido a 09/09/2026: são 5 de 15 com valor; ver a linha CORRECÇÃO abaixo* |
-| A lista de 83 keywords vem do SNS 24 e da DGS | 09/09/2026 | `[declarado]` Afirmado pela Marta | A curadoria foi feita a partir de fontes institucionais. A lista não é uma amostra dos temas de saúde procurados — é uma amostra do **vocabulário com que o Estado nomeia** esses temas |
+| A lista de 83 keywords vem do SNS 24 e da DGS | 09/09/2026 | `[declarado]` Afirmado pela Marta | A curadoria foi feita a partir de fontes institucionais. A lista não é uma amostra dos temas de saúde procurados — é uma amostra do **vocabulário com que o Estado nomeia** esses temas. **Correcção para o eixo Saúde mental, 05/11/2026** `[declarado]` pela Marta: as fontes dos termos deste eixo são `sns24.gov.pt/pt/tema/saude-mental/`, `saudemental.min-saude.pt` e `saudementalpt.com`. O `saudementalpt.com` descreve-se como "site de profissionais de saúde": a página "Quem somos" diz que a equipa trabalha em centros de saúde e USF da zona central de Lisboa e no Centro Hospitalar Psiquiátrico de Lisboa; o site não identifica entidade nem NIF (lido pelo Cowork a 05/11). A DGS mantém-se nesta linha: pode valer para os outros eixos. `[inferência]` Neste eixo, "vocabulário com que o Estado nomeia" não vale por inteiro, porque uma das três fontes não é do Estado. |
 | 38 de 82 keywords não têm resolução na própria série | 09/09/2026 | `[sessão 12]` Período arquivado 09/03–13/04, o único com variação; contagem de dias no valor mínimo de cada série, individualmente. O script 5 pede uma keyword de cada vez (`5_…py:63`), logo cada série está normalizada ao seu próprio máximo — a medida é de **resolução**, não de volume comparado | 38 keywords com ≥50% dos dias no chão da própria série; várias com **um único valor distinto** em todo o período (`prevenção suicídio`, `saúde mental jovens`, `reabilitação psicossocial`, `candida auris`). Contra: `menopausa sintomas` (max 100, 32 valores distintos), `long covid` (72, 29) e `burnout` (57, 21), com 0% no chão |
 | CORRECÇÃO — "zero emergentes com valor" não se confirma | 09/09/2026 | `[sessão 12]` `select … from keywords where is_active group by axis`, e o mesmo por `is_emergent` | A linha de 07/09/2026 dizia "zero emergentes com valor". **Hoje: `axis='emergentes'` tem 15 keywords activas e 5 com valor** (máximo 59). O zero só aparece na leitura por `is_emergent = true` — e essa é **vazia**: a coluna está a `true` em **0 linhas de toda a tabela**, logo dá zero por a *flag* nunca ser preenchida, não por o tema não ter sinal. Proporção com valor por eixo: emergentes **5/15 (33%)**, saúde mental 16/33 (48%), menopausa 8/16 (50%), alimentação 10/18 (56%). Emergentes **é o mais baixo, mas não é zero** |
 | `.env` versionado num repositório público | 07/09/2026 | `[nesta sessão]` `git ls-files`, `git log -p --all -- .env`, API pública do GitHub | Repositório **público** (HTTP 200). Só variáveis `VITE_*` — `PROJECT_ID`, `PUBLISHABLE_KEY`, `URL`. **Sem `service_role` em todo o histórico**: não há chaves a rodar nem histórico a reescrever |
@@ -514,10 +514,125 @@ São duas candidaturas, a duas APIs diferentes:
       áreas. Cada área é construída pela Marta a partir de tópicos e termos que ela escolhe
       (somados com o operador `+` da API, se for essa a forma). A composição de cada área é
       decisão editorial dela, a tomar eixo a eixo.
+    - **Decisões da Marta, 05/11/2026, depois do teste 3:**
+      - Fontes dos termos de Saúde mental `[declarado]`: sns24.gov.pt/pt/tema/saude-mental/,
+        saudemental.min-saude.pt e saudementalpt.com (ver a nota na linha "A lista de 83
+        keywords vem do SNS 24 e da DGS", em Verificações).
+      - As áreas de cada eixo partem das fontes clínicas, que servem para traçar as fronteiras
+        entre temas. O conteúdo de cada área vem das fontes de pesquisa (`health_questions`,
+        autocomplete, tópicos do Google), com a ressalva da circularidade (nota
+        "CIRCULARIDADE", Cowork, 05/11/2026).
+      - Área Ansiedade: ansiedade, pânico, fobias e medicamentos (calmantes). Os medicamentos
+        são uma série própria dentro da área, não somados à série da perturbação.
+      - Formas com e sem acento juntam-se com `+` numa série, e guardam-se também em
+        separado. Que se pesquisa mais sem acento é um dado (teste 3); a causa não se sabe e
+        não se escreve nenhuma.
+      - Depressão (área seguinte): `tristeza prolongada` é candidata a porta de entrada;
+        testa-se ao lado de `tristeza` sozinha antes de decidir.
     - **Consequência para a recolha:** cada recolha da Health API grava-se com data e hora e
       nunca substitui a anterior, porque o Google revê valores já publicados.
-    - **Por ver:** o que o tópico inclui; se o `+` soma sessões sem contar duas vezes a
-      mesma; o teste de reprodução nos 53 pontos e a semana parcial (item anterior).
+    - **Por ver:** o que o tópico inclui; o teste de reprodução nos 53 pontos e a semana
+      parcial (item anterior). (O ponto do `+` passou para o Teste 3.)
+  - Teste 3 a 05/11/2026 (Claude Code; corrido pela Marta às 11:25): 2 pedidos, PT, semanal,
+    2025-11-02 a 2026-10-31, os dois HTTP 200, 52 pontos por termo, sem buracos. `+` enviado
+    como `%2B` e espaços como `%20`, verificado no URL antes de enviar. Script, respostas
+    cruas e `saida.txt` em `docs/evidencia/2026-11-05-teste-3-health-api/`. Registo:
+    `docs/sessoes/2026-11-05.md` §8.
+    - **Resultados `[verificado]`:**
+      - O `+` não soma: `/m/0k_9+ansiedade` dá 0,65 de A+B (medianas 2269,9 contra 3507,9),
+        e fica perto de `/m/0k_9` (rácio semanal mediano 1,016).
+        `ansiedade+ansiedade sintomas` dá 0,92 de A+B e fica perto de `ansiedade` (rácio
+        mediano 0,998). `ansiedade+pânico` dá 0,99 de A+B. Em nenhum trio C ≈ A+B (≤ 0,5 %) na
+        maioria das semanas.
+      - Os valores não fecham com um OU exato: C abaixo de max(A,B) em 29 semanas no trio
+        `ansiedade sintomas` e em 7 no trio do tópico, até 5 % abaixo. C acima de A+B em 16 a
+        18 semanas no trio `pânico`, até 5 % acima.
+      - `ansiedade + pânico` (com espaços) e `ansiedade+pânico` diferem em 41 de 52 semanas
+        (|dif| mediana 1,24 %, máx 5,66 %).
+      - Área Ansiedade, 24 termos num pedido, medianas: `/m/0k_9` 2241,9; `ansiedade` 1266,1;
+        `victan` 300,3; `diazepam` 259,2; `panico` 217,7; `alprazolam` 204,0; `xanax` 199,6;
+        `pânico` 129,5; `fobia` 129,1; `lorazepam` 128,4. As outras 14 formas têm mediana 0
+        (40 a 52 zeros em 52); `perturbação de pânico` é zero nas 52. Origem: os 21 primeiros
+        são formas presentes nas formulações de `health_questions` (leitura do Cowork, 05/11)
+        ou no teste 2; `fobia`, `calmantes`, `pânico` e `panico` aparecem como parte de
+        formulações mais longas, não como formulação inteira. `xanax`, `victan` e `lorazepam`
+        são candidatos do Cowork e não aparecem em `health_questions`.
+      - Acentos: `pânico` e `panico` diferentes em 48 semanas, um zero e o outro não em 4.
+        `síndrome do pânico` e `sindrome do panico`: ambos zero em 49, um zero e o outro não
+        em 3.
+      - Revisões: entre dois pedidos com 2 s de intervalo, o mesmo termo só muda nas semanas
+        de 18/10 e 25/10 (até 0,53 %). Entre o teste 2 (10:52) e o teste 3 (11:25),
+        `ansiedade` e `/m/0k_9` mudam em 16 semanas espalhadas pelo ano (−0,76 % a +1,48 %),
+        com a mesma percentagem nos dois termos em 14 delas.
+    - **Leituras `[inferência]`:**
+      - O comportamento é o de um OU que conta cada sessão uma vez (perto de A quando B se
+        sobrepõe a A, perto de A+B quando não se sobrepõe). A sobreposição entre os termos não
+        está verificada. Os desvios (C abaixo de max(A,B) ou acima de A+B, até ~5 %) são
+        compatíveis com um OU mais um ruído próprio de cada série, mas o tamanho desse ruído
+        foi deduzido dos próprios desvios, assumindo o OU — não está medido.
+      - Se esse ruído existir, o critério de 0,5 % não o separa de um desvio ao OU.
+      - Os espaços à volta do `+`: termo diferente ou mesmo erro de amostra, não se sabe.
+      - A API não junta formas com e sem acento.
+      - A revisão com a mesma percentagem em termos diferentes sugere uma mudança no
+        denominador da semana, não no termo.
+      - Que formas entram na área é decisão da Marta; o registo não a toma.
+    - **Por ver:** o ruído de cada série, medido escrevendo o mesmo conjunto de duas formas:
+      `ansiedade+pânico` contra `pânico+ansiedade`, e `ansiedade` contra
+      `ansiedade+ansiedade`. Se diferirem, o ruído é por série e os desvios do teste 3
+      explicam-se por ele; se forem iguais, o OU não é exacto. Responde também, em parte, à
+      questão dos espaços. (Feito no Teste 4; ver aí.) O ponto do `+` fica respondido em
+      parte: que não soma está verificado; que é um OU exato não se pode dizer enquanto esse
+      ruído não estiver medido.
+  - Teste 4 a 05/11/2026 (Claude Code; corrido pela Marta às 11:57): 1 pedido, 18 termos,
+    PT, semanal, 2025-11-02 a 2026-10-31, HTTP 200, 18 linhas pela ordem pedida, nenhum
+    termo recusado, 52 pontos por termo, sem buracos. Critérios fixados no script antes da
+    corrida. Script, resposta crua e `saida.txt` em
+    `docs/evidencia/2026-11-05-teste-4-health-api/`. Registo: `docs/sessoes/2026-11-05.md` §9.
+    - **Resultados `[verificado]`:**
+      - O mesmo conjunto escrito de duas formas: `ansiedade+pânico` e `pânico+ansiedade`
+        exatamente iguais nas 52 semanas. `ansiedade` e `ansiedade+ansiedade` diferentes em
+        52 de 52 (|dif| mediana 1,65 %, máx 6,14 %); rácio `ansiedade+ansiedade` /
+        `ansiedade`: mín 0,950, mediana 1,001, máx 1,065; acima de 1 em 26 de 52 semanas.
+        Margem M, pelo critério fixado: 6,14 %.
+      - Tópico `/m/0k_9` + S, com S = `pânico+panico` (≈ 15 % de T) e S = os 5 medicamentos
+        (soma dos 5 ≈ 49 % de T, 1099,0 / 2241,9): perto de T+S e longe de T em 51 e 49
+        semanas (C/T das medianas 1,14 e 1,45). S = `fobia` (≈ 5,8 % de T, 129,1 / 2241,9):
+        35 semanas não distinguem, 15 perto de T+S, 2 acima.
+      - `pânico+panico`: 0,95 da soma e 1,54 do maior (medianas); classes: perto da soma 18,
+        entre 21, acima 13.
+      - Os 5 medicamentos com `+`: 0,94 da soma e 3,34 do maior (medianas); perto da soma 30,
+        entre 22.
+      - Nas 4 semanas com `pânico` = 0, `pânico+panico` fica 1,09 a 1,36 × `panico`. Na
+        semana com `fobia` = 0, `/m/0k_9+fobia` fica 1,083 × T.
+      - Entre o teste 3 (11:25) e o teste 4 (11:57) os termos repetidos vieram iguais,
+        exceto nas semanas de 18/10 e 25/10 (até −1,81 %). Não houve revisão do ano inteiro.
+    - **Leituras `[inferência]`:**
+      - A diferença entre `ansiedade` e `ansiedade+ansiedade` não puxa para nenhum lado
+        (rácio mediano 1,001; acima em 26 de 52 semanas) e repete-se entre pedidos:
+        comporta-se como ruído de amostra, mas fixo para cada forma de escrever o termo. A
+        ordem dentro do `+` não conta (`ansiedade+pânico` = `pânico+ansiedade` nas 52
+        semanas).
+      - Explicação compatível, não verificada: cada termo distinto, depois de normalizada a
+        ordem do `+`, é estimado sobre a sua própria amostra, fixa. Isto explica os desvios ao
+        OU do teste 3 (até ~5 %) sem precisar de outro caminho de cálculo para o `+`.
+      - M foi medido numa série grande (~1270) e aplicado a séries menores. Se a diferença
+        crescer quando o volume desce, M é apertado demais para `pânico+panico`.
+      - Um 0 de uma série simples parece querer dizer "abaixo de um limiar", não zero
+        pesquisas. Toca nos zeros dos termos pequenos dos testes 2 e 3. Os dois casos mais
+        pequenos (`pânico` a 20/09/2026, 1,09; `fobia` a 19/07/2026, 1,08) ficam pouco acima
+        da margem M (6,14 %); a leitura de "abaixo de um limiar" assenta sobretudo nos de 18 a
+        36 %.
+      - O tópico `/m/0k_9` não parece incluir as pesquisas de `pânico`/`panico` nem as dos
+        medicamentos. Para `fobia`, não se distingue na maioria das semanas.
+      - A sobreposição entre as formas de acento e entre os medicamentos não se separa da
+        diferença simples/`+` com estes dados.
+      - A composição das séries é decisão da Marta; o registo não a toma.
+    - **Por ver:**
+      - Se a diferença simples/`+` cresce quando o volume desce (`pânico` contra
+        `pânico+pânico`).
+      - O limiar abaixo do qual uma série simples sai a 0.
+      - As revisões (o ano inteiro entre os testes 2 e 3, só as duas últimas semanas entre os
+        testes 3 e 4); o teste de reprodução nos 53 pontos e a semana parcial.
 
 **Decisão da Marta, 04/11/2026:** a Health Trends API passa a ser a fonte do dashboard
 principal. A recolha de domingo (`recolher_domingo.sh`, pytrends) continua em paralelo. A
@@ -527,7 +642,8 @@ explicação — não em duas vistas do dashboard.
 ### Hipótese do vocabulário — 09/09/2026
 
 > **Estatuto: HIPÓTESE. Não testada.** O que está verificado são os números das linhas
-> "A lista de 83 keywords vem do SNS 24 e da DGS", "38 de 82 keywords não têm resolução na
+> "A lista de 83 keywords vem do SNS 24 e da DGS" (para o eixo Saúde mental, ver a correcção
+> de 05/11/2026 na linha de Verificações), "38 de 82 keywords não têm resolução na
 > própria série" e "CORRECÇÃO — zero emergentes com valor não se confirma", na tabela de
 > Verificações. A explicação abaixo é uma **leitura** desses números e mantém-se por
 > confirmar até o teste da reformulação ser corrido.
@@ -665,6 +781,26 @@ perguntam. **As zonas onde os dois não coincidem são o objecto do projecto.**
 um sistema de monitorização de literacia em saúde construído sobre volume de pesquisa e
 semeado por vocabulário institucional é **cego aos temas de baixa procura e alto risco**. É
 um achado sobre o método, obtido empiricamente com dados do próprio protótipo.
+
+> **CIRCULARIDADE — registada a 05/11/2026 (Cowork, a pedido da Marta).** A lista B não é
+> independente da lista A. `[verificado][ficheiro]` Os dois scripts que alimentam
+> `health_questions` partem da tabela `keywords`: `scripts/7_fetch_autocomplete_questions.py`
+> (`buscar_keywords()` l.100; cada keyword entra em `SEEDS_TEMPLATES`, l.190) e
+> `scripts/6_fetch_health_questions.py` (`buscar_keywords()` l.149; `related_queries()` por
+> keyword). B é o que as pessoas escrevem **a partir dos termos de A**, não uma amostra livre
+> do que procuram.
+>
+> `[verificado][bd]` Caso na área Ansiedade (consulta de leitura, 05/11/2026): `fobia social`,
+> que é keyword da lista, aparece em 74 formulações distintas; todas as outras fobias juntas
+> em 1 (`agorafobia`). `[inferência]` A contagem mede a semente, não a procura.
+>
+> **Consequência:** "a detecção passa a ser semeada por B" (acima) herda o vocabulário de A.
+> B serve para encontrar formas correntes de um conceito que A já tem (ex.: `crise de
+> pânico`, `calmantes para ansiedade`); não serve para encontrar conceitos que A não tem, nem
+> para medir peso relativo entre formas. O peso mede-se na Health API.
+>
+> Nota de números `[verificado][bd]`: a 05/11/2026 `health_questions` tem **5508** linhas
+> (autocomplete 3634, pytrends 1874), não as 4626 citadas acima, que são de Setembro.
 
 ---
 
@@ -1376,6 +1512,7 @@ A ordem é deliberada: cada item depende do anterior, ou é mais urgente do que 
 
 ### Restantes
 
+- [ ] **Acrescentar um canal às fontes de YouTube:** https://www.youtube.com/@cnpsmental (pedido da Marta, 05/11/2026). Por tratar depois. Antes de entrar: confirmar quem gere o canal e em que categoria das 56 fica (ver "Fontes de Dados").
 - [x] ~~**Antes de mostrar o site a alguém (orientador, júri): tirar o bloco de alertas da
       página inicial** (`Index.tsx` l.390). Decisão de 25/09 — ver "Projecto".~~ **Substituído
       — decisão de 06/10: o bloco fica e é explicado (tarde de 27/10); alertas obrigatórios na
